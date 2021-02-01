@@ -15,7 +15,7 @@
 		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
 	 -->
 	 	<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
-		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@db202101121038_high?TNS_ADMIN=/home/opc/wallet"></property>
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@db202102011929_high?TNS_ADMIN=/home/opc/wallet"></property>
 		<property name="username" value="ADMIN"></property>
 		<property name="password" value="Wonseokproject1"></property>
 		<property name="maximumPoolSize" value="2"></property>
