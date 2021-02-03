@@ -32,6 +32,6 @@ public class UserController {
 		service.register(user);
 //		rttr.addFlashAttribute("result", board.getBno());
 //		rttr.addFlashAttribute("message", board.getBno()+"번 글이 등록되었습니다.");
-		return "redirect:/user/list";
+		return "redirect:/main/index";
 	}
 }

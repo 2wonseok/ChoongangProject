@@ -34,14 +34,21 @@
  	 <constructor-arg ref="dataSource" />
 	</bean>
 
-	<mybatis-spring:scan base-package="org.zerock.mapper"/>
+	<mybatis-spring:scan base-package="org.zerock.service"/>
+	<mybatis-spring:scan base-package="org.zerock.product.mapper"/>
+	<mybatis-spring:scan base-package="org.zerock.qaboard.mapper"/>
+	<mybatis-spring:scan base-package="org.zerock.revboard.mapper"/>
+	<mybatis-spring:scan base-package="org.zerock.user.mapper"/>
+	<mybatis-spring:scan base-package="org.zerock.freeboard.mapper"/>
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	<context:component-scan base-package="org.zerock.product.service"></context:component-scan>
-	<context:component-scan base-package="org.zerock.qa_board.service"></context:component-scan>
-	<context:component-scan base-package="org.zerock.rev_board.service"></context:component-scan>
+	<context:component-scan base-package="org.zerock.service"></context:component-scan>
+ 	<context:component-scan base-package="org.zerock.product.service"></context:component-scan>
+	<context:component-scan base-package="org.zerock.qaboard.service"></context:component-scan>
+	<context:component-scan base-package="org.zerock.revboard.service"></context:component-scan>
 	<context:component-scan base-package="org.zerock.user.service"></context:component-scan>
 	<context:component-scan base-package="org.zerock.freeboard.service"></context:component-scan>
+	
 	
 	<tx:annotation-driven/>
 </beans>
