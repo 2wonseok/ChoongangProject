@@ -43,8 +43,6 @@
     SELECT * FROM tbl_reviewboard WHERE rev_seq > 0
   ]]>
 	</select>
-<<<<<<< HEAD
-=======
 	
 	<!-- <select id="getListWithPaging"
 		resultType="org.zerock.RevBoard.domain.RevVO">
@@ -53,7 +51,6 @@
     
   ]]>
 	</select -->
->>>>>>> 9646102... 0203minju1909
 
 	<select id="countGood" resultType="int">
 		SELECT rev_good FROM tbl_reviweboard WHERE rev_seq = #{rev_seq}

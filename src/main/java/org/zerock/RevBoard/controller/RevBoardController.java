@@ -5,15 +5,18 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.zerock.RevBoard.domain.Criteria;
+import org.zerock.RevBoard.domain.PageDTO;
 import org.zerock.RevBoard.domain.RevVO;
 import org.zerock.RevBoard.service.RevBoardService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import oracle.jdbc.proxy.annotation.Post;
+
 
 @Controller
 @RequestMapping("/rev/*")
@@ -35,10 +38,6 @@ public class RevBoardController {
 	}
 	
 	@GetMapping("/list")
-<<<<<<< HEAD
-	public void list(Model model) {
-		List<RevVO> list = service.getList();
-=======
 	public void list(@ModelAttribute("cri") Criteria cri, Model model) {
 		List<RevVO> list = service.getListWithPaging(cri);
 		
@@ -46,8 +45,8 @@ public class RevBoardController {
 		
 		PageDTO dto = new PageDTO(cri, total);
 		 
->>>>>>> 9646102... 0203minju1909
 		model.addAttribute("list", list);
+		model.addAttribute("pageMaker", dto);
 	}
 	
 	@GetMapping({"/get", "/modify"})
@@ -75,6 +74,20 @@ public class RevBoardController {
 		service.remove(rev_seq);
 		
 		return "redirect:/rev/list";
+	}
+	
+	@GetMapping("/get/like")
+	public String addGood(@RequestParam("rev_seq") int rev_seq) {
+		service.addGood(rev_seq);
+		
+		return "redirect:/rev/get?rev_seq="+ rev_seq;
+	}
+	
+	@GetMapping("/get/hate")
+	public String addHate(@RequestParam("rev_seq") int rev_seq) {
+		service.addHate(rev_seq);
+		
+		return "redirect:/rev/get?rev_seq="+ rev_seq;
 	}
 	
 }

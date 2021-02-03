@@ -3,6 +3,7 @@ package org.zerock.RevBoard.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.zerock.RevBoard.domain.Criteria;
 import org.zerock.RevBoard.domain.RevVO;
 import org.zerock.RevBoard.mapper.RevBoardMapper;
 
@@ -21,12 +22,7 @@ public class RevBoardServiceImpl implements RevBoardService{
 		mapper.insertSelectKey(revVo);
 		
 	}
-	
-	@Override
-<<<<<<< HEAD
-	public List<RevVO> getList() {
-		return mapper.getList();
-=======
+		
 	public int getTotal(Criteria cri) {
 		return mapper.getTotalCount(cri);
 	}
@@ -34,7 +30,6 @@ public class RevBoardServiceImpl implements RevBoardService{
 	@Override
 	public List<RevVO> getListWithPaging(Criteria cri) {
 		return mapper.getListWithPaging(cri);
->>>>>>> 9646102... 0203minju1909
 	}
 	
 	@Override
@@ -64,5 +59,23 @@ public class RevBoardServiceImpl implements RevBoardService{
 	public void addReadCnt(int rev_seq) {
 		// TODO Auto-generated method stub
 		mapper.addReadCnt(rev_seq);
+	}
+
+	@Override
+	public List<RevVO> getList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addGood(int rev_seq) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addHate(int rev_seq) {
+		// TODO Auto-generated method stub
+		
 	}
 }
