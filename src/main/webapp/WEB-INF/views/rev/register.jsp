@@ -26,7 +26,30 @@
 	제목 <input type="text" name="rev_title"  class="form-control" /> <br>
 	내용 <input type="text" name="rev_content" class="form-control" /> <br>
 	작성자 <input type="text" name="rev_writer" class="form-control" /> <br>
+<<<<<<< HEAD
 	파일 <input type="file" name="rev_filename" class="form-control" /> <br>
+=======
+	<!-- 파일 <input type="file" name="rev_filename" class="form-control" /> --> <br>
+	<div class = "inputArea">
+	<label for="revImg">이미지</label>
+	 <input type="file" id="revImg" name="rev_filename" />
+	 <div class="select_img"><img src="" /></div>
+	 
+	 <script>
+  $("#revImg").change(function(){
+   if(this.files && this.files[0]) {
+    var reader = new FileReader;
+    reader.onload = function(data) {
+     $(".select_img img").attr("src", data.target.result).width(500);        
+    }
+    reader.readAsDataURL(this.files[0]);
+   }
+  });
+ </script>
+  
+ 
+	</div>
+>>>>>>> 9646102... 0203minju1909
 	<input type="submit"  value="글 등록">
 	</form>
 	

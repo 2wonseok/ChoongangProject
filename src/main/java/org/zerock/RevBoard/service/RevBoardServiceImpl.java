@@ -23,8 +23,18 @@ public class RevBoardServiceImpl implements RevBoardService{
 	}
 	
 	@Override
+<<<<<<< HEAD
 	public List<RevVO> getList() {
 		return mapper.getList();
+=======
+	public int getTotal(Criteria cri) {
+		return mapper.getTotalCount(cri);
+	}
+	 
+	@Override
+	public List<RevVO> getListWithPaging(Criteria cri) {
+		return mapper.getListWithPaging(cri);
+>>>>>>> 9646102... 0203minju1909
 	}
 	
 	@Override

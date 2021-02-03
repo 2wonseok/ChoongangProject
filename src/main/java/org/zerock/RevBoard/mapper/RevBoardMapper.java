@@ -8,8 +8,15 @@ public interface RevBoardMapper {
 	
 	public void insertSelectKey(RevVO rev);
 	
+<<<<<<< HEAD
 	public List<RevVO> getList();
 	
+=======
+	public List<RevVO> getListWithPaging(Criteria cri);
+	
+	public int getTotalCount(Criteria cri);
+	 
+>>>>>>> 9646102... 0203minju1909
 	public RevVO read(int rev_seq);
 	
 	public int delete(int rev_seq);

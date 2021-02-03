@@ -35,8 +35,18 @@ public class RevBoardController {
 	}
 	
 	@GetMapping("/list")
+<<<<<<< HEAD
 	public void list(Model model) {
 		List<RevVO> list = service.getList();
+=======
+	public void list(@ModelAttribute("cri") Criteria cri, Model model) {
+		List<RevVO> list = service.getListWithPaging(cri);
+		
+		int total = service.getTotal(cri);
+		
+		PageDTO dto = new PageDTO(cri, total);
+		 
+>>>>>>> 9646102... 0203minju1909
 		model.addAttribute("list", list);
 	}
 	

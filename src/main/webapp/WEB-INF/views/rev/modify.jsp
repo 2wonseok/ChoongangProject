@@ -21,7 +21,7 @@
 $(document).ready(function() {
 	$("#remove-btn").click(function(e) {
 		e.preventDefault();
-
+ 
 		// #modify-form 의 action attr 값을 바꿔야함.
 
 		$("#modify-form").attr("action", "${root}/rev/remove")

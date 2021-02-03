@@ -53,7 +53,7 @@
 					<textarea readonly class="form-control" id="textarea1" rows="3"><c:out
 							value="${RevBoard.rev_content }" /></textarea>
 				</div>
-				
+				 
 				<div class="form-group">
 						<label for="input6">조회수</label> <input  name="rev_readcnt"
 							value="${RevBoard.rev_readCnt }" type="text" class="form-control"
