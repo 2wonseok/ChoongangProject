@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 import org.zerock.user.domain.UserVO;
 import org.zerock.user.mapper.UserMapper;
 
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Service
+@AllArgsConstructor
 @Log4j
 public class UserServiceImpl implements UserService {
 	

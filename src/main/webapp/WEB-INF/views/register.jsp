@@ -13,7 +13,9 @@
 <title>회원 가입</title>
 </head>
 <body>
-<div class="container">
+<h2>회원 가입</h2>
+<div class="container"> 
+<form action="${root }/user/register" method="post">
 	<input type="text" name="user_id" class="form-control" /> </br>
 	<input type="text" name="user_name" class="form-control" /> </br>
 	<input type="text" name="user_nickname" class="form-control" /> </br>
@@ -24,6 +26,8 @@
 	<input type="text" name="user_phone" class="form-control" /> </br>
 	<input type="text" name="user_gender" class="form-control" /> </br>
 	<input type="text" name="user_birth" class="form-control" /> </br>
+	<input type="submit" value="전송">
+</form> 
 </div>
 </body>
 </html>

@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.user.domain.Criteria;
 import org.zerock.user.domain.UserVO;
+import org.zerock.user.mapper.UserMapper;
 import org.zerock.user.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -21,10 +23,12 @@ import lombok.extern.log4j.Log4j;
 public class UserController {
 	
 	private UserService service;
+	private UserMapper mapper;
 	
 	@GetMapping("/register")
-	public void register(@ModelAttribute("cri") Criteria cri) {
-		log.info("zzzzzz");
+	public String register() {
+	
+		return "register";
 	}
 	
 	@PostMapping("/register")
