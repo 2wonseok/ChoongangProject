@@ -11,7 +11,6 @@ public interface QaMapper {
 	public int getTotalCount(Criteria cri);
 	//	SELECT conut(*) FROM tbl_board
 	
-	//	@Select("SELECT * FROM tbl_board WHERE bno > 0")
 	public List<QaVO> getList();
 	
 	public List<QaVO> getListWithPaging(Criteria cri);

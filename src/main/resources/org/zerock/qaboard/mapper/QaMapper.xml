@@ -60,18 +60,17 @@
       SELECT * FROM tbl_qaboard WHERE qa_seq = #{qa_seq}
    </select>
    
-
    <insert id="insert">
-      INSERT INTO tbl_qaboard (qa_seq, qa_category, qa_title, qa_content, qa_writer) 
-      VALUES (qa_seq.nextval, #{qa_category}, #{qa_title}, #{qa_content}, #{qa_writer})
+      INSERT INTO tbl_qaboard (qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_secret, qa_regdate) 
+      VALUES (qa_seq.nextval, #{qa_category}, #{qa_title}, #{qa_content}, #{qa_writer}, #{qa_secret}, SYSDATE)
    </insert>
    
    <insert id="insertSelectKey">
-      <selectKey keyProperty="qa_seq" order="BEFORE" resultType="long">
-         SELECT seq_qaboard.nextval FROM dual
+      <selectKey keyProperty="qa_seq" order="BEFORE" resultType="int">
+         SELECT qa_seq.nextval FROM dual
       </selectKey>
-      INSERT INTO tbl_qaboard (qa_seq, qa_category, qa_title, qa_content, qa_writer) 
-      VALUES (#{qa_seq}, #{qa_category}, #{qa_title}, #{qa_content}, #{qa_writer})
+      INSERT INTO tbl_qaboard (qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_secret, qa_regdate) 
+      VALUES (#{qa_seq}, #{qa_category}, #{qa_title}, #{qa_content}, #{qa_writer}, #{qa_secret}, SYSDATE)
    </insert>
    
   
@@ -85,9 +84,8 @@
       qa_category = #{qa_category}, 
       qa_title = #{qa_title}, 
       qa_content = #{qa_content}, 
-      qa_writer = #{qa_writer}, 
       qa_updatedate = SYSDATE,
-      qa_secret = #{qa_secret}, 
+      qa_secret = #{qa_secret} 
       WHERE qa_seq = #{qa_seq}
    </update>
 
@@ -99,7 +97,7 @@
 
    <update id="updateReplyCnt">
    UPDATE tbl_qaboard SET replycnt = replycnt + #{amount} 
-   WHERE qa_bno = #{qa_bno}   
+   WHERE qa_seq = #{qa_seq}   
    </update>
 
    

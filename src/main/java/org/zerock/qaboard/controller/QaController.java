@@ -70,14 +70,13 @@ public class QaController {
 		
 		
 		rttr.addFlashAttribute("result", board.getQa_seq());
-		log.info("***** register, 누군가 게시물 작성 : " + board.getQa_seq());
 //		return "/board/list";
-		return "redirect:/board/list";
+		return "redirect:/qa/list";
 	}
 	
 	//
 	@GetMapping({"/get", "/modify"})
-	public void get(@RequestParam("seq") int seq, 
+	public void get(@RequestParam("qa_seq") int qa_seq, 
 			@ModelAttribute("criteria") Criteria cri, Model model) {
 		// 
 		/** 예전 코드 (스프링 없이) 
@@ -90,32 +89,19 @@ public class QaController {
 		
 		request.getRequestDispatcher(".jsp").forward();
 		*/
-		
-		log.info("게시물 클릭(read) :" + seq);
-		log.info(cri);
-		
-		QaVO vo = service.get(seq);
+
+		QaVO vo = service.get(qa_seq);
 		
 		// 쿼리문으로 붙어서 감
 		model.addAttribute("board", vo);
 //		model.addAttribute("cri", cri);
 	}
 	
-	@PostMapping("/remove")
-	public String remove(@RequestParam("seq") int seq, 
-			Criteria cri, RedirectAttributes rttr) {
+	@RequestMapping("/remove")
+	public String remove(@RequestParam("qa_seq") int qa_seq) {
+		service.remove(qa_seq);
 		
-		if (service.remove(seq)) {
-			rttr.addFlashAttribute("resultRemove", seq);
-			log.info("***** register, 누군가 게시물 삭제 : " + seq);
-		}
-		
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());	
-		rttr.addAttribute("type", cri.getType());
-		rttr.addAttribute("keyword", cri.getKeyword());
-		
-		return "redirect:/board/list";
+		return "redirect:/qa/list";
 	}
 	
 	@PostMapping("/modify")
@@ -123,7 +109,6 @@ public class QaController {
 		
 		if(service.modify(board)) {
 			rttr.addFlashAttribute("resultModify", board.getQa_seq());		
-			log.info("***** register, 누군가 게시물 수정 : " + board.getQa_seq());
 		}		
 		
 		log.info(cri);
@@ -132,7 +117,7 @@ public class QaController {
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
 		
-		return "redirect:/board/list";
+		return "redirect:/qa/list";
 	}
 	
 	
