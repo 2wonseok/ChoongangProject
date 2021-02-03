@@ -5,7 +5,15 @@
 
   <mapper namespace="org.zerock.product.mapper.ProductMapper">
   
-<!--   <sql id="criteria">
+  <insert id="insert">
+        insert into tbl_product (product_seq, product_name, product_price, product_quantity, product_seller, product_filename, product_info) 
+        values (product_seq.nextval, #{product_name}, #{product_price}, #{product_quantity}, #{product_seller}, #{product_filename}, #{product_info})
+  </insert>
+  
+  <!-- 여기까지 구현완료 -->
+  
+  
+	 <sql id="criteria">
      <where>
       <foreach item="type" collection="typeArr" separator="OR">
          <choose>
@@ -22,7 +30,6 @@
       </foreach>
    </where> 
   </sql>
-   -->
   
 <!--      <select id="getList" resultType="org.zerock.domain.BoardVO">
   <![CDATA[
@@ -30,20 +37,22 @@
   ]]>
      </select> -->
      
-     <!-- 
-   <select id="getListWithPaging" resultType="org.zerock.domain.BoardVO">
-<![CDATA[   
+
+   <select id="getListWithPaging" resultType="org.zerock.product.domain.ProductVO">
+   <!--일단getList로 대체  -->
+   select * from tbl_product
+<!-- <![CDATA[   
    SELECT
-    bno, title, content,
-    writer, regdate, updatedate, replycnt
+    product_seq, product_name, product_price, product_quantity,
+    product_seller, product_filename, product_info, regdate, category_seq, product_status, product_readcnt, product_regdate, product_updatedate
    FROM
     (
      SELECT 
-      ROW_NUMBER() OVER (ORDER BY bno DESC) rn,
-      bno, title, content, writer,
-      regdate, updatedate, replycnt
+      ROW_NUMBER() OVER (ORDER BY product_seq DESC) rn,
+      product_seq, product_name, product_price, product_quantity,
+  	  product_seller, product_filename, product_info, regdate, category_seq, product_status, product_readcnt, product_regdate, product_updatedate
      FROM
-      tbl_board
+      tbl_product
 ]]>
    
    <include refid="criteria"></include>
@@ -52,14 +61,11 @@
     )
    WHERE
     rn BETWEEN (#{pageNum} - 1) * #{amount} + 1 AND #{pageNum} * #{amount}
-]]>      
+]]>       -->
    </select>
-      -->
+
      
-     <insert id="insert">
-        insert into tbl_product (product_seq, product_name, product_price, product_quantity, product_seller, product_filename, product_info)
-        values (product_seq.nextval, #{product_name}, #{product_price}, #{product_quantity}, #{product_seller}, #{product_filename}, #{product_info})
-     </insert>
+     
   <!-- 
      <insert id="insertSelectKey">
         <selectKey keyProperty="bno" order="BEFORE" resultType="long">
@@ -72,11 +78,11 @@
       -->
      
      <select id="read" resultType="org.zerock.product.domain.ProductVO">
-        select * from tbl_product where product_seq = #{productSeq}
+        select * from tbl_product where product_seq = #{product_seq}
      </select>
      
      <delete id="delete">
-        delete from tbl_product where product_seq = #{productSeq}
+        delete from tbl_product where product_seq = #{product_seq}
      </delete>
      
      <update id="update">
@@ -90,14 +96,9 @@
             product_seq = #{product_seq}
      </update>
      
-<!--      <select id="getTotalCount" resultType="int">
-        SELECT count(*) FROM tbl_board
+     <select id="getTotalCount" resultType="int">
+        SELECT count(*) FROM tbl_product
         <include refid="criteria"></include>
-     </select> -->
-     
-<!--      <update id="updateReplyCnt">
-     UPDATE tbl_board SET replycnt = replycnt + #{amount}
-     WHERE bno = #{bno}
-     </update> -->
+     </select>
      
   </mapper>

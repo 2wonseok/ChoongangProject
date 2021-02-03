@@ -2,6 +2,7 @@ package org.zerock.product.service;
 
 import java.util.List;
 
+import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.ProductVO;
 
 
@@ -9,20 +10,14 @@ public interface ProductService {
 	
 	public void register(ProductVO product);
 	
-	/*
-	 * public void register(BoardVO board);
-	 * 
-	 * //public List<BoardVO> getList();
-	 * 
-	 * public List<BoardVO> getList(Criteria cri);
-	 * 
-	 * public BoardVO get(Long bno);
-	 * 
-	 * public boolean remove(Long bno);
-	 * 
-	 * public boolean modify(BoardVO board);
-	 * 
-	 * public int getTotal(Criteria cri);
-	 */
+	public List<ProductVO> getList(Criteria cri);
+	 
+	public ProductVO get(int product_seq);
+	 
+	public boolean remove(int product_seq);
+	
+	public boolean modify(ProductVO product);
+	 
+	public int getTotal(Criteria cri);
 	
 }
