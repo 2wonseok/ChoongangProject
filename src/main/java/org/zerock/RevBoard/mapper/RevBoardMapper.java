@@ -9,4 +9,14 @@ public interface RevBoardMapper {
 	public void insertSelectKey(RevVO rev);
 	
 	public List<RevVO> getList();
+	
+	public RevVO read(int rev_seq);
+	
+	public int delete(int rev_seq);
+	
+	public int update(RevVO revVo);
+	
+	public int countGood(int rev_seq);
+	
+	public int AddGood(int rev_seq);
 }

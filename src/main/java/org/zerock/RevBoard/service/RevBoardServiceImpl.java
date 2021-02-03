@@ -26,4 +26,21 @@ public class RevBoardServiceImpl implements RevBoardService{
 	public List<RevVO> getList() {
 		return mapper.getList();
 	}
+	
+	@Override
+	public RevVO get(int rev_seq) {
+		
+		return mapper.read(rev_seq);
+	}
+	
+	@Override
+	public boolean moidfy(RevVO revVo) {
+		return mapper.update(revVo) == 1;
+	}
+	
+	@Override
+	public boolean remove(int rev_seq) {
+		
+		return mapper.delete(rev_seq) == 1;
+	}
 }

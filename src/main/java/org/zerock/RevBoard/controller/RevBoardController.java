@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.zerock.RevBoard.domain.RevVO;
 import org.zerock.RevBoard.service.RevBoardService;
+
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -20,6 +22,10 @@ import lombok.extern.log4j.Log4j;
 public class RevBoardController {
 
 	private RevBoardService service;
+	
+	@GetMapping("/register")
+	public void register() {
+	}
 	
 	@PostMapping("/register")
 	public String register(RevVO revVo) {
@@ -33,4 +39,6 @@ public class RevBoardController {
 		List<RevVO> list = service.getList();
 		model.addAttribute("list", list);
 	}
+	
+	
 }
