@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerock.mapper.UserMapper">
+	<select id="getList" resultType="org.zerock.domain.UserVO">
+<![CDATA[
+		select * from tbl_user where user_seq > 0 order by user_seq desc
+]]>			
+	</select>
+	
+	<insert id="insert">
+		insert into tbl_user (user_seq, user_id, user_name, user_nickname, user_password, user_address
+			, user_addresscode, user_email, user_phone, user_gender, user_birth, user_regdate)
+		values (seq_board.nextval, #{user_id}, #{user_name}, #{user_nickname}, #{user_password}, 
+			#{user_address}, #{user_addresscode}, #{user_email}, #{user_phone}, #{user_gender}, #{user_birth}, SYSDATE)
+	</insert>
+<!-- 	
+	<sql id="criteria">
+		<where>
+			<foreach item="type" collection="typeArr" separator="OR">
+				<choose>
+					<when test="type == 'T'.toString()">
+						UPPER(title) LIKE UPPER('%'||#{keyword}||'%')
+					</when>
+					<when test="type == 'C'.toString()">
+						UPPER(content) LIKE UPPER('%'||#{keyword}||'%')
+					</when>
+					<when test="type == 'W'.toString()">
+						UPPER(writer) LIKE UPPER('%'||#{keyword}||'%')
+					</when>
+				</choose>
+			</foreach>
+	</where>
+	</sql>
+	
+	<select id="getListWithPaging" resultType="org.zerock.domain.BoardVO">
+	<![CDATA[
+		SELECT 
+			bno, title, content, writer, regdate, updatedate, replycnt
+		FROM
+			(
+			SELECT
+				ROW_NUMBER() OVER (ORDER BY bno DESC) rn,
+		 		bno, title, content, writer, regdate, updatedate, replycnt 
+			FROM tbl_board
+	]]>
+		<include refid="criteria"></include>
+	<![CDATA[
+			)
+			WHERE
+				rn BETWEEN (${pageNum} - 1) * ${amount} + 1 AND ${pageNum} * ${amount}
+	]]>	
+	</select>
+	
+	<insert id="insert">
+		insert into tbl_board (bno, title, content, writer)
+		values (seq_board.nextval, #{title}, #{content}, #{writer})
+	</insert>
+	
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+		select seq_board.nextval from dual
+		</selectKey>
+	
+		insert into tbl_board (bno, title, content, writer)
+		values (#{bno }, #{title}, #{content}, #{writer})
+	</insert>
+	
+	<select id="read" resultType="org.zerock.domain.BoardVO">
+		select * from tbl_board where bno = #{bno}
+	</select>
+	
+	<delete id="delete">
+		delete from tbl_board where bno = #{bno}
+	</delete>
+	
+	<update id="update">
+	UPDATE tbl_board
+	SET
+	  title = #{title},
+	  content = #{content},
+	  writer = #{writer},
+	  updateDate = sysdate
+	WHERE
+	  bno = #{bno}
+	</update>
+	
+	<select id="getTotalCount" resultType="int">
+		SELECT COUNT(*) FROM tbl_board
+		<include refid="criteria"></include>
+	</select>
+	
+	<update id="updateReplyCnt">
+		UPDATE tbl_board SET replycnt = replycnt + #{amount}
+		WHERE bno = #{bno}
+	</update> -->
+</mapper>

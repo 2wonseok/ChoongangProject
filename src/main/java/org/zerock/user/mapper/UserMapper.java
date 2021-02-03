@@ -1,5 +1,7 @@
 package org.zerock.user.mapper;
 
-public interface UserMapper {
+import org.zerock.user.domain.UserVO;
 
+public interface UserMapper {
+	public void insert(UserVO user);
 }

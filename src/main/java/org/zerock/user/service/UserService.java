@@ -1,5 +1,8 @@
 package org.zerock.user.service;
 
-public interface UserService {
+import org.zerock.user.domain.UserVO;
 
+public interface UserService {
+	
+	public void register(UserVO user);
 }
