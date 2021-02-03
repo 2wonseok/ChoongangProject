@@ -1,9 +1,9 @@
-package org.zerock.qa_board.mapper;
+package org.zerock.qaboard.mapper;
 
 import java.util.List;
 
-import org.zerock.qa_board.domain.Criteria;
-import org.zerock.qa_board.domain.QaVO;
+import org.zerock.qaboard.domain.Criteria;
+import org.zerock.qaboard.domain.QaVO;
 
 public interface QaMapper {
 
