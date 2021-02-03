@@ -26,18 +26,16 @@ public class QaVO {
 	// 칼럼의 데이터를 @Data(lombok 라이브러리) 어노테이션을 이용해 
 	// get, set 메소드를 생성.
 	
-	private int qa_Seq;	
-	private String qa_Category;
-	private String qa_Title;
-	private String qa_Writer;
-	private String qa_ReadCnt;
-	private String qa_Content;
-	private int qa_Secret;
-	private int qa_Status;
-	private String qa_FileName;
-	private Date qa_RegDate;
-	private Date qa_UpdateDate;
-	
-	
+	private int qa_seq;	
+	private String qa_category;
+	private String qa_title;
+	private String qa_writer;
+	private String qa_readcnt;
+	private String qa_content;
+	private int qa_secret;
+	private int qa_status;
+	private String qa_filename;
+	private Date qa_regdate;
+	private Date qa_updatedate;	
 	
 }
