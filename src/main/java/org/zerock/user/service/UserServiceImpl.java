@@ -1,6 +1,7 @@
 package org.zerock.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.zerock.user.domain.UserVO;
 import org.zerock.user.mapper.UserMapper;
