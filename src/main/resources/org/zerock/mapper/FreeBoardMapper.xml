@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="org.zerock.freeboard.mapper.FreeBoardMapper">
+
+	<!-- <sql id="freeboardcriteria">
+		<where>
+			<foreach item="type" collection="typeArr" separator="OR">
+				<choose>
+					<when test="type == 'T'.toString()">
+						title LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'C'.toString()">
+						content LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'W'.toString()">
+						writer LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</foreach>
+		</where>
+	</sql>  -->
+
+
+	<select id="getList"
+		resultType="org.zerock.freeboard.domain.FreeBoardVO">
+<![CDATA[
+		select * from tbl_freeboard where free_seq > 0
+]]>
+
+	</select>
+
+	<!-- <select id="getListWithPaging"
+		resultType="org.zerock.freeboard.domain.FreeBoardVO">
+<![CDATA[	
+	SELECT
+	 free_seq, free_title, free_content,
+	 free_writer, ,free_readcnt,free_regdate, free_updatedate
+	FROM
+	 (
+	  SELECT 
+	   ROW_NUMBER() OVER (ORDER BY seq DESC) rn,
+	   free_seq, free_title, free_content, free_writer,
+	   free_readcnt,free_regdate, free_updatedate
+	  FROM
+	   tbl_freeboard
+]]>
+
+		<include refid="freeboardcriteria"></include>
+ 
+<![CDATA[
+	 )
+	WHERE
+	 rn BETWEEN (#{pageNum} - 1) * #{amount} + 1 AND #{pageNum} * #{amount}
+]]>
+	</select>
+
+
+	<insert id="insert">
+		insert into tbl_freeboard (seq, free_title,
+		free_content, free_writer)
+		values (seq_board.nextval, #{free_title},
+		#{free_content}, #{free_writer})
+	</insert>
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="seq" order="BEFORE"
+			resultType="long">
+			select seq_board.nextval from dual
+		</selectKey>
+
+		insert into tbl_freeboard (free_seq, free_title, free_content, free_writer)
+		values (#{free_seq },
+		#{free_title}, #{free_content}, #{free_writer})
+	</insert>
+
+	<select id="read" resultType="org.zerock.freeboard.domain.FreeBoardVO">
+		select * from tbl_freeboard where free_seq =
+		#{free_seq}
+	</select>
+
+	<delete id="delete">
+		delete from tbl_freeboard where free_seq = #{free_seq}
+	</delete>
+
+	<update id="update">
+		UPDATE tbl_freeboard
+		SET
+		free_title = #{free_title},
+		free_content = #{free_content},
+		free_writer = #{free_writer},
+		updateDate = sysdate
+		WHERE
+		free_seq = #{free_seq}
+	</update>
+
+	<select id="getTotalCount" resultType="int">
+		SELECT count(*) FROM tbl_freeboard
+		<include refid="freeboardcriteria"></include>
+	</select>
+
+	<update id="updateReplyCnt">
+		UPDATE tbl_freeboard SET replycnt = replycnt + #{amount}
+		WHERE seq = #{seq}
+	</update> -->
+
+
+</mapper>
+
+
+
+
