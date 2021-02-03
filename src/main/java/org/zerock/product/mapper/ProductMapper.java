@@ -2,7 +2,6 @@ package org.zerock.product.mapper;
 
 import java.util.List;
 
-import org.zerock.domain.BoardVO;
 import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.ProductVO;
 
