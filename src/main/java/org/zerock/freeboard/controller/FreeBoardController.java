@@ -65,6 +65,21 @@ public class FreeBoardController {
 //	public void register(@ModelAttribute("cri") FreeBoardCriteria cri) {
 //		
 //	}
+	//get으로 요청이왔을경우
+	@GetMapping("/register")
+	public void  register() {
+		
+	}
+	//post방식으로 요청이왔을경우
+	@PostMapping("/register")
+	public String reegister(FreeBoardVO freeboard ,RedirectAttributes rttr) {
+		
+		service.register(freeboard);
+		
+		rttr.addFlashAttribute("result",freeboard.getFree_seq());
+		
+		return "redirect:/freeboard/list";
+	}
 //	
 ////	@RequestMapping(value = "/register", method = RequestMethod.POST)
 //	@PostMapping("/register")
@@ -87,9 +102,8 @@ public class FreeBoardController {
 //	}
 	
 	// 표: /board/read, 코드: /board/get
-//	@GetMapping({"/get", "/modify"})
-//	public void get(@RequestParam("seq") Long seq,
-//			@ModelAttribute("cri") FreeBoardCriteria cri, Model model) {
+	@GetMapping({"/get", "/modify"})
+	public void get(@RequestParam("seq") Long seq,Model model) {
 //		/** 예전 코드 (스프링 없이) 
 //		String boardNum = request.getParameter("num");
 //		int num = Integer.parseInt(boardNum);
@@ -101,12 +115,15 @@ public class FreeBoardController {
 //		request.getRequestDispatcher(".jsp").forward();
 //		*/
 //		
-//		log.info("get method - seq: " + seq);
+		log.info("get method - seq: " + seq);
 //		log.info(cri);
-//		FreeBoardVO vo = service.get(seq);
-//		model.addAttribute("freeboard", vo);
-////		model.addAttribute("cri", cri);
-//	}
+		FreeBoardVO vo = service.get(seq);
+		
+		//시퀀스값을 가져와서 
+		
+		model.addAttribute("freeboard", vo);
+//		model.addAttribute("cri", cri);
+	}
 //	
 	/*
 	@GetMapping("/modify")
@@ -116,28 +133,16 @@ public class FreeBoardController {
 	}
 	*/
 	
-//	@PostMapping("/modify")
-//	public String modify(FreeBoardVO board, FreeBoardCriteria cri, RedirectAttributes rttr) {
-//		/** 스프링 없이
-//		BoardVO board = new BoardVO();
-//		board.setBno(request.getParameter("bno"));
-//		board.setTitle(request.getParameter("title"));
-//		board.setContent(request.getParameter("content"));
-//		*/
-//		
-//		if (service.modify(board)) {
-//			rttr.addFlashAttribute("result", "success");
-//			rttr.addFlashAttribute("message", board.getFree_seq() + "번 글이 수정되었습니다.");
-//		}
-//		log.info(cri);
-//		rttr.addAttribute("pageNum", cri.getPageNum());
-//		rttr.addAttribute("amount", cri.getAmount());
-//		rttr.addAttribute("type", cri.getType());
-//		rttr.addAttribute("keyword", cri.getKeyword());
-//		
-//		return "redirect:/board/list";
-//	}
-//	
+	@PostMapping("/modify")
+	public String modify(FreeBoardVO freeboard) {
+		
+		service.modify(freeboard);
+		
+		
+		
+		return "redirect:/freeboard/list";
+	}
+	
 //	@PostMapping("/modify2")
 //	public String modify2(FreeBoardVO freeboard, RedirectAttributes rttr) {
 //		/** 스프링 없이

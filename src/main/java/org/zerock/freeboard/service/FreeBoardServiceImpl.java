@@ -28,10 +28,10 @@ private FreeBoardMapper mapper;
 	
 	// mapper.read(33);
 	
-//	@Override
-//	public void register(FreeBoardVO freeboard) {
-//		mapper.insertSelectKey(freeboard);
-//	}
+	@Override
+	public void register(FreeBoardVO freeboard) {
+		mapper.insertSelectKey(freeboard);
+	}
 	
 	
 	@Override
@@ -45,20 +45,20 @@ private FreeBoardMapper mapper;
 //		return mapper.getListWithPaging(cri);
 //	}
 	
-//	@Override
-//	public FreeBoardVO get(Long seq) {
-//		return mapper.read(seq);
-//	}
+	@Override
+	public FreeBoardVO get(Long seq) {
+		return mapper.read(seq);
+	}
 //	
 //	@Override
 //	public boolean remove(Long seq) {
 //		return mapper.delete(seq) == 1;
 //	}
 //	
-//	@Override
-//	public boolean modify(FreeBoardVO freeboard) {
-//		return mapper.update(freeboard) == 1;
-//	}
+	@Override
+	public boolean modify(FreeBoardVO freeboard) {
+		return mapper.update(freeboard) == 1;
+	}
 //	
 //	@Override
 //	public int getTotal(FreeBoardCriteria cri) {

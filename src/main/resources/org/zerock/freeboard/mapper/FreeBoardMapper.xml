@@ -55,49 +55,46 @@
 ]]>      
    </select>
     
-   
+   -->
    <insert id="insert">
-      insert into tbl_freeboard (seq, free_title, free_content, free_writer)
-      values (seq_board.nextval, #{free_title}, #{free_content}, #{free_writer})
+      INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer)
+      VALUES (free_seq.nextval, #{free_title}, #{free_content}, #{free_writer})
    </insert>
    
    <insert id="insertSelectKey">
-      <selectKey keyProperty="bno" order="BEFORE" resultType="long">
-      select seq_board.nextval from dual
+      <selectKey keyProperty="free_seq" order="BEFORE" resultType="long">
+      SELECT free_seq.nextval FROM dual
       </selectKey>
    
-      insert into tbl_board (bno, title, content, writer)
-      values (#{bno }, #{title}, #{content}, #{writer})
+      INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer,free_regdate,free_updatedate)
+      VALUES (#{free_seq }, #{free_title}, #{free_content}, #{free_writer},sysdate,sysdate)
    </insert>
-   
-   <select id="read" resultType="org.zerock.domain.BoardVO">
-      select * from tbl_board where bno = #{bno}
+ 
+   <select id="read" resultType="org.zerock.freeboard.domain.FreeBoardVO">
+      SELECT * FROM tbl_freeboard WHERE free_seq = #{free_seq}
    </select>
    
-   <delete id="delete">
+   <!-- <delete id="delete">
       delete from tbl_board where bno = #{bno}
-   </delete>
+   </delete> -->
    
    <update id="update">
-   UPDATE tbl_board
-   SET
-     title = #{title},
-     content = #{content},
-     writer = #{writer},
-     updateDate = sysdate
-   WHERE
-     bno = #{bno}
+   UPDATE tbl_freeboard
+   SET free_title = #{free_title},
+     free_content = #{free_content},
+     free_writer = #{free_writer},
+     free_updatedate = sysdate
+   WHERE free_seq = #{free_seq}
    </update>
    
-   <select id="getTotalCount" resultType="int">
+   <!-- <select id="getTotalCount" resultType="int">
    SELECT count(*) FROM tbl_freeboard   
    <include refid="freeboardcriteria"></include>
-   </select>
+   </select> -->
    
-   <update id="updateReplyCnt">
+  <!--  <update id="updateReplyCnt">
    UPDATE tbl_board SET replycnt = replycnt + #{amount}
    WHERE bno = #{bno}
    </update>
-    -->
-   
+     -->
 </mapper>

@@ -19,8 +19,8 @@ public class FreeBoardVO {
 	//조회수
 	private int free_readcnt;
 	//작성일
-	private Date regdate;
+	private Date free_regdate;
 	//수정일
-	private Date updatedate;
+	private Date free_updatedate;
 	
 }

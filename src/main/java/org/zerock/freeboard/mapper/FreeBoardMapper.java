@@ -31,16 +31,17 @@ public interface FreeBoardMapper {
 	 * close(); }
 	 */
 //
-//	public void insertSelectKey(FreeBoardVO freeboard);
+	
+	public void insertSelectKey(FreeBoardVO freeboard);
 	// 1. seq_board의 nextval을 먼저 조회(select)
 	// 2. 조회된 nextval을 insert에서 사용
 
 
-//	public FreeBoardVO read(Long free_seq);
+	public FreeBoardVO read(Long free_seq);
 
 //	public int delete(Long free_seq);
 
-//	public int update(FreeBoardVO freeboard);
+	public int update(FreeBoardVO freeboard);
 
 //	public void updateReplyCnt(@Param("seq") Long free_seq, @Param("amount") int amount);
 
