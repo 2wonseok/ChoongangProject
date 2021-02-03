@@ -18,7 +18,7 @@
         <a class="nav-link" href="">판매게시판 <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="">회원 관리 <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="${root }/user/list">회원 관리 <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="">Q&A <span class="sr-only">(current)</span></a>
