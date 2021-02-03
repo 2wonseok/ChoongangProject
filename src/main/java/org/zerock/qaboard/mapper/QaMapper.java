@@ -9,6 +9,4 @@ public interface QaMapper {
 
 	public List<QaVO> getlist();
 	
-	public int getTotalCount(Criteria cri);
-	
 }

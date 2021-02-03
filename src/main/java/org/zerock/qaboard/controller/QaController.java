@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.zerock.qaboard.domain.QaVO;
-import org.zerock.user.service.QaService;
+import org.zerock.qaboard.service.QaService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
