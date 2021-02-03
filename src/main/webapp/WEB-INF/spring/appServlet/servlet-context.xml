@@ -25,8 +25,8 @@
  	<context:component-scan base-package="org.zerock.product.controller" />
 	<context:component-scan base-package="org.zerock.revboard.controller" />
 	<context:component-scan base-package="org.zerock.user.controller" />
-	<!-- <context:component-scan base-package="org.zerock.qaboard.controller" />
-	<context:component-scan base-package="org.zerock.freeboard.controller" /> -->
+	<context:component-scan base-package="org.zerock.qaboard.controller" />
+	<context:component-scan base-package="org.zerock.freeboard.controller" />
 	
 	
 	

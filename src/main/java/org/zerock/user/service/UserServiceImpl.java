@@ -1,8 +1,11 @@
 package org.zerock.user.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.zerock.user.domain.Criteria;
 import org.zerock.user.domain.UserVO;
 import org.zerock.user.mapper.UserMapper;
 
@@ -21,6 +24,31 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void register(UserVO user) {
 		mapper.insert(user);
+	}
+
+	@Override
+	public List<UserVO> getList(Criteria cri) {
+		return mapper.getListWithPaging(cri);
+	}
+
+	@Override
+	public int getTotal(Criteria cri) {
+		return mapper.getTotalCount(cri);
+	}
+
+	@Override
+	public UserVO read(int seq) {
+		return mapper.read(seq);
+	}
+
+	@Override
+	public boolean update(UserVO user) {
+		return mapper.update(user) == 1;
+	}
+
+	@Override
+	public boolean delete(int seq) {
+		return mapper.delete(seq) > 0;
 	}
 	
 }

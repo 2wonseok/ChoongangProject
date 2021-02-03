@@ -16,35 +16,35 @@
 		values (user_seq.nextval, #{user_id}, #{user_name}, #{user_nickname}, #{user_password}, 
 			#{user_address}, #{user_addresscode}, #{user_email}, #{user_phone}, #{user_gender}, #{user_birth}, SYSDATE)
 	</insert>
-<!-- 	
+
 	<sql id="criteria">
 		<where>
 			<foreach item="type" collection="typeArr" separator="OR">
 				<choose>
-					<when test="type == 'T'.toString()">
-						UPPER(title) LIKE UPPER('%'||#{keyword}||'%')
+					<when test="type == 'uid'.toString()">
+						UPPER(user_id) LIKE UPPER('%'||#{keyword}||'%')
 					</when>
-					<when test="type == 'C'.toString()">
-						UPPER(content) LIKE UPPER('%'||#{keyword}||'%')
+					<when test="type == 'uname'.toString()">
+						UPPER(user_name) LIKE UPPER('%'||#{keyword}||'%')
 					</when>
-					<when test="type == 'W'.toString()">
-						UPPER(writer) LIKE UPPER('%'||#{keyword}||'%')
+					<when test="type == 'ugener'.toString()">
+						UPPER(user_gender) LIKE UPPER('%'||#{keyword}||'%')
 					</when>
 				</choose>
 			</foreach>
 	</where>
 	</sql>
 	
-	<select id="getListWithPaging" resultType="org.zerock.domain.BoardVO">
+	<select id="getListWithPaging" resultType="org.zerock.user.domain.UserVO">
 	<![CDATA[
 		SELECT 
-			bno, title, content, writer, regdate, updatedate, replycnt
+			user_seq, user_id, user_name, user_email, user_gender, user_regdate
 		FROM
 			(
 			SELECT
-				ROW_NUMBER() OVER (ORDER BY bno DESC) rn,
-		 		bno, title, content, writer, regdate, updatedate, replycnt 
-			FROM tbl_board
+				ROW_NUMBER() OVER (ORDER BY user_seq DESC) rn,
+		 		user_seq, user_id, user_name, user_email, user_gender, user_regdate 
+			FROM tbl_user
 	]]>
 		<include refid="criteria"></include>
 	<![CDATA[
@@ -54,11 +54,32 @@
 	]]>	
 	</select>
 	
-	<insert id="insert">
-		insert into tbl_board (bno, title, content, writer)
-		values (seq_board.nextval, #{title}, #{content}, #{writer})
-	</insert>
+	<select id="getTotalCount" resultType="int">
+		SELECT COUNT(*) FROM tbl_user
+		<include refid="criteria"></include>
+	</select>
 	
+	<select id="read" resultType="org.zerock.user.domain.UserVO">
+		select * from tbl_user where user_seq = #{seq}
+	</select>
+	
+	<update id="update">
+		UPDATE tbl_user
+		SET
+		  user_nickname = #{user_nickname},
+		  user_password = #{user_password},
+		  user_address = #{user_address},
+		  user_addresscode = #{user_addresscode},
+		  user_email = #{user_email},
+		  user_phone = #{user_phone}
+		WHERE
+		  user_seq = #{user_seq}
+	</update>
+	
+	<delete id="delete">
+		delete from tbl_user where user_seq = #{user_seq}
+	</delete>
+<!-- 		
 	<insert id="insertSelectKey">
 		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
 		select seq_board.nextval from dual
@@ -67,30 +88,6 @@
 		insert into tbl_board (bno, title, content, writer)
 		values (#{bno }, #{title}, #{content}, #{writer})
 	</insert>
-	
-	<select id="read" resultType="org.zerock.domain.BoardVO">
-		select * from tbl_board where bno = #{bno}
-	</select>
-	
-	<delete id="delete">
-		delete from tbl_board where bno = #{bno}
-	</delete>
-	
-	<update id="update">
-	UPDATE tbl_board
-	SET
-	  title = #{title},
-	  content = #{content},
-	  writer = #{writer},
-	  updateDate = sysdate
-	WHERE
-	  bno = #{bno}
-	</update>
-	
-	<select id="getTotalCount" resultType="int">
-		SELECT COUNT(*) FROM tbl_board
-		<include refid="criteria"></include>
-	</select>
 	
 	<update id="updateReplyCnt">
 		UPDATE tbl_board SET replycnt = replycnt + #{amount}
