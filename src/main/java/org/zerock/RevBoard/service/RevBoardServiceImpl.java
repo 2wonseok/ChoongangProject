@@ -43,4 +43,16 @@ public class RevBoardServiceImpl implements RevBoardService{
 		
 		return mapper.delete(rev_seq) == 1;
 	}
+	
+	@Override
+	public int countReadCnt(int rev_seq) {
+		// TODO Auto-generated method stub
+		return mapper.countReadCnt(rev_seq);
+	}
+	
+	@Override
+	public void addReadCnt(int rev_seq) {
+		// TODO Auto-generated method stub
+		mapper.addReadCnt(rev_seq);
+	}
 }

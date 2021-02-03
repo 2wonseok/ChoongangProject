@@ -15,4 +15,8 @@ public interface RevBoardService {
 	public boolean moidfy(RevVO revVo);
 	
 	public boolean remove(int rev_seq);
+	
+	public int countReadCnt(int rev_seq);
+	
+	public void addReadCnt(int rev_seq);
 }

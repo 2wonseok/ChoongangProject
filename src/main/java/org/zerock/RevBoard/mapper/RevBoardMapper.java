@@ -19,4 +19,8 @@ public interface RevBoardMapper {
 	public int countGood(int rev_seq);
 	
 	public int AddGood(int rev_seq);
+	
+	public int countReadCnt(int rev_seq);
+	
+	public void addReadCnt(int rev_seq);
 }

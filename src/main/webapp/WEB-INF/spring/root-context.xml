@@ -45,7 +45,7 @@
 	<!-- <context:component-scan base-package="org.zerock.service"></context:component-scan> -->
  	<context:component-scan base-package="org.zerock.product.service"></context:component-scan>
 	<context:component-scan base-package="org.zerock.qaboard.service"></context:component-scan>
-	<context:component-scan base-package="org.zerock.revboard.service"></context:component-scan>
+	<context:component-scan base-package="org.zerock.RevBoard.service"></context:component-scan>
 	<context:component-scan base-package="org.zerock.user.service"></context:component-scan>
 	<context:component-scan base-package="org.zerock.freeboard.service"></context:component-scan>
 	
