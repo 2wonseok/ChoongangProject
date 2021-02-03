@@ -25,26 +25,27 @@
    </foreach>
    </where>
 </sql>
+
    <!-- 
    C (CREATE (INSERT) 처리) 
    R (READ (SELECT) 처리)
    U (UPDATE 처리)
    D (DELETE 처리)
     -->
-   <select id="getlist" resultType="org.zerock.qaboard.domain.QaVO">
+   <select id="getList" resultType="org.zerock.qaboard.domain.QaVO">
    <![CDATA[
-      SELECT * FROM tbl_board WHERE qa_seq > 0
+      SELECT * FROM tbl_qaboard WHERE qa_seq > 0
    ]]>
    </select>
    
-   <select id="getlistWithPaging" resultType="org.zerock.qaboard.domain.QaVO">
+   <select id="getListWithPaging" resultType="org.zerock.qaboard.domain.QaVO">
    <![CDATA[
-   SELECT bno, title, content, writer, regdate, updatedate, replycnt 
+   SELECT qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_updatedate, qa_secret, qa_status 
    FROM
    (
-    SELECT ROW_NUMBER() OVER (ORDER BY bno DESC) rn, 
-   bno, title, content, writer, regdate, updatedate, replycnt     
-   FROM tbl_board
+   SELECT ROW_NUMBER() OVER (ORDER BY qa_seq DESC) rn, 
+   qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_updatedate, qa_secret, qa_status     
+   FROM tbl_qaboard
    ]]>
    
    <include refid="criteria"></include>
@@ -55,47 +56,52 @@
    ]]>
    </select>
    
+   <select id="read" resultType="org.zerock.qaboard.domain.QaVO">
+      SELECT * FROM tbl_qaboard WHERE qa_seq = #{qa_seq}
+   </select>
+   
+
    <insert id="insert">
-      INSERT INTO tbl_qaboard (qa_seq, qa_title, content, writer) 
-      VALUES (qa_seq.nextval, #{title}, #{content}, #{writer})
+      INSERT INTO tbl_qaboard (qa_seq, qa_category, qa_title, qa_content, qa_writer) 
+      VALUES (qa_seq.nextval, #{qa_category}, #{qa_title}, #{qa_content}, #{qa_writer})
    </insert>
    
    <insert id="insertSelectKey">
-      <selectKey keyProperty="bno" order="BEFORE" resultType="long">
-         SELECT seq_board.nextval FROM dual
+      <selectKey keyProperty="qa_seq" order="BEFORE" resultType="long">
+         SELECT seq_qaboard.nextval FROM dual
       </selectKey>
-      INSERT INTO tbl_board (bno, title, content, writer) 
-      VALUES (#{bno}, #{title}, #{content}, #{writer})
+      INSERT INTO tbl_qaboard (qa_seq, qa_category, qa_title, qa_content, qa_writer) 
+      VALUES (#{qa_seq}, #{qa_category}, #{qa_title}, #{qa_content}, #{qa_writer})
    </insert>
    
-   <select id="read" resultType="org.zerock.qaboard.domain.QaVO">
-      SELECT * FROM tbl_board WHERE bno = #{bno}
-   </select>
+  
    
    <delete id="delete">
-      DELETE FROM tbl_board WHERE bno = #{bno}
+      DELETE FROM tbl_qaboard WHERE qa_seq = #{qa_seq}
    </delete>
    
    <update id="update">
-      UPDATE tbl_board SET 
-      title = #{title}, 
-      content = #{content}, 
-      writer = #{writer}, 
-      updatedate = SYSDATE 
-      WHERE bno = #{bno}
+      UPDATE tbl_qaboard SET
+      qa_category = #{qa_category}, 
+      qa_title = #{qa_title}, 
+      qa_content = #{qa_content}, 
+      qa_writer = #{qa_writer}, 
+      qa_updatedate = SYSDATE,
+      qa_secret = #{qa_secret}, 
+      WHERE qa_seq = #{qa_seq}
    </update>
+
    
    <select id="getTotalCount" resultType="int">
-   SELECT count(*) FROM tbl_board 
+   SELECT count(*) FROM tbl_qaboard 
    <include refid="criteria"></include>
    </select>
-   
+
    <update id="updateReplyCnt">
-   UPDATE tbl_board SET replycnt = replycnt + #{amount} 
-   WHERE bno = #{bno}   
+   UPDATE tbl_qaboard SET replycnt = replycnt + #{amount} 
+   WHERE qa_bno = #{qa_bno}   
    </update>
-   
-   
+
    
    
 </mapper>

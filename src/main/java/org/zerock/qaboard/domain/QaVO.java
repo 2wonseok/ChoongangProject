@@ -17,11 +17,11 @@ public class QaVO {
 	//	qa_writer VARCHAR2(30) NOT NULL,
 	//	qa_readcnt NUMBER(10) DEFAULT 0,
 	//	qa_content VARCHAR2(3000) NOT NULL,
-	//	qa_secret NUMBER(1) NOT NULL,
-	//	qa_status NUMBER(1) NOT NULL,
+	//	qa_secret VARCHAR2(50) DEFAULT '공개',
+	//	qa_status VARCHAR2(50) DEFAULT '답변 예정',
 	//	qa_filename VARCHAR2(3000),
 	//	qa_regdate DATE,
-	//	qa_updatedate DATE	
+	//	qa_updatedate DATE
 	
 	// 칼럼의 데이터를 @Data(lombok 라이브러리) 어노테이션을 이용해 
 	// get, set 메소드를 생성.
@@ -32,8 +32,8 @@ public class QaVO {
 	private String qa_writer;
 	private String qa_readcnt;
 	private String qa_content;
-	private int qa_secret;
-	private int qa_status;
+	private String qa_secret;
+	private String qa_status;
 	private String qa_filename;
 	private Date qa_regdate;
 	private Date qa_updatedate;	

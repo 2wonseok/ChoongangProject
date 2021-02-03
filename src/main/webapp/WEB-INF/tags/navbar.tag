@@ -24,7 +24,7 @@
         <a class="nav-link" href="${root }/user/userRegister">회원 가입 <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="">Q&A <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="${root }/qa/list"> Q&A <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="${root }/rev/register">구매 후기 <span class="sr-only">(current)</span></a>
