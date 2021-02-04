@@ -21,25 +21,60 @@
 <body>
 
 	<div class="container">
-	<form action="${root }/rev/register" method="POST">
+	<form action="${root }/rev/register" method="POST" enctype="multipart/form-data">
 	
-	카테고리 <input type="text" name="rev_category" class="form-control" /> <br>
 	<c:if test="${errors.noCategory }">
 	<small class="form-text text-muted">
 			카테고리를 입력하세요
 	</small>
 	</c:if>
-	제목 <input type="text" name="rev_title"  class="form-control" /> <br>
-	내용 <input type="text" name="rev_content" class="form-control" /> <br>
-	작성자 <input type="text" name="rev_writer" class="form-control" /> <br>
-	파일 <input type="file" name="rev_filename" class="form-control" /> <br>
+	카테고리 <%-- <input type="text" name="rev_category" class="form-group" value="${category }"/> --%> 
+	<select name="rev_category" >
+		<option value="">카테고리 선택</option>
+		<option value="1">모자</option>
+		<option value="2">신발</option>
+		<option value="3">상의</option>
+		<option value="4">하의</option>
+	</select>
+	
+	<br>
+	
+	<c:if test="${errors.noTitle }">
+	<small class="form-text text-muted">
+			제목을 입력하세요
+	</small>
+	</c:if>
+	제목 <input type="text" name="rev_title"  class="form-group" value="${title }"/> <br>
+	
+	<c:if test="${errors.noContent }">
+	<small class="form-text text-muted">
+			내용을 입력하세요
+	</small>
+	</c:if>
+	내용 <input type="text" name="rev_content" class="form-group" value="${content }" /> <br>
+	
+	<c:if test="${errors.noWriter }">
+	<small class="form-text text-muted">
+			작성자 누구임?
+	</small>
+	</c:if>
+	작성자 <input type="text" name="rev_writer" class="form-group" value="${writer }"/> <br>
+	<%-- 파일 <input type="file" name="rev_filename" class="form-group" value="${param.rev_filename }"/> <br> --%>
 	<!-- 파일 <input type="file" name="rev_filename" class="form-control" /> --> <br>
+	<%--  <form action="${$root }/file/fileUploadTest" method="post" enctype="multipart/form-data"> 
+	<label><input type="file" name="upload" /></label> 
+	 <label><input type="file" name="upload" /></label>
+	<input type="submit" value="업로드" /> 
+	</form>  --%>
+	
+	
 	<div class = "inputArea">
-	<label for="revImg">이미지</label>
-	 <input type="file" id="revImg" name="rev_filename" />
+	<label for="revImg">이미지</label>.
+	 <label><input type="file" id="revImg" name="upload" /></label>  
+	 <!-- <label><input type="file" name="upload" /></label> -->
 	 <div class="select_img"><img src="" /></div>
 	 
-	 <script>
+	<script>
   $("#revImg").change(function(){
    if(this.files && this.files[0]) {
     var reader = new FileReader;
@@ -50,8 +85,7 @@
    }
   });
  </script>
-  
- 
+ 	
 	</div>
 	<input type="submit"  value="글 등록">
 	</form>

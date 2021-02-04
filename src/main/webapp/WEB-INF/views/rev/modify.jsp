@@ -5,7 +5,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<style>
+	#btn_add {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+    }
+    
+    #remove-btn {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+    }
+}
+</style>
 
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -45,7 +68,7 @@ $(document).ready(function() {
 			
 
 
-				<form id="modify-form" action="${root }/rev/modify" method="post">
+				<form id="modify-form" action="${root }/rev/modify?rev_seq=${RevBoard.rev_seq}" method="post">
 					<!-- 같은경로 라서 action="" 를 생략할수있음  -->
 					<div class="form-group">
 						<label for="input1">#번호</label> <input readonly name="rev_seq"
@@ -53,9 +76,15 @@ $(document).ready(function() {
 							id="input1" />
 					</div>
 					<div class="form-group">
+						
 						<label for="input2">카테고리</label> <input  name="rev_category"
 							value="${RevBoard.rev_category }" type="text" class="form-control"
 							id="input2" />
+							<c:if test="${errors.noCategory }">
+							<small class="form-text text-muted">
+								카테고리를 입력하세요
+							</small>
+						</c:if>
 					</div>
 					
 					<div class="form-group">
@@ -63,17 +92,47 @@ $(document).ready(function() {
 							value="${RevBoard.rev_filename }" type="file" class="form-control"
 							id="input3" />
 					</div>
-
+					
+					<div class = "inputArea">
+						<label for="revImg">이미지</label>
+	 						<input type="file" id="revImg" name="rev_filename" />
+	 							<div class="select_img"><img src="" /></div>
+	 
+	 						<script>
+							  $("#revImg").change(function(){
+							   if(this.files && this.files[0]) {
+							    var reader = new FileReader;
+							    reader.onload = function(data) {
+							     $(".select_img img").attr("src", data.target.result).width(500);        
+							    }
+							    reader.readAsDataURL(this.files[0]);
+							   }
+							  });
+							 </script>
+					</div>
+					
 					<div class="form-group">
+						
 						<label for="input4">제목</label> <input
 							value='<c:out value = "${RevBoard.rev_title }"/>' name=rev_title type="text"
 							class="form-control" id="input4" placeholder="제목을 입력하세요.">
+							<c:if test="${errors.noTitle }">
+							<small class="form-text text-muted">
+								제목을 입력하세요
+							</small>
+							</c:if>
 					</div>
 
 					<div class="form-group">
+						
 						<label for="textarea1">내용</label>
 						<textarea name="rev_content" class="form-control" id="textarea1"
 							rows="3"><c:out value="${RevBoard.rev_content }" /></textarea>
+							<c:if test="${errors.noContent }">
+							<small class="form-text text-muted">
+								내용을 입력하세요
+							</small>
+							</c:if>
 					</div>
 					
 					<div class="form-group">
@@ -100,8 +159,8 @@ $(document).ready(function() {
 					<input type="hidden" value="${cri.amount }" name="amount" /> 
 					<input type="hidden" value="${cri.type }" name="type" /> 
 					<input type="hidden" value="${cri.keyword }" name="keyword" /> --%>
-					<button type="submit" class="btn btn-primary">글 수정</button>
-					<button id="remove-btn" type="submit" class="btn btn-danger">글
+					<button id="btn_add" type="submit" class="btn btn-primary">글 수정</button>
+					<button id="remove-btn" type="submit" class="btnbtn-danger">글
 						삭제</button>
 				</form>
 			</div>

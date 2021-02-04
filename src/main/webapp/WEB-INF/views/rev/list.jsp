@@ -5,6 +5,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style type="text/css">
+#btn_add {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+}
+</style>
 <meta charset="UTF-8">
 <link rel="stylesheet"
   href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -63,6 +75,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
+					<a id="btn_add" class="btn btn-info" href="${root }/rev/register">후기 쓰기</a>
 		</div>
 	</div>
 		<div class="container-sm mt-3">

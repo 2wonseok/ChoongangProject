@@ -5,6 +5,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style type="text/css">
+	#btn_add {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+}
+</style>
+<script>
+	var appRoot = '${root}'; // 자바스크립트 코드에서 contextPath를 쓰기위해 선언.
+	var rev_seq = ${RevBoard.rev_seq};
+</script>
 <meta charset="UTF-8">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -15,7 +31,17 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
+<script src="${root }/resources/rev_js/rev.js"></script>
+<script>
+	$(document).ready(function() {
+		$("#goodbtn").click(function() {
+			revService.goodAdd(rev_seq , function(data) {
+				console.log(data);
+			});
+		})
+	})
+	
+</script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -36,7 +62,8 @@
 				</div>
 				<div class="form-group">
 					<label for="input2">카테고리</label> <input readonly
-						value="${RevBoard.rev_category }" type="text" class="form-control" id="input2" />
+						value='<c:if test="${RevBoard.rev_category eq 1}">모자</c:if><c:if test="${RevBoard.rev_category eq 2}">신발</c:if><c:if test="${RevBoard.rev_category eq 3}">상의</c:if><c:if test="${RevBoard.rev_category eq 4}">하의</c:if>' type="text" class="form-control" id="input2" />
+						
 				</div>
 				<div class="form-group">
 					<label for="input3">파일이름</label> <input readonly
@@ -77,15 +104,17 @@
 				</div>
 				
 				<div class="form-group">
-						<label for="input7">작성일</label> <input  name="rev_regdate"
+						<label for="input9">작성일</label> <input  name="rev_regdate"
 							value="${RevBoard.rev_regdate }" type="text" class="form-control"
-							id="input7"  readonly/>
+							id="input9"  readonly/>
 					</div>
 			</div>
+			
 		</div>
-		<a href="${root}/rev/modify?rev_seq=${RevBoard.rev_seq}">글수정</a>
-		<a href="${root}/rev/get/like?rev_seq=${RevBoard.rev_seq}">좋아요!</a>
-		<a href="${root}/rev//get/hate?rev_seq=${RevBoard.rev_seq}">싫어요!</a>
+		<a id="btn_add" class="btn btn-secondary"  href="${root}/rev//get/hate?rev_seq=${RevBoard.rev_seq}">싫어요!</a>
+		<a id="goodbtn" class="btn btn-secondary"  href="${root}/rev/get/like?rev_seq=${RevBoard.rev_seq}">좋아요!</a>
+		<a id="btn_add" class="btn btn-secondary"  href="${root}/rev/modify?rev_seq=${RevBoard.rev_seq}">글수정</a>
+		<a id="btn_add" class="btn btn-secondary"  href="${root}/rev/list">목록으로</a>
 	</div>
 </body>
 </html>
