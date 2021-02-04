@@ -20,4 +20,6 @@ public interface UserMapper {
 	public int delete(int seq);
 	
 	public int idCheck(String user_id);
+	
+	public UserVO getUser(String user_id);
 }

@@ -18,7 +18,7 @@
 	<label><input type="file" name="upload" /></label> 
 	<input type="submit" value="업로드" /> 
 </form>
-
+<img alt="noimg" src="${root }/resources/upload/20210204-111728160_770.PNG">
 
 </body>
 </html>

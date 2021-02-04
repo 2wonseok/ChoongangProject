@@ -11,6 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
 var goPopup = function(){ 
 	var pop = window.open("${root}/user/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes");
@@ -29,11 +30,32 @@ var goPopup = function(){
 $(document).ready(function() {
 	$("#idCheck").click(function(e) {
 		var user_id = $("#input1-id").val();
-		
-		alert(user_id);
 		e.preventDefault();
-		var popup = window.open("${root}/user/idCheck?user_id="+user_id,"pop","width=570,height=420, scrollbars=yes, resizable=yes");
+		
+		var popup = window.open("${root}/user/idCheck","pop","width=570,height=420, scrollbars=yes, resizable=yes");
+		
 	});
+	
+		$("#alert-success").hide(); 
+		$("#alert-danger").hide(); 
+		
+		$("input").keyup(function() { 
+			var pwd1=$("#input3-password").val(); 
+			var pwd2=$("#input4-confirmPassword").val(); 
+			
+			if(pwd1 != "" || pwd2 != "") { 
+				if(pwd1 == pwd2) { 
+					$("#alert-success").show(); 
+					$("#alert-danger").hide(); 
+					$("#btn_add").removeAttr("disabled"); 
+				} else { 
+					$("#alert-success").hide(); 
+					$("#alert-danger").show(); 
+					$("#btn_add").attr("disabled", "disabled"); 
+				} 
+			} 
+		}); 
+
 });
 
 
@@ -46,7 +68,7 @@ $(document).ready(function() {
     position: relative;
     margin: 50px auto 0px;
     padding: 0 0 50px 0;
-    width: 480px;
+    width: 500px;
     z-index: 1;
 }
 #btn_add {
@@ -84,12 +106,14 @@ $(document).ready(function() {
 </style>
 <body>
 <u:navbar/>
+<div class="container">
 <section id="container">
-	<h3>회원가입</h3>
+	<h3>회원가입</h3><br>
 	<form action="${root }/user/userRegister" method="post" id="joinForm">
 		  <div class="form-group">
 		    <label for="input1-id">아이디</label>
-		    <input type="text" class="form-control" style="width:368px;" name="user_id" id="input1-id" value="" required>
+		    <input type="text" class="form-control" style="width:77%;" name="user_id" id="input1-id" 
+		    	value="" placeholder="중복 확인을 눌러주세요" required readonly>
 		    <button type="button" id="idCheck">중복확인</button><br>
 		  </div>
 		  <div class="form-group">
@@ -107,6 +131,8 @@ $(document).ready(function() {
 		  <div class="form-group">
 		    <label for="input4-confirmPassword">패스워드확인</label>
 		    <input type="password" class="form-control" name="confirmPassword" id="input4-confirmPassword" required>
+		  	<div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div> 
+		 		<div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
 		  </div>
 		  <div class="form-group">
 		    <label for="input5-gender">성별</label> <br>
@@ -119,15 +145,15 @@ $(document).ready(function() {
 		  </div>
 		  <div class="form-group">
 		    <label for="input7-phone">휴대폰</label>
-		    <input type="text" class="form-control" style="width:368px;" name="user_phone" id="input7-phone" value="" required>
+		    <input type="text" class="form-control" style="width:77%;" name="user_phone" id="input7-phone" value="" required>
 		    <button id="zip_code_btn">인증하기</button><br>
 		    <label for="input8-phone">인증번호</label>
-		    <input type="text" class="form-control" style="width:397px;" name="phoneConfirm" id="input8-phone" value="" required>
+		    <input type="text" class="form-control" style="width:83%;" name="phoneConfirm" id="input8-phone" value="" required>
 		    <button id="zip_code_btn">완료</button>
 		  </div>
 		  <div class="form-group">
 		    <label for="addr">주소</label>
-		    <input type="text" class="form-control" style="width:397px;" name="user_address" id="addr" required>
+		    <input type="text" class="form-control" style="width:83%;" name="user_address" id="addr" required>
 		    <button type="button" id="zip_code_btn" class="zip_code_btn" onclick="javascript:goPopup();">검색</button>
 		  </div>
 		  <div class="form-group">
@@ -137,5 +163,6 @@ $(document).ready(function() {
 		  <input type="submit" value="가입완료" id="btn_add">
 	</form>
 </section>
+</div>
 </body>
 </html>

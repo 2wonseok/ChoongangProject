@@ -11,8 +11,8 @@
 	</select>
 	
 	<insert id="insert">
-		insert into tbl_user (user_seq, user_id, user_name, user_nickname, user_password, user_address
-			, user_addresscode, user_phone, user_gender, user_birth, user_regdate)
+		insert into tbl_user (user_seq, user_id, user_name, user_nickname, user_password, user_address,
+		user_addresscode, user_phone, user_gender, user_birth, user_regdate)
 		values (user_seq.nextval, #{user_id}, #{user_name}, #{user_nickname}, #{user_password}, 
 			#{user_address}, #{user_addresscode}, #{user_phone}, #{user_gender}, #{user_birth}, SYSDATE)
 	</insert>
@@ -21,14 +21,17 @@
 		<where>
 			<foreach item="type" collection="typeArr" separator="OR">
 				<choose>
-					<when test="type == 'uid'.toString()">
-						UPPER(user_id) LIKE UPPER('%'||#{keyword}||'%')
-					</when>
-					<when test="type == 'uname'.toString()">
+					<when test="type == 'N'.toString()">
 						UPPER(user_name) LIKE UPPER('%'||#{keyword}||'%')
 					</when>
-					<when test="type == 'ugener'.toString()">
+					<when test="type == 'I'.toString()">
+						UPPER(user_id) LIKE UPPER('%'||#{keyword}||'%')
+					</when>
+					<when test="type == 'G'.toString()">
 						UPPER(user_gender) LIKE UPPER('%'||#{keyword}||'%')
+					</when>
+					<when test="type == 'P'.toString()">
+						UPPER(user_phone) LIKE UPPER('%'||#{keyword}||'%')
 					</when>
 				</choose>
 			</foreach>
@@ -61,6 +64,10 @@
 	
 	<select id="read" resultType="org.zerock.user.domain.UserVO">
 		select * from tbl_user where user_seq = #{seq}
+	</select>
+	
+	<select id="getUser" resultType="org.zerock.user.domain.UserVO">
+		SELECT user_id, user_password WHERE user_id = #{user_id}
 	</select>
 	
 	<select id="idCheck" resultType="int">

@@ -44,6 +44,7 @@ public class UserController {
 	
 	@GetMapping("/userList")
 	public void getList(@ModelAttribute("cri") Criteria cri, Model model) {
+		log.info(cri.getType() + "=" + cri.getKeyword());
 		List<UserVO> list = service.getList(cri);
 		
 		int total = service.getTotal(cri);
@@ -104,15 +105,42 @@ public class UserController {
 		
 	}
 	
-	@RequestMapping("/idCheck")
-	public void idCheck(@RequestParam("user_id") String user_id, Model model) {
+	
+	@GetMapping("/idCheck")
+	public void idCheck() {
+		
+	}
+	
+	@RequestMapping("/searchIdCheck")
+	public String searchIdCheck(@RequestParam("user_id") String user_id, RedirectAttributes rttr) {
 		int check = service.idCheck(user_id);
 		
 		if (check == 1) {
-			model.addAttribute("checkResult", "이미 사용중인 아이디 입니다.");
+			rttr.addFlashAttribute("user_id", user_id);
+			rttr.addFlashAttribute("checkResultN", "이미 사용중인 아이디 입니다.");
 		} else {
-			model.addAttribute("checkResult", "사용 가능합니다.");
+			rttr.addFlashAttribute("user_id", user_id);
+			rttr.addFlashAttribute("checkResultY", "사용 가능합니다.");
 		}
 		
+		return "redirect:/user/idCheck";
+	}
+	
+	@GetMapping("/login")
+	public void login() {
+		
+	}
+	
+	@PostMapping("/login")
+	public String login(UserVO user, RedirectAttributes rttr) {
+		UserVO vo = service.getUser(user.getUser_id());
+		
+		if (vo == null || !user.getUser_id().equals(vo.getUser_id()) || 
+				!user.getUser_password().equals(vo.getUser_password())) {
+			rttr.addFlashAttribute("noUser", "일치하는 정보가 없습니다.");
+			return "redirect:/user/login";
+		}
+		
+		return "redirect:/main/index";
 	}
 }
