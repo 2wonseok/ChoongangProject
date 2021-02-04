@@ -18,7 +18,7 @@
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-<!-- <script>
+<script>
 	$(document).ready(function() {
 		
 		var result = '${result}';
@@ -57,7 +57,7 @@
 			actionForm.submit();
 		});
 	});
-</script> -->
+</script>
 
 <title>Insert title here</title>
 </head>
@@ -81,42 +81,41 @@
         </tr>
       </thead>
       <tbody>
-        <c:forEach items="${list}" var="freeboard" >
+        <c:forEach items="${list}" var="freeVO" >
           <tr>
-            <td>${freeboard.free_seq}</td>
+            <td>${freeVO.free_seq}</td>
             <td>
             <c:url value="/freeboard/get" var="freeboardLink">
-            	<c:param value="${freeboard.free_seq }" name="seq" />
-            	<%-- <c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
+            	<c:param value="${freeVO.free_seq }" name="free_seq" />
+            	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
             	<c:param value="${pageMaker.cri.amount }" name="amount" />
             	<c:param value="${pageMaker.cri.type }" name="type"	/>
             	<c:param value="${pageMaker.cri.keyword }" name="keyword" /> --%>
             </c:url>
             
             <a href="${freeboardLink }">
-	            <c:out value="${freeboard.free_title}" />
-	           <%--  <c:if test="${freeboard.replyCnt gt 0 }"> 
-		            <span class="badge badge-info">${board.replyCnt }</span>
-	            </c:if>--%>
+	            <c:out value="${freeVO.free_title}" />
+	           <%--   <c:if test="${freeVO.readcnt gt 0 }"> 
+		            <span class="badge badge-info">${freeVO.readcnt }</span>
+	            </c:if> --%>
             </a>
             
             </td>
-            <td><c:out value="${freeboard.free_writer}" /></td>
+            <td><c:out value="${freeVO.free_writer}" /></td>
             <td><fmt:formatDate pattern="yyyy-MM-dd" 
-              value="${freeboard.free_regdate}" /></td>
+              value="${freeVO.free_regdate}" /></td>
             <td><fmt:formatDate pattern="yyyy-MM-dd"
-              value="${freeboard.free_updatedate}" /></td>
-              <td>${freeboard.free_readcnt}<td>
+              value="${freeVO.free_updatedate}" /></td>
+              <td>${freeVO.free_readcnt}<td>
           </tr>
         </c:forEach>
       </tbody>
     </table>
-    	 <a href="/freeboard/register/">글쓰기</a>
-    
+		<a href="${root}/freeboard/register">글쓰기</a>
   </div>
 </div>
 
-<%-- <div id="myModal" class="modal" tabindex="-1">
+ <div id="myModal" class="modal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -141,7 +140,7 @@
 		  <ul class="pagination">
 		  
 		  	<c:if test="${pageMaker.prev }">
-		  		<c:url value="/board/list" var="prevLink">
+		  		<c:url value="/freeboard/list" var="prevLink">
 		  			<c:param value="${pageMaker.startPage -1 }" name="pageNum" />
 		  			<c:param value="${pageMaker.cri.amount }" name="amount" />
 		  			<c:param name="type" value="${pageMaker.cri.type }"/>
@@ -149,7 +148,7 @@
 		  		</c:url>
 			    <li class="page-item">
 			    <a class="page-link" href="${prevLink }">Previous</a>
-			    <a class="page-link" href="${pageMaker.startPage -1 }">Previous</a>
+			    <%-- <a class="page-link" href="${pageMaker.startPage -1 }">Previous</a> --%>
 			    </li>
 		  	</c:if>
 		    
@@ -163,12 +162,12 @@
 		    	</c:url>
 		    	<li class="page-item ${pageMaker.cri.pageNum eq num ? 'active' : '' }">
 		    	<a class="page-link" href="${pageLink }">${num }</a>
-		    	<a class="page-link" href="${num }">${num }</a>
+		    	<%-- <a class="page-link" href="${num }">${num }</a> --%>
 		    	</li>
 		    </c:forEach>
 		    
 		    <c:if test="${pageMaker.next }">
-		    	<c:url value="/board/list" var="nextLink">
+		    	<c:url value="/freeboard/list" var="nextLink">
 		    		<c:param name="pageNum" value="${pageMaker.endPage +1 }"/>
 		    		<c:param name="amount" value="${pageMaker.cri.amount }" />
 		    		<c:param name="type" value="${pageMaker.cri.type }"/>
@@ -176,7 +175,7 @@
 		    	</c:url>
 			    <li class="page-item">
 			    	<a class="page-link" href="${nextLink }">Next</a>
-		    		<a class="page-link" href="${pageMaker.endPage +1 }">Next</a>
+		    		<%-- <a class="page-link" href="${pageMaker.endPage +1 }">Next</a> --%>
 			    </li>
 		    </c:if>
 		  </ul>
@@ -185,7 +184,7 @@
 </div>
 
 <div class="d-none">
-	<form id="actionForm" action="${root }/board/list" >
+	<form id="actionForm" action="${root }/freeboard/list" >
 		<input name="pageNum" value="${pageMaker.cri.pageNum }" />
 		<input name="amount" value="${pageMaker.cri.amount }"/>
 		<input name="type" value="${pageMaker.cri.type }" />
@@ -193,7 +192,7 @@
 		<input type="submit" />
 	</form>
 </div>
- --%>
+
 </body>
 </html>
 

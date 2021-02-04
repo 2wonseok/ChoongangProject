@@ -19,25 +19,16 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
 private FreeBoardMapper mapper;
 	
-	/*
-	//@Autowired
-	public BoardServiceImpl(BoardMapper mapper) {
-		this.mapper = mapper;
-	}
-	*/
-	
-	// mapper.read(33);
-	
 	@Override
-	public void register(FreeBoardVO freeboard) {
-		mapper.insertSelectKey(freeboard);
+	public void register(FreeBoardVO freeVO) {
+		mapper.insertSelectKey(freeVO);
 	}
 	
 	
-	@Override
-	public List<FreeBoardVO> getList() {
-		return mapper.getList();
-	}
+//	@Override
+//	public List<FreeBoardVO> getList() {
+//		return mapper.getList();
+//	}
 
 	
 	@Override
@@ -46,22 +37,23 @@ private FreeBoardMapper mapper;
 	}
 	
 	@Override
-	public FreeBoardVO get(Long seq) {
-		return mapper.read(seq);
+	public FreeBoardVO get(Long free_seq) {
+		return mapper.read(free_seq);
 	}
 	
 	@Override
-	public boolean remove(Long seq) {
-		return mapper.delete(seq) == 1;
+	public boolean remove(Long free_seq) {
+		return mapper.delete(free_seq) == 1;
 	}
 	
 	@Override
-	public boolean modify(FreeBoardVO freeboard) {
-		return mapper.update(freeboard) == 1;
+	public boolean modify(FreeBoardVO freeVO) {
+		return mapper.update(freeVO) == 1;
 	}
 	
 	@Override
 	public int getTotal(FreeBoardCriteria cri) {
 		return mapper.getTotalCount(cri);
 	}
+	
 }

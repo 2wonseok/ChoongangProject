@@ -5,7 +5,7 @@
 
 <mapper namespace="org.zerock.freeboard.mapper.FreeBoardMapper">
 
-<!-- <sql id="freeboardcriteria">
+<sql id="freeboardcriteria">
 <where>
    <foreach item="type" collection="typeArr" separator="OR">
       <choose>
@@ -21,7 +21,7 @@
       </choose>
    </foreach>
 </where>
-</sql> -->
+</sql>
 
 
    <select id="getList" resultType="org.zerock.freeboard.domain.FreeBoardVO">
@@ -31,17 +31,17 @@
       
    </select>
    
-   <!-- <select id="getListWithPaging" resultType="org.zerock.freeboard.domain.FreeBoardVO">
+    <select id="getListWithPaging" resultType="org.zerock.freeboard.domain.FreeBoardVO">
 <![CDATA[   
    SELECT
-    seq, free_title, free_content,
-    free_writer, regdate, updatedate
+    free_seq, free_title, free_content,
+    free_writer, free_regdate, free_updatedate,free_readcnt
    FROM
     (
      SELECT 
-      ROW_NUMBER() OVER (ORDER BY seq DESC) rn,
-      seq, title, content, writer,
-      regdate, updatedate
+      ROW_NUMBER() OVER (ORDER BY free_seq DESC) rn,
+      free_seq, free_title, free_content, free_writer,
+      free_regdate, free_updatedate,free_readcnt
      FROM
       tbl_freeboard
 ]]>
@@ -55,7 +55,7 @@
 ]]>      
    </select>
     
-   -->
+   
    <insert id="insert">
       INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer)
       VALUES (free_seq.nextval, #{free_title}, #{free_content}, #{free_writer})
@@ -79,22 +79,22 @@
    </delete> 
    
    <update id="update">
-   UPDATE tbl_freeboard
-   SET free_title = #{free_title},
-     free_content = #{free_content},
-     free_writer = #{free_writer},
-     free_updatedate = sysdate
-   WHERE free_seq = #{free_seq}
+   UPDATE	tbl_freeboard
+   SET		free_title = #{free_title},
+     		free_content = #{free_content},
+     		free_writer = #{free_writer},
+     		free_updatedate = sysdate
+   WHERE 	free_seq = #{free_seq}
    </update>
    
-   <!-- <select id="getTotalCount" resultType="int">
+    <select id="getTotalCount" resultType="int">
    SELECT count(*) FROM tbl_freeboard   
    <include refid="freeboardcriteria"></include>
-   </select> -->
+   </select> 
    
-  <!--  <update id="updateReplyCnt">
-   UPDATE tbl_board SET replycnt = replycnt + #{amount}
-   WHERE bno = #{bno}
+    <update id="updateReplyCnt">
+   UPDATE tbl_freeboard SET readcnt = readcnt + #{amount}
+   WHERE free_seq = #{free_seq}
    </update>
-     -->
+     
 </mapper>
