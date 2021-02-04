@@ -76,7 +76,7 @@ public class ProductController {
 					} 
 				}
 		//철수추가 파일 올린 후에 그 이름을 product에 복사
-			product.setProduct_filename(reNames.get(0));
+		product.setProduct_filename(reNames.get(0));
 		
 		System.out.println(product.getProduct_filename());
 		

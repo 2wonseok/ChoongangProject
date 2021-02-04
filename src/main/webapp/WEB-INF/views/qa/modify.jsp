@@ -35,7 +35,7 @@ function checkTree(chk){
 	
 			<h1>게시물 수정</h1>	
 
-	<form id="modify-form" method="post" action="${root }/qa/modify">
+	<form id="modify-form" method="post" action="${root }/qa/modify" enctype="multipart/form-data">
 	
 			<label for="input3">번호</label>
 	 		<input name="qa_seq" id="input3" readonly value="${board.qa_seq }">			
@@ -77,7 +77,10 @@ function checkTree(chk){
 		    <label for="input2">작성자</label>
 		    <input readonly value='<c:out value="${board.qa_writer }" />' name="qa_writer" type="text" id="input2" placeholder="이름을 입력하세요">
 		    
+		    
 		    <br>		  
+		  	파일 업로드 : <input type="file" name="upload" /> <br>
+		  	
 		  	
 			<input type="hidden" value="${criteria.pageNum }" name="pageNum">
 			<input type="hidden" value="${criteria.amount }" name="amount">

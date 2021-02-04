@@ -61,16 +61,16 @@
    </select>
    
    <insert id="insert">
-      INSERT INTO tbl_qaboard (qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_secret, qa_regdate) 
-      VALUES (qa_seq.nextval, #{qa_category}, #{qa_title}, #{qa_content}, #{qa_writer}, #{qa_secret}, SYSDATE)
+      INSERT INTO tbl_qaboard (qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_secret, qa_regdate, qa_filename) 
+      VALUES (qa_seq.nextval, #{qa_category}, #{qa_title}, #{qa_content}, #{qa_writer}, #{qa_secret}, SYSDATE, #{qa_filename})
    </insert>
    
    <insert id="insertSelectKey">
       <selectKey keyProperty="qa_seq" order="BEFORE" resultType="int">
          SELECT qa_seq.nextval FROM dual
       </selectKey>
-      INSERT INTO tbl_qaboard (qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_secret, qa_regdate) 
-      VALUES (#{qa_seq}, #{qa_category}, #{qa_title}, #{qa_content}, #{qa_writer}, #{qa_secret}, SYSDATE)
+      INSERT INTO tbl_qaboard (qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_secret, qa_regdate, qa_filename) 
+      VALUES (#{qa_seq}, #{qa_category}, #{qa_title}, #{qa_content}, #{qa_writer}, #{qa_secret}, SYSDATE, #{qa_filename})
    </insert>
    
   
@@ -85,7 +85,8 @@
       qa_title = #{qa_title}, 
       qa_content = #{qa_content}, 
       qa_updatedate = SYSDATE,
-      qa_secret = #{qa_secret} 
+      qa_secret = #{qa_secret},
+      qa_filename = #{qa_secret} 
       WHERE qa_seq = #{qa_seq}
    </update>
 

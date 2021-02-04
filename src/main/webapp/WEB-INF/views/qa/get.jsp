@@ -86,6 +86,8 @@ var seq = ${board.qa_seq};
 		  	<div class="form-group">
 		    <label for="textarea1">내용</label>
 		    <textarea readonly class="form-control" id="textarea1" rows="3" id="input6"><c:out value="${board.qa_content }" /></textarea>
+		    <img alt="Not Image" src="${root }/resources/upload/${board.qa_filename }">
+
 		    
 		  	</div>
 		  	
