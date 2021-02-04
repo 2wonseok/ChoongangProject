@@ -17,18 +17,18 @@
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-<!-- <script>
+ <script>
 $(document).ready(function() {
 	$("#remove-btn").click(function(e) {
 		e.preventDefault();
 		// #modify-form의 action attr값을 바꿔야함.
 				
-		$("#modify-form").attr("action", "${root}/board/remove");
+		$("#modify-form").attr("action", "${root}/freeboard/remove");
 		
 		$("#modify-form").submit();
 	})
 })
-</script> -->
+</script> 
 
 
 <title>Insert title here</title>
@@ -53,23 +53,23 @@ $(document).ready(function() {
 	
 			<div class="form-group">
 	 		<label for="input3">번호</label>
-	 		<input name="free_seq" class="form-control" id="input3" readonly value="${FreeBoard.free_seq }">
+	 		<input name="free_seq" class="form-control" id="input3" readonly value="${freeboard.free_seq }">
 	 		</div>
 
 			<div class="form-group">
 		    <label for="input1">제목</label>
-		    <input value='<c:out value="${FreeBoard.free_title }" />' name="free_title" type="text" class="form-control" id="input1" placeholder="제목을 입력 하세요.">
+		    <input value='<c:out value="${freeboard.free_title }" />' name="free_title" type="text" class="form-control" id="input1" placeholder="제목을 입력 하세요.">
 		  	</div>		  	
 		  	
 		  	<div class="form-group">
 		    <label for="textarea1">내용</label>
-		    <textarea name="free_content" class="form-control" id="textarea1" rows="3"><c:out value="${FreeBoard.free_content }" /></textarea>
+		    <textarea name="free_content" class="form-control" id="textarea1" rows="3"><c:out value="${freeboard.free_content }" /></textarea>
 		    
 		  	</div>
 		  	
 		  	<div class="form-group">
 		    <label for="input2">작성자</label>
-		    <input readonly value='<c:out value="${FreeBoard.free_writer }" />' name="free_writer" type="text" class="form-control" id="input2" placeholder="이름을 입력하세요">
+		    <input readonly value='<c:out value="${freeboard.free_writer }" />' name="free_writer" type="text" class="form-control" id="input2" placeholder="이름을 입력하세요">
 		  	</div>
 		  	
 			<%-- <input type="hidden" value="${criteria.pageNum }" name="pageNum">
@@ -78,7 +78,6 @@ $(document).ready(function() {
 			<input type="hidden" value="${criteria.keyword }" name="keyword"> --%>
 		  	<button type="submit" class="btn btn-primary">게시물 수정</button>
 		  	
-		  	<button id="remove-btn" type="submit" class="btn btn-danger">게시물 삭제</button>
 		</form>
 			</div>
 		</div>

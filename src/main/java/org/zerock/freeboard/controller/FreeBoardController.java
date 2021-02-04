@@ -19,33 +19,17 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Controller
+//Client는 URI 형식으로 웹 서비스에 요청을 보낸다.
+//Mapping되는 Handler와 그 Type을 찾는 DispatcherServlet이 요청을 인터셉트한다.
+//Controller가 요청을 처리한 후에 응답을 DispatcherServlet으로 반환하고, DispatcherServlet은 View를 사용자에게 반환한다.
 @AllArgsConstructor
+//모든 필드에 대한 생성자 생성
 @RequestMapping("/freeboard/*")
 @Log4j
 public class FreeBoardController {
 	
 	private FreeBoardService service;
 	
-	/*
-	public BoardController(BoardService service) {
-		super();
-		this.service = service;
-	}
-	*/
-
-	/*
-	// 211 page 표
-//	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	@GetMapping("/list") 
-	// handler 메소드의 return type이 void인 경우
-	//   요청경로가 view(jsp)의 이름이 됨 
-	//   이 메소드는 (/board/list) -> /board/list.jsp
-	public void list(Model model) {
-		log.info("******************** list *******************");
-		List<BoardVO> list = service.getList();
-		model.addAttribute("list", list);
-	}
-	*/
 	
 	@GetMapping("/list")
 	public void list( Model model) {
@@ -162,22 +146,23 @@ public class FreeBoardController {
 //		return "redirect:/board/get";
 //	}
 //	
-//	@PostMapping("/remove")
-//	public String remove(@RequestParam("bno") Long bno,
-//			FreeBoardCriteria cri, RedirectAttributes rttr) {
+	@GetMapping("/remove")
+	public String remove(@RequestParam("seq") Long seq,
+			 RedirectAttributes rttr) {
 //		
-//		if (service.remove(bno)) {
-//			rttr.addFlashAttribute("result", "success");
-//			rttr.addFlashAttribute("message", bno + "번 글이 삭제되었습니다.");
-//		}
+		if (service.remove(seq)) {
+			rttr.addFlashAttribute("result", "success");
+			rttr.addFlashAttribute("message", seq + "번 글이 삭제되었습니다.");
+		}
 //		
 //		rttr.addAttribute("pageNum", cri.getPageNum());
 //		rttr.addAttribute("amount", cri.getAmount());
 //		rttr.addAttribute("type", cri.getType());
 //		rttr.addAttribute("keyword", cri.getKeyword());
 //		
-//		return "redirect:/board/list";
+		return "redirect:/freeboard/list";
 	}
+}
 	
 	
 

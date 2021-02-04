@@ -26,7 +26,7 @@
 
    <select id="getList" resultType="org.zerock.freeboard.domain.FreeBoardVO">
 <![CDATA[
-      select * from tbl_freeboard where free_seq > 0
+      select * from tbl_freeboard ORDER BY free_seq DESC
 ]]>      
       
    </select>
@@ -74,9 +74,9 @@
       SELECT * FROM tbl_freeboard WHERE free_seq = #{free_seq}
    </select>
    
-   <!-- <delete id="delete">
-      delete from tbl_board where bno = #{bno}
-   </delete> -->
+    <delete id="delete">
+      DELETE FROM tbl_freeboard where free_seq = #{free_seq}
+   </delete> 
    
    <update id="update">
    UPDATE tbl_freeboard

@@ -47,10 +47,11 @@
 						value='<c:out value="${freeboard.free_regdate }" />' type="text"
 						class="form-control" id="input3">
 				</div>
-				<a href="${root }/freeboard/modify" class="btn btn-secondary">
-					수정 </a>
 			</div>
 		</div>
+				<a href="${root }/freeboard/modify?seq=${freeboard.free_seq}" class="btn btn-secondary">
+					수정 </a>
+				<a href="${root }/freeboard/remove?seq=${freeboard.free_seq }" class="btn btn-secondary">삭제</a>
 	</div>
 </body>
 </html>

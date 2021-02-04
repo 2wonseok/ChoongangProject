@@ -8,12 +8,12 @@ import org.zerock.freeboard.domain.FreeBoardVO;
 
 public interface FreeBoardMapper {
 
-//	public int getTotalCount(FreeBoardCriteria cri);
-//	 SELECT count(*) FROM tbl_board
+	public int getTotalCount(FreeBoardCriteria cri);
+	
 
 	public List<FreeBoardVO> getList();
 
-//	public List<FreeBoardVO> getListWithPaging(FreeBoardCriteria cri);
+	public List<FreeBoardVO> getListWithPaging(FreeBoardCriteria cri);
 
 //	public void insert(FreeBoardVO freeboard);
 	/*
@@ -39,9 +39,10 @@ public interface FreeBoardMapper {
 
 	public FreeBoardVO read(Long free_seq);
 
-//	public int delete(Long free_seq);
+	public int delete(Long free_seq);
 
 	public int update(FreeBoardVO freeboard);
+
 
 //	public void updateReplyCnt(@Param("seq") Long free_seq, @Param("amount") int amount);
 
