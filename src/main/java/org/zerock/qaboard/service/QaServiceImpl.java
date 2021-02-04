@@ -56,4 +56,14 @@ public class QaServiceImpl implements QaService {
 	public int getTotal(Criteria cri) {		
 		return mapper.getTotalCount(cri);
 	}
+	
+	@Override
+	public void addCnt(int qa_seq) {
+		mapper.addCnt(qa_seq);		
+	}
+	
+	@Override
+	public int readCnt(int qa_seq) {
+		return mapper.readCnt(qa_seq);
+	}
 }

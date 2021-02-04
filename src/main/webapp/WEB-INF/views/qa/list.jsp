@@ -6,6 +6,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+#btn_add {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+}
+</style>
 <meta charset="UTF-8">
 <link rel="stylesheet"
   href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -82,7 +94,7 @@
       </tbody>
       
     </table>
-    <a href="/qa/register/">글쓰기</a>
+    <a href="/qa/register/" id="btn_add">글쓰기</a>
   </div>
 
 </div>
@@ -100,7 +112,7 @@
 		  		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>	
 		  	</c:url>
 		  			  	
-		    <li class="page-item"><a class="page-link" href="${prevLink }">이전</a></li>
+		    <li class="page-item"><a class="page-link" href="${prevLink }" id="btn_add">이전</a></li>
 		  	</c:if>
 		  	
 		  	<c:forEach var="num" begin="${pageMaker.startPage }" 
@@ -113,7 +125,7 @@
 		  		</c:url>
 		  						
 		    <li class="${pageMaker.cri.pageNum eq num ? 'page-item active' : 'page-item' }">
-			<a class="page-link" href="${pageLink }">${num }</a></li>
+			<a class="page-link" href="${pageLink }" id="btn_add">${num }</a></li>
 		  	</c:forEach>
 		  	
 		  	
@@ -125,7 +137,7 @@
 		  		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>	
 		  	</c:url>
 		    
-		    <li class="page-item"><a class="page-link" href="${nextLink }">다음</a></li>
+		    <li class="page-item"><a class="page-link" href="${nextLink }" id="btn_add">다음</a></li>
 		    </c:if>
 		    
   		</ul>

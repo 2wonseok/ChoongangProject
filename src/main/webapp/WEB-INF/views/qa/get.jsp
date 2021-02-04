@@ -6,6 +6,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+#btn_add {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+}
+</style>
 <script>
 var appRoot = '${root}';
 var seq = ${board.qa_seq};
@@ -78,6 +90,11 @@ var seq = ${board.qa_seq};
 		  	</div>
 		  	
 		  	<div class="form-group">
+		    <label for="input6">조회수</label>
+		    <input readonly value='<c:out value="${board.qa_readcnt }" />' type="text" class="form-control" id="input7">
+		  	</div>
+		  	
+		  	<div class="form-group">
 		    <label for="input6">작성자</label>
 		    <input readonly value='<c:out value="${board.qa_writer }" />' type="text" class="form-control" id="input7">
 		  	</div>
@@ -91,9 +108,9 @@ var seq = ${board.qa_seq};
 		  	</c:url>
 		  	<a href="${modifyLink }" class="btn btn-secondary">수정 , 삭제</a>
  --%>
-		  	<a href="${root }/qa/modify?qa_seq=${board.qa_seq }">수정</a>
-		  
-			<a href="${root }/qa/remove?qa_seq=${board.qa_seq }">삭제</a>
+		  	<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
+		  	
+			<a href="${root }/qa/remove?qa_seq=${board.qa_seq }" id="btn_add">삭제</a>
 			</div>
 		</div>
 	</div>

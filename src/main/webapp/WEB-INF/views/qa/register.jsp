@@ -6,6 +6,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+#btn_add {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: center;
+}
+</style>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -69,7 +81,8 @@ function checkTree(chk){
 	<br>	
 	
 	작성자 : <input type="text" name="qa_writer" placeholder="작성자 이름을 입력 하세요." />	
-	<input type="submit" value="전송">
+	<br>
+	<input type="submit" value="전송" id="btn_add">
 </form> 
 </div>
 </body>

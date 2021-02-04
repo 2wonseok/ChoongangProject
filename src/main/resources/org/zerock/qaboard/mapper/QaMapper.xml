@@ -94,12 +94,21 @@
    SELECT count(*) FROM tbl_qaboard 
    <include refid="criteria"></include>
    </select>
-
+   
    <update id="updateReplyCnt">
    UPDATE tbl_qaboard SET replycnt = replycnt + #{amount} 
    WHERE qa_seq = #{qa_seq}   
    </update>
-
    
+   <select id="readCnt" resultType="int">
+   		SELECT qa_readcnt FROM tbl_qaboard
+		WHERE qa_seq = #{qa_seq}   
+   </select>
+
+   <update id="addCnt">
+   		UPDATE tbl_qaboard 
+   		SET qa_readcnt = qa_readcnt + 1  
+		WHERE qa_seq = #{qa_seq}
+   </update>
    
 </mapper>

@@ -60,16 +60,13 @@ public class QaController {
 	@PostMapping("/register")
 	public String register(QaVO board, RedirectAttributes rttr) {
 		
-//		BoardVO board = new BoardVO();
-//		board.setTitle(request.getParameter("title"));
-//		board.setContent(request.getParameter("content"));
-//		board.setWriter(request.getParameter("writer"));		
 		
+				
 		service.register(board);
 		
 		
 		rttr.addFlashAttribute("result", board.getQa_seq());
-//		return "/board/list";
+
 		return "redirect:/qa/list";
 	}
 	
@@ -77,23 +74,13 @@ public class QaController {
 	@GetMapping({"/get", "/modify"})
 	public void get(@RequestParam("qa_seq") int qa_seq, 
 			@ModelAttribute("criteria") Criteria cri, Model model) {
-		// 
-		/** 예전 코드 (스프링 없이) 
-		String boardNum = request.getParameter("num");
-		int num = Integer.parseInt(boardNum);
 		
-		BoardVO vo = service.get((long) num);
-		
-		request.setAttribute("board", vo);
-		
-		request.getRequestDispatcher(".jsp").forward();
-		*/
-
 		QaVO vo = service.get(qa_seq);
+		
+		service.addCnt(qa_seq);
 		
 		// 쿼리문으로 붙어서 감
 		model.addAttribute("board", vo);
-//		model.addAttribute("cri", cri);
 	}
 	
 	@RequestMapping("/remove")

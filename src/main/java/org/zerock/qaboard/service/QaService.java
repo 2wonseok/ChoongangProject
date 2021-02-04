@@ -21,4 +21,9 @@ public interface QaService {
 	
 	public int getTotal(Criteria cri);
 
+	public void addCnt(int qa_seq);
+		
+	public int readCnt(int qa_seq);	
+	
+
 }
