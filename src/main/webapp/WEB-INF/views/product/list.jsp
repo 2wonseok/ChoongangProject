@@ -18,13 +18,29 @@
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 <title>Insert title here</title>
+
+<style>
+
+	.btn_add {
+	    color: #fff;
+	    font-size: 15px;
+	    border: none;
+	    background: #1e263c;
+	    padding: 0px 50px;
+	    margin: 0 0px;
+	    line-height: 45px;
+	    float: right;
+	}
+
+</style>
+
 </head>
 <body>
   
   <u:navbar></u:navbar>
   
 	<div class="container">
-		<div class="row">
+		<div class="row ">
 			<div class="col-md-6, col-md-offset-3">
 			
 			<hr>
@@ -42,7 +58,7 @@
 			            </c:url>
 					
 						<div class="card m-2" style="width: 15rem;">
-							<img class="card-img-top" src="..." alt="Card image cap">
+							<img class="card-img-top" src="/resources/upload/${product.product_filename }" alt="Card image cap">
 							<div class="card-body">
 								<h5 class="card-title"><c:out value="${product.product_name }"></c:out></h5>
 								<p class="card-text"><c:out value="${product.product_info }"></c:out></p>
@@ -54,10 +70,13 @@
 			
 			<hr>
 				<!--상품 bootstrap card 끝  -->
-
+			
+				<button onclick = "location.href = '/product/register'" class="btn_add">상품 등록</button>
+			
 			</div>
 		</div>
 	</div>
+	
 	
 
 

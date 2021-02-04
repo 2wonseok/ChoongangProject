@@ -17,6 +17,23 @@
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
+
+<style>
+
+	.btn_add {
+	    color: #fff;
+	    font-size: 15px;
+	    border: none;
+	    background: #1e263c;
+	    padding: 0px 50px;
+	    margin: 0 0px;
+	    line-height: 45px;
+	    float: right;
+	}
+
+</style>
+
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -39,7 +56,19 @@
 					
 					<button>수정하기</button>
 				</form>
-
+				
+				
+				<c:url value="/product/remove" var="productRemove">
+					<c:param name="product_seq" value="${product.product_seq }"></c:param>
+	            	<c:param name="pageNum" value="${cri.pageNum }"></c:param>
+	            	<c:param name="amount" value="${cri.amount }"></c:param>
+	            	<c:param name="type" value="${cri.type }"></c:param>
+		    		<c:param name="keyword" value="${cri.keyword }"></c:param>      
+				</c:url>
+				<form action="${productRemove }" method="post">
+					<button class="btn_add">삭제</button>
+					
+				</form>
 			</div>
 		</div>
 	</div>
