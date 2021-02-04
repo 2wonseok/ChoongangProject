@@ -62,11 +62,14 @@
 	<section id="container">
 		<form action="${root }/user/login" method="post">
 			<div class="form-group">
-		    <input type="text" class="form-control" placeholder="아이디" name="user_ud" id="input1-id" value="">
+		    <input type="text" class="form-control" placeholder="아이디" name="user_id" id="input1-id" value="">
 		  </div>
 		  <div class="form-group">
 		    <input type="password" class="form-control" placeholder="비밀번호" name="user_password" id="input2-password">
 		  </div>
+		  <c:if test="${noUser != null}">
+		   <div class="alert alert-danger" >${noUser }</div> 
+		  </c:if>
 		 	<input type="submit" value="로그인" id="btn_add" class="btn btn-block btn-lg"> <br><hr>
 		 	<div class="container d-flex justify-content-center">
 		 	<a href="#" onclick="window.open('find?oper=id','아이디찾기','width=500px;,height=300px;,location=no,status=no,scrollbars=no');" style="color:gray;">아이디 찾기</a><p style="color:gray;">&nbsp;|&nbsp;</p>

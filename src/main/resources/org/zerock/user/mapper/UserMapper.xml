@@ -67,11 +67,15 @@
 	</select>
 	
 	<select id="getUser" resultType="org.zerock.user.domain.UserVO">
-		SELECT user_id, user_password WHERE user_id = #{user_id}
+		SELECT * from tbl_user WHERE user_id = #{user_id}
 	</select>
 	
 	<select id="idCheck" resultType="int">
 		select COUNT(*) from tbl_user where user_id = #{user_id}
+	</select>
+	
+	<select id="nickCheck" resultType="int">
+		select COUNT(*) from tbl_user where user_nickname = #{user_nickname}
 	</select>
 	
 	<update id="update">

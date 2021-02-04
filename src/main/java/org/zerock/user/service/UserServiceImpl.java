@@ -64,4 +64,9 @@ public class UserServiceImpl implements UserService {
 		return mapper.getUser(user_id);
 	}
 
+	@Override
+	public int nickCheck(String user_nickname) {
+		return mapper.nickCheck(user_nickname);
+	}
+
 }

@@ -75,6 +75,9 @@
 				  <a class="nav-link" href="${root }/user/login">로그인</a>
 				</li>
 				<li class="nav-item active">
+				  <a class="nav-link" href="${root }/user/logout">로그아웃</a>
+				</li>
+				<li class="nav-item active">
 				  <a class="nav-link" href="${root }/user/userRegister">회원가입</a>
 				</li>
 				<li class="nav-item active">

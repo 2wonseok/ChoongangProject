@@ -21,6 +21,11 @@
 </head>
 <body>
 <u:navbar/>
-ㅎㅇㅎㅇ
+접속 아이디 : ${authUser.user_id} <br>
+등급 : <c:choose>
+					<c:when test="${authUser.user_grade < 1}">관리자</c:when>
+					<c:when test="${authUser.user_grade > 0}">일반</c:when>
+					<c:otherwise></c:otherwise>
+			</c:choose> 
 </body>
 </html>

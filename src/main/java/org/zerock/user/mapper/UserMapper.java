@@ -21,5 +21,7 @@ public interface UserMapper {
 	
 	public int idCheck(String user_id);
 	
+	public int nickCheck(String user_nickname);
+	
 	public UserVO getUser(String user_id);
 }

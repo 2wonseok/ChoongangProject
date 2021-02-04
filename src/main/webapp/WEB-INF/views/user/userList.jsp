@@ -162,6 +162,7 @@ function reload() {
     line-height: 45px;
     float: right;
 }
+
 </style>
 <body>
 <u:navbar/>

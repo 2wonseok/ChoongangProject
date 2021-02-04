@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -105,25 +108,46 @@ public class UserController {
 		
 	}
 	
-	
 	@GetMapping("/idCheck")
 	public void idCheck() {
 		
 	}
 	
-	@RequestMapping("/searchIdCheck")
-	public String searchIdCheck(@RequestParam("user_id") String user_id, RedirectAttributes rttr) {
-		int check = service.idCheck(user_id);
+	@GetMapping("/nickCheck")
+	public void nickCheck() {
 		
-		if (check == 1) {
-			rttr.addFlashAttribute("user_id", user_id);
-			rttr.addFlashAttribute("checkResultN", "이미 사용중인 아이디 입니다.");
-		} else {
-			rttr.addFlashAttribute("user_id", user_id);
-			rttr.addFlashAttribute("checkResultY", "사용 가능합니다.");
+	}
+	
+	@RequestMapping("/searchIdCheck")
+	public String searchIdCheck(UserVO vo, RedirectAttributes rttr) {
+		if (vo.getUser_id() != null) {
+			int checkId = service.idCheck(vo.getUser_id());
+			
+			if (checkId == 1) {
+				rttr.addFlashAttribute("user_id", vo.getUser_id());
+				rttr.addFlashAttribute("checkResultN", "이미 사용중인 아이디 입니다.");
+			} else {
+				rttr.addFlashAttribute("user_id", vo.getUser_id());
+				rttr.addFlashAttribute("checkResultY", "사용 가능합니다.");
+			}
+			
+			return "redirect:/user/idCheck";
 		}
 		
-		return "redirect:/user/idCheck";
+		if (vo.getUser_nickname() != null) {
+			int checkNick = service.nickCheck(vo.getUser_nickname());
+			
+			if (checkNick == 1) {
+				rttr.addFlashAttribute("user_nickname", vo.getUser_nickname());
+				rttr.addFlashAttribute("checkResultNcikN", "이미 사용중인 닉네임 입니다.");
+			} else {
+				rttr.addFlashAttribute("user_nickname", vo.getUser_nickname());
+				rttr.addFlashAttribute("checkResultNcikY", "사용 가능합니다.");
+			}
+			return "redirect:/user/nickCheck";
+		}
+		
+		return "";
 	}
 	
 	@GetMapping("/login")
@@ -132,13 +156,26 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public String login(UserVO user, RedirectAttributes rttr) {
+	public String login(UserVO user, RedirectAttributes rttr, HttpSession session) {
 		UserVO vo = service.getUser(user.getUser_id());
 		
 		if (vo == null || !user.getUser_id().equals(vo.getUser_id()) || 
 				!user.getUser_password().equals(vo.getUser_password())) {
 			rttr.addFlashAttribute("noUser", "일치하는 정보가 없습니다.");
 			return "redirect:/user/login";
+		} else {
+			session.setAttribute("authUser", vo);
+			return "redirect:/main/index";
+		}
+		
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest req) {
+		HttpSession session = req.getSession(false);
+		
+		if (session != null) {
+			session.invalidate();
 		}
 		
 		return "redirect:/main/index";

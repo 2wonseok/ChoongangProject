@@ -55,7 +55,16 @@ $(document).ready(function() {
 				} 
 			} 
 		}); 
-
+	
+		
+		$("#nickCheck").click(function(e) {
+			var user_nick = $("#input8-nickname").val();
+			e.preventDefault();
+			
+			var popup = window.open("${root}/user/nickCheck","pop","width=570,height=420, scrollbars=yes, resizable=yes");
+			
+		});
+		
 });
 
 
@@ -92,7 +101,7 @@ $(document).ready(function() {
     line-height: 45px;
     float: right;
 }
-#idCheck {
+.btn_check {
     color: #fff;
     font-size: 15px;
     border: none;
@@ -114,7 +123,7 @@ $(document).ready(function() {
 		    <label for="input1-id">아이디</label>
 		    <input type="text" class="form-control" style="width:77%;" name="user_id" id="input1-id" 
 		    	value="" placeholder="중복 확인을 눌러주세요" required readonly>
-		    <button type="button" id="idCheck">중복확인</button><br>
+		    <button type="button" class="btn_check" id="idCheck">중복확인</button><br>
 		  </div>
 		  <div class="form-group">
 		    <label for="input2-name">이름</label>
@@ -122,7 +131,9 @@ $(document).ready(function() {
 		  </div>
 		  <div class="form-group">
 		    <label for="input8-nickname">닉네임</label>
-		    <input type="text" class="form-control" name="user_nickname" id="input8-nickname" value="" required>
+		    <input type="text" class="form-control" style="width:77%;" name="user_nickname" id="input8-nickname" 
+		    	value="" placeholder="중복 확인을 눌러주세요" readonly required>
+		    <button type="button" class="btn_check"  id="nickCheck">중복확인</button><br>
 		  </div>
 		  <div class="form-group">
 		    <label for="input3-password">패스워드</label>
