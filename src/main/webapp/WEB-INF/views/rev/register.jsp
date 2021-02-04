@@ -22,7 +22,13 @@
 
 	<div class="container">
 	<form action="${root }/rev/register" method="POST">
+	
 	카테고리 <input type="text" name="rev_category" class="form-control" /> <br>
+	<c:if test="${errors.noCategory }">
+	<small class="form-text text-muted">
+			카테고리를 입력하세요
+	</small>
+	</c:if>
 	제목 <input type="text" name="rev_title"  class="form-control" /> <br>
 	내용 <input type="text" name="rev_content" class="form-control" /> <br>
 	작성자 <input type="text" name="rev_writer" class="form-control" /> <br>

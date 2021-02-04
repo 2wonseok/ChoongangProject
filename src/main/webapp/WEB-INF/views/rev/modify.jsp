@@ -48,26 +48,26 @@ $(document).ready(function() {
 				<form id="modify-form" action="${root }/rev/modify" method="post">
 					<!-- 같은경로 라서 action="" 를 생략할수있음  -->
 					<div class="form-group">
-						<label for="input3">#번호</label> <input readonly name="rev_seq"
+						<label for="input1">#번호</label> <input readonly name="rev_seq"
 							value="${RevBoard.rev_seq }" type="text" class="form-control"
-							id="input3" />
+							id="input1" />
 					</div>
 					<div class="form-group">
-						<label for="input4">카테고리</label> <input  name="rev_category"
+						<label for="input2">카테고리</label> <input  name="rev_category"
 							value="${RevBoard.rev_category }" type="text" class="form-control"
-							id="input4" />
+							id="input2" />
 					</div>
 					
 					<div class="form-group">
-						<label for="input5">파일이름</label> <input  name="rev_filename"
+						<label for="input3">파일이름</label> <input  name="rev_filename"
 							value="${RevBoard.rev_filename }" type="file" class="form-control"
-							id="input5" />
+							id="input3" />
 					</div>
 
 					<div class="form-group">
-						<label for="input1">제목</label> <input
+						<label for="input4">제목</label> <input
 							value='<c:out value = "${RevBoard.rev_title }"/>' name=rev_title type="text"
-							class="form-control" id="input1" placeholder="제목을 입력하세요.">
+							class="form-control" id="input4" placeholder="제목을 입력하세요.">
 					</div>
 
 					<div class="form-group">
@@ -77,23 +77,23 @@ $(document).ready(function() {
 					</div>
 					
 					<div class="form-group">
-						<label for="input6">조회수</label> <input  name="rev_category"
+						<label for="input5">조회수</label> <input  name="rev_readcnt"
 							value="${RevBoard.rev_readCnt }" type="text" class="form-control"
-							id="input6"  readonly/>
+							id="input5"  readonly/>
 					</div>
 					
 
 					<div class="form-group">
-						<label for="input7">작성자</label> <input name="rev_writer"
+						<label for="input6">작성자</label> <input name="rev_writer"
 							value='<c:out value="${RevBoard.rev_writer }"/>' type="text"
-							class="form-control" id="input7" readonly>
+							class="form-control" id="input6" readonly>
 					</div>
 										
 					
 					<div class="form-group">
-						<label for="input8">수정일</label> <input  name="rev_category"
+						<label for="input7">수정일</label> <input  
 							value="${RevBoard.rev_updatedate }" type="text" class="form-control"
-							id="input8" readonly />
+							id="input7" readonly />
 					</div>
 
 					<%-- <input type="hidden" value="${cri.pageNum }" name="pageNum" /> 

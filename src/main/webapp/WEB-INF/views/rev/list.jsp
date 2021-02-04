@@ -65,7 +65,56 @@
 			</table>
 		</div>
 	</div>
+		<div class="container-sm mt-3">
+		<div class="row justify-content-center">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
 
+					<c:if test="${pageMaker.prev }">
+						<c:url value="/rev/list" var="prevLink">
+							<!-- 앞에 contextPath를 붙여줌 -->
+							<c:param value="${pageMaker.startPage -1 }" name="pageNum" />
+							<c:param value="${pageMaker.cri.amount }" name="amount" />
+							<c:param name="type" value="${pageMaker.cri.type }" />
+							<c:param name="keyword" value="${pageMaker.cri.keyword }" />
+						</c:url>
+						<li class="page-item"><a class="page-link" href="${prevLink}">Previous</a>
+							<%-- <a class="page-link" href="${pageMaker.startPage -1 }">Previous</a> --%>
+						</li>
+					</c:if>
+
+					<c:forEach var="num" begin="${pageMaker.startPage }"
+						end="${pageMaker.endPage }">
+						<c:url value="/rev/list" var="pageLink">
+							<c:param name="pageNum" value="${num }" />
+							<c:param name="amount" value="${pageMaker.cri.amount }" />
+							<c:param name="type" value="${pageMaker.cri.type }" />
+							<c:param name="keyword" value="${pageMaker.cri.keyword }" />
+						</c:url>
+						<li
+							class="page-item ${pageMaker.cri.pageNum eq num ? 'active' : ''}">
+							<a class="page-link" href="${pageLink }">${num}</a> <%-- <a class="page-link" href="${num }">${num }</a> --%>
+						</li>
+						<!-- href = "${root }/board/list?pageNum=${num}&amount=${pageMaker.cri.amount }" -->
+					</c:forEach>
+
+					<c:if test="${pageMaker.next }">
+						<c:url value="/rev/list" var="nextLink">
+							<c:param value="${pageMaker.endPage +1 }" name="pageNum" />
+							<c:param value="${pageMaker.cri.amount }" name="amount" />
+							<c:param name="type" value="${pageMaker.cri.type }" />
+							<c:param name="keyword" value="${pageMaker.cri.keyword }" />
+						</c:url>
+						<li class="page-item"><a class="page-link" href="${nextLink}">Next</a>
+							<%-- <a class="page-link" href="${pageMaker.endPage +1 }">Next</a> --%>
+						</li>
+						<!-- href="${root}/board/list?pageNum=${pageMaker.endPage +1}&amount=${pageMaker.cri.amount}
+						 와 같음 -->
+					</c:if>
+				</ul>
+			</nav>
+		</div>
+	</div>
 
 
 </body>

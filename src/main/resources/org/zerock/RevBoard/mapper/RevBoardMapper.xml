@@ -3,7 +3,25 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zerock.RevBoard.mapper.RevBoardMapper">
-
+	
+	<sql id ="criteria">		<!--  sql 태그에 만들어준걸 밑에서 include태그를 이용하여 갖다쓸 수 있음 -->
+<where>
+	<foreach item="type" collection="typeArr" separator="OR"> <!-- separator="OR" 하면 사이사이에 or추가됨 -->
+		<choose>
+			<when test="type == 'T'.toString()">
+				title LIKE '%' || #{keyword} || '%'
+			</when>
+			<when test="type == 'C'.toString()">
+				content LIKE '%' || #{keyword} || '%'
+			</when>
+			<when test="type == 'W'.toString()">
+				writer LIKE '%' || #{keyword} || '%'
+			</when>
+		</choose>
+	</foreach>
+</where>
+</sql>
+	
 	<insert id="insertSelectKey">
 		<selectKey keyProperty="rev_seq" order="BEFORE"
 			resultType="int">
@@ -29,19 +47,27 @@
 		rev_title = #{rev_title},
 		rev_content = #{rev_content},
 		rev_filename = #{rev_filename},
-		rev_readcnt = 0,
-		rev_good = 0,
-		rev_hate = 0,
 		rev_updatedate = SYSDATE
 		WHERE rev_seq = #{rev_seq}
 	</update>
 
-	<select id="getList"
+	<select id="getListWithPaging"
 		resultType="org.zerock.RevBoard.domain.RevVO">
 		<!-- <![CDATA[]]> 는 부등호를 사용하기위해 씀 -->
     <![CDATA[ 
-    SELECT * FROM tbl_reviewboard WHERE rev_seq > 0
+    SELECT rev_seq, rev_category, rev_title, rev_content, rev_writer, rev_filename,
+        rev_readcnt, rev_good, rev_hate, rev_regdate, rev_updatedate FROM 
+        ( SELECT ROW_NUMBER() OVER (ORDER BY rev_good - rev_hate DESC) rn,
+        rev_seq, rev_category, rev_title, rev_content, rev_writer, rev_filename,
+        rev_readcnt, rev_good, rev_hate, rev_regdate, rev_updatedate FROM tbl_reviewboard
   ]]>
+  			<include refid="criteria"></include>
+  			<![CDATA[ 
+  				)
+  				WHERE
+  				rn BETWEEN (#{pageNum} - 1) * #{amount} + 1 AND #{pageNum} * #{amount}
+  			
+  			]]>
 	</select>
 	
 	<!-- <select id="getListWithPaging"
@@ -55,10 +81,15 @@
 	<select id="countGood" resultType="int">
 		SELECT rev_good FROM tbl_reviweboard WHERE rev_seq = #{rev_seq}
 	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		SELECT count(*) FROM tbl_reviewboard
+		<include refid="criteria"></include>
+	</select>
 
-	<update id="addCount">
+	<update id="addGood">
 		UPDATE tbl_reviewboard
-		SET rev_good = #{rev_good + 1 }
+		SET rev_good = rev_good + 1 
 		WHERE rev_seq = #{rev_seq}
 	</update>
 	
@@ -69,7 +100,13 @@
 	
 	<update id="addReadCnt">
 		UPDATE tbl_reviewboard
-		SET rev_readcnt = #{rev_readcnt + 1 } 
+		SET rev_readcnt = rev_readcnt + 1  
+		WHERE rev_seq = #{rev_seq}
+	</update>
+	
+	<update id="addHate">
+		UPDATE tbl_reviewboard
+		SET rev_hate = rev_hate + 1 
 		WHERE rev_seq = #{rev_seq}
 	</update>
 </mapper>

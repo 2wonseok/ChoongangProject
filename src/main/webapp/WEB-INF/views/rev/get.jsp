@@ -31,21 +31,21 @@
 
 				<!-- 같은경로 라서 action="" 를 생략할수있음  -->
 				<div class="form-group">
-					<label for="input3">#번호</label> <input readonly
-						value="${RevBoard.rev_seq }" type="text" class="form-control" id="input3" />
+					<label for="input1">#번호</label> <input readonly
+						value="${RevBoard.rev_seq }" type="text" class="form-control" id="input1" />
 				</div>
 				<div class="form-group">
-					<label for="input4">카테고리</label> <input readonly
-						value="${RevBoard.rev_category }" type="text" class="form-control" id="input4" />
+					<label for="input2">카테고리</label> <input readonly
+						value="${RevBoard.rev_category }" type="text" class="form-control" id="input2" />
 				</div>
 				<div class="form-group">
-					<label for="input5">파일이름</label> <input readonly
-						value="${RevBoard.rev_filename }" type="text" class="form-control" id="input5" />
+					<label for="input3">파일이름</label> <input readonly
+						value="${RevBoard.rev_filename }" type="text" class="form-control" id="input3" />
 				</div>
 				<div class="form-group">
-					<label for="input1">제목</label> <input readonly
+					<label for="input4">제목</label> <input readonly
 						value='<c:out value= "${RevBoard.rev_title }"/>' type="text"
-						class="form-control" id="input1" placeholder="제목을 입력하세요.">
+						class="form-control" id="input4" placeholder="제목을 입력하세요.">
 				</div>
 
 				<div class="form-group">
@@ -55,25 +55,37 @@
 				</div>
 				 
 				<div class="form-group">
-						<label for="input6">조회수</label> <input  name="rev_readcnt"
+						<label for="input5">조회수</label> <input  name="rev_readcnt"
 							value="${RevBoard.rev_readCnt }" type="text" class="form-control"
-							id="input6" readonly/>
+							id="input5" readonly/>
 					</div>
 
 				<div class="form-group">
-					<label for="input2">작성자</label> <input readonly
+					<label for="input6">작성자</label> <input readonly
 						value="${RevBoard.rev_writer }" type="text" class="form-control"
-						id="input2">
+						id="input6">
 				</div>
 				
 				<div class="form-group">
-						<label for="input6">작성일</label> <input  name="rev_category"
+					<label for="input7">좋아요</label> <input readonly
+						value="${RevBoard.rev_good }" type="text" class="form-control" id="input7" />
+				</div>
+				
+				<div class="form-group">
+					<label for="input8">싫어요</label> <input readonly
+						value="${RevBoard.rev_hate }" type="text" class="form-control" id="input8" />
+				</div>
+				
+				<div class="form-group">
+						<label for="input7">작성일</label> <input  name="rev_regdate"
 							value="${RevBoard.rev_regdate }" type="text" class="form-control"
-							id="input6"  readonly/>
+							id="input7"  readonly/>
 					</div>
 			</div>
 		</div>
 		<a href="${root}/rev/modify?rev_seq=${RevBoard.rev_seq}">글수정</a>
+		<a href="${root}/rev/get/like?rev_seq=${RevBoard.rev_seq}">좋아요!</a>
+		<a href="${root}/rev//get/hate?rev_seq=${RevBoard.rev_seq}">싫어요!</a>
 	</div>
 </body>
 </html>

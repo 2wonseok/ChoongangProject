@@ -9,8 +9,6 @@ public interface RevBoardService {
 	
 	public void register(RevVO revVo);
 	
-	public List<RevVO> getList();
-	
 	public List<RevVO> getListWithPaging(Criteria cri);
 	
 	public int getTotal(Criteria cri);
@@ -25,7 +23,9 @@ public interface RevBoardService {
 	
 	public void addReadCnt(int rev_seq);
 	
+	public int countGood(int rev_seq);
+	
 	public void addGood(int rev_seq);
 	
-	public void addHate(int rev_seq); 
+	public void addHate(int rev_seq);
 }

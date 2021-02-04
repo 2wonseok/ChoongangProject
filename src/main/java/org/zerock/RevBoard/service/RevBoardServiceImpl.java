@@ -22,7 +22,8 @@ public class RevBoardServiceImpl implements RevBoardService{
 		mapper.insertSelectKey(revVo);
 		
 	}
-		
+	
+	@Override
 	public int getTotal(Criteria cri) {
 		return mapper.getTotalCount(cri);
 	}
@@ -51,31 +52,26 @@ public class RevBoardServiceImpl implements RevBoardService{
 	
 	@Override
 	public int countReadCnt(int rev_seq) {
-		// TODO Auto-generated method stub
 		return mapper.countReadCnt(rev_seq);
 	}
 	
 	@Override
 	public void addReadCnt(int rev_seq) {
-		// TODO Auto-generated method stub
 		mapper.addReadCnt(rev_seq);
 	}
-
+	
 	@Override
-	public List<RevVO> getList() {
-		// TODO Auto-generated method stub
-		return null;
+	public int countGood(int rev_seq) {
+		return mapper.countGood(rev_seq);
 	}
-
+	
 	@Override
 	public void addGood(int rev_seq) {
-		// TODO Auto-generated method stub
-		
+		mapper.addGood(rev_seq);
 	}
-
+	
 	@Override
 	public void addHate(int rev_seq) {
-		// TODO Auto-generated method stub
-		
+		mapper.addHate(rev_seq);
 	}
 }

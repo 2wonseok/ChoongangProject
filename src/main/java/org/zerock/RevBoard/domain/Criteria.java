@@ -15,7 +15,7 @@ public class Criteria {
 		private String keyword;
 		
 		public Criteria() { // 기본생성자.
-			this(1, 5); // 1번페이지에 10개를 보여준다는뜻.
+			this(1, 10); // 1번페이지에 10개를 보여준다는뜻.
 		}
 		
 		public Criteria(int pageNum, int amount) {
