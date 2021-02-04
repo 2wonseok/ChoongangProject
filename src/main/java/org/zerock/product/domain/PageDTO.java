@@ -35,7 +35,7 @@ public class PageDTO {
 		this.startPage = endPage-9;
 		*/
 		
-		this.endPage = (int) (Math.ceil(Math.abs(cri.getPageNum()/5.0)-1)+1) *5;
+		this.endPage = (int) (Math.ceil(cri.getPageNum() / 5.0)) * 5;
 		this.startPage = endPage-4;
 		
 		

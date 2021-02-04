@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,28 +20,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-	<%-- 
-	올라온 상품 목록
-
-	<div class="container d-flex justify-content-center">
-
-		<!--상품 bootstrap card 시작  -->
-		<c:forEach items="${list }" var="product">
-			<div class="card mx-2" style="width: 18rem;">
-				<img class="card-img-top" src="..." alt="Card image cap">
-				<div class="card-body">
-					<h5 class="card-title">${product.product_name }</h5>
-					<p class="card-text">${product.product_info }</p>
-					<a href="#" class="btn btn-primary">구매하기</a>
-				</div>
-			</div>
-		</c:forEach>
-		<!--상품 bootstrap card 끝  -->
-	</div>
-  --%>
   
-  
+  <u:navbar></u:navbar>
   
 	<div class="container">
 		<div class="row">
@@ -52,10 +33,10 @@
 					<!--상품 bootstrap card 시작  -->
 					<c:forEach items="${list }" var="product">
 			
-						 <c:url value="/Product/get" var="productLink">
+						 <c:url value="/product/get" var="productLink">
 			            	<c:param name="product_seq" value="${product.product_seq }"></c:param>
 			            	<c:param name="pageNum" value="${pageDTO.cri.pageNum }"></c:param>
-			            	<c:param name="amount" value="${pageDTOr.cri.amount }"></c:param>
+			            	<c:param name="amount" value="${pageDTO.cri.amount }"></c:param>
 			            	<c:param name="type" value="${pageDTO.cri.type }"></c:param>
 				    		<c:param name="keyword" value="${pageDTO.cri.keyword }"></c:param>            	
 			            </c:url>
