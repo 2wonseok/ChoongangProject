@@ -1,11 +1,14 @@
 package org.zerock.user.service;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.zerock.user.domain.Criteria;
+import org.zerock.user.domain.Message;
 import org.zerock.user.domain.UserVO;
 import org.zerock.user.mapper.UserMapper;
 
@@ -50,5 +53,10 @@ public class UserServiceImpl implements UserService {
 	public boolean delete(int seq) {
 		return mapper.delete(seq) > 0;
 	}
-	
+
+	@Override
+	public int idCheck(String user_id) {
+		return mapper.idCheck(user_id);
+	}
+
 }

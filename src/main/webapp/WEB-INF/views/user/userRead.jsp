@@ -79,7 +79,7 @@
 	</div>
 		<div class="form-group">
 		<label for="input13">가입일</label> 
-		<input type="text" class="form-control"  value="<c:out value='${read.user_regdate }'/>"  readonly/> <br/>
+		<input type="text" class="form-control"  value='<fmt:formatDate pattern="yyyy-MM-dd" value="${read.user_regdate }"/>' readonly/> <br/>
 	</div>
 	<c:url value="/user/userModify" var="modifyLink">
 		<c:if test="${cri.type != null && cri.keyword != null }">

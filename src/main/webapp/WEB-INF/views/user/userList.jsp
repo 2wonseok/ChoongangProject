@@ -48,11 +48,11 @@ $(document).ready(function(){
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th><input type="text" id="allCheck" name="seq" value="${user.user_seq }"/></th>
+				<th><input type="checkbox" id="allCheck"  value="${user.user_seq }"/></th>
 				<th>번호</th>
 				<th>아이디</th>
 				<th>이름</th>
-				<th>이메일</th>
+				<th>휴대폰</th>
 				<th>성별</th>
 				<th>가입일</th>
 			</tr>
@@ -75,7 +75,7 @@ $(document).ready(function(){
 					</a>
 				</td>
 				<td><c:out value="${user.user_name}"></c:out></td>
-				<td><c:out value="${user.user_email}"></c:out></td>
+				<td><c:out value="${user.user_phone}"></c:out></td>
 				<td><c:out value="${user.user_gender}"></c:out></td>
 				<td><fmt:formatDate pattern="yyyy-MM-dd" value="${user.user_regdate }"/></td>
 			</tr>

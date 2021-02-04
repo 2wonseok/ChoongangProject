@@ -18,4 +18,6 @@ public interface UserMapper {
 	public int update(UserVO user);
 	
 	public int delete(int seq);
+	
+	public int idCheck(String user_id);
 }

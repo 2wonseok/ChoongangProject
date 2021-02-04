@@ -12,9 +12,9 @@
 	
 	<insert id="insert">
 		insert into tbl_user (user_seq, user_id, user_name, user_nickname, user_password, user_address
-			, user_addresscode, user_email, user_phone, user_gender, user_birth, user_regdate)
+			, user_addresscode, user_phone, user_gender, user_birth, user_regdate)
 		values (user_seq.nextval, #{user_id}, #{user_name}, #{user_nickname}, #{user_password}, 
-			#{user_address}, #{user_addresscode}, #{user_email}, #{user_phone}, #{user_gender}, #{user_birth}, SYSDATE)
+			#{user_address}, #{user_addresscode}, #{user_phone}, #{user_gender}, #{user_birth}, SYSDATE)
 	</insert>
 
 	<sql id="criteria">
@@ -38,12 +38,12 @@
 	<select id="getListWithPaging" resultType="org.zerock.user.domain.UserVO">
 	<![CDATA[
 		SELECT 
-			user_seq, user_id, user_name, user_email, user_gender, user_regdate
+			user_seq, user_id, user_name, user_phone, user_gender, user_regdate
 		FROM
 			(
 			SELECT
 				ROW_NUMBER() OVER (ORDER BY user_seq DESC) rn,
-		 		user_seq, user_id, user_name, user_email, user_gender, user_regdate 
+		 		user_seq, user_id, user_name, user_phone, user_gender, user_regdate 
 			FROM tbl_user
 	]]>
 		<include refid="criteria"></include>
@@ -63,6 +63,10 @@
 		select * from tbl_user where user_seq = #{seq}
 	</select>
 	
+	<select id="idCheck" resultType="int">
+		select COUNT(*) from tbl_user where user_id = #{user_id}
+	</select>
+	
 	<update id="update">
 		UPDATE tbl_user
 		SET
@@ -70,7 +74,6 @@
 		  user_password = #{user_password},
 		  user_address = #{user_address},
 		  user_addresscode = #{user_addresscode},
-		  user_email = #{user_email},
 		  user_phone = #{user_phone}
 		WHERE
 		  user_seq = #{user_seq}

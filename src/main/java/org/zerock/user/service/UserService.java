@@ -18,4 +18,6 @@ public interface UserService {
 	public boolean update(UserVO user);
 	
 	public boolean delete(int seq);
+	
+	public int idCheck(String user_id);
 }

@@ -2,6 +2,7 @@ package org.zerock.user.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.user.domain.Criteria;
 import org.zerock.user.domain.PageDTO;
@@ -95,5 +97,22 @@ public class UserController {
 			}
 		}
 		return "redirect:/user/userList";
+	}
+	
+	@RequestMapping("/jusoPopup")
+	public void address() {
+		
+	}
+	
+	@RequestMapping("/idCheck")
+	public void idCheck(@RequestParam("user_id") String user_id, Model model) {
+		int check = service.idCheck(user_id);
+		
+		if (check == 1) {
+			model.addAttribute("checkResult", "이미 사용중인 아이디 입니다.");
+		} else {
+			model.addAttribute("checkResult", "사용 가능합니다.");
+		}
+		
 	}
 }
