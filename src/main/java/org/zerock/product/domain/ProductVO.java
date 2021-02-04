@@ -6,9 +6,9 @@ import lombok.Data;
 
 @Data
 public class ProductVO {
-	//등록시하드코딩
+	//등록시하드코딩컬럼
 	private int product_seq;
-	//
+	//일반컬럼
 	private String product_name;
 	private int product_price;
 	private int product_quantity;

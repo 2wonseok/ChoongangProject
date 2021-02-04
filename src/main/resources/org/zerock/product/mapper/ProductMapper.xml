@@ -3,102 +3,94 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-  <mapper namespace="org.zerock.product.mapper.ProductMapper">
-  
-  <insert id="insert">
-        insert into tbl_product (product_seq, product_name, product_price, product_quantity, product_seller, product_filename, product_info) 
-        values (product_seq.nextval, #{product_name}, #{product_price}, #{product_quantity}, #{product_seller}, #{product_filename}, #{product_info})
-  </insert>
-  
-  <!-- 여기까지 구현완료 -->
-  
-  
-	 <sql id="criteria">
-     <where>
-      <foreach item="type" collection="typeArr" separator="OR">
-         <choose>
-            <when test="type == 'T'.toString()">
-               title LIKE '%' || #{keyword} || '%'
-            </when>
-            <when test="type == 'C'.toString()">
-               content LIKE '%' || #{keyword} || '%'
-            </when>
-            <when test="type == 'W'.toString()">
-               writer LIKE '%' || #{keyword} || '%'
-            </when>
-         </choose>
-      </foreach>
-   </where> 
-  </sql>
-  
-<!--      <select id="getList" resultType="org.zerock.domain.BoardVO">
-  <![CDATA[
-        select * from tbl_board where bno > 0
-  ]]>
-     </select> -->
-     
+<mapper namespace="org.zerock.product.mapper.ProductMapper">
 
-   <select id="getListWithPaging" resultType="org.zerock.product.domain.ProductVO">
-   <!--일단getList로 대체  -->
-   select * from tbl_product
-<!-- <![CDATA[   
+	<insert id="insert">
+		insert into tbl_product (product_seq, product_name, product_price,
+		product_quantity, product_seller, product_filename, product_info)
+		values (product_seq.nextval, #{product_name}, #{product_price},
+		#{product_quantity}, #{product_seller}, #{product_filename},
+		#{product_info})
+	</insert>
+
+	<!-- 여기까지 구현완료 -->
+
+
+	<sql id="criteria">
+		<where>
+			<foreach item="type" collection="typeArr" separator="OR">
+				<choose>
+					<when test="type == 'N'.toString()">
+						product_name LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'I'.toString()">
+						product_info LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'S'.toString()">
+						product_seller LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</foreach>
+		</where>
+	</sql>
+
+	<!-- <select id="getList" resultType="org.zerock.domain.BoardVO"> <![CDATA[ 
+		select * from tbl_board where bno > 0 ]]> </select> -->
+
+
+	<select id="getListWithPaging"
+		resultType="org.zerock.product.domain.ProductVO">
+<![CDATA[   
    SELECT
     product_seq, product_name, product_price, product_quantity,
-    product_seller, product_filename, product_info, regdate, category_seq, product_status, product_readcnt, product_regdate, product_updatedate
+    product_seller, product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate
    FROM
     (
      SELECT 
-      ROW_NUMBER() OVER (ORDER BY product_seq DESC) rn,
-      product_seq, product_name, product_price, product_quantity,
-  	  product_seller, product_filename, product_info, regdate, category_seq, product_status, product_readcnt, product_regdate, product_updatedate
-     FROM
+      ROW_NUMBER() OVER (ORDER BY product_seq DESC) rn, product_seq, product_name, product_price, product_quantity,
+    product_seller, product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate
+   FROM
       tbl_product
 ]]>
-   
-   <include refid="criteria"></include>
+
+		<include refid="criteria"></include>
    
 <![CDATA[
     )
    WHERE
     rn BETWEEN (#{pageNum} - 1) * #{amount} + 1 AND #{pageNum} * #{amount}
-]]>       -->
-   </select>
+]]>
+	</select>
 
-     
-     
-  <!-- 
-     <insert id="insertSelectKey">
-        <selectKey keyProperty="bno" order="BEFORE" resultType="long">
-        select seq_board.nextval from dual
-        </selectKey>
-        
-      insert into tbl_board (bno, title, content, writer)
-      values (#{bno }, #{title}, #{content}, #{writer})
-     </insert>
-      -->
-     
-     <select id="read" resultType="org.zerock.product.domain.ProductVO">
-        select * from tbl_product where product_seq = #{product_seq}
-     </select>
-     
-     <delete id="delete">
-        delete from tbl_product where product_seq = #{product_seq}
-     </delete>
-     
-     <update id="update">
-         UPDATE tbl_product
-         SET
-            product_name = #{title},
-            product_filename = #{content},
-            product_info = #{writer},
-            product_updateDate = sysdate
-         WHERE
-            product_seq = #{product_seq}
-     </update>
-     
-     <select id="getTotalCount" resultType="int">
-        SELECT count(*) FROM tbl_product
-        <include refid="criteria"></include>
-     </select>
-     
-  </mapper>
+
+	<!-- <insert id="insertSelectKey"> <selectKey keyProperty="bno" order="BEFORE" 
+		resultType="long"> select seq_board.nextval from dual </selectKey> insert 
+		into tbl_board (bno, title, content, writer) values (#{bno }, #{title}, #{content}, 
+		#{writer}) </insert> -->
+
+	<select id="read"
+		resultType="org.zerock.product.domain.ProductVO">
+		select * from tbl_product where product_seq = #{product_seq}
+	</select>
+
+	<delete id="delete">
+		delete from tbl_product where product_seq = #{product_seq}
+	</delete>
+
+	<update id="update">
+		UPDATE tbl_product
+		SET
+		product_name = #{title},
+		product_filename = #{content},
+		product_info = #{writer},
+		product_updateDate = sysdate
+		WHERE
+		product_seq = #{product_seq}
+	</update>
+
+	<select id="getTotalCount" resultType="int">
+		SELECT count(*) FROM tbl_product
+		<include refid="criteria"></include>
+	</select>
+
+</mapper>
