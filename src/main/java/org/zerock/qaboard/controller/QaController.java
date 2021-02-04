@@ -26,7 +26,6 @@ public class QaController {
 	
 	private QaService service;	
 
-	// 211 page 표
 	
 //	@RequestMapping(value="/list", method = RequestMethod.GET)
 //	@GetMapping("/list") 

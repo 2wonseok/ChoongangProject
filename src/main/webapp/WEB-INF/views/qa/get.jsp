@@ -45,39 +45,41 @@ var seq = ${board.qa_seq};
 
 	 	<div class="form-group">
 	 		<label for="input1">번호</label>
-	 		<input class="form-control" id="input3" readonly value="${board.qa_seq }">
+	 		<input class="form-control" id="input1" readonly value="${board.qa_seq }">
 	 	</div>
 	 	
 	 	<div class="form-group">
 	 		<label for="input2">질문 종류</label>
-	 		<input class="form-control" id="input3" readonly value="${board.qa_category }">
+	 		<input class="form-control" id="input2" readonly value="${board.qa_category }">
 	 	</div>
 	 	
 	 	
 	 	<div class="form-group">
-	 		<label for="input3">작성시간</label>
-	 		<input class="form-control" id="input4" readonly value="${board.qa_regdate }">
+	 		<label for="input3">작성 시간</label>
+	 		<input class="form-control" id="input3" readonly value="${board.qa_regdate }">
+	 		
+	 		<fmt:formatDate pattern="yyyy년 MM월 dd일 h시m분" value="${board.qa_regdate}" />
 	 	</div>
 	 	
 	 	<div class="form-group">
-	 		<label for="input4">수정시간</label>
-	 		<input class="form-control" id="input5" readonly value="${board.qa_updatedate }">
+	 		<label for="input4">수정 시간</label>
+	 		<input class="form-control" id="input4" readonly value="${board.qa_updatedate }">
 	 	</div>
 	 	
 			<div class="form-group">
 		    <label for="input5">제목</label>
-		    <input readonly value='<c:out value="${board.qa_title }" />' type="text" class="form-control" id="input1">
+		    <input readonly value='<c:out value="${board.qa_title }" />' type="text" class="form-control" id="input5">
 		  	</div>		  	
 		  	
 		  	<div class="form-group">
 		    <label for="textarea1">내용</label>
-		    <textarea readonly class="form-control" id="textarea1" rows="3"><c:out value="${board.qa_content }" /></textarea>
+		    <textarea readonly class="form-control" id="textarea1" rows="3" id="input6"><c:out value="${board.qa_content }" /></textarea>
 		    
 		  	</div>
 		  	
 		  	<div class="form-group">
 		    <label for="input6">작성자</label>
-		    <input readonly value='<c:out value="${board.qa_writer }" />' type="text" class="form-control" id="input2">
+		    <input readonly value='<c:out value="${board.qa_writer }" />' type="text" class="form-control" id="input7">
 		  	</div>
 		  <%-- 	
 		  	<c:url value="/board/modify" var="modifyLink">
