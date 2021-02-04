@@ -63,27 +63,27 @@
 	<!-- 파일 <input type="file" name="rev_filename" class="form-control" /> --> <br>
 	<%--  <form action="${$root }/file/fileUploadTest" method="post" enctype="multipart/form-data"> 
 	<label><input type="file" name="upload" /></label> 
-	 <label><input type="file" name="upload" /></label>
+	
 	<input type="submit" value="업로드" /> 
 	</form>  --%>
-	
-	
-	<div class = "inputArea">
+	 <%-- 파일 <input type="file" name="upload" class="form-group" value="${filename }"/>
+	<br> --%>
+	 <div class = "inputArea">
 	<label for="revImg">이미지</label>.
-	 <label><input type="file" id="revImg" name="upload" /></label>  
-	 <!-- <label><input type="file" name="upload" /></label> -->
+	 <%-- <label><input type="file" id="revImg" name="upload" value="${RevVO.rev_filename }"/></label>  --%> 
+	 <label><input type="file" name="upload" id="revImg"/></label>
 	 <div class="select_img"><img src="" /></div>
 	 
 	<script>
-  $("#revImg").change(function(){
-   if(this.files && this.files[0]) {
-    var reader = new FileReader;
-    reader.onload = function(data) {
-     $(".select_img img").attr("src", data.target.result).width(500);        
-    }
-    reader.readAsDataURL(this.files[0]);
-   }
-  });
+	  $("#revImg").change(function(){
+	   if(this.files && this.files[0]) {
+	    var reader = new FileReader;
+	    reader.onload = function(data) {
+	     $(".select_img img").attr("src", data.target.result).width(500);        
+	    }
+	    reader.readAsDataURL(this.files[0]);
+	   }
+	  });
  </script>
  	
 	</div>

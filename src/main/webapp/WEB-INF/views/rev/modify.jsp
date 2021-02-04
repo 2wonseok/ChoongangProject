@@ -68,7 +68,8 @@ $(document).ready(function() {
 			
 
 
-				<form id="modify-form" action="${root }/rev/modify?rev_seq=${RevBoard.rev_seq}" method="post">
+				<form id="modify-form" action="${root }/rev/modify?rev_seq=${RevBoard.rev_seq}" method="post"
+				enctype="multipart/form-data">
 					<!-- 같은경로 라서 action="" 를 생략할수있음  -->
 					<div class="form-group">
 						<label for="input1">#번호</label> <input readonly name="rev_seq"
@@ -88,28 +89,12 @@ $(document).ready(function() {
 					</div>
 					
 					<div class="form-group">
-						<label for="input3">파일이름</label> <input  name="rev_filename"
+						<label for="input3">파일이름</label> <input  name="upload"
 							value="${RevBoard.rev_filename }" type="file" class="form-control"
 							id="input3" />
 					</div>
 					
-					<div class = "inputArea">
-						<label for="revImg">이미지</label>
-	 						<input type="file" id="revImg" name="rev_filename" />
-	 							<div class="select_img"><img src="" /></div>
-	 
-	 						<script>
-							  $("#revImg").change(function(){
-							   if(this.files && this.files[0]) {
-							    var reader = new FileReader;
-							    reader.onload = function(data) {
-							     $(".select_img img").attr("src", data.target.result).width(500);        
-							    }
-							    reader.readAsDataURL(this.files[0]);
-							   }
-							  });
-							 </script>
-					</div>
+					
 					
 					<div class="form-group">
 						

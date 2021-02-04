@@ -68,6 +68,7 @@
 				<div class="form-group">
 					<label for="input3">파일이름</label> <input readonly
 						value="${RevBoard.rev_filename }" type="text" class="form-control" id="input3" />
+						<img alt="noImg" src="${root }/resources/upload/${RevBoard.rev_filename}">
 				</div>
 				<div class="form-group">
 					<label for="input4">제목</label> <input readonly
