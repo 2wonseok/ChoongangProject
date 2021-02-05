@@ -48,7 +48,7 @@
 							class="form-control" id="input2" placeholder="이름을 입력하세요.">
 					</div>
 
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">등록</button>
 					
 				</form>
 			</div>

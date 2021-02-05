@@ -10,8 +10,7 @@ public interface FreeBoardMapper {
 
 	public int getTotalCount(FreeBoardCriteria cri);
 	
-
-	public List<FreeBoardVO> getList();
+//	public List<FreeBoardVO> getList();
 
 	public List<FreeBoardVO> getListWithPaging(FreeBoardCriteria cri);
 
@@ -24,7 +23,6 @@ public interface FreeBoardMapper {
 	public int delete(Long free_seq);
 
 	public int update(FreeBoardVO freeboard);
-
 
 	public void updateReplyCnt(@Param("free_seq") Long free_seq, @Param("amount") int amount);
 

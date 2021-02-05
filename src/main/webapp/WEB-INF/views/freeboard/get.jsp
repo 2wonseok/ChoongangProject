@@ -222,7 +222,7 @@ replyService.get(21, function(data) {
 					</div>
 					
 					<c:url value="/freeboard/modify" var="modifyLink">
-						<c:param name="bno" value="${freeVO.free_seq }"></c:param>
+						<c:param name="free_seq" value="${freeVO.free_seq }"></c:param>
 						<c:param name="pageNum" value="${cri.pageNum }"></c:param>
 						<c:param name="amount" value="${cri.amount }"></c:param>
 						<c:param name="type" value="${cri.type }" ></c:param>

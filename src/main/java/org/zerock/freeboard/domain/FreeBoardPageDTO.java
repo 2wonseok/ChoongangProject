@@ -22,8 +22,11 @@ public class FreeBoardPageDTO {
 			this.cri =cri;
 			this.total = total;
 			
-			this.endPage = (int) Math.ceil(cri.getPageNum() / 10.0) * 10;
-			this.startPage = endPage - 9;
+//			this.endPage = (int) Math.ceil(cri.getPageNum() / 10.0) * 10;
+//			this.startPage = endPage - 9;
+
+			this.endPage =(int) Math.ceil(cri.getPageNum() / 5.0) * 5;
+			this.startPage = this.endPage -4;
 			
 			int realEnd = (int) Math.ceil(total * 1.0 / cri.getAmount());
 			

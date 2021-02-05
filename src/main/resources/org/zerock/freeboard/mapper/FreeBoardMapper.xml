@@ -26,7 +26,7 @@
 
    <select id="getList" resultType="org.zerock.freeboard.domain.FreeBoardVO">
 <![CDATA[
-      select * from tbl_freeboard ORDER BY free_seq DESC
+      SELECT * FROM tbl_freeboard ORDER BY free_seq DESC
 ]]>      
       
    </select>

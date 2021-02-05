@@ -16,7 +16,8 @@ public class FreeBoardCriteria {
 	private String keyword;
 
 	public FreeBoardCriteria() {
-		this(1, 5);
+		this(1, 10);		
+		//한 페이지에 보여질 게시글 수
 	}
 
 	public FreeBoardCriteria(int pageNum, int amount) {

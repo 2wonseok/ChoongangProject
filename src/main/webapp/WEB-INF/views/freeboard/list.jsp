@@ -48,6 +48,7 @@
 			$("#myModal").modal("show");
 		}
 		
+		/* pagination a태그를 클릭했을시 해당href로 이동
 		var actionForm = $("#actionForm");
 		$(".pagination a").click(function(e) {
 			e.preventDefault();
@@ -55,7 +56,7 @@
 			actionForm.find("[name='pageNum']").val($(this).attr('href'));
 			
 			actionForm.submit();
-		});
+		}); */
 	});
 </script>
 
@@ -86,11 +87,13 @@
             <td>${freeVO.free_seq}</td>
             <td>
             <c:url value="/freeboard/get" var="freeboardLink">
+            
             	<c:param value="${freeVO.free_seq }" name="free_seq" />
             	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
             	<c:param value="${pageMaker.cri.amount }" name="amount" />
             	<c:param value="${pageMaker.cri.type }" name="type"	/>
-            	<c:param value="${pageMaker.cri.keyword }" name="keyword" /> --%>
+            	<c:param value="${pageMaker.cri.keyword }" name="keyword" />
+            	
             </c:url>
             
             <a href="${freeboardLink }">
@@ -148,13 +151,12 @@
 		  		</c:url>
 			    <li class="page-item">
 			    <a class="page-link" href="${prevLink }">Previous</a>
-			    <%-- <a class="page-link" href="${pageMaker.startPage -1 }">Previous</a> --%>
 			    </li>
 		  	</c:if>
 		    
 		    <c:forEach var="num" begin="${pageMaker.startPage }"
 		    					 end="${pageMaker.endPage }">
-		    	<c:url value="/board/list" var="pageLink" >
+		    	<c:url value="/freeboard/list" var="pageLink" >
 		    		<c:param name="pageNum" value="${num }" />
 		    		<c:param name="amount" value="${pageMaker.cri.amount }" />
 		    		<c:param name="type" value="${pageMaker.cri.type }"/>
@@ -162,7 +164,6 @@
 		    	</c:url>
 		    	<li class="page-item ${pageMaker.cri.pageNum eq num ? 'active' : '' }">
 		    	<a class="page-link" href="${pageLink }">${num }</a>
-		    	<%-- <a class="page-link" href="${num }">${num }</a> --%>
 		    	</li>
 		    </c:forEach>
 		    
@@ -175,7 +176,6 @@
 		    	</c:url>
 			    <li class="page-item">
 			    	<a class="page-link" href="${nextLink }">Next</a>
-		    		<%-- <a class="page-link" href="${pageMaker.endPage +1 }">Next</a> --%>
 			    </li>
 		    </c:if>
 		  </ul>
@@ -183,7 +183,9 @@
 	</div>
 </div>
 
-<div class="d-none">
+
+<%-- 자바스크립트 처리 
+  <div class="d-none">
 	<form id="actionForm" action="${root }/freeboard/list" >
 		<input name="pageNum" value="${pageMaker.cri.pageNum }" />
 		<input name="amount" value="${pageMaker.cri.amount }"/>
@@ -191,7 +193,7 @@
 		<input name="keyword" value="${pageMaker.cri.keyword }" />
 		<input type="submit" />
 	</form>
-</div>
+</div>    --%>
 
 </body>
 </html>

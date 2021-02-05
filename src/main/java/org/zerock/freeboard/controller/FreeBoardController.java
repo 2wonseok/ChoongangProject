@@ -27,101 +27,74 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/freeboard")
 @Log4j
 public class FreeBoardController {
-	
+
 	private FreeBoardService service;
-	
-	
+
 	@GetMapping("/list")
 	public void list(@ModelAttribute("cri") FreeBoardCriteria cri, Model model) {
-		//DB에서 list를 받아온다
+		// DB에서 list를 받아온다
 		List<FreeBoardVO> list = service.getList(cri);
-		
+
 		int total = service.getTotal(cri);
-		
+
 		FreeBoardPageDTO dto = new FreeBoardPageDTO(cri, total);
-		
-		//jsp에서 받을 이름 
+
+		// jsp에서 받을 이름
 		model.addAttribute("list", list);
 		model.addAttribute("pageMaker", dto);
+		log.info(dto);
 	}
-	
+
 	@GetMapping("/register")
 	public void register(@ModelAttribute("cri") FreeBoardCriteria cri) {
-		
+
 	}
-	
-	
+
 	@PostMapping("/register")
-	public String reegister(FreeBoardVO freeVO ,RedirectAttributes rttr) {
-		
+	public String reegister(FreeBoardVO freeVO, RedirectAttributes rttr) {
+
 		service.register(freeVO);
-		
-		rttr.addFlashAttribute("result",freeVO.getFree_seq());
-		rttr.addFlashAttribute("message",freeVO.getFree_seq());
-		
+
+		rttr.addFlashAttribute("result", freeVO.getFree_seq());
+		rttr.addFlashAttribute("message", freeVO.getFree_seq());
+
 		return "redirect:/freeboard/list";
 	}
-	
-	@GetMapping({"/get", "/modify"})
-	public void get(@RequestParam("free_seq") Long free_seq,
-			@ModelAttribute("cri") FreeBoardCriteria cri,Model model) {
+
+	@GetMapping({ "/get", "/modify" })
+	public void get(@RequestParam("free_seq") Long free_seq, @ModelAttribute("cri") FreeBoardCriteria cri,
+			Model model) {
 
 		log.info("get method - free_seq: " + free_seq);
 		log.info(cri);
 		FreeBoardVO freeVO = service.get(free_seq);
-		
-		
+
 		model.addAttribute("freeVO", freeVO);
 //		model.addAttribute("cri", cri);
 	}
-	
+
 	@PostMapping("/modify")
 	public String modify(FreeBoardVO freeVO, RedirectAttributes rttr) {
-		//FreeBoardCriteria cri 추가
 		if (service.modify(freeVO)) {
 			rttr.addFlashAttribute("result", "success");
 			rttr.addFlashAttribute("message", freeVO.getFree_seq() + "번 글이 수정되었습니다.");
 		}
-//		log.info(cri);
-//		rttr.addAttribute("pageNum", cri.getPageNum());
-//		rttr.addAttribute("amount", cri.getAmount());
-//		rttr.addAttribute("type", cri.getType());
-//		rttr.addAttribute("keyword", cri.getKeyword());
-//		
 		return "redirect:/freeboard/list";
 	}
-	
-//	@PostMapping("/modify2")
-//	public String modify2(FreeBoardVO freeVO, RedirectAttributes rttr) {
-//		
-//		if (service.modify(freeVO)) {
-//			rttr.addFlashAttribute("result", "success");
-//			rttr.addAttribute("free_seq", freeVO.getFree_seq());
-//			rttr.addAttribute("a", "a");
-//			rttr.addFlashAttribute("b", "b");
-//		}
-//		
-//		return "redirect:/freeboard/get";
-//	}
-	
+
 	@PostMapping("/remove")
-	public String remove(@RequestParam("free_seq") Long free_seq,
-			FreeBoardCriteria cri,
-			 RedirectAttributes rttr) {
-		
+	public String remove(@RequestParam("free_seq") Long free_seq, FreeBoardCriteria cri, RedirectAttributes rttr) {
+
 		if (service.remove(free_seq)) {
 			rttr.addFlashAttribute("result", "success");
 			rttr.addFlashAttribute("message", free_seq + "번 글이 삭제되었습니다.");
 		}
-		
+
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
-//		
+
 		return "redirect:/freeboard/list";
 	}
 }
-	
-	
-
