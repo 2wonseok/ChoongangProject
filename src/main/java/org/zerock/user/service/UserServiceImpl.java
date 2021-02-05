@@ -40,11 +40,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserVO read(int seq) {
-		return mapper.read(seq);
-	}
-
-	@Override
 	public boolean update(UserVO user) {
 		return mapper.update(user) == 1;
 	}
@@ -67,6 +62,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int nickCheck(String user_nickname) {
 		return mapper.nickCheck(user_nickname);
+	}
+
+	@Override
+	public void gradeUpdate(UserVO user) {
+		mapper.gradeUpdate(user);
+	}
+
+	@Override
+	public void pointUpdate(UserVO user) {
+		mapper.pointUpdate(user);
 	}
 
 }

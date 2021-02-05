@@ -4,6 +4,11 @@ import java.util.HashMap;
 
 import org.json.simple.JSONObject;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class Message {
 
 	public Message(String api_key, String api_secret) {
@@ -12,7 +17,7 @@ public class Message {
 
 	public JSONObject send(HashMap<String, String> params) {
 		// TODO Auto-generated method stub
-		return (JSONObject) params;
+		return null;
 	}
 
 }

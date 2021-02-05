@@ -1,12 +1,14 @@
 package org.zerock.user.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.RevBoard.service.RevBoardService;
 import org.zerock.user.domain.Criteria;
 import org.zerock.user.domain.PageDTO;
 import org.zerock.user.domain.UserVO;
@@ -23,12 +26,16 @@ import org.zerock.user.service.UserService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @Controller
 @AllArgsConstructor
 @Log4j
 @RequestMapping("/user/*")
 public class UserController {
+	
+	private RevBoardService revService;
 	
 	private UserService service;
 	
@@ -58,12 +65,40 @@ public class UserController {
 	}
 	
 	@GetMapping({"/userRead", "/userModify"})
-	public void read(@RequestParam int seq, @ModelAttribute("cri") Criteria cri, Model model) {
-		model.addAttribute("read", service.read(seq));
+	public void read(@RequestParam String user_id, @ModelAttribute("cri") Criteria cri, Model model) {
+		model.addAttribute("read", service.getUser(user_id));
+	}
+	
+	@PostMapping("/gradeUpdate")
+	public String gradeUpdate(UserVO vo, @ModelAttribute("cri") Criteria cri, 
+													Model model, RedirectAttributes rttr) {
+		
+		service.gradeUpdate(vo);
+		
+		rttr.addAttribute("user_id", vo.getUser_id());	
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+//		rttr.addAttribute("type", cri.getType());
+//		rttr.addAttribute("keyword", cri.getKeyword());
+		
+		return "redirect:/user/userRead";
 	}
 	
 	@PostMapping("/userModify")
-	public String modify(UserVO user, Criteria cri, RedirectAttributes rttr) {
+	public String modify(UserVO user, @RequestParam String changePw, Criteria cri, RedirectAttributes rttr) {
+		UserVO vo = service.getUser(user.getUser_id());
+		
+		if (!vo.getUser_password().equals(user.getUser_password())) {
+			rttr.addFlashAttribute("notMatch", "현재 비밀번호가 맞지 않습니다.");
+			rttr.addAttribute("user_id", vo.getUser_id());	
+			rttr.addAttribute("pageNum", cri.getPageNum());
+			rttr.addAttribute("amount", cri.getAmount());
+			
+			return "redirect:/user/userModify";
+		}
+		
+		user.setUser_password(changePw);
+		
 		if (service.update(user)) {
 			rttr.addFlashAttribute("result", "modifySuccess");
 			rttr.addFlashAttribute("message", user.getUser_seq()+"번 회원 정보가 수정되었습니다.");
@@ -179,5 +214,43 @@ public class UserController {
 		}
 		
 		return "redirect:/main/index";
+	}
+	
+	@RequestMapping("/sendSMS")
+	public @ResponseBody String sendSMS(String user_phone) {
+		Random rand  = new Random();
+    String numStr = "";
+    for(int i=0; i<4; i++) {
+        String ran = Integer.toString(rand.nextInt(10));
+        numStr+=ran;
+    }
+
+    System.out.println("수신자 번호 : " + user_phone);
+    System.out.println("인증번호 : " + numStr);
+    create(user_phone,numStr);
+    return numStr;
+	}
+	
+	public void create(String user_phone, String cerNum) {
+		
+		String api_key = "NCSKI3A4IVCQ0M1E";
+    String api_secret = "9FBKZ8X5QO6MLPBYMA21D0HZIR1Q4XCF";
+    Message coolsms = new Message(api_key, api_secret);
+
+    // 4 params(to, from, type, text) are mandatory. must be filled
+    HashMap<String, String> params = new HashMap<String, String>();
+    params.put("to", user_phone);    // 수신전화번호
+    params.put("from", "010-2369-3793");    // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
+    params.put("type", "SMS");
+    params.put("text", "인증번호는" + "["+cerNum+"]" + "입니다.");
+    params.put("app_version", "test app 1.2"); // application name and version
+
+    try {
+      JSONObject obj = (JSONObject) coolsms.send(params);
+      System.out.println(obj.toString());
+    } catch (CoolsmsException e) {
+      System.out.println(e.getMessage());
+      System.out.println(e.getCode());
+    }
 	}
 }

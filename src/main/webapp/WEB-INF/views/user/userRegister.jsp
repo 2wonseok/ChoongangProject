@@ -58,15 +58,21 @@ $(document).ready(function() {
 	
 		
 		$("#nickCheck").click(function(e) {
-			var user_nick = $("#input8-nickname").val();
+			var user_nick = $("#user_nickname").val();
 			e.preventDefault();
 			
 			var popup = window.open("${root}/user/nickCheck","pop","width=570,height=420, scrollbars=yes, resizable=yes");
 			
 		});
-		
+	
+		$("#zip_code_btn").click(function() {
+			var user_phone = $("#user_phone").val();
+			location.href="${root}/user/sendSMS?user_phone="+user_phone;
+			
+		});
 });
 
+	
 
 </script>
 <title>회원 가입</title>
@@ -105,7 +111,7 @@ $(document).ready(function() {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #1e263c;
+    background: #747474;
     padding: 0px 25px;
     margin: 0 0px;
     margin-top: -41px;
@@ -131,7 +137,7 @@ $(document).ready(function() {
 		  </div>
 		  <div class="form-group">
 		    <label for="input8-nickname">닉네임</label>
-		    <input type="text" class="form-control" style="width:77%;" name="user_nickname" id="input8-nickname" 
+		    <input type="text" class="form-control" style="width:77%;" name="user_nickname" id="user_nickname" 
 		    	value="" placeholder="중복 확인을 눌러주세요" readonly required>
 		    <button type="button" class="btn_check"  id="nickCheck">중복확인</button><br>
 		  </div>
@@ -155,12 +161,12 @@ $(document).ready(function() {
 		    <input type="date" class="form-control" name="user_birth" id="input2-name" value="" required> 
 		  </div>
 		  <div class="form-group">
-		    <label for="input7-phone">휴대폰</label>
-		    <input type="text" class="form-control" style="width:77%;" name="user_phone" id="input7-phone" value="" required>
+		    <label for="user_phone">휴대폰</label>
+		    <input type="text" class="form-control" style="width:77%;" name="user_phone" id="user_phone" value="" required>
 		    <button id="zip_code_btn">인증하기</button><br>
 		    <label for="input8-phone">인증번호</label>
 		    <input type="text" class="form-control" style="width:83%;" name="phoneConfirm" id="input8-phone" value="" required>
-		    <button id="zip_code_btn">완료</button>
+		    <button id="zip_code_btns" >완료</button>
 		  </div>
 		  <div class="form-group">
 		    <label for="addr">주소</label>

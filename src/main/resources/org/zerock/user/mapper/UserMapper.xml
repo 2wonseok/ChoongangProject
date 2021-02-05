@@ -61,11 +61,7 @@
 		SELECT COUNT(*) FROM tbl_user
 		<include refid="criteria"></include>
 	</select>
-	
-	<select id="read" resultType="org.zerock.user.domain.UserVO">
-		select * from tbl_user where user_seq = #{seq}
-	</select>
-	
+
 	<select id="getUser" resultType="org.zerock.user.domain.UserVO">
 		SELECT * from tbl_user WHERE user_id = #{user_id}
 	</select>
@@ -78,33 +74,26 @@
 		select COUNT(*) from tbl_user where user_nickname = #{user_nickname}
 	</select>
 	
+	<update id="gradeUpdate">
+		UPDATE tbl_user
+		SET
+			user_grade = #{user_grade}
+		WHERE
+			user_id = #{user_id}
+	</update>
+	
 	<update id="update">
 		UPDATE tbl_user
 		SET
 		  user_nickname = #{user_nickname},
 		  user_password = #{user_password},
 		  user_address = #{user_address},
-		  user_addresscode = #{user_addresscode},
-		  user_phone = #{user_phone}
+		  user_addresscode = #{user_addresscode}
 		WHERE
-		  user_seq = #{user_seq}
+		  user_id = #{user_id}
 	</update>
 	
 	<delete id="delete">
 		delete from tbl_user where user_seq = #{user_seq}
 	</delete>
-<!-- 		
-	<insert id="insertSelectKey">
-		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
-		select seq_board.nextval from dual
-		</selectKey>
-	
-		insert into tbl_board (bno, title, content, writer)
-		values (#{bno }, #{title}, #{content}, #{writer})
-	</insert>
-	
-	<update id="updateReplyCnt">
-		UPDATE tbl_board SET replycnt = replycnt + #{amount}
-		WHERE bno = #{bno}
-	</update> -->
 </mapper>

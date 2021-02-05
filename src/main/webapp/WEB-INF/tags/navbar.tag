@@ -1,5 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -66,23 +67,37 @@
 				  <a class="nav-link" href="${root }/product/list">판매게시판</a>
 				</li>
 				<li class="nav-item active">
-				  <a class="nav-link" href="${root }/rev/register">구매 후기</a>
+				  <a class="nav-link" href="${root }/rev/list">구매 후기</a>
 				</li>
 				<li class="nav-item active">
 				  <a class="nav-link" href="${root }/qa/list">Q/A</a>
-				</li>	      	      
-				<li class="nav-item active">
-				  <a class="nav-link" href="${root }/user/login">로그인</a>
 				</li>
-				<li class="nav-item active">
-				  <a class="nav-link" href="${root }/user/logout">로그아웃</a>
-				</li>
+				<c:choose>
+					<c:when test="${authUser != null}">
+						<li class="nav-item active">
+						  <a class="nav-link" href="${root }/user/logout">로그아웃</a>
+						</li>
+					</c:when>
+					<c:otherwise>
+						<li class="nav-item active">
+						  <a class="nav-link" href="${root }/user/login">로그인</a>
+						</li>
+					</c:otherwise>	
+				</c:choose>	      	      
+				
 				<li class="nav-item active">
 				  <a class="nav-link" href="${root }/user/userRegister">회원가입</a>
 				</li>
-				<li class="nav-item active">
-				  <a class="nav-link" href="${root }/user/userList">회원관리</a>
-				</li>
+				<c:if test="${authUser.user_grade == 0 }">
+					<li class="nav-item active">
+						<a class="nav-link" href="${root }/user/userList">회원관리</a>
+					</li>
+				</c:if>
+				<c:if test="${authUser.user_id != null }">
+					<li class="nav-item active">
+					  <a class="nav-link" href="${root }/user/userRead?user_id=${authUser.user_id}">마이페이지</a>
+					</li>
+				</c:if>
 			</ul>
 			<form role="search" action="" method="get" name="simpleSearch" novalidate="novalidate">
 				<fieldset>

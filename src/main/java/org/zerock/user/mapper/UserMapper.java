@@ -13,8 +13,6 @@ public interface UserMapper {
 	
 	public int getTotalCount(Criteria cri);
 	
-	public UserVO read(int seq);
-	
 	public int update(UserVO user);
 	
 	public int delete(int seq);
@@ -24,4 +22,9 @@ public interface UserMapper {
 	public int nickCheck(String user_nickname);
 	
 	public UserVO getUser(String user_id);
+	
+	public void gradeUpdate(UserVO user);
+	
+	public void pointUpdate(UserVO user);
+	
 }

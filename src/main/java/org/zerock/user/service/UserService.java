@@ -13,8 +13,6 @@ public interface UserService {
 	
 	public int getTotal(Criteria cri);
 	
-	public UserVO read(int seq);
-	
 	public boolean update(UserVO user);
 	
 	public boolean delete(int seq);
@@ -24,4 +22,9 @@ public interface UserService {
 	public int nickCheck(String user_nickname);
 	
 	public UserVO getUser(String user_id);
+	
+	public void gradeUpdate(UserVO user);
+	
+	public void pointUpdate(UserVO user);
+	
 }

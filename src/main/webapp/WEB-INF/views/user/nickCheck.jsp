@@ -26,7 +26,7 @@ $("#searchId").click(function(e) {
 
 function setParentText() {
 	var user_nickname = $("#user_nickname").val();
-  opener.document.getElementById("input8-nickname").value = document.getElementById("user_nickname").value
+  opener.document.getElementById("user_nickname").value = document.getElementById("user_nickname").value
   //opener.$("#user_id").val() = document.$("#user_id").val()
   window.close(); 
 }
