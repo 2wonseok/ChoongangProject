@@ -6,7 +6,25 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <style>
+
+[type=checkbox] { 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;  
+} 
+
+[type=checkbox] + label {
+  cursor: pointer;
+}
+[type=checkbox]:checked + label {
+  outline: 2px solid #1e263c;
+  margin: 0px;
+  padding : 5px;
+}
+
 #btn_add {
     color: #fff;
     font-size: 15px;
@@ -49,11 +67,11 @@ function checkTree(chk){
 	
 	<!-- type="checkbox" 로딩시 기본으로 체크 되어있도록 설정  -->
 	<!-- label 태그로 글씨가 클릭 되어도 체크 되도록 설정, label for="" 와 input id 동일해야 함 -->
+	<input id="open" name="qa_secret" value="공개" type="checkbox" onclick="checkTree(this);" checked style='zoom:1.5;'/> 
 	<label for="open">공개</label> 
-	<input id="open" name="qa_secret" value="공개" type="checkbox" onclick="checkTree(this);" checked/> 
 	
+	<input id="close" name="qa_secret" value="비공개" type="checkbox" onclick="checkTree(this);" style='zoom:1.5;'/>
 	<label for="close">비공개</label> 
-	<input id="close" name="qa_secret" value="비공개" type="checkbox" onclick="checkTree(this);" />
 	
 	<c:if test="${errors.noSecret }">
 	<small class="form-text text-danger">

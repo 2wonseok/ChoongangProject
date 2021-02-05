@@ -5,40 +5,30 @@
   
 <mapper namespace="org.zerock.qaboard.mapper.QaMapper">
 
-<sql id="criteria">
-<where>
-   <foreach item="type" collection="typeArr" separator="OR">
-      <choose>
-         <when test="type == 'T'.toString()">
-            title LIKE '%'||#{keyword}||'%' 
-         </when>
-         <when test="type == 'C'.toString()">
-            content LIKE '%'||#{keyword}||'%'
-         </when>
-         <when test="type == 'W'.toString()">
-            writer LIKE '%'||#{keyword}||'%'
-         </when>
-         <when test="type == 'D'.toString()">
-            regdate LIKE '%'||#{keyword}||'%'
-         </when>
-      </choose>
-   </foreach>
-   </where>
-</sql>
+	<sql id="criteria">
+	<where>
+		<foreach item="type" collection="typeArr" separator="OR">
+			<choose>
+				<when test="type == 'T'.toString()">
+					qa_title LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'C'.toString()">
+					qa_content LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'W'.toString()">
+					qa_writer LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'S'.toString()">
+					qa_category LIKE '%'||#{keyword}||'%'
+				</when>
 
-   <!-- 
-   C (CREATE (INSERT) 처리) 
-   R (READ (SELECT) 처리)
-   U (UPDATE 처리)
-   D (DELETE 처리)
-    -->
-   <select id="getList" resultType="org.zerock.qaboard.domain.QaVO">
-   <![CDATA[
-      SELECT * FROM tbl_qaboard WHERE qa_seq > 0
-   ]]>
-   </select>
-   
-   <select id="getListWithPaging" resultType="org.zerock.qaboard.domain.QaVO">
+			</choose>
+		</foreach>
+	</where>
+	</sql>
+
+
+	<select id="getListWithPaging" resultType="org.zerock.qaboard.domain.QaVO">
    <![CDATA[
    SELECT qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status 
    FROM
@@ -55,6 +45,18 @@
    WHERE rn BETWEEN (#{pageNum} - 1) * #{amount} + 1 AND #{pageNum} * #{amount}
    ]]>
    </select>
+   <!-- 
+   C (CREATE (INSERT) 처리) 
+   R (READ (SELECT) 처리)
+   U (UPDATE 처리)
+   D (DELETE 처리)
+    -->
+   <select id="getList" resultType="org.zerock.qaboard.domain.QaVO">
+   <![CDATA[
+      SELECT * FROM tbl_qaboard WHERE qa_seq > 0
+   ]]>
+   </select>   
+   
    
    <select id="read" resultType="org.zerock.qaboard.domain.QaVO">
       SELECT * FROM tbl_qaboard WHERE qa_seq = #{qa_seq}
