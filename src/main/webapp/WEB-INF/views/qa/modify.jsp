@@ -35,10 +35,10 @@ function checkTree(chk){
 	
 			<h1>게시물 수정</h1>	
 
-	<form id="modify-form" method="post" action="${root }/qa/modify" enctype="multipart/form-data">
+	<form id="modify-form" action="${root }/qa/modify" enctype="multipart/form-data" method="post">
 	
 			<label for="input3">번호</label>
-	 		<input name="qa_seq" id="input3" readonly value="${board.qa_seq }">			
+	 		<input name="qa_seq" readonly value="${board.qa_seq }">			
 			<br>
 			
 			<label for="open">공개</label> 
@@ -51,22 +51,22 @@ function checkTree(chk){
 			질문 종류 :
 			<select name="qa_category">
 			<option value='<c:out value="${board.qa_category }" />'>${board.qa_category }</option>
-		    <option value="회원 가입 관련">회원 가입 관련</option>
-		    <option value="정보 수정 관련">정보 수정 관련</option>
-		    <option value="게시판 관련">게시판 관련</option>
-		    <option value="결제 관련">결제 관련</option>
-		    <option value="상품 관련">상품 관련</option>
-		    <option value="구매 후기 관련">구매 후기 관련</option>
-		    <option value="배송 관련">배송 관련</option>
-		    <option value="환불 관련">환불 관련</option>
-		    <option value="기타 문의 사항">기타 문의 사항</option>    
+		    <option value="회원 ">회원</option>
+		    <option value="게시판">게시판</option>
+		    <option value="결제">결제</option>
+		    <option value="상품">상품</option>
+		    <option value="리뷰">리뷰</option>
+		    <option value="배송">배송</option>
+		    <option value="환불">환불</option>
+		    <option value="업체">업체</option>		    
+		    <option value="기타">기타</option>    
 			</select>
 			
 			<br>
 					
 		    <label for="input1">제목</label>
 		    <input value='<c:out value="${board.qa_title }" />' name="qa_title" type="text" id="input1" placeholder="제목을 입력 하세요.">
-		  		  	
+	
 		  	<br>
 		  	
 		    <label for="textarea1">내용</label>

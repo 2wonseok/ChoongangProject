@@ -36,6 +36,15 @@
 
 <u:navbar></u:navbar>
 
+
+
+
+
+
+
+
+
+
 <div class="container-sm">
   <div class="row">
 
@@ -44,13 +53,11 @@
       <thead>
         <tr>
           <th>NO</th>
-          <th>질문 종류</th>
-          <th>질문 제목</th>
-          <th>작성자</th>
-          <th>작성일</th>
-          <th>수정일</th>
-          <th>공개 여부</th>
-          <th>조회수</th>
+          <th>종류</th>
+          <th>제목</th>
+          <th>닉네임</th>
+          <th><i class="far fa-calendar-alt"> 작성일</i></th>
+          <th><i class="fas fa-eye"></i></th>
           <th>답변 상태</th>
         </tr>
       </thead>
@@ -70,10 +77,15 @@
             </c:url>
             
             <a href="${boardLink }">
+            	<c:choose>
+            	<c:when test="${board.qa_secret eq '공개'}"> <i class="fas fa-lock"></i> </c:when>
+				<c:when test="${board.qa_secret eq '비공개'}"> <i class="fas fa-lock-open"></i> </c:when>
+            	</c:choose>
+            	
 	            <c:out value="${board.qa_title}" />
 <%-- 	            <c:if test="${board.replyCnt gt 0 }">
 	            	<span class="badge badge-info">${board.replyCnt }</span>	            
-	            </c:if> --%>
+	            	</c:if> --%>
             </a>
             </td>    
             
@@ -81,21 +93,22 @@
                            
             <td>${board.qa_writer} </td>               
             <td><fmt:formatDate pattern="yyyy-MM-dd" 
-            value="${board.qa_regdate}" /> </td>
-            <td><fmt:formatDate pattern="yyyy-MM-dd" 
-            value="${board.qa_updatedate}" /> </td>   
-            <td>${board.qa_secret} </td>
+            value="${board.qa_regdate}" /> </td>            
             <td>${board.qa_readcnt} </td>                  
             <td>${board.qa_status} </td>  
           </tr>
           
         </c:forEach>
         
+        
       </tbody>
-      
+
     </table>
-    <a href="/qa/register/" id="btn_add">글쓰기</a>
+	<c:if test="${!empty authUser.user_id}">
+   		<a href="/qa/register/" id="btn_add">글쓰기</a>
+   	</c:if>
   </div>
+
 
 </div>
 

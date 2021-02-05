@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -68,7 +70,32 @@ public class QaController {
 	public String register(QaVO board, RedirectAttributes rttr, 
 			MultipartFile[] upload, HttpServletRequest request) {
 		
-		//파일 올리는 방법 복사
+		Map<String, Boolean> errors = new HashMap<String, Boolean>();
+		
+		if (board.getQa_title().isEmpty() || board.getQa_title() == null) {
+			errors.put("noTitle" , Boolean.TRUE);
+		} 
+		if (board.getQa_secret() == null) {
+			errors.put("noSecret", Boolean.TRUE);
+		} 
+		if (board.getQa_category().isEmpty() || board.getQa_category() == null) {
+			errors.put("noCategory", Boolean.TRUE);
+		} 
+		if (board.getQa_content().isEmpty() || board.getQa_content() == null) {
+			errors.put("noContent", Boolean.TRUE);
+		}
+		
+		if(!errors.isEmpty()) {
+			rttr.addFlashAttribute("errors", errors);
+			rttr.addFlashAttribute("category", board.getQa_category());
+			rttr.addFlashAttribute("secret", board.getQa_secret());
+			rttr.addFlashAttribute("title",board.getQa_title());
+			rttr.addFlashAttribute("content", board.getQa_content());
+			rttr.addFlashAttribute("filename", board.getQa_filename());
+			
+			return "redirect:/qa/register";
+		}
+		
 		//파일이 업로드 될 경로 설정 
 		String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload"); 
 		
@@ -79,7 +106,6 @@ public class QaController {
 			dir.mkdirs(); 
 		}
 		// 파일 업로드
-			//철수추가 파일 이름 list추가
 		List<String> reNames = new ArrayList<String>();
 		for(MultipartFile f : upload) { 
 			if(!f.isEmpty()) { 
@@ -98,12 +124,18 @@ public class QaController {
 					e.printStackTrace(); 
 				}
 				
-			//철수추가
+
 			reNames.add(reName);
 			} 
 		}
-		//철수추가 파일 올린 후에 그 이름을 복사
-		board.setQa_filename(reNames.get(0));
+		if (!reNames.isEmpty()) {
+			board.setQa_filename(reNames.get(0));			
+		} else {
+			board.setQa_filename("");	
+		}
+
+
+	
 				
 		System.out.println(board.getQa_filename());
 				
@@ -139,18 +171,16 @@ public class QaController {
 	public String modify(QaVO board, Criteria cri, RedirectAttributes rttr, 
 			MultipartFile[] upload, HttpServletRequest request) {
 		
-		//파일 올리는 방법 복사
-		//파일이 업로드 될 경로 설정 
-		String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload"); 
-				
-		//위에서 설정한 경로의 폴더가 없을 경우 생성 
+		// 파일이 업로드 될 경로 설정
+		String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload");
+
+		// 위에서 설정한 경로의 폴더가 없을 경우 생성
 		System.out.println(saveDir);
-		File dir = new File(saveDir); 
-		if(!dir.exists()) { 
-					dir.mkdirs(); 
+		File dir = new File(saveDir);
+		if (!dir.exists()) {
+			dir.mkdirs();
 		}
 		// 파일 업로드
-		// 철수추가 파일 이름 list추가
 		List<String> reNames = new ArrayList<String>();
 		for (MultipartFile f : upload) {
 			if (!f.isEmpty()) {
@@ -169,17 +199,16 @@ public class QaController {
 					e.printStackTrace();
 				}
 
-				// 철수추가
 				reNames.add(reName);
 			}
 		}
-		// 철수추가 파일 올린 후에 그 이름을  복사
-		board.setQa_filename(reNames.get(0));
+		if (!reNames.isEmpty()) {
+			board.setQa_filename(reNames.get(0));
+		} else {
+			board.setQa_filename("");
+		}
 
-		System.out.println(board.getQa_filename());
-
-		service.register(board);
-		
+				
 		if(service.modify(board)) {
 			rttr.addFlashAttribute("resultModify", board.getQa_seq());		
 		}		

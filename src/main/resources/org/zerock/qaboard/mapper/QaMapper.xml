@@ -82,11 +82,11 @@
    <update id="update">
       UPDATE tbl_qaboard SET
       qa_category = #{qa_category}, 
-      qa_title = #{qa_title}, 
+      qa_title = '*'||#{qa_title}, 
       qa_content = #{qa_content}, 
       qa_updatedate = SYSDATE,
       qa_secret = #{qa_secret},
-      qa_filename = #{qa_secret} 
+      qa_filename = #{qa_filename} 
       WHERE qa_seq = #{qa_seq}
    </update>
 

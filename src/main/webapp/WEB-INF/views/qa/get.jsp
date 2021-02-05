@@ -73,37 +73,42 @@ var seq = ${board.qa_seq};
 	 		<input class="form-control" readonly value="${board.qa_category }">
 	 	</div>
 	 	
-	 	
+<%-- 	 	
 	 	<div class="form-group">
 	 		<label for="input3">작성 시간</label>
-	 		<input class="form-control" readonly value="${board.qa_regdate }">
-	 		
-	 		<fmt:formatDate pattern="yyyy년 MM월 dd일 h시m분" value="${board.qa_regdate}" />
+	 		<input readonly class="form-control" value="<fmt:formatDate pattern="yyyy년 MM월 dd일 h시m분" value="${board.qa_regdate}" />" />
+
 	 	</div>
-	 	
-	 	<div class="form-group">
-	 		<label for="input4">수정 시간</label>
-	 		<input class="form-control" readonly value="${board.qa_updatedate }">
-	 	</div>
-	 	
+	 		 	 --%>
 			<div class="form-group">
 		    <label for="input5">제목</label>
 		    <input readonly value='<c:out value="${board.qa_title }" />' type="text" class="form-control">
 		  	</div>		  	
 		  	
 		  	<label for="input6">내용</label> <br>		  	
-		  	<div class="form-group" contentEditable="true" id="table">
+		  	<div class="form-group" contentEditable="false" id="table">
 		  	<c:out value="${board.qa_content }" /> <br>
-		  	<img alt="Not Image" src="${root }/resources/upload/${board.qa_filename }" id="image"> <br>
-			</div>
-
+		  	<img src="${root }/resources/upload/${board.qa_filename }" id="image"> <br>
 		  	
-<%-- 		<div class="form-group">
+			</div>
+			<small class="form-text text-primary">
+	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 h시m분" value="${board.qa_regdate}" /> 에 작성 되었습니다.
+	 		</small>
+			<c:if test="${!empty board.qa_updatedate}">
+	 		<div class="form-group">
+	 		<small class="form-text text-danger">
+	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 h시m분" value="${board.qa_updatedate}" /> 에 수정 되었습니다.
+	 		</small>
+	 		</div>
+	 		</c:if>
+
+<%-- 		  	
+			<div class="form-group">
 		    <label for="textarea1">내용</label>
 		    <textarea readonly class="form-control" id="textarea1" rows="50" id="input6"><c:out value="${board.qa_content }" /></textarea>
-		    <img alt="Not Image" src="${root }/resources/upload/${board.qa_filename }"> 
+		    <img src="${root }/resources/upload/${board.qa_filename }"> 
 		  	</div>
-		    --%>
+ --%>
 		  	
 		  	<div class="form-group">
 		    <label for="input6">조회수</label>
@@ -124,9 +129,21 @@ var seq = ${board.qa_seq};
 		  	</c:url>
 		  	<a href="${modifyLink }" class="btn btn-secondary">수정 , 삭제</a>
  --%>
-		  	<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
+ 			<!-- 보드 작성자 이름과 로그인 아이디가 같고, 등급이 1인 경우(일반)에만 활성화  -->
+			<c:if test="${board.qa_writer == authUser.user_nickname && authUser.user_grade == 1 }">
+				<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
+				<a href="${root }/qa/remove?qa_seq=${board.qa_seq }" id="btn_add">삭제</a>				
+			</c:if>
+			<!-- 등급이 0 , 곧 관리자 일경우만 모든 게시물 삭제 가능 하도록 활성화 -->
+			<c:if test="${authUser.user_grade == 0 }">
+					<a href="${root }/qa/remove?qa_seq=${board.qa_seq }" id="btn_add">삭제</a>
+			</c:if>		
+		  	<!-- 관리자이면서 자신의 글일 경우  -->
+		  	<c:if test="${authUser.user_grade == 0 && board.qa_writer == authUser.user_nickname }">
+					<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
+			</c:if>		
 		  	
-			<a href="${root }/qa/remove?qa_seq=${board.qa_seq }" id="btn_add">삭제</a>
+		  	
 			</div>
 		</div>
 	</div>

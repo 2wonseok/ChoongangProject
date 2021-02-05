@@ -51,40 +51,86 @@ function checkTree(chk){
 	<!-- label 태그로 글씨가 클릭 되어도 체크 되도록 설정, label for="" 와 input id 동일해야 함 -->
 	<label for="open">공개</label> 
 	<input id="open" name="qa_secret" value="공개" type="checkbox" onclick="checkTree(this);" checked/> 
+	
 	<label for="close">비공개</label> 
 	<input id="close" name="qa_secret" value="비공개" type="checkbox" onclick="checkTree(this);" />
+	
+	<c:if test="${errors.noSecret }">
+	<small class="form-text text-danger">
+			공개 여부를 선택해주세요.
+	</small>
+	</c:if>	
 	
 	<br>	
 	
 	질문 종류 :
-	<select name="qa_category">
+	<select name="qa_category" >
 	<option value="">질문 선택</option>
-    <option value="회원 가입 관련">회원 가입 관련</option>
-    <option value="정보 수정 관련">정보 수정 관련</option>
-    <option value="게시판 관련">게시판 관련</option>
-    <option value="결제 관련">결제 관련</option>
-    <option value="상품 관련">상품 관련</option>
-    <option value="구매 후기 관련">구매 후기 관련</option>
-    <option value="배송 관련">배송 관련</option>
-    <option value="환불 관련">환불 관련</option>
-    <option value="기타 문의 사항">기타 문의 사항</option>    
+    <option value="회원 ">회원</option>
+	<option value="게시판">게시판</option>
+	<option value="결제">결제</option>
+	<option value="상품">상품</option>
+	<option value="리뷰">리뷰</option>
+	<option value="배송">배송</option>
+	<option value="환불">환불</option>
+	<option value="업체">업체</option>		    
+	<option value="기타">기타</option>    
 	</select>
-		
+	
+	<c:if test="${errors.noCategory }">
+	<small class="form-text text-danger">
+			질문 종류를 선택 해주세요.
+	</small>
+	</c:if>	
+	
 	<br>	
 	
 	제목 : <br>
-	<input type="text" name="qa_title" placeholder="제목을 입력 해주세요." />	
+	<input type="text" name="qa_title" value="${title }"/>	
+	<c:if test="${errors.noTitle }">
+	<small class="form-text text-danger">
+			제목을 입력 해주세요.
+	</small>
+	</c:if>
 	
 	<br>
 	내용 : <br>
-	<textarea name="qa_content" cols="30" rows="10" placeholder="질문 내용을 입력 해주세요."></textarea>
+	<textarea name="qa_content" cols="30" rows="10" >${content }</textarea>
+	<c:if test="${errors.noContent }">
+	<small class="form-text text-danger">
+			내용을 입력 해주세요.
+	</small>
+	</c:if>
+	
 	<br>	
 	
-	작성자 : <input type="text" name="qa_writer" placeholder="작성자 이름을 입력 하세요." />	
+	작성자 : <input type="text" name="qa_writer" value="${authUser.user_nickname }"/>	
 	<br>
 	
-	파일 업로드 : <input type="file" name="upload" />
+	<div class ="inputArea">
+	파일 업로드
+	<label><input type="file" name="upload" id="image" value="${filename }"/></label>
+	
+	<div class="select_img"><img src="" /></div>
+	 
+	<script>
+	  $("#image").change(function(){
+	   if(this.files && this.files[0]) {
+	    var reader = new FileReader;
+	    reader.onload = function(data) {
+	     $(".select_img img").attr("src", data.target.result).width(200);        
+	    }
+	    reader.readAsDataURL(this.files[0]);
+	   }
+	  });
+ 	</script>
+ 	
+	</div>
+	
+	파일 업로드 : <input type="file" name="upload" value="${filename }"/>
 	<input type="submit" value="전송" id="btn_add">
+	
+	
 </form> 
 </div>
 </body>
