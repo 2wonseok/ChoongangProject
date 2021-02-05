@@ -31,6 +31,35 @@
 	    line-height: 45px;
 	    float: right;
 	}
+	
+
+	.card {
+	    width:12.1rem;
+	    height:26rem;
+	}
+	.card img {
+	    width: 12.0rem;
+	    height:12.0rem;
+	}
+	.card p{
+		 
+	    text-overflow:ellipsis;
+	    height:40px;
+	    line-height:20px;	
+	    overflow:hidden;
+	    
+	}
+	
+	.cardLine1{
+		 
+	    text-overflow:ellipsis;
+	    height:20px;
+	    line-height:20px;	
+	    overflow:hidden;
+	    
+	}
+	
+	
 
 </style>
 
@@ -39,11 +68,11 @@
   
   <u:navbar></u:navbar>
   
-	<div class="container">
-		<div class="row ">
+	<div class="container col-8">
+			<hr>
+		<div class="row">
 			<div class="col-md-6, col-md-offset-3">
 			
-			<hr>
 			
 				<div class="row d-flex justify-content-center">
 					<!--상품 bootstrap card 시작  -->
@@ -57,28 +86,38 @@
 				    		<c:param name="keyword" value="${pageDTO.cri.keyword }"></c:param>            	
 			            </c:url>
 					
-						<div class="card m-2" style="width: 15rem;">
-							<img class="card-img-top" src="/resources/upload/${product.product_filename }" alt="Card image cap">
-							<div class="card-body">
-								<h5 class="card-title"><c:out value="${product.product_name }"></c:out></h5>
-								<p class="card-text"><c:out value="${product.product_info }"></c:out></p>
-								<a href="${productLink }" class="btn btn-primary">구매하기</a>
-							</div>
+						<div class="card m-2">
+							<a href="${productLink }" >
+								<img class="card-img-top" src="${root }/resources/upload/${product.product_filename }" alt="Card image cap">
+								<div class="card-body" >
+						            <fmt:formatNumber value="${product.product_price }" type="number" var="price"></fmt:formatNumber>
+									<h5 class="card-title"><c:out value="${price }"></c:out>원</h5>
+									<p><c:out value="${product.product_name }"></c:out></p>
+									
+									<div>
+										<span><i class="fas fa-eye"></i> ${product.product_readcnt }</span>	
+										<span><i class="fas fa-heart"></i> ${product.product_readcnt }</span>										
+									</div>
+						            <fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
+									<div class="cardLine1">(${quantity })개 남음</div>
+							</a>
+										<hr>
+								    <p class="card-text">판매자:<c:out value="${product.product_seller }"></c:out></p>
+								</div>
+								
 						</div>
 					</c:forEach>
 				</div>
 			
-			<hr>
 				<!--상품 bootstrap card 끝  -->
+			<hr>
 			
-				<button onclick = "location.href = '/product/register'" class="btn_add">상품 등록</button>
+		<button onclick = "location.href = '/product/register'" class="btn_add">상품 등록</button>
 			
 			</div>
 		</div>
-	</div>
 	
 	
-
 
 
 	<!--페이징 시작  -->
@@ -126,6 +165,7 @@
 	</div>
 	<!-- 페이징 끝 -->
 
+	</div>
 
 </body>
 </html>
