@@ -2,6 +2,7 @@
   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +20,7 @@
 <title>구매후기 글등록</title>
 </head>
 <body>
-
+<u:navbar></u:navbar>
 	<div class="container">
 	<form action="${root }/rev/register" method="POST" enctype="multipart/form-data">
 	
@@ -53,12 +54,8 @@
 	</c:if>
 	내용 <input type="text" name="rev_content" class="form-group" value="${content }" /> <br>
 	
-	<c:if test="${errors.noWriter }">
-	<small class="form-text text-muted">
-			작성자 누구임?
-	</small>
-	</c:if>
-	작성자 <input type="text" name="rev_writer" class="form-group" value="${writer }"/> <br>
+	
+	<input type="text" name="rev_writer" class="form-group" value="${authUser.user_id }" hidden/> <br>
 	<%-- 파일 <input type="file" name="rev_filename" class="form-group" value="${param.rev_filename }"/> <br> --%>
 	<!-- 파일 <input type="file" name="rev_filename" class="form-control" /> --> <br>
 	<%--  <form action="${$root }/file/fileUploadTest" method="post" enctype="multipart/form-data"> 

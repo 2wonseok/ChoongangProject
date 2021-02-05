@@ -56,8 +56,8 @@ public class RevBoardServiceImpl implements RevBoardService{
 	}
 	
 	@Override
-	public void addReadCnt(int rev_seq) {
-		mapper.addReadCnt(rev_seq);
+	public int addReadCnt(int rev_seq) {
+		return mapper.addReadCnt(rev_seq);
 	}
 	
 	@Override
@@ -66,12 +66,17 @@ public class RevBoardServiceImpl implements RevBoardService{
 	}
 	
 	@Override
-	public void addGood(int rev_seq) {
-		mapper.addGood(rev_seq);
+	public int addGood(int rev_seq) {
+		return mapper.addGood(rev_seq);
 	}
 	
 	@Override
-	public void addHate(int rev_seq) {
-		mapper.addHate(rev_seq);
+	public int addHate(int rev_seq) {
+		return mapper.addHate(rev_seq);
+	}
+	
+	@Override
+	public int boardSelect(String rev_writer) {
+		return mapper.boardSelect(rev_writer);
 	}
 }

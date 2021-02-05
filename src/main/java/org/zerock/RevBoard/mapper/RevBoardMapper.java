@@ -25,7 +25,9 @@ public interface RevBoardMapper {
 	
 	public int countReadCnt(int rev_seq);
 	
-	public void addReadCnt(int rev_seq);
+	public int addReadCnt(int rev_seq);
 	
-	public void addHate(int rev_seq);
+	public int addHate(int rev_seq);
+	
+	public int boardSelect(String rev_writer);
 }

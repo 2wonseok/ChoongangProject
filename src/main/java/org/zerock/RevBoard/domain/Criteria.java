@@ -12,7 +12,7 @@ public class Criteria {
 		private int amount;
 		
 		private String type;
-		private String keyword;
+		private String keyword; 
 		
 		public Criteria() { // 기본생성자.
 			this(1, 10); // 1번페이지에 10개를 보여준다는뜻.
@@ -23,6 +23,7 @@ public class Criteria {
 			this.amount = amount;
 		}
 		
+				
 		public String[] getTypeArr() {
 			if (this.type == null) {
 				return new String[] {};

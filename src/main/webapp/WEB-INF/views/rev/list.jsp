@@ -2,6 +2,7 @@
   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,6 +32,34 @@
 <title>Insert title here</title>
 </head>
 <body>
+<u:navbar></u:navbar>
+<div class="container-sm">
+<c:url value="${root }/rev/list" var="searchLink">
+					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+					<c:param name="pageNum" value="${cri.pageNum }" />
+					<c:param name="amount" value="${cri.amount }" />
+					<c:param name="type" value="${cri.type }"/>
+					<c:param name="keyword" value="${cri.keyword }"/>
+				</c:url>
+
+	<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar">
+				<select class="custom-select my-1 mr-sm-2" name="type" 
+					id="inlineFormCustomSelectPref">
+					<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' } >제목</option>
+					<option value="K" ${pageMaker.cri.type eq 'K' ? 'selected' : '' } >카테고리</option>
+					<option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : '' }>내용</option>
+					<option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : '' }>작성자</option>
+					<option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : '' }>제목 or 내용</option>
+					<option value="TW" ${pageMaker.cri.type eq 'TW' ? 'selected' : '' }>제목 or 작성자</option>
+					<option value="TWC" ${pageMaker.cri.type eq 'TWC' ? 'selected' : '' }>제목 or 내용 or 작성자</option>
+				</select> 
+				<input class="form-control mr-sm-2" type="search" name="keyword" value="${pageMaker.cri.keyword }"
+					placeholder="Search" aria-label="Search" required>
+					<input type="hidden"  name="pageNum" value="1"/>
+					<input type="hidden"  name="amount" value="${pageMaker.cri.amount }"/>
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+			</div>
 	<div class="container-sm">
 		<div class="row">
 			<table class="table table-striped table-hover">
@@ -53,12 +82,13 @@
 							<td>${rev.rev_seq}</td>
 							<c:url value="/rev/get" var="revLink">
 								<c:param value="${rev.rev_seq }" name="rev_seq" />
-								<%-- <c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
+								<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
 								<c:param value="${pageMaker.cri.amount }" name="amount" />
 								<c:param name="type" value="${pageMaker.cri.type }" />
-								<c:param name="keyword" value="${pageMaker.cri.keyword }" /> --%>
+								<c:param name="keyword" value="${pageMaker.cri.keyword }" />
+								<c:param name="rev_title" value="${rev.rev_title }" />
 							</c:url>
-							<td>${rev.rev_category }</td>
+							<td><c:if test="${rev.rev_category eq 1}">모자</c:if><c:if test="${rev.rev_category eq 2}">신발</c:if><c:if test="${rev.rev_category eq 3}">상의</c:if><c:if test="${rev.rev_category eq 4}">하의</c:if></td>
 							<td><a href="${revLink }"> <c:out
 										value="${rev.rev_title}" />
 							</a></td>
@@ -75,7 +105,9 @@
 					</c:forEach>
 				</tbody>
 			</table>
+					<c:if test="${ sessionScope.authUser.user_id != null }">
 					<a id="btn_add" class="btn btn-info" href="${root }/rev/register">후기 쓰기</a>
+					</c:if>
 		</div>
 	</div>
 		<div class="container-sm mt-3">
@@ -128,7 +160,7 @@
 			</nav>
 		</div>
 	</div>
-
+	
 
 </body>
 </html>

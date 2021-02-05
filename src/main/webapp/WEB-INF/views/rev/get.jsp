@@ -2,11 +2,32 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <style type="text/css">
 	#btn_add {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+}
+#goodbtn {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+}
+#hatebtn {
     color: #fff;
     font-size: 15px;
     border: none;
@@ -31,20 +52,75 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-<script src="${root }/resources/rev_js/rev.js"></script>
-<script>
-	$(document).ready(function() {
-		$("#goodbtn").click(function() {
-			revService.goodAdd(rev_seq , function(data) {
+<script src="${root }/resources/rev_js/rev.js">
+/* $(document).ready(function() {
+	$("#goodbtn").click(function() {
+		revService.goodAdd({
+			rev_seq,
+			function(data) {
 				console.log(data);
-			});
-		})
-	})
+			},
+			function() {
+				console.log("error");
+			}
+			
+		});
+	});
+}); */
+
+</script>
+<script>
 	
+	
+	 $(document).ready(function() {
+	
+	$('#goodbtn').click(function(){
+		   
+		  $.ajax({
+			  method: "get",
+		      url: "/rev/like", 
+		      data: {rev_seq: rev_seq}, 
+		      
+
+		      success: function(data){		    	  
+		          alert("좋아요를 누르셨습니다");
+		          console.log(rev_seq);
+		      },
+		      error:function(error){
+		       
+		        alert("좋아요를 실패하셨습니다.");
+		      }
+		  });
+		});		
+	}); 
+
+	 $(document).ready(function() {
+			
+			$('#hatebtn').click(function(){
+				   
+				  $.ajax({
+					  method: "get",
+				      url: "/rev/hate", 
+				      data: {rev_seq: rev_seq}, 
+				      
+
+				      success: function(data){		    	  
+				          alert("싫어요를 누르셨습니다");
+				          console.log(rev_seq);
+				      },
+				      error:function(error){
+				       
+				        alert("싫어요를 실패하셨습니다.");
+				      }
+				  });
+				});		
+			});
+	 
 </script>
 <title>Insert title here</title>
 </head>
 <body>
+<u:navbar></u:navbar>
 	<div class="container-sm">
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
@@ -68,7 +144,7 @@
 				<div class="form-group">
 					<label for="input3">파일이름</label> <input readonly
 						value="${RevBoard.rev_filename }" type="text" class="form-control" id="input3" />
-						<img alt="noImg" src="${root }/resources/upload/${RevBoard.rev_filename}">
+						<img alt="" src="${root }/resources/upload/${RevBoard.rev_filename}">
 				</div>
 				<div class="form-group">
 					<label for="input4">제목</label> <input readonly
@@ -112,10 +188,27 @@
 			</div>
 			
 		</div>
-		<a id="btn_add" class="btn btn-secondary"  href="${root}/rev//get/hate?rev_seq=${RevBoard.rev_seq}">싫어요!</a>
-		<a id="goodbtn" class="btn btn-secondary"  href="${root}/rev/get/like?rev_seq=${RevBoard.rev_seq}">좋아요!</a>
-		<a id="btn_add" class="btn btn-secondary"  href="${root}/rev/modify?rev_seq=${RevBoard.rev_seq}">글수정</a>
-		<a id="btn_add" class="btn btn-secondary"  href="${root}/rev/list">목록으로</a>
+		<c:url value="${root }/rev/modify" var="modifyLink">
+					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+					<c:param name="pageNum" value="${cri.pageNum }" />
+					<c:param name="amount" value="${cri.amount }" />
+					<c:param name="type" value="${cri.type }"/>
+					<c:param name="keyword" value="${cri.keyword }"/>
+				</c:url>
+				<c:url value="${root }/rev/list" var="listLink">
+					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+					<c:param name="pageNum" value="${cri.pageNum }" />
+					<c:param name="amount" value="${cri.amount }" />
+					<c:param name="type" value="${cri.type }"/>
+					<c:param name="keyword" value="${cri.keyword }"/>
+				</c:url>
+		<a id="hatebtn" class="btn btn-secondary"  href="">싫어요!</a>
+		<a id="goodbtn" class="btn btn-secondary"  href="">좋아요!</a>
+		<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer}">
+		<a id="btn_add" class="btn btn-secondary"  href="${modifyLink }">글수정</a>
+		</c:if>
+		<a id="btn_add" class="btn btn-secondary"  href="${listLink }">목록으로</a>
 	</div>
+	
 </body>
 </html>

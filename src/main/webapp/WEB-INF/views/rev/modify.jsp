@@ -2,6 +2,7 @@
   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,6 +58,7 @@ $(document).ready(function() {
 <title>Insert title here</title>
 </head>
 <body>
+<u:navbar></u:navbar>
 	<div class="container-sm">
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
@@ -65,10 +67,16 @@ $(document).ready(function() {
 		</div>
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
-			
+			<c:url value="${root }/rev/modify" var="modifyLink">
+					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+					<c:param name="pageNum" value="${cri.pageNum }" />
+					<c:param name="amount" value="${cri.amount }" />
+					<c:param name="type" value="${cri.type }"/>
+					<c:param name="keyword" value="${cri.keyword }"/>
+				</c:url>
 
 
-				<form id="modify-form" action="${root }/rev/modify?rev_seq=${RevBoard.rev_seq}" method="post"
+				<form id="modify-form" action="${modifyLink }" method="post"
 				enctype="multipart/form-data">
 					<!-- 같은경로 라서 action="" 를 생략할수있음  -->
 					<div class="form-group">
@@ -140,13 +148,15 @@ $(document).ready(function() {
 							id="input7" readonly />
 					</div>
 
-					<%-- <input type="hidden" value="${cri.pageNum }" name="pageNum" /> 
+					<input type="hidden" value="${cri.pageNum }" name="pageNum" /> 
 					<input type="hidden" value="${cri.amount }" name="amount" /> 
 					<input type="hidden" value="${cri.type }" name="type" /> 
-					<input type="hidden" value="${cri.keyword }" name="keyword" /> --%>
+					<input type="hidden" value="${cri.keyword }" name="keyword" /> 
+					<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer}">
 					<button id="btn_add" type="submit" class="btn btn-primary">글 수정</button>
 					<button id="remove-btn" type="submit" class="btnbtn-danger">글
 						삭제</button>
+					</c:if>
 				</form>
 			</div>
 		</div>

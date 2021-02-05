@@ -2,24 +2,21 @@ var revService = (function() {
 	
 	function goodAdd(rev_seq, callback, error) {
 		
-		$.ajax({
-			type: "get",
-			url: appRoot + "/rev/get/like",
-			contentType: "application/json; charset=UTF-8",
-			success: function(result, status, xhr) {
-				console(result, status);
-				if	(callback !== undefined) { // undefined가 아니면 true 이므로 생략가능.
-				callback(result);
+		
+		
+		$.getJSON(appRoot + "/rev/get/like", function(data) {
+			if (callback) {
+				callback(data);
 				}
-			},
-			error: function(xhr, status, er) { // undefined가 아니면 true 이므로 생략가능.
-				if (error) {
-				error(er);
+		}).fail(function(xhr, status, err) {
+			if (error) {
+				error();
 				}
-			}
 		});
+		
 	}
 	
+		
 	
 	return {
 		goodAdd: goodAdd
