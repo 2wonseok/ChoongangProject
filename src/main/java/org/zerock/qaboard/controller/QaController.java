@@ -171,6 +171,33 @@ public class QaController {
 	public String modify(QaVO board, Criteria cri, RedirectAttributes rttr, 
 			MultipartFile[] upload, HttpServletRequest request) {
 		
+		Map<String, Boolean> errors = new HashMap<String, Boolean>();
+		
+		if (board.getQa_title().isEmpty() || board.getQa_title() == null) {
+			errors.put("noTitle" , Boolean.TRUE);
+		} 
+		if (board.getQa_secret() == null) {
+			errors.put("noSecret", Boolean.TRUE);
+		} 
+		if (board.getQa_category().isEmpty() || board.getQa_category() == null) {
+			errors.put("noCategory", Boolean.TRUE);
+		} 
+		if (board.getQa_content().isEmpty() || board.getQa_content() == null) {
+			errors.put("noContent", Boolean.TRUE);
+		}
+		
+		if(!errors.isEmpty()) {
+			rttr.addFlashAttribute("errors", errors);
+			rttr.addFlashAttribute("category", board.getQa_category());
+			rttr.addFlashAttribute("secret", board.getQa_secret());
+			rttr.addFlashAttribute("title",board.getQa_title());
+			rttr.addFlashAttribute("content", board.getQa_content());
+			rttr.addFlashAttribute("filename", board.getQa_filename());
+			
+			return "redirect:/qa/modify?qa_seq=" + board.getQa_seq();
+		}
+		
+		
 		// 파일이 업로드 될 경로 설정
 		String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload");
 

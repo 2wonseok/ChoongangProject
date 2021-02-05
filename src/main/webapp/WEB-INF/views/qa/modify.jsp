@@ -46,7 +46,12 @@ function checkTree(chk){
 			<label for="close">비공개</label> 
 			<input id="close" name="qa_secret" value="비공개" type="checkbox" onclick="checkTree(this);" />
 			<br>
-	
+			
+			<c:if test="${errors.noSecret }">
+			<small class="form-text text-danger">
+			공개 여부를 선택해주세요.
+			</small>
+			</c:if>
 			
 			질문 종류 :
 			<select name="qa_category">
@@ -62,16 +67,32 @@ function checkTree(chk){
 		    <option value="기타">기타</option>    
 			</select>
 			
+			<c:if test="${errors.noCategory }">
+			<small class="form-text text-danger">
+			질문 종류를 선택 해주세요.
+			</small>
+			</c:if>
+			
 			<br>
 					
 		    <label for="input1">제목</label>
 		    <input value='<c:out value="${board.qa_title }" />' name="qa_title" type="text" id="input1" placeholder="제목을 입력 하세요.">
-	
+			
+			<c:if test="${errors.noTitle }">
+			<small class="form-text text-danger">
+			제목을 작성 해주세요.
+			</small>
+			</c:if>
 		  	<br>
 		  	
 		    <label for="textarea1">내용</label>
 		    <textarea name="qa_content" id="textarea1" rows="3" placeholder="내용을 입력 하세요."><c:out value="${board.qa_content }" /></textarea>
 		    
+		    <c:if test="${errors.noContent }">
+			<small class="form-text text-danger">
+			내용을 작성 해주세요.
+			</small>
+			</c:if>
 		  	<br>		  	
 		  	
 		    <label for="input2">작성자</label>
