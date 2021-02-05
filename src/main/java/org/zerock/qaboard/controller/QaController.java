@@ -194,7 +194,7 @@ public class QaController {
 			rttr.addFlashAttribute("content", board.getQa_content());
 			rttr.addFlashAttribute("filename", board.getQa_filename());
 			
-			return "redirect:/qa/modify?qa_seq=" + board.getQa_seq();
+			return "redirect:/qa/modify?qa_seq=" + board.getQa_seq(); 
 		}
 		
 		

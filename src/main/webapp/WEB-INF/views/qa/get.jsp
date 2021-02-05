@@ -143,7 +143,7 @@ var seq = ${board.qa_seq};
 					<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
 			</c:if>		
 		  	
-		  	
+		  	 
 			</div>
 		</div>
 	</div>

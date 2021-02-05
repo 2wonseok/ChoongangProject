@@ -101,7 +101,7 @@ function checkTree(chk){
 			내용을 입력 해주세요.
 	</small>
 	</c:if>
-	
+	 
 	<br>	
 	
 	작성자 : <input type="text" name="qa_writer" value="${authUser.user_nickname }"/>	

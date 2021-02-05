@@ -87,7 +87,7 @@
 	            	<span class="badge badge-info">${board.replyCnt }</span>	            
 	            	</c:if> --%>
             </a>
-            </td>    
+            </td>     
             
             
                            

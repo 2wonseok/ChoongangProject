@@ -51,7 +51,7 @@ function checkTree(chk){
 			<small class="form-text text-danger">
 			공개 여부를 선택해주세요.
 			</small>
-			</c:if>
+			</c:if> 
 			
 			질문 종류 :
 			<select name="qa_category">
