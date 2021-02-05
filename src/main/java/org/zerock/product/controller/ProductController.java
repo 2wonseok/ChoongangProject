@@ -125,8 +125,49 @@ public class ProductController {
 	}
 
 	@PostMapping("/modify")
-	public String modify(ProductVO product, Criteria cri, RedirectAttributes rttr, HttpServletRequest req) {
+	public String modify(ProductVO product, Criteria cri, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request) {
 
+		//파일 올리는 방법 복사
+				//파일이 업로드 될 경로 설정 
+				String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload"); 
+				
+				//위에서 설정한 경로의 폴더가 없을 경우 생성 
+				System.out.println(saveDir);
+				File dir = new File(saveDir); 
+				if(!dir.exists()) { 
+					dir.mkdirs(); 
+				}
+				// 파일 업로드
+					//철수추가 파일 이름 list추가
+					List<String> reNames = new ArrayList<String>();
+				
+				for(MultipartFile f : upload) { 
+					if(!f.isEmpty()) { 
+						// 기존 파일 이름을 받고 확장자 저장 
+						String orifileName = f.getOriginalFilename(); 
+						String ext = orifileName.substring(orifileName.lastIndexOf("."));
+						// 이름 값 변경을 위한 설정 
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmmssSSS"); 
+						int rand = (int)(Math.random()*1000); 
+						// 파일 이름 변경 
+						String reName = sdf.format(System.currentTimeMillis()) + "_" + rand + ext; 
+						// 파일 저장 
+						try { 
+							f.transferTo(new File(saveDir + "/" + reName)); 
+						} catch (IOException e) { 
+							e.printStackTrace(); 
+						}
+						
+					//철수추가
+					reNames.add(reName);
+					} 
+				}
+		//철수추가 파일 올린 후에 그 이름을 product에 복사
+		product.setProduct_filename(reNames.get(0));
+		
+		System.out.println(product.getProduct_filename());
+		
+		
 		if (service.modify(product)) {
 			rttr.addFlashAttribute("result", "success");
 			rttr.addFlashAttribute("message", product.getProduct_seq() + "번 상품정보가 수정되었습니다.");

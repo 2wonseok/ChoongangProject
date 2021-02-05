@@ -73,26 +73,26 @@ table.type05 td {
 						<table class="type05">
 							<tbody>
 								<tr>
-									<td>제품 등록</td>
+									<td>상품 등록</td>
 								</tr>
 								<tr>
-									<th scope="row">제품 이름</th>
+									<th scope="row">상품 이름</th>
 									<td><input name="product_name" type="text"></td>
 								</tr>
 								<tr>
-									<th scope="row">제품 단위 가격</th>
+									<th scope="row">상품 단위 가격</th>
 									<td><input name="product_price" type="number"></td>
 								</tr>
 								<tr>
-									<th scope="row">제품 수량</th>
+									<th scope="row">상품 수량</th>
 									<td><input name="product_quantity" type="number"></td>
 								</tr>
 								<tr>
-									<th scope="row">제품 판매자id를hidden으로넣을예정</th><!--value=authUser로 넣을 예정  -->
-									<td><input name="product_seller" type="text"></td>
+									<th scope="row">상품 판매자id</th><!--value=authUser로 넣을 예정  -->
+									<td><input name="product_seller" type="text" value=${authUser.user_id } style="background-color:silver;"readonly></td>
 								</tr>
 								<tr>
-									<th scope="row">제품 이미지파일이름</th>
+									<th scope="row">상품 이미지파일이름</th>
 									<td><input type="file" name="upload" /></td>
 								</tr>
 								<tr>
@@ -100,13 +100,34 @@ table.type05 td {
 									<td> <input name="category_seq" type="number"></td>
 								</tr>
 								<tr>
-									<th scope="row">제품 설명</th>
+									<th scope="row">상품 설명</th>
 									<td><textarea name="product_info" rows="10" cols="23"></textarea></td>
 								</tr>
 							</tbody>
 						</table>	
 						
-						<button class="btn_add">등록하기</button>
+						<!--파일여러개올리는거 시도중  -->
+						<!-- <div class = "inputArea">
+							 <label><input type="file" name="upload" id="revImg"/></label>
+							 <label><input type="file" name="upload" id="revImg"/></label>
+							 <label><input type="file" name="upload" id="revImg"/></label>
+							 <div class="select_img"><img src="" /></div>
+							 
+							<script>
+							  $("#revImg").change(function(){
+												   if(this.files /* && this.files[0] */) {
+												    	var reader = new FileReader;
+												    	reader.onload = function(data) {
+												     					$(".select_img img").attr("src", data.target.result).width(500);        
+												    					}
+												   		reader.readAsDataURL(this.files[0]);
+												   }
+												  });
+						 	</script>
+						</div> -->
+						
+						
+						<button class="btn_add">상품 등록하기</button>
 					</form>
 				</div>
 				

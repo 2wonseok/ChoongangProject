@@ -7,10 +7,10 @@
 
 	<insert id="insert">
 		insert into tbl_product (product_seq, product_name, product_price,
-		product_quantity, product_seller, product_filename, product_info)
+		product_quantity, product_seller, product_filename, product_info, category_seq)
 		values (product_seq.nextval, #{product_name}, #{product_price},
 		#{product_quantity}, #{product_seller}, #{product_filename},
-		#{product_info})
+		#{product_info}, #{category_seq})
 	</insert>
 
 	<!-- 여기까지 구현완료 -->
@@ -80,9 +80,10 @@
 	<update id="update">
 		UPDATE tbl_product
 		SET
-		product_name = #{title},
-		product_filename = #{content},
-		product_info = #{writer},
+		product_name = #{product_name},
+		product_filename = #{product_filename},
+		product_info = #{product_info},
+		category_seq = #{category_seq},
 		product_updateDate = sysdate
 		WHERE
 		product_seq = #{product_seq}

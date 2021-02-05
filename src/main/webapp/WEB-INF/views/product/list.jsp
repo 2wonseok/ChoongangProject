@@ -34,12 +34,12 @@
 	
 
 	.card {
-	    width:12.1rem;
-	    height:26rem;
+	    width:14.1rem;
+	    height:30rem;
 	}
 	.card img {
-	    width: 12.0rem;
-	    height:12.0rem;
+	    width: 14.0rem;
+	    height:16.0rem;
 	}
 	.card p{
 		 
@@ -70,7 +70,8 @@
   
 	<div class="container col-8">
 			<hr>
-		<div class="row">
+			<h3>[철수안내] 로그인을 해야 상품등록 버튼이 생김.</h3>
+			<div class="row">
 			<div class="col-md-6, col-md-offset-3">
 			
 			
@@ -111,8 +112,9 @@
 			
 				<!--상품 bootstrap card 끝  -->
 			<hr>
-			
-		<button onclick = "location.href = '/product/register'" class="btn_add">상품 등록</button>
+		<c:if test="${not empty authUser.user_id}">
+			<button onclick = "location.href = '${root}/product/register'" class="btn_add">상품 등록</button>
+		</c:if>
 			
 			</div>
 		</div>
