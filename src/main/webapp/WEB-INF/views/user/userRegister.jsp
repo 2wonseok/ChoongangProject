@@ -13,6 +13,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
+// 주소 API 관련 스크립트
 var goPopup = function(){ 
 	var pop = window.open("${root}/user/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes");
 	} 
@@ -28,16 +29,20 @@ var goPopup = function(){
 	}
 
 $(document).ready(function() {
-	$("#idCheck").click(function(e) {
+/* 	$("#idCheck").click(function(e) {
 		var user_id = $("#input1-id").val();
 		e.preventDefault();
 		
 		var popup = window.open("${root}/user/idCheck","pop","width=570,height=420, scrollbars=yes, resizable=yes");
 		
-	});
+	}); */
 	
 		$("#alert-success").hide(); 
 		$("#alert-danger").hide(); 
+		$("#phone-success").hide(); 
+		$("#phone-danger").hide();
+		$("#idCheckSuccess").hide(); 
+		$("#idCheckFail").hide();
 		
 		$("input").keyup(function() { 
 			var pwd1=$("#input3-password").val(); 
@@ -56,7 +61,6 @@ $(document).ready(function() {
 			} 
 		}); 
 	
-		
 		$("#nickCheck").click(function(e) {
 			var user_nick = $("#user_nickname").val();
 			e.preventDefault();
@@ -64,12 +68,68 @@ $(document).ready(function() {
 			var popup = window.open("${root}/user/nickCheck","pop","width=570,height=420, scrollbars=yes, resizable=yes");
 			
 		});
-	
-		$("#zip_code_btn").click(function() {
-			var user_phone = $("#user_phone").val();
-			location.href="${root}/user/sendSMS?user_phone="+user_phone;
+		
+		// 휴대폰 인증 관련 AJAX 
+	$("#user_phone").keyup(function() { 
+		$("#btn_add").attr("disabled", "disabled"); 
+		$('#zip_code_btn').click(function(){
+			var user_phone = $('#user_phone').val();
+			alert('인증번호 발송 완료!');
 			
+			$.ajax({
+			    type: "GET",
+			    url: "${root}/user/sendSMS",
+			    data: {
+			        "user_phone" : user_phone
+			    },
+			    success: function(res) {
+		        $('#zip_code_btns').click(function(){
+		            if($.trim(res) == $('#phoneConfirm').val()) {
+									$("#phoneConfirm").attr("readonly", true);
+									$("#phone-success").show(); 
+									$("#phone-danger").hide();
+									$("#btn_add").removeAttr("disabled"); 
+		            } else {
+									$("#phone-success").hide(); 
+									$("#phone-danger").show(); 
+									$("#btn_add").attr("disabled", "disabled"); 
+		            }
+		        })
+			    }
+			});
 		});
+	}); 
+		
+	// 중복 체크 관련 로직
+	$("#idCheck").click(function() {
+		$("#btn_add").attr("disabled", "disabled");
+		var user_id = $("#user_id").val();
+		
+		$.ajax({
+		    type: "GET",
+		    url: "${root}/user/idCheck",
+		    data: {
+		        "user_id" : user_id
+		    },
+		    success: function(res) {
+		    	var num = res;
+		    	alert(num);
+          if(res == 0) {
+						$("#user_id").attr("readonly", true);
+						$("#idCheckSuccess").show(); 
+						$("#idCheckFail").hide();
+						$("#btn_add").removeAttr("disabled"); 
+          } else {
+						$("#phone-success").hide(); 
+						$("#phone-danger").show(); 
+						$("#btn_add").attr("disabled", "disabled"); 
+          }
+	        
+		    }
+		});
+		
+		
+	});
 });
 
 	
@@ -107,6 +167,18 @@ $(document).ready(function() {
     line-height: 45px;
     float: right;
 }
+
+#zip_code_btns {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 25px;
+    margin: 0 0px;
+    margin-top: -41px;
+    line-height: 45px;
+    float: right;
+}
 .btn_check {
     color: #fff;
     font-size: 15px;
@@ -127,9 +199,11 @@ $(document).ready(function() {
 	<form action="${root }/user/userRegister" method="post" id="joinForm">
 		  <div class="form-group">
 		    <label for="input1-id">아이디</label>
-		    <input type="text" class="form-control" style="width:77%;" name="user_id" id="input1-id" 
-		    	value="" placeholder="중복 확인을 눌러주세요" required readonly>
+		    <input type="text" class="form-control" style="width:77%;" name="user_id" id="user_id" 
+		    	value="" placeholder="중복 확인을 눌러주세요" required>
 		    <button type="button" class="btn_check" id="idCheck">중복확인</button><br>
+		    <small class="text-primary" id="idCheckSuccess">사용 가능합니다.</small>
+		    <small class="text-danger" id="idCheckFail">사용 가능합니다.</small>
 		  </div>
 		  <div class="form-group">
 		    <label for="input2-name">이름</label>
@@ -162,11 +236,15 @@ $(document).ready(function() {
 		  </div>
 		  <div class="form-group">
 		    <label for="user_phone">휴대폰</label>
-		    <input type="text" class="form-control" style="width:77%;" name="user_phone" id="user_phone" value="" required>
+		    <input type="text" class="form-control" style="width:77%;" name="user_phone" 
+		    	id="user_phone" value="" placeholder="'-' 제외하고 입력"  required>
 		    <button id="zip_code_btn">인증하기</button><br>
 		    <label for="input8-phone">인증번호</label>
-		    <input type="text" class="form-control" style="width:83%;" name="phoneConfirm" id="input8-phone" value="" required>
+		    <input type="text" class="form-control" style="width:83%;" name="phoneConfirm" 
+		    	id="phoneConfirm" value="" placeholder="인증번호를 입력해주세요." required>
 		    <button id="zip_code_btns" >완료</button>
+		    <div class="alert alert-success" id="phone-success">인증되었습니다.</div> 
+		 		<div class="alert alert-danger" id="phone-danger">인증 번호가 일치하지 않습니다.</div>
 		  </div>
 		  <div class="form-group">
 		    <label for="addr">주소</label>
