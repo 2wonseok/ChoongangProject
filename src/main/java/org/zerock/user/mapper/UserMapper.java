@@ -23,6 +23,8 @@ public interface UserMapper {
 	
 	public UserVO getUser(String user_id);
 	
+	public UserVO findUser(String user_phone);
+	
 	public void gradeUpdate(UserVO user);
 	
 	public void pointUpdate(UserVO user);

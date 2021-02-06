@@ -66,6 +66,10 @@
 		SELECT * from tbl_user WHERE user_id = #{user_id}
 	</select>
 	
+	<select id="findUser" resultType="org.zerock.user.domain.UserVO">
+		SELECT user_id, user_name, user_phone from tbl_user WHERE user_phone = #{user_phone}
+	</select>
+	
 	<select id="idCheck" resultType="int">
 		select COUNT(*) from tbl_user where user_id = #{user_id}
 	</select>

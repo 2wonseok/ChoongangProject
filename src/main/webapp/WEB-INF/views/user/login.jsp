@@ -72,8 +72,8 @@
 		  </c:if>
 		 	<input type="submit" value="로그인" id="btn_add" class="btn btn-block btn-lg"> <br><hr>
 		 	<div class="container d-flex justify-content-center">
-		 	<a href="#" onclick="window.open('find?oper=id','아이디찾기','width=500px;,height=300px;,location=no,status=no,scrollbars=no');" style="color:gray;">아이디 찾기</a><p style="color:gray;">&nbsp;|&nbsp;</p>
-		 	<a href="#" onclick="window.open('find?oper=pw','비밀번호','width=500px;,height=350px;,location=no,status=no,scrollbars=no');" style="color:gray;">비밀번호 찾기</a><p style="color:gray;">&nbsp;|&nbsp;</p>
+		 	<a href="#" onclick="window.open('${root}/user/findId','아이디찾기','width=500px;,height=300px;,location=no,status=no,scrollbars=no');" style="color:gray;">아이디 찾기</a><p style="color:gray;">&nbsp;|&nbsp;</p>
+		 	<a href="#" onclick="window.open('${root}/user/findPw','비밀번호','width=500px;,height=350px;,location=no,status=no,scrollbars=no');" style="color:gray;">비밀번호 찾기</a><p style="color:gray;">&nbsp;|&nbsp;</p>
 		  <a href="${root }/user/userRegister" style="color:gray;">회원가입</a>
 		 	</div>
 	</form>

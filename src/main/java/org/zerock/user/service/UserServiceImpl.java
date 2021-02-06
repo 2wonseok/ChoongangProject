@@ -98,4 +98,9 @@ public class UserServiceImpl implements UserService {
     }
 	}
 
+	@Override
+	public UserVO findUser(String user_phone) {
+		return mapper.findUser(user_phone);
+	}
+
 }
