@@ -183,25 +183,15 @@ public class UserController {
 		return "";
 	}
 	
-	@GetMapping("/idCheck")
+	@GetMapping("/duplicateCheck")
 	public @ResponseBody int idCheck(UserVO vo, RedirectAttributes rttr) {
 		if (vo.getUser_id() != null) {
-			
 			int checkId = service.idCheck(vo.getUser_id());
-			System.out.println(checkId);
 			return checkId;
 		}
 		
 		if (vo.getUser_nickname() != null) {
 			int checkNick = service.nickCheck(vo.getUser_nickname());
-			
-			if (checkNick == 1) {
-				rttr.addFlashAttribute("user_nickname", vo.getUser_nickname());
-				rttr.addFlashAttribute("checkResultNcikN", "이미 사용중인 닉네임 입니다.");
-			} else {
-				rttr.addFlashAttribute("user_nickname", vo.getUser_nickname());
-				rttr.addFlashAttribute("checkResultNcikY", "사용 가능합니다.");
-			}
 			return checkNick;
 		}
 		

@@ -51,7 +51,10 @@ $(document).ready(function() {
 	});
 	
 	$("#alert-success").hide(); 
-	$("#alert-danger").hide(); 
+	$("#alert-danger").hide();
+	$("#nickCheckSuccess").hide(); 
+	$("#nickCheckFail").hide();
+	$("#nickYes").hide();
 	
 	$("input").keyup(function() { 
 		var pwd1=$("#changePw").val(); 
@@ -70,12 +73,40 @@ $(document).ready(function() {
 		} 
 	});
 	
-	$("#nickCheck").click(function(e) {
-		var user_nick = $("#user_nickname").val();
-		e.preventDefault();
-		
-		var popup = window.open("${root}/user/nickCheck","pop","width=570,height=420, scrollbars=yes, resizable=yes");
-		
+	$("input").keyup(function() {
+		$("#btn_add").attr("disabled", "disabled");
+		$("#nickCheck").click(function() {
+			var user_nickname = $("#user_nickname").val();
+			
+			$.ajax({
+			    type: "GET",
+			    url: "${root}/user/duplicateCheck",
+			    dataType : "json",
+			    data: {
+			        "user_nickname" : user_nickname
+			    },
+			    success: function(res) {
+			    	console.log(res);
+	          if(res == 0) {
+							$("#nickCheckSuccess").show(); 
+							$("#nickCheckFail").hide();
+							$("#nickYes").show();
+							
+							$("#nickYes").click(function() {
+								$("#user_nickname").attr("readonly", true);
+								$("#nickYes").hide();
+								$("#nickCheckSuccess").hide(); 
+								$("#btn_add").removeAttr("disabled"); 
+							})
+	          } else {
+							$("#nickCheckSuccess").hide(); 
+							$("#nickCheckFail").show(); 
+							$("#btn_add").attr("disabled", "disabled"); 
+	          }
+		        
+			    }
+			});
+		});
 	});
 });
 </script>
@@ -112,7 +143,7 @@ $(document).ready(function() {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #747474;
+    background: #1e263c;
     padding: 0px 50px;
     margin-right: 7px;
     line-height: 45px;
@@ -122,7 +153,7 @@ $(document).ready(function() {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #747474;
+    background: #1e263c;
     padding: 0px 25px;
     margin: 0 0px;
     margin-top: -41px;
@@ -222,6 +253,9 @@ $(document).ready(function() {
 							<td>
 								<input type="text" class="form-control" style="width:87%;" id="user_nickname" name="user_nickname" value="${read.user_nickname }"/>
 								<button type="button" class="btn_check" id="nickCheck">중복확인</button><br>
+						    <small class="text-dark" id="nickCheckSuccess">사용 가능합니다.</small>
+						    <button type="button" id="nickYes">확인</button>
+						    <small class="text-danger" id="nickCheckFail">이미 사용중인 닉네임입니다.</small>
 							</td>
 						</tr>
 						<tr>

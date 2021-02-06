@@ -29,20 +29,17 @@ var goPopup = function(){
 	}
 
 $(document).ready(function() {
-/* 	$("#idCheck").click(function(e) {
-		var user_id = $("#input1-id").val();
-		e.preventDefault();
-		
-		var popup = window.open("${root}/user/idCheck","pop","width=570,height=420, scrollbars=yes, resizable=yes");
-		
-	}); */
-	
+
 		$("#alert-success").hide(); 
 		$("#alert-danger").hide(); 
 		$("#phone-success").hide(); 
 		$("#phone-danger").hide();
 		$("#idCheckSuccess").hide(); 
 		$("#idCheckFail").hide();
+		$("#idYes").hide();
+		$("#nickCheckSuccess").hide(); 
+		$("#nickCheckFail").hide();
+		$("#nickYes").hide();
 		
 		$("input").keyup(function() { 
 			var pwd1=$("#input3-password").val(); 
@@ -61,13 +58,13 @@ $(document).ready(function() {
 			} 
 		}); 
 	
-		$("#nickCheck").click(function(e) {
+/* 		$("#nickCheck").click(function(e) {
 			var user_nick = $("#user_nickname").val();
 			e.preventDefault();
 			
 			var popup = window.open("${root}/user/nickCheck","pop","width=570,height=420, scrollbars=yes, resizable=yes");
 			
-		});
+		}); */
 		
 		// 휴대폰 인증 관련 AJAX 
 	$("#user_phone").keyup(function() { 
@@ -100,40 +97,78 @@ $(document).ready(function() {
 		});
 	}); 
 		
-	// 중복 체크 관련 로직
+	// ID 중복 체크 관련 스크립트
 	$("#idCheck").click(function() {
 		$("#btn_add").attr("disabled", "disabled");
 		var user_id = $("#user_id").val();
 		
 		$.ajax({
 		    type: "GET",
-		    url: "${root}/user/idCheck",
+		    url: "${root}/user/duplicateCheck",
+		    dataType : "json",
 		    data: {
 		        "user_id" : user_id
 		    },
 		    success: function(res) {
-		    	var num = res;
-		    	alert(num);
+		    	console.log(res);
           if(res == 0) {
-						$("#user_id").attr("readonly", true);
 						$("#idCheckSuccess").show(); 
 						$("#idCheckFail").hide();
-						$("#btn_add").removeAttr("disabled"); 
+						$("#idYes").show();
+						
+						$("#idYes").click(function() {
+							$("#user_id").attr("readonly", true);
+							$("#idYes").hide();
+							$("#idCheckSuccess").hide(); 
+							$("#btn_add").removeAttr("disabled"); 
+						})
           } else {
-						$("#phone-success").hide(); 
-						$("#phone-danger").show(); 
+						$("#idCheckSuccess").hide(); 
+						$("#idCheckFail").show(); 
 						$("#btn_add").attr("disabled", "disabled"); 
           }
 	        
 		    }
 		});
-		
-		
 	});
-});
-
 	
-
+	// 닉네임 중복체크 관련 로직
+	$("#nickCheck").click(function() {
+		$("#btn_add").attr("disabled", "disabled");
+		var user_nickname = $("#user_nickname").val();
+		
+		$.ajax({
+		    type: "GET",
+		    url: "${root}/user/duplicateCheck",
+		    dataType : "json",
+		    data: {
+		        "user_nickname" : user_nickname
+		    },
+		    success: function(res) {
+		    	console.log(res);
+          if(res == 0) {
+						$("#nickCheckSuccess").show(); 
+						$("#nickCheckFail").hide();
+						$("#nickYes").show();
+						
+						$("#nickYes").click(function() {
+							$("#user_nickname").attr("readonly", true);
+							$("#nickYes").hide();
+							$("#nickCheckSuccess").hide(); 
+							$("#btn_add").removeAttr("disabled"); 
+						})
+          } else {
+						$("#nickCheckSuccess").hide(); 
+						$("#nickCheckFail").show(); 
+						$("#btn_add").attr("disabled", "disabled"); 
+          }
+	        
+		    }
+		});
+	});
+	
+	
+});
 </script>
 <title>회원 가입</title>
 </head>
@@ -183,7 +218,7 @@ $(document).ready(function() {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #747474;
+    background: #1e263c;
     padding: 0px 25px;
     margin: 0 0px;
     margin-top: -41px;
@@ -200,10 +235,11 @@ $(document).ready(function() {
 		  <div class="form-group">
 		    <label for="input1-id">아이디</label>
 		    <input type="text" class="form-control" style="width:77%;" name="user_id" id="user_id" 
-		    	value="" placeholder="중복 확인을 눌러주세요" required>
-		    <button type="button" class="btn_check" id="idCheck">중복확인</button><br>
-		    <small class="text-primary" id="idCheckSuccess">사용 가능합니다.</small>
-		    <small class="text-danger" id="idCheckFail">사용 가능합니다.</small>
+		    	value="" required>
+		    <button type="button" class="btn_check" id="idCheck">중복확인</button>
+		    <small class="text-dark" id="idCheckSuccess">사용 가능합니다.</small>
+		    <button type="button" id="idYes">확인</button>
+		    <small class="text-danger" id="idCheckFail">이미 사용중인 아이디입니다.</small>
 		  </div>
 		  <div class="form-group">
 		    <label for="input2-name">이름</label>
@@ -212,8 +248,11 @@ $(document).ready(function() {
 		  <div class="form-group">
 		    <label for="input8-nickname">닉네임</label>
 		    <input type="text" class="form-control" style="width:77%;" name="user_nickname" id="user_nickname" 
-		    	value="" placeholder="중복 확인을 눌러주세요" readonly required>
-		    <button type="button" class="btn_check"  id="nickCheck">중복확인</button><br>
+		    	value="" placeholder="중복 확인을 눌러주세요" required>
+		    <button type="button" class="btn_check"  id="nickCheck">중복확인</button>
+		    <small class="text-dark" id="nickCheckSuccess">사용 가능합니다.</small>
+		    <button type="button" id="nickYes">확인</button>
+		    <small class="text-danger" id="nickCheckFail">이미 사용중인 닉네임입니다.</small>
 		  </div>
 		  <div class="form-group">
 		    <label for="input3-password">패스워드</label>

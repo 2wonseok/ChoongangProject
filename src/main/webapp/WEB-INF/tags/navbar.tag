@@ -82,12 +82,11 @@
 						<li class="nav-item active">
 						  <a class="nav-link" href="${root }/user/login">로그인</a>
 						</li>
+						<li class="nav-item active">
+						  <a class="nav-link" href="${root }/user/userRegister">회원가입</a>
+						</li>
 					</c:otherwise>	
 				</c:choose>	      	      
-				
-				<li class="nav-item active">
-				  <a class="nav-link" href="${root }/user/userRegister">회원가입</a>
-				</li>
 				<c:if test="${authUser.user_grade == 0 }">
 					<li class="nav-item active">
 						<a class="nav-link" href="${root }/user/userList">회원관리</a>
