@@ -119,6 +119,8 @@ var seq = ${board.qa_seq};
 		    <label for="input6">작성자</label>
 		    <input readonly value='<c:out value="${board.qa_writer }" />' type="text" class="form-control" id="input7">
 		  	</div>
+		  	
+
 		  <%-- 	
 		  	<c:url value="/board/modify" var="modifyLink">
 		  		<c:param name="qa_seq" value="${board.qa_seq }" />

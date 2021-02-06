@@ -27,7 +27,9 @@ public interface QaMapper {
 	
 	public int update(QaVO board);
 	
-	public void updateReplyCnt(@Param("seq") int seq, @Param("amount") int amount);
+	public void updateReplyCnt(
+			@Param("seq") int seq, 
+			@Param("amount") int amount);
 
 	public void addCnt(int qa_seq);
 	
