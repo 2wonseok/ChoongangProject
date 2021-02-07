@@ -93,10 +93,6 @@ table.type05 td {
 									<td><input name="product_seller" type="text" value=${product.product_seller } style="background-color:silver;"readonly></td>
 								</tr>
 								<tr>
-									<th scope="row">상품 이미지파일이름</th>
-									<td><input type="file" name="upload" /></td>
-								</tr>
-								<tr>
 									<th scope="row">상품 카테고리 번호(카테고리테이블에서 가져와서 넣어질 예정)</th>
 									<td> <input name="category_seq" type="number" value=${product.category_seq }></td>
 								</tr>
@@ -106,6 +102,27 @@ table.type05 td {
 								</tr>
 							</tbody>
 						</table>	
+						
+						<!--파일여러개올리는것 -->
+						<c:forEach begin="1" end="3" var="number">
+							<div class = "inputArea">
+								 <label><input type="file" name="upload" class="productImg${number }"/></label>
+							</div>						
+							<div class="select_img${number }"><img src="" /></div>
+						
+							<script>
+							  $(".productImg${number}").change(function(){
+								   if(this.files /* && this.files[0] */) {
+								    	var reader = new FileReader;
+								    	reader.onload = function(data) {
+								     					$(".select_img${number} img").attr("src", data.target.result).width(500);        
+								    					}
+								   		reader.readAsDataURL(this.files[0]);
+								   }
+								  });
+						 	</script>
+						</c:forEach>
+						<!--파일여러개올리는거 시도중끝 -->
 						
 						<button class="btn_add">상품 수정하기</button>
 					</form>

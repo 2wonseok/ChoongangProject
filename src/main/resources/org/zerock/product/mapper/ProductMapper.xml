@@ -73,6 +73,14 @@
 		select * from tbl_product where product_seq = #{product_seq}
 	</select>
 
+	<update id="readCountUp">
+		UPDATE tbl_product
+			SET
+			product_readcnt = product_readcnt + 1
+			WHERE
+			product_seq = #{product_seq}
+	</update>
+
 	<delete id="delete">
 		delete from tbl_product where product_seq = #{product_seq}
 	</delete>

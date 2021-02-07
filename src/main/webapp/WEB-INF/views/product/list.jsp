@@ -19,6 +19,24 @@
 
 <title>Insert title here</title>
 
+<script>
+	$(document).ready(function(){
+		
+		/*모달창-메세지넘어왔을때나오게함  */
+		var message = '${message}';
+		checkModal(message);
+		function checkModal(message){
+			if (message && history.state == null) {
+				$("#myModal .modal-body p").html(message)
+				$("#myModal").modal("show");
+			}
+		}
+		
+		
+	});
+</script>
+		
+
 <style>
 
 	.btn_add {
@@ -89,6 +107,7 @@
 					
 						<div class="card m-2">
 							<a href="${productLink }" >
+								
 								<img class="card-img-top" src="${root }/resources/upload/${product.product_filename }" alt="Card image cap">
 								<div class="card-body" >
 						            <fmt:formatNumber value="${product.product_price }" type="number" var="price"></fmt:formatNumber>
@@ -117,7 +136,7 @@
 		</c:if>
 			
 			</div>
-		</div>
+	</div>
 	
 	
 
@@ -166,8 +185,28 @@
 		</nav>
 	</div>
 	<!-- 페이징 끝 -->
-
+	
+	<!--모달창시작-->
+	<div id="myModal" class="modal" tabindex="-1">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">알림</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <p>처리가완료되었습니다</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
+	<!--모달창끝-->
+
 
 </body>
 </html>

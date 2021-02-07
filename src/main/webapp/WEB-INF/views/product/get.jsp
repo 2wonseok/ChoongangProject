@@ -18,6 +18,23 @@
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 
+<script>
+$(document).ready(function(){
+	
+	/*밑의 이미지를 호버하면 main이미지가 바뀌는 js */
+	/*일단 아래 섬네일에서 호버된걸 선택  */
+	$(".hoveredImage").hover(function(){
+		
+		/* 호버된 이미지의 src값  */
+		var hovered = $(this).attr("src");
+		/* 왼쪽위의 주소를 변경 */
+		$("#productMainImage").attr("src",hovered);
+	})
+	
+	
+});
+</script>
+
 <style>
 
 	.btn_add {
@@ -73,8 +90,9 @@
 					<tr>
 					<!-- 상품정보 왼쪽위 이미지  -->
 						<td class="tableLeftUp">
-							<img id="productMainImage" class="card-img-top" src="${root }/resources/upload/${product.product_filename }" alt="제품이미지">
+							<img id="productMainImage" class="card-img-top" src="${root }/resources/upload/${productImgList[0] }" alt="제품이미지">
 						</td>
+						
 					<!-- 상품정보 오른쪽 항목 -->
 						<td rowspan="2" class="align-top">
 							<div class="m-5">
@@ -86,7 +104,7 @@
 								<p class="text-right">판매자 : <c:out value="${product.product_seller }"></c:out></p>
 								<p class="text-left">상품설명 </p>
 								
-								<textarea rows="15" cols="50" readonly><c:out value="${product.product_info }"></c:out></textarea>
+								<textarea style="resize: none;" rows="15" cols="50" readonly><c:out value="${product.product_info }"></c:out></textarea>
 	
 								<c:if test="${product.product_seller eq authUser.user_id}">
 									<div class="row justify-content-center">
@@ -129,7 +147,11 @@
 					
 					<!--상품 왼쪽아래 부가정보  -->
 					<tr>
-						<td>
+						<td valign=top>
+							<c:forEach items="${productImgList }" var="productImg" varStatus="imgNum">
+								<img class="hoveredImage"alt="" src="${root }/resources/upload/${productImg}" height="80px" width="70px">
+							</c:forEach>
+							<hr>
 							<p>부가정보란</p>
 						</td>
 					</tr>

@@ -22,6 +22,7 @@ import org.zerock.product.domain.PageDTO;
 import org.zerock.product.domain.ProductVO;
 import org.zerock.product.service.ProductService;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -34,8 +35,13 @@ public class ProductController {
 	private ProductService service;
 
 	@GetMapping("/register")
-	public void register(@ModelAttribute("cri") Criteria cri) {
-
+	public String register(@ModelAttribute("cri") Criteria cri, HttpServletRequest request) {
+		
+		/* 로그인 해야지만 register를 할 수 있게끔 */
+		if (request.getSession().getAttribute("authUser") == null) {
+			return "redirect:/product/list";
+		}
+		return "/product/register";
 	}
 
 	@PostMapping("/register")
@@ -75,19 +81,29 @@ public class ProductController {
 					reNames.add(reName);
 					} 
 				}
+			
+			/* 파일이 하나도 첨부되어있지 않을때 다시돌려보냄 */
+			if (reNames.size() == 0) {
+				rttr.addFlashAttribute("product", product);
+				rttr.addFlashAttribute("message", "상품이미지를 한 개이상 등록해야합니다.");
+				return "redirect:/product/register";
+			}
+				
+				
 		//철수추가 파일 올린 후에 그 이름을 product에 복사
-		product.setProduct_filename(reNames.get(0));
+			//list를 string 쉼표구분으로 만들기 
+			String filenames = String.join(",", reNames);
+		product.setProduct_filename(filenames);
+		/* System.out.println(product.getProduct_filename()); */
 		
-		System.out.println(product.getProduct_filename());
-		
-		
-		
-		
+			/* 다시 list로 얻는 방법 
+			List<String> fileNamesList = Arrays.asList(filenames.split(","));
+			System.out.println(fileNamesList);
+			*/
 		
 		service.register(product);
 		
-		rttr.addFlashAttribute("result", product.getProduct_seq());
-		rttr.addFlashAttribute("message",product.getProduct_seq() + "번 상품이 등록되었습니다.");
+		rttr.addFlashAttribute("message", "상품이 등록되었습니다.");
 		
 		return "redirect:/product/list";
 	}
@@ -103,7 +119,14 @@ public class ProductController {
 		
 		List<ProductVO> list = service.getList(cri);
 		//cri에따른 list를 가져옴
-
+		
+		//List의 상품파일이름 여러개 일 시 앞에 한개로 수정
+		for (ProductVO productVO : list) {
+			List<String> fileNamesList = Arrays.asList(productVO.getProduct_filename().split(","));
+			String fileNameFirst = fileNamesList.get(0);
+			productVO.setProduct_filename(fileNameFirst);
+		}
+		
 		int total = service.getTotal(cri);
 		//페이징을 위한 total개수를 가져옴
 		//cri가 들어가서 검색시에도 적용
@@ -117,8 +140,20 @@ public class ProductController {
 		model.addAttribute("pageDTO", dto);
 	}
 
-	@GetMapping({ "/get", "/modify" })
+	@GetMapping("/get")
 	public void get(@RequestParam("product_seq") int product_seq, @ModelAttribute("cri") Criteria cri, Model model) {
+		ProductVO vo = service.getCountUp(product_seq);
+		model.addAttribute("product", vo);
+		model.addAttribute("cri", cri);
+		
+		//여러 상품파일이름을 list로 변환하고 넘겨줌
+		List<String> fileNamesList = Arrays.asList(vo.getProduct_filename().split(","));
+		model.addAttribute("productImgList", fileNamesList);
+	}
+	
+	@GetMapping("/modify")
+	public void modify(@RequestParam("product_seq") int product_seq, @ModelAttribute("cri") Criteria cri, Model model) {
+		
 		ProductVO vo = service.get(product_seq);
 		model.addAttribute("product", vo);
 		model.addAttribute("cri", cri);
@@ -126,7 +161,18 @@ public class ProductController {
 
 	@PostMapping("/modify")
 	public String modify(ProductVO product, Criteria cri, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request) {
-
+		
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
+		/* 수정하는 사람이 로그인 본인인지 비교 */
+		if (request.getSession().getAttribute("authUser").equals(product.getProduct_seller())) {
+			return "redirect:/product/list";
+		}
+		
+		
 		//파일 올리는 방법 복사
 				//파일이 업로드 될 경로 설정 
 				String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload"); 
@@ -163,21 +209,21 @@ public class ProductController {
 					} 
 				}
 		//철수추가 파일 올린 후에 그 이름을 product에 복사
-		product.setProduct_filename(reNames.get(0));
+			//list를 string 쉼표구분으로 만들기 
+			String filenames = String.join(",", reNames);
+		product.setProduct_filename(filenames);
+		/* System.out.println(product.getProduct_filename()); */
 		
-		System.out.println(product.getProduct_filename());
-		
+			/* 다시 list로 얻는 방법 
+			List<String> fileNamesList = Arrays.asList(filenames.split(","));
+			System.out.println(fileNamesList);
+			*/		
 		
 		if (service.modify(product)) {
 			rttr.addFlashAttribute("result", "success");
 			rttr.addFlashAttribute("message", product.getProduct_seq() + "번 상품정보가 수정되었습니다.");
-
 		}
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
-		rttr.addAttribute("type", cri.getType());
-		rttr.addAttribute("keyword", cri.getKeyword());
- 
+		 
 		return "redirect:/product/list";
 	}
 

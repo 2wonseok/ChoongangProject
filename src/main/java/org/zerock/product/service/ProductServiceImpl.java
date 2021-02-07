@@ -3,6 +3,7 @@ package org.zerock.product.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.ProductVO;
 import org.zerock.product.mapper.ProductMapper;
@@ -30,6 +31,15 @@ public class ProductServiceImpl implements ProductService {
 	public ProductVO get(int product_seq) {
 		return mapper.read(product_seq);
 	}
+	
+	@Override
+	@Transactional
+	public ProductVO getCountUp(int product_seq) {
+		ProductVO vo = mapper.read(product_seq);
+		mapper.readCountUp(product_seq);
+		return vo;
+	}
+	
 	
 	@Override
 	public boolean remove(int product_seq) {

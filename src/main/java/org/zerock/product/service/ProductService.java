@@ -13,6 +13,8 @@ public interface ProductService {
 	public List<ProductVO> getList(Criteria cri);
 	 
 	public ProductVO get(int product_seq);
+
+	public ProductVO getCountUp(int product_seq);
 	 
 	public boolean remove(int product_seq);
 	

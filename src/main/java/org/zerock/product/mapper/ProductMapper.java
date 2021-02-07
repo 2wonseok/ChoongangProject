@@ -9,11 +9,11 @@ public interface ProductMapper {
 
 	public void insert(ProductVO product);
 	
-	/* public List<ProductVO> getList(); */
-	
 	public List<ProductVO> getListWithPaging(Criteria cri);
 	
 	public ProductVO read(int productSeq);
+
+	public int readCountUp(int productSeq);
 	
 	public int delete(int productSeq);
 
