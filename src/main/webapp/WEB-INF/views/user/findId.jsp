@@ -24,20 +24,20 @@ $(document).ready(function() {
 		
 		$.ajax({
 		    type: "GET",
-		    url: "${root}/user/findInfo",
-		    dataType : "json",
+		    url: "${root}/user/findUserId",
 		    data: {"user_name" : user_name , "user_phone" : user_phone},
 		    success: function(res) {
-	    		
+		    	console.log(res);
 		    	$("#notFind").hide();
 					$("#resultId").show();
 					
-					resultId.append(res.user_id);
+					resultId.append(res);
 					
-		    },
-		    error : function(error) {
-		    	$("#resultId").hide();
-		    	$("#notFind").show();
+					if (res == null || res == "") {
+						alert('zzzzz');
+						$("#resultId").hide();
+				    $("#notFind").show();
+					}
 		    }
 		});
 	});

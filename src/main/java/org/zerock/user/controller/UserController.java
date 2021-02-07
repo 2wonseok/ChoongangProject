@@ -214,16 +214,29 @@ public class UserController {
 		
 	}
 	
-	@GetMapping("/findInfo")
-	public @ResponseBody UserVO findInfo(UserVO user) {
+	@GetMapping("/findUserId")
+	public @ResponseBody String findInfo(UserVO user) {
 		UserVO vo = service.findUser(user.getUser_phone());
 		
-		if (user.getUser_name() == null || user.getUser_phone() == null ||
-				user.getUser_name().isEmpty() || user.getUser_phone().isEmpty() || 
+			if (user.getUser_name() == null || user.getUser_phone() == null ||
+					user.getUser_name().isEmpty() || user.getUser_phone().isEmpty() || 
+					vo == null) {
+				return null;
+			}
+		
+		return vo.getUser_id();
+	}
+	
+	@GetMapping("/findUserPw")
+	public @ResponseBody UserVO findPw(UserVO user) {
+		UserVO vo = service.findUser(user.getUser_phone());
+		
+		if (user.getUser_id() == null || user.getUser_phone() == null ||
+				user.getUser_id().isEmpty() || user.getUser_phone().isEmpty() ||
 				vo == null) {
 			return vo;
 		}
-		
+    
 		return vo;
 	}
 }
