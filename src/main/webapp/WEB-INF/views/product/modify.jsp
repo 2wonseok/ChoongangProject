@@ -17,6 +17,51 @@
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
+<script>
+	$(document).ready(function(){
+		
+		/*모달창함수설정(+redirect시 넘어온 메세지도 출력)  */
+		var message = '${message}';
+		checkModal(message);
+		history.replaceState({}, null, null);
+		function checkModal(message){
+			if (message && history.state == null) {
+				$("#myModal .modal-body p").html(message)
+				$("#myModal").modal("show");
+			}
+		}
+		
+		/*모달창-전송누르기전에 항목이 비어있으면 안넘어감  */
+		$("#btn_submit").click(function(e){
+			e.preventDefault(); // 전송버튼 막기
+			
+				/*비어있으면 메세지넣고모달창호출  */
+				if ($("#product_name").val() == ""){
+					message = "상품이름 항목이 비어있음";
+				} else
+				if ($("#product_price").val() == ""){
+					message = "상품가격 항목이 비어있음";
+				} else
+				if ($("#product_quantity").val() == ""){
+					message = "상품수량 항목이 비어있음";
+				} else
+				if ($("#product_info").val() == ""){
+					message = "상품정보 항목이 비어있음";
+				} else {
+					message = null; //다 차있으면 message가 null임
+				}
+				checkModal(message);
+				
+			if(message == null){
+				$("#form_id").submit(); //message가 다 차있으면 전송
+			}
+			
+		})
+		
+		
+	});
+</script>
+
 <style>
 
 	.btn_add {
@@ -69,7 +114,7 @@ table.type05 td {
 			<div class="col-md-6, col-md-offset-3">
 				<div class="row">
 					
-					<form action="/product/modify" method="post" enctype="multipart/form-data">
+					<form id="form_id" action="/product/modify" method="post" enctype="multipart/form-data">
 						<input name="product_seq" type="number" value="${product.product_seq }" hidden="hidden">
 						<table class="type05">
 							<tbody>
@@ -78,15 +123,15 @@ table.type05 td {
 								</tr>
 								<tr>
 									<th scope="row">상품 이름</th>
-									<td><input name="product_name" type="text" value="${product.product_name }" ></td>
+									<td><input id="product_name" name="product_name" type="text" value="${product.product_name }" ></td>
 								</tr>
 								<tr>
 									<th scope="row">상품 단위 가격</th>
-									<td><input name="product_price" type="number" value="${product.product_price }" style="background-color:silver;" readonly></td>
+									<td><input id="product_price" name="product_price" type="number" value="${product.product_price }" style="background-color:silver;" readonly></td>
 								</tr>
 								<tr>
 									<th scope="row">상품 수량</th>
-									<td><input name="product_quantity" type="number" value="${product.product_quantity }" style="background-color:silver;" readonly></td>
+									<td><input id="product_quantity" name="product_quantity" type="number" value="${product.product_quantity }" style="background-color:silver;" readonly></td>
 								</tr>
 								<tr>
 									<th scope="row">상품 판매자id</th><!--value=authUser로 넣을 예정  -->
@@ -94,21 +139,21 @@ table.type05 td {
 								</tr>
 								<tr>
 									<th scope="row">상품 카테고리 번호(카테고리테이블에서 가져와서 넣어질 예정)</th>
-									<td> <input name="category_seq" type="number" value=${product.category_seq }></td>
+									<td> <input name="category_seq" type="number" value=${product.category_seq } readonly></td>
 								</tr>
 								<tr>
 									<th scope="row">상품 설명</th>
-									<td><textarea name="product_info" rows="10" cols="23">${product.product_info }</textarea></td>
+									<td><textarea id="product_info" name="product_info" rows="10" cols="23">${product.product_info }</textarea></td>
 								</tr>
 							</tbody>
 						</table>	
 						
 						<!--파일여러개올리는것 -->
-						<c:forEach begin="1" end="3" var="number">
+						<c:forEach items="${fileNamesList }" var="number">
 							<div class = "inputArea">
-								 <label><input type="file" name="upload" class="productImg${number }"/></label>
+								 <label><input type="file" name="upload" class="productImg${number }" />${number }</label>
 							</div>						
-							<div class="select_img${number }"><img src="" /></div>
+							<div class="select_img${number }"><img src="${root }/resources/upload/${number}" /></div>
 						
 							<script>
 							  $(".productImg${number}").change(function(){
@@ -124,7 +169,7 @@ table.type05 td {
 						</c:forEach>
 						<!--파일여러개올리는거 시도중끝 -->
 						
-						<button class="btn_add">상품 수정하기</button>
+						<button id ="btn_submit" class="btn_add">상품 수정하기</button>
 					</form>
 				</div>
 				
@@ -134,7 +179,26 @@ table.type05 td {
 		</div>
 	</div>
 
-	
+	<!--모달창시작-->
+	<div id="myModal" class="modal" tabindex="-1">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">알림</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <p>처리가완료되었습니다</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!--모달창끝-->
 
 </body>
 </html>

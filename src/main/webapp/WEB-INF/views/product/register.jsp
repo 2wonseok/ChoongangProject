@@ -23,6 +23,7 @@
 		/*모달창함수설정(+redirect시 넘어온 메세지도 출력)  */
 		var message = '${message}';
 		checkModal(message);
+		history.replaceState({}, null, null);
 		function checkModal(message){
 			if (message && history.state == null) {
 				$("#myModal .modal-body p").html(message)

@@ -25,6 +25,7 @@
 		/*모달창-메세지넘어왔을때나오게함  */
 		var message = '${message}';
 		checkModal(message);
+		history.replaceState({}, null, null);//뒤로가기로왔을시에없앰?
 		function checkModal(message){
 			if (message && history.state == null) {
 				$("#myModal .modal-body p").html(message)

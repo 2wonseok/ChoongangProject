@@ -127,6 +127,7 @@ public class ProductController {
 			productVO.setProduct_filename(fileNameFirst);
 		}
 		
+		
 		int total = service.getTotal(cri);
 		//페이징을 위한 total개수를 가져옴
 		//cri가 들어가서 검색시에도 적용
@@ -157,10 +158,15 @@ public class ProductController {
 		ProductVO vo = service.get(product_seq);
 		model.addAttribute("product", vo);
 		model.addAttribute("cri", cri);
+		
+		//상품파일이름을 list로 보내줌
+		List<String> fileNamesList = Arrays.asList(vo.getProduct_filename().split(","));
+		System.out.println(fileNamesList);
+		model.addAttribute("fileNamesList", fileNamesList);
 	}
 
 	@PostMapping("/modify")
-	public String modify(ProductVO product, Criteria cri, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request) {
+	public String modify(ProductVO product, Criteria cri, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request, Model model) {
 		
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
@@ -171,7 +177,6 @@ public class ProductController {
 		if (request.getSession().getAttribute("authUser").equals(product.getProduct_seller())) {
 			return "redirect:/product/list";
 		}
-		
 		
 		//파일 올리는 방법 복사
 				//파일이 업로드 될 경로 설정 
@@ -208,6 +213,16 @@ public class ProductController {
 					reNames.add(reName);
 					} 
 				}
+				
+				
+				/* 파일이 하나도 첨부되어있지 않을때 다시돌려보냄 */
+				if (reNames.size() == 0) {
+					model.addAttribute("message", "상품이미지를 한 개이상 등록해야합니다.");
+					model.addAttribute("product", product);
+					model.addAttribute("cri", cri);
+					return "/product/modify";
+				}
+				
 		//철수추가 파일 올린 후에 그 이름을 product에 복사
 			//list를 string 쉼표구분으로 만들기 
 			String filenames = String.join(",", reNames);
@@ -220,8 +235,7 @@ public class ProductController {
 			*/		
 		
 		if (service.modify(product)) {
-			rttr.addFlashAttribute("result", "success");
-			rttr.addFlashAttribute("message", product.getProduct_seq() + "번 상품정보가 수정되었습니다.");
+			rttr.addFlashAttribute("message", "해당 상품정보가 수정되었습니다.");
 		}
 		 
 		return "redirect:/product/list";
@@ -230,9 +244,10 @@ public class ProductController {
 	@PostMapping("/remove")
 	public String remove(@RequestParam("product_seq") int product_seq, Criteria cri, RedirectAttributes rttr) {
 
+		
+		
 		if (service.remove(product_seq)) {
-			rttr.addFlashAttribute("result", "success");
-			rttr.addFlashAttribute("message", product_seq + "번 글이 삭제되었습니다.");
+			rttr.addFlashAttribute("message","해당 상품이 삭제되었습니다.");
 		}
 
 		rttr.addAttribute("pageNum", cri.getPageNum());
