@@ -22,18 +22,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.qaboard.domain.Criteria;
 import org.zerock.qaboard.domain.PageDTO;
 import org.zerock.qaboard.domain.QaVO;
+import org.zerock.qaboard.domain.ReplyVO;
 import org.zerock.qaboard.service.QaService;
+import org.zerock.qaboard.service.ReplyService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Controller
-@AllArgsConstructor
 @RequestMapping("/qa/*")
 @Log4j
+@AllArgsConstructor
 public class QaController {
 	
 	private QaService service;	
+	private ReplyService reply_service;
+	
+
 
 	
 //	@RequestMapping(value="/list", method = RequestMethod.GET)
@@ -48,14 +53,14 @@ public class QaController {
 	
 	@GetMapping("/list")
 	public void list(@ModelAttribute("criteria") Criteria cri, Model model) {
-		List<QaVO> list = service.getList(cri);
 		
-		int total = service.getTotal(cri);
-		
-		PageDTO dto = new PageDTO(cri, total);
-		
+		// 게시물 리스트 가져오기
+		List<QaVO> list = service.getList(cri);		
+		int total = service.getTotal(cri);		
+		PageDTO dto = new PageDTO(cri, total);		
 		model.addAttribute("list", list);
 		model.addAttribute("pageMaker", dto);
+		
 		
 	}
 	
@@ -97,7 +102,7 @@ public class QaController {
 		}
 		
 		//파일이 업로드 될 경로 설정 
-		String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload"); 
+		String saveDir = request.getSession().getServletContext().getRealPath("/resources/qaboad/upload"); 
 		
 		//위에서 설정한 경로의 폴더가 없을 경우 생성 
 		System.out.println(saveDir);
@@ -149,15 +154,22 @@ public class QaController {
 	
 	//
 	@GetMapping({"/get", "/modify"})
-	public void get(@RequestParam("qa_seq") int qa_seq, 
-			@ModelAttribute("criteria") Criteria cri, Model model) {
+	public void get(@RequestParam("qa_seq") int qa_seq,  
+			@ModelAttribute("criteria") Criteria cri, 
+			Model model) {
 		
-		QaVO vo = service.get(qa_seq);
-		
-		service.addCnt(qa_seq);
-		
+		// 게시물 가져오기
 		// 쿼리문으로 붙어서 감
+		QaVO vo = service.get(qa_seq);
+		service.addCnt(qa_seq);
 		model.addAttribute("board", vo);
+		
+
+
+		// 댓글 리스트 가져오기
+		List<ReplyVO> list = reply_service.getList(cri, qa_seq);
+		model.addAttribute("reply_list", list);
+
 	}
 	
 	@RequestMapping("/remove")

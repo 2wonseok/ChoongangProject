@@ -8,6 +8,8 @@ import org.zerock.qaboard.domain.QaVO;
 
 public interface QaMapper {
 	
+	public QaVO read(int seq);
+	
 	public int getTotalCount(Criteria cri);
 	//	SELECT conut(*) FROM tbl_board
 	
@@ -21,7 +23,6 @@ public interface QaMapper {
 	// 1. seq_board의 nextval을 먼저 조회(select)
 	// 2. 조회된 nextval을 insert에서 사용
 	
-	public QaVO read(int seq);
 	
 	public int delete(int seq);
 	

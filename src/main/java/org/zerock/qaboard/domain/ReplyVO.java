@@ -13,14 +13,16 @@ public class ReplyVO {
 //	reply_regdate DATE,
 //	reply_updatedate DATE,
 //	reply_boardname VARCHAR2(10) NOT NULL,
-//	reply_boardseq NUMBER(10) NOT NULL
+//	reply_boardseq NUMBER(10) NOT NULL,
+//	reply_filename VARCHAR2(3000)
 
 	private int reply_seq;
+	private int reply_boardseq;
 	private String reply_content;
 	private String reply_writer;
 	private Date reply_regdate;
 	private Date reply_updatedate;
 	private String reply_boardname;
-	private int reply_boardseq;
+	private String reply_filename;
 	
 }

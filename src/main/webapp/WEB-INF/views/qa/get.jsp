@@ -2,7 +2,7 @@
   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,12 +64,12 @@ var seq = ${board.qa_seq};
 	 --%>	
 
 	 	<div class="form-group">
-	 		<label for="input1">번호</label>
+	 		<strong><label for="input1">번호</label></strong>
 	 		<input class="form-control" readonly value="${board.qa_seq }">
 	 	</div>
 	 	
 	 	<div class="form-group">
-	 		<label for="input2">질문 종류</label>
+	 		<strong><label for="input2">질문 종류</label></strong>
 	 		<input class="form-control" readonly value="${board.qa_category }">
 	 	</div>
 	 	
@@ -81,11 +81,11 @@ var seq = ${board.qa_seq};
 	 	</div>
 	 		 	 --%>
 			<div class="form-group">
-		    <label for="input5">제목</label>
+		    <strong><label for="input5">제목</label></strong>
 		    <input readonly value='<c:out value="${board.qa_title }" />' type="text" class="form-control">
 		  	</div>		  	
 		  	
-		  	<label for="input6">내용</label> <br>		  	
+		  	 <strong><label for="input6">내용</label> <br>	</strong>	  	
 		  	<div class="form-group" contentEditable="false" id="table">
 		  	<c:out value="${board.qa_content }" /> <br>
 		  	<img src="${root }/resources/upload/${board.qa_filename }" id="image"> <br>
@@ -143,13 +143,44 @@ var seq = ${board.qa_seq};
 		  	<!-- 관리자이면서 자신의 글일 경우  -->
 		  	<c:if test="${authUser.user_grade == 0 && board.qa_writer == authUser.user_nickname }">
 					<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
-			</c:if>		
-		  	
-		  	 
-			</div>
+			</c:if>
+
+
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>NO</th>
+							<th>내용 (<i class="far fa-calendar-alt"></i>)</th>
+							<th>닉네임</th>						
+
+						</tr>
+					</thead>
+					<tbody>
+
+						<c:forEach items="${reply_list }" var="reply">
+							<tr>
+								<td><Strong class="text-primary">${reply.reply_seq}</Strong></td>
+								
+								<td><small class="text-info">${reply.reply_content}</small>
+								<div>
+								<small class="form-text text-secondary">
+						 		<fmt:formatDate pattern="yyyy.MM.dd. hh.mm" value="${board.qa_regdate}" />
+						 		</small>
+								</div>
+								</td>
+								<td>${reply.reply_writer}</td>
+								
+							</tr>
+
+						</c:forEach>
+						
+
+						</tbody>
+						</table>
+					
 		</div>
 	</div>
-	
-	
+
 </body>
+
 </html>

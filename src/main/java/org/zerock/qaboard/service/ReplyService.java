@@ -7,12 +7,7 @@ import org.zerock.qaboard.domain.ReplyVO;
 
 public interface ReplyService {
 
-	public int register(ReplyVO reply);
-	public ReplyVO get(int seq);
-	public int modify(ReplyVO reply);
-	public int remove(int seq);
-	public List<ReplyVO> getList(
-			Criteria cri, 
-			String reply_boardname, 
-			int qa_seq);
+	public List<ReplyVO> getList(Criteria cri, int qa_seq);
+	
+
 }
