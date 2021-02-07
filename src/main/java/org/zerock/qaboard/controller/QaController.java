@@ -22,9 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.qaboard.domain.Criteria;
 import org.zerock.qaboard.domain.PageDTO;
 import org.zerock.qaboard.domain.QaVO;
-import org.zerock.qaboard.domain.ReplyVO;
+import org.zerock.qaboard.domain.QaReplyVO;
 import org.zerock.qaboard.service.QaService;
-import org.zerock.qaboard.service.ReplyService;
+import org.zerock.qaboard.service.QaReplyService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -36,7 +36,7 @@ import lombok.extern.log4j.Log4j;
 public class QaController {
 	
 	private QaService service;	
-	private ReplyService reply_service;
+	private QaReplyService reply_service;
 	
 
 
@@ -167,7 +167,7 @@ public class QaController {
 
 
 		// 댓글 리스트 가져오기
-		List<ReplyVO> list = reply_service.getList(cri, qa_seq);
+		List<QaReplyVO> list = reply_service.getList(cri, qa_seq);
 		model.addAttribute("reply_list", list);
 
 	}

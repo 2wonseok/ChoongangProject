@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class ReplyVO {
+public class QaReplyVO {
 	
 //	reply_seq NUMBER(10) PRIMARY KEY,
 //	reply_content VARCHAR2(3000) NOT NULL,

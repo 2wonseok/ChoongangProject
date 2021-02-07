@@ -3,10 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="org.zerock.qaboard.mapper.ReplyMapper">
+<mapper namespace="org.zerock.qaboard.mapper.QaReplyMapper">
 
 
-   <select id="getList" resultType="org.zerock.qaboard.domain.ReplyVO">
+   <select id="getList" resultType="org.zerock.qaboard.domain.QaReplyVO">
    <![CDATA[
       SELECT * FROM tbl_reply WHERE reply_boardseq = #{reply_boardseq} AND reply_seq > 0
    ]]>
