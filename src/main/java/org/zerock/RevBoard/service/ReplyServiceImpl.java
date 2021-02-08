@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.zerock.RevBoard.domain.Criteria;
 import org.zerock.RevBoard.domain.ReplyVO;
 import org.zerock.RevBoard.mapper.RevBoardMapper;
 import org.zerock.RevBoard.mapper.RevReplyMapper;
@@ -52,16 +51,8 @@ public class ReplyServiceImpl implements ReplyService {
 	
 	// 댓글 리스트가져오기 
 	@Override
-	public List<ReplyVO> getList(Criteria cri, int reply_seq, String boardname) {
+	public List<ReplyVO> getList(int reply_boardseq) {
 
-		return mapper.getListWithPaging(cri, reply_seq, boardname);
+		return mapper.getListWithPaging(reply_boardseq);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 }

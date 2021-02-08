@@ -138,7 +138,7 @@ public class RevBoardController {
 		
 		PageDTO dto = new PageDTO(cri, total);
 		
-		UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
+		UserVO user = (UserVO) request.getSession().getAttribute("authUser");
 		
 		model.addAttribute("authUser", user);
 		model.addAttribute("list", list);
@@ -147,7 +147,7 @@ public class RevBoardController {
 	
 	@GetMapping({"/get", "/modify"})
 	public ModelAndView get(@RequestParam int rev_seq, @ModelAttribute("cri") Criteria cri, Model model,HttpServletRequest req, HttpServletResponse res) {
-		 
+		UserVO user = (UserVO) req.getSession().getAttribute("authUser");
 		// 해당 게시판 번호를 받아 리뷰 상세페이지로 넘겨줌
 		RevVO rev = service.get(rev_seq);
 		ModelAndView view = new ModelAndView();
@@ -161,13 +161,19 @@ public class RevBoardController {
 		if (cookies != null && cookies.length > 0) {
 			for (int i = 0; i < cookies.length; i++) {
 				//	Cookie의 name이 cookie + rev_seq와 일치하는 쿠키를 viewCookie에 넘겨줌
-				if(cookies[i].getName().equals("cookie"+rev_seq)) {
+			if(user != null) {
+				if(cookies[i].getName().equals("cookie"+user.getUser_id())) {
 					System.out.println("처음 쿠키가 생성한 뒤 들어옴.");
 					viewCookie = cookies[i];
+					}
+				} else {
+					if(cookies[i].getName().equals("cookie"+rev_seq)) {
+						System.out.println("처음 쿠키가 생성한 뒤 들어옴.");
+						viewCookie = cookies[i];
 				}
 			}
 		}
-		
+		}
 		if (rev != null) {
 			System.out.println("System - 해당 상세 리뷰페이지로 넘어감");
 			
@@ -178,7 +184,7 @@ public class RevBoardController {
 				System.out.println("cookie 없음");
 				
 				// 쿠키 생성(이름, 값)
-				Cookie newCookie = new Cookie("cookie" + rev_seq, "|" + rev_seq + "|");
+				Cookie newCookie = new Cookie("cookie" + user.getUser_id(), "|" + user.getUser_id() + "|");
 				
 				//쿠키 추가
 				res.addCookie(newCookie);

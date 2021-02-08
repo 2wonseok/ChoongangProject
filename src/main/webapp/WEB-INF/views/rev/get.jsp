@@ -52,22 +52,97 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-<script src="${root }/resources/rev_js/rev.js">
-/* $(document).ready(function() {
-	$("#goodbtn").click(function() {
-		revService.goodAdd({
-			rev_seq,
-			function(data) {
-				console.log(data);
-			},
-			function() {
-				console.log("error");
-			}
+<script src="${root }/resources/rev_js/rev.js"></script>
+<script>
+//새 댓글 버튼 클릭 이벤트 처리
+$(document).ready(function() {
+		// 날짜 형식		
+		function dateString(date) {
+			var d = new Date(date);
+			return d.toISOString().split("T")[0];
 			
-		});
-	});
-}); */
+			
+		}
+function showList() {
+			replyService.getList(rev_seq, function(list) {
+				// console.log(list);	
+				
+				var replyUL = $("#reply-ul")
+				replyUL.empty(); // append로 계속 있어도 리스트를 넣어주니까 한번비워주는 코드
+				for (var i = 0; i < list.length; i++) {
+					var replyLI = '<li class="media" data-reply_seq="'
+						+ list[i].reply_seq + '"><div class="media-body"><h5>'
+						+ list[i].reply_writer + '<small class= "float-right">'
+						+ dateString(list[i].reply_regdate) + "</small></h5>"
+						+ list[i].reply_content + "<hr></div></li>";
+						
+						
+						replyUL.append(replyLI);
+						
+					}
+				}),
+			function(err) {
+			};
+}
+		
 
+$("#new-reply-button").click(function() {
+	console.log("new reply button clicked!");
+	$("#new-reply-modal").modal("show");
+});
+
+//새 댓글 등록 버튼 클릭 이벤트 처리
+$("#reply-submit-button").click(function() {
+	
+	// input에서 value 가져와서 변수에 저장
+	var reply_content = $("#reply_content-input2").val();		
+	var reply_writer = $("#reply_writer-input2").val();
+	
+	// ajax 요청을 위한 데이터 만들기
+	var data = {reply_boardname: 'RevBoard', reply_boardseq: rev_seq, reply_content: reply_content,  reply_writer: reply_writer}
+	
+	replyService.add(data,
+			function() {
+			/* $("#reply-ul").empty();	이렇게 사용해도 리스트를 비워주고 
+		   	showList();					새로작성한것과 기존의 리스트만 보여줌
+		   	alert("댓글 등록에 성공했습니다"); */
+				
+		   	
+		   	// 댓글 목록 가져오기 실행
+				 showList(); 
+				// location.reload(); 새로고침하는 자바스크립트 코드
+				alert("댓글 등록에 성공하였습니다.");
+	},
+			function() {
+				alert("댓글 등록에 실패하였습니다.");
+	});
+	
+	// 모달창 닫기
+	$("#new-reply-modal").modal("hide");
+	// 모달창 내의 input 요소들 value들 초기화
+	$("#new-reply-modal input").val("");
+	
+	
+	
+});
+
+//reply-ul 클릭 이벤트 처리
+$("#reply-ul").on("click", "li",  function() { // on메소드를 이용해서 reply-ul 안에있는 <li> 를 눌렀을때
+	//console.log("reply ul clicked.....");	   // 일이 일어나도록함.
+	console.log($(this).attr("data-rev_boardseq"));		// 여기서의 this는 click이벤트를 당한 li를 뜻함.
+	
+	// 하나의 댓글 읽어오기
+	var reply_seq = $(this).attr("data-reply_seq");
+	replyService.get(reply_boardseq, function(data) {
+		$("#reply_seq-input3").val(reply_seq);
+		$("#reply_content-input3").val(data.reply_content);
+		$("#reply_writer-input3").val(data.reply_writer);
+		$("#modify-reply-modal").modal("show");
+	});
+	
+});
+showList();
+});
 </script>
 <script>
 	
@@ -208,6 +283,117 @@
 		<a id="btn_add" class="btn btn-secondary"  href="${modifyLink }">글수정</a>
 		</c:if>
 		<a id="btn_add" class="btn btn-secondary"  href="${listLink }">목록으로</a>
+	</div>
+	<div class="container-sm mt-3">
+		<div class="row">
+			<div class="col-12 col-lg-6 offset-lg-3">
+				
+				<div class="card">
+					<div class="card-header d-flex justify-content-between align-items-center">
+						<span>
+						댓글 목록
+						</span>
+						<button class="btn btn-info" id="new-reply-button">댓글 쓰기</button>
+					</div>
+					
+					<div class="card-body">
+						
+						<ul class="list-unstyled" id="reply-ul">
+							
+							<!-- 하나의 댓글이 하나의 li -->
+							<!-- <li class="media" data-rno="21"> data-rno는 나중에 쓰기위해 만든 attribute임
+							
+								<div class="media-body">
+								
+									<h5>user00 <small>2021/01/29</small></h5>
+									
+									댓글 본문...........
+									
+									<hr>
+								</div>
+							
+							</li> -->
+						</ul>
+						
+					</div>
+					
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	<%-- modal 새 댓글 form --%>
+	<div class="modal fade" id="new-reply-modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">
+						새 댓글
+					</h5>
+					<button type="button" class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="reply_content-input2" class="col-form-label">
+							댓글
+						</label>
+						<input type="text" class="form-control" id ="reply_content-input2">
+					</div>
+					<div class="form-group">
+						<label for="reply_writer-input2" class="col-form-label">
+							작성자
+						</label>
+						<input type="text" class="form-control" id="reply_writer-input2" value="${sessionScope.authUser.user_id}" readonly>
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+					<button id="reply-submit-button"type="button" class="btn btn-primary">등록</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<%-- modal 수정 form --%>
+	<div class="modal fade" id="modify-reply-modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">
+						수정 / 삭제
+					</h5>
+					<button type="button" class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<input id="reply_seq-input3" type="hidden" />
+					<div class="form-group">
+						<label for="reply_content-input3" class="col-form-label">
+							댓글
+						</label>
+						<input type="text" class="form-control" id ="reply_content-input3">
+					</div>
+					<div class="form-group">
+						<label for="reply_writer-input3" class="col-form-label">
+							작성자
+						</label>
+						<input type="text" class="form-control" id="reply_writer-input3" value="${sessionScope.authUser.user_id }"readonly>
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+					<button id="reply-modify-button"type="button" class="btn btn-primary">수정</button>
+					<button id="reply-delete-button"type="button" class="btn btn-danger">삭제</button>
+				</div>
+				
+			</div>
+		</div>
 	</div>
 	
 </body>

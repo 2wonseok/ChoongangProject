@@ -17,8 +17,7 @@ public interface RevReplyMapper {
 	public int remove(int reply_seq);
 	
 	public List<ReplyVO> getListWithPaging(
-			@Param("cri") Criteria cri,
-			@Param("reply_seq") int reply_seq,
-			@Param("boardname") String boardname
+//			@Param("cri") Criteria cri,
+			 int reply_boardseq
 			);
 }

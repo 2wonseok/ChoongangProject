@@ -16,5 +16,5 @@ public interface ReplyService {
 	
 	public int remove(int reply_seq);
 	
-	public List<ReplyVO> getList(Criteria cri, int reply_seq, String boardname);
+	public List<ReplyVO> getList(int reply_boardseq);
 }
