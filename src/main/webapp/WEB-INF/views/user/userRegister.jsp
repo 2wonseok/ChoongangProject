@@ -40,10 +40,20 @@ $(document).ready(function() {
 		$("#nickCheckSuccess").hide(); 
 		$("#nickCheckFail").hide();
 		$("#nickYes").hide();
+		$("#idLengthFail").hide();
+		$("#nicknameLengthFail").hide();
+		$("#passwordLengthFail").hide();
 		
+		// 비밀번호 일치 확인
 		$("input").keyup(function() { 
 			var pwd1=$("#input3-password").val(); 
 			var pwd2=$("#input4-confirmPassword").val(); 
+			
+			if ($(this).val().length < 4 ) {
+				$("#passwordLengthFail").show();
+			} else {
+				$("#passwordLengthFail").hide();
+			}
 			
 			if(pwd1 != "" || pwd2 != "") { 
 				if(pwd1 == pwd2) { 
@@ -173,6 +183,71 @@ $(document).ready(function() {
 		});
 	});
 	
+//글자 수 제한 아이디
+	$('#user_id').on("blur keyup", function() {
+		if ($(this).val().length < 4 ) {
+			$("#idLengthFail").show();
+			$("#idCheck").attr("disabled", "disabled");
+		} else {
+			$("#idLengthFail").hide();
+			$("#idCheck").removeAttr("disabled");
+		}
+		
+  	$(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
+  });	
+	
+	$('#user_nickname').on("blur keyup", function() {
+		if ($(this).val().length < 4 ) {
+			$("#nicknameLengthFail").show();
+			$("#nickCheck").attr("disabled", "disabled");
+		} else {
+			$("#nicknameLengthFail").hide();
+			$("#nickCheck").removeAttr("disabled");
+		}
+		
+  });	
+	// 글자 수 제한 닉네임
+  $('#user_nickname').blur(function() {
+  	
+    var thisObject = $(this);
+    
+    var limit = thisObject.attr("limitbyte"); //제한byte를 가져온다.
+    var str = thisObject.val();
+    var strLength = 0;
+    var strTitle = "";
+    var strPiece = "";
+    var check = false;
+            
+    for (i = 0; i < str.length; i++){
+        var code = str.charCodeAt(i);
+        var ch = str.substr(i,1).toUpperCase();
+        //체크 하는 문자를 저장
+        strPiece = str.substr(i,1)
+        
+        code = parseInt(code);
+        
+        if ((ch < "0" || ch > "9") && (ch < "A" || ch > "Z") && ((code > 255) || (code < 0))) {
+            strLength = strLength + 3; //UTF-8 3byte 로 계산
+        } else {
+            strLength = strLength + 1;
+        }
+        
+        if(strLength>limit){ //제한 길이 확인
+            check = true;
+            break;
+        }else{
+            strTitle = strTitle+strPiece; //제한길이 보다 작으면 자른 문자를 붙여준다.
+        }
+        
+    }
+    
+    if(check){
+    	alert('영문, 숫자 최대 24글자 한글 최대 8글자까지 입력 가능합니다.');
+    }
+    
+    thisObject.val(strTitle);
+    
+});
 	
 });
 </script>
@@ -240,8 +315,9 @@ $(document).ready(function() {
 	<form action="${root }/user/userRegister" method="post" id="joinForm">
 		  <div class="form-group">
 		    <label for="input1-id">아이디</label>
-		    <input type="text" class="form-control" style="width:77%;" name="user_id" id="user_id" 
+		    <input type="text" class="form-control" placeholder="중복 확인을 눌러주세요"  maxlength="21" style="width:77%;" name="user_id" id="user_id" 
 		    	value="" required>
+		    <small class="text-danger" id="idLengthFail">영문 숫자 최소 4글자 이상 입력해주세요.</small>
 		    <button type="button" class="btn_check" id="idCheck">중복확인</button>
 		    <small class="text-dark" id="idCheckSuccess">사용 가능합니다.</small>
 		    <button type="button" id="idYes">확인</button>
@@ -253,8 +329,9 @@ $(document).ready(function() {
 		  </div>
 		  <div class="form-group">
 		    <label for="input8-nickname">닉네임</label>
-		    <input type="text" class="form-control" style="width:77%;" name="user_nickname" id="user_nickname" 
+		    <input type="text" class="form-control" limitbyte="24" style="width:77%;" name="user_nickname" id="user_nickname" 
 		    	value="" placeholder="중복 확인을 눌러주세요" required>
+		    <small class="text-danger" id="nicknameLengthFail">최소 4글자 이상 입력해주세요.</small>
 		    <button type="button" class="btn_check"  id="nickCheck">중복확인</button>
 		    <small class="text-dark" id="nickCheckSuccess">사용 가능합니다.</small>
 		    <button type="button" id="nickYes">확인</button>
@@ -263,6 +340,7 @@ $(document).ready(function() {
 		  <div class="form-group">
 		    <label for="input3-password">패스워드</label>
 		    <input type="password" class="form-control" name="user_password" id="input3-password" required>
+		    <small class="text-danger" id="passwordLengthFail">최소 4글자 이상 입력해주세요.</small>
 		  </div>
 		  <div class="form-group">
 		    <label for="input4-confirmPassword">패스워드확인</label>

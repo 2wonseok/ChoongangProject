@@ -56,7 +56,7 @@ $(document).ready(function() {
 	$("#nickCheckFail").hide();
 	$("#nickYes").hide();
 	
-	$("#changePw").keyup(function() { 
+	$("input").keyup(function() { 
 		var pwd1=$("#changePw").val(); 
 		var pwd2=$("#changeConfirmPw").val(); 
 		
