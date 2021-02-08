@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.zerock.freeboard.mapper.FreeBoardReplyMapper">
+
+	<insert id="insert">
+		INSERT INTO tbl_reply (reply_seq, reply_boardname, reply_boardseq, reply_content, reply_writer, reply_regdate) 
+		VALUES (reply_seq.nextval, 
+		#{reply_boardname}, 
+		#{reply_boardseq}, 
+		#{reply_content}, 
+		#{reply_wirter}, 
+		#{reply_regdate};
+	</insert>
+
+  <select id="read" resultType="org.zerock.freeboard.domain.FreeBoardReplyVO">
+  		<!--freeboard게시판에 댓글번호  -->
+		SELECT * FROM tbl_reply 
+		WHERE reply_boardname = 'tbl_freeboard' AND reply_boardseq = #{reply_boardseq}
+	</select>
+	
+   
+</mapper>
