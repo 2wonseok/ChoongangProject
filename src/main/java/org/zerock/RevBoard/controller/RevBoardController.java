@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -145,7 +144,7 @@ public class RevBoardController {
 		model.addAttribute("pageMaker", dto);
 	}
 	
-	@GetMapping({"/get", "/modify"})
+	@GetMapping({"/get"})
 	public ModelAndView get(@RequestParam int rev_seq, @ModelAttribute("cri") Criteria cri, Model model,HttpServletRequest req, HttpServletResponse res) {
 		UserVO user = (UserVO) req.getSession().getAttribute("authUser");
 		// 해당 게시판 번호를 받아 리뷰 상세페이지로 넘겨줌
@@ -184,10 +183,16 @@ public class RevBoardController {
 				System.out.println("cookie 없음");
 				
 				// 쿠키 생성(이름, 값)
-				Cookie newCookie = new Cookie("cookie" + user.getUser_id(), "|" + user.getUser_id() + "|");
+				if (user != null) {
+					Cookie newCookie = new Cookie("cookie" + user.getUser_id(), "|" + user.getUser_id() + "|");
+					res.addCookie(newCookie);
+				} else {
+					Cookie newCookie = new Cookie("cookie" + rev_seq, "|" + rev_seq + "|");
+					res.addCookie(newCookie);
+				}
 				
 				//쿠키 추가
-				res.addCookie(newCookie);
+				
 				
 				// 쿠키를 추가 시키고 조회수 증가시킴
 				int result = service.addReadCnt(rev_seq);
@@ -229,6 +234,15 @@ public class RevBoardController {
 		 */
 		
 	}
+	@GetMapping("/modify")
+	public void modify(@RequestParam int rev_seq, @ModelAttribute("cri") Criteria cri, Model model) {
+		
+		
+		RevVO rev = service.get(rev_seq);
+		
+		model.addAttribute("RevBoard", rev);
+	}
+	
 	
 	@PostMapping("/modify")
 	public String modify(RevVO revVo,Criteria cri, RedirectAttributes rttr, MultipartFile[] upload , HttpServletRequest request) {

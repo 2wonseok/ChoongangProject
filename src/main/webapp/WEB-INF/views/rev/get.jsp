@@ -41,6 +41,7 @@
 <script>
 	var appRoot = '${root}'; // 자바스크립트 코드에서 contextPath를 쓰기위해 선언.
 	var rev_seq = ${RevBoard.rev_seq};
+	var authUser = '${authUser.user_id}';
 </script>
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -54,9 +55,11 @@
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script src="${root }/resources/rev_js/rev.js"></script>
 <script>
+
 //새 댓글 버튼 클릭 이벤트 처리
 $(document).ready(function() {
-		// 날짜 형식		
+		// 날짜 형식
+
 		function dateString(date) {
 			var d = new Date(date);
 			return d.toISOString().split("T")[0];
@@ -76,6 +79,7 @@ function showList() {
 						+ dateString(list[i].reply_regdate) + "</small></h5>"
 						+ list[i].reply_content + "<hr></div></li>";
 						
+						console.log('******' + list[i].reply_seq);
 						
 						replyUL.append(replyLI);
 						
@@ -127,19 +131,73 @@ $("#reply-submit-button").click(function() {
 });
 
 //reply-ul 클릭 이벤트 처리
+
+
 $("#reply-ul").on("click", "li",  function() { // on메소드를 이용해서 reply-ul 안에있는 <li> 를 눌렀을때
 	//console.log("reply ul clicked.....");	   // 일이 일어나도록함.
-	console.log($(this).attr("data-rev_boardseq"));		// 여기서의 this는 click이벤트를 당한 li를 뜻함.
-	
+	console.log($(this).attr("data-reply_seq"));		// 여기서의 this는 click이벤트를 당한 li를 뜻함.
+
 	// 하나의 댓글 읽어오기
 	var reply_seq = $(this).attr("data-reply_seq");
-	replyService.get(reply_boardseq, function(data) {
-		$("#reply_seq-input3").val(reply_seq);
+	replyService.get(reply_seq, function(data) {
+		console.log(reply_seq);
+		console.log(data);
+		console.log(data.reply_writer);
+		
+		//<div id="ddd">
+		//<button id="reply-modify-button"type="button" class="btn btn-primary">수정</button>
+		//<button id="reply-delete-button"type="button" class="btn btn-danger">삭제</button>
+		//</div>
+		
+		var modifyMd = $("#modify-footer");
+		var namei = data.reply_writer;
+		var ok = '';
+		if (authUser == data.reply_writer) {
+			console.log(data.reply_writer);
+
+			ok = '<div id="confirm">'
+			+ '<button id="reply-modify-button" type="button" class="btn btn-primary">수정</button>'
+			+ '<button id="reply-delete-button" type="button" class="btn btn-danger">삭제</button>'
+			+ '</div>'
+			
+			modifyMd.empty();
+			modifyMd.append(ok);
+			
+		} else {
+			modifyMd.empty();
+		}
+		
+		$("#reply_seq-input3").val(data.reply_seq);
 		$("#reply_content-input3").val(data.reply_content);
 		$("#reply_writer-input3").val(data.reply_writer);
+		$("#reply_boardname-input3").val('RevBoard');
 		$("#modify-reply-modal").modal("show");
 	});
 	
+});
+
+//수정 버튼 이벤트 처리
+$("#reply-modify-button").click(function() {
+	var reply_seq = $("#reply_seq-input3").val();
+	var reply_content = $("#reply_content-input3").val();
+	var data = {reply_seq: reply_seq, reply_content: reply_content}
+	
+	replyService.update(data, function() {
+		alert("댓글을 수정하였습니다.");
+		$("#modify-reply-modal").modal("hide");		
+		showList();
+	}); 
+});
+//삭제 버튼 이벤트 처리
+$("#reply-delete-button").click(function() {
+	var reply_seq = $("#reply_seq-input3").val();
+	var data = {reply_seq: reply_seq}
+	
+	replyService.remove(data, function() {
+		alert("댓글을 삭제하였습니다.");
+		$("#modify-reply-modal").modal("hide");
+		showList();
+	});
 });
 showList();
 });
@@ -196,6 +254,7 @@ showList();
 </head>
 <body>
 <u:navbar></u:navbar>
+
 	<div class="container-sm">
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
@@ -382,14 +441,18 @@ showList();
 						<label for="reply_writer-input3" class="col-form-label">
 							작성자
 						</label>
-						<input type="text" class="form-control" id="reply_writer-input3" value="${sessionScope.authUser.user_id }"readonly>
+						<input type="text" class="form-control" id="reply_writer-input3" readonly>
 					</div>
+					<input id="reply_boardname-input3" type="hidden" />
 				</div>
 				
-				<div class="modal-footer">
+				<div class="modal-footer" id="modify-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+					<!-- <div id="ddd">
 					<button id="reply-modify-button"type="button" class="btn btn-primary">수정</button>
 					<button id="reply-delete-button"type="button" class="btn btn-danger">삭제</button>
+					</div> -->
+					
 				</div>
 				
 			</div>

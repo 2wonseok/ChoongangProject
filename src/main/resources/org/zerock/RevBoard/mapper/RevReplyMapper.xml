@@ -36,7 +36,7 @@
 	<!-- SELECT * FROM tbl_reply WHERE reply_boardname = 'RevBoard' AND reply_boardseq = 5;  -->
 	<select id="read" resultType="org.zerock.RevBoard.domain.ReplyVO">
 		SELECT * FROM tbl_reply 
-		WHERE reply_boardname = #{reply_boardname} AND reply_boardseq = #{reply_boardseq}
+		WHERE reply_boardname = 'RevBoard' AND reply_seq = #{reply_seq}
 	</select>
 	
 	<!-- 댓글 수정 -->
@@ -45,7 +45,7 @@
 		UPDATE tbl_reply 
 		SET reply_content = #{reply_content},
 		reply_updatedate = SYSDATE
-		WHERE reply_boardname = #{reply_boardname}
+		WHERE reply_boardname = 'RevBoard'
 		AND reply_seq = #{reply_seq}
 	</update>
 	

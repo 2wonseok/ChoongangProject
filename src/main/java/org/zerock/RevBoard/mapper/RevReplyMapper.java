@@ -2,8 +2,6 @@ package org.zerock.RevBoard.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-import org.zerock.RevBoard.domain.Criteria;
 import org.zerock.RevBoard.domain.ReplyVO;
 
 public interface RevReplyMapper {

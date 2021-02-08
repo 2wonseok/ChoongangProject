@@ -46,9 +46,9 @@ var replyService = (function() {
 		});	
 	}
 	function remove(param, callback, error) {
-		var rno = param.rno;
+		var reply_seq = param.reply_seq;
 		
-		$.ajax(appRoot + "/replies/" + rno, {
+		$.ajax(appRoot + "/replies/" + reply_seq, {
 			type: "delete",
 			success: function(result, status, xhr) {
 				if (callback) {
@@ -65,12 +65,12 @@ var replyService = (function() {
 		});		
 	}
 	
-	function update(reply, callback, error) {
+	function update(data, callback, error) {
 		
 		$.ajax({
 			type: "put",
-			url: appRoot + "/replies/" + reply.rno, 
-			data: JSON.stringify(reply),
+			url: appRoot + "/replies/" + data.reply_seq, 
+			data: JSON.stringify(data),
 			contentType: "application/json; charset=UTF-8",
 			success: function(result, status, xhr) {
 				if (callback) {
@@ -86,8 +86,8 @@ var replyService = (function() {
 		
 	}
 	
-	function get(rno, callback, error) {
-		$.get(appRoot + '/replies/' + rno, function(data) {
+	function get(reply_seq, callback, error) {
+		$.get(appRoot + '/replies/' + reply_seq, function(data) {
 			if (callback) {
 				callback(data);
 			}		

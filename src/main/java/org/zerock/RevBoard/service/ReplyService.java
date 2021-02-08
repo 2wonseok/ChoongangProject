@@ -2,7 +2,6 @@ package org.zerock.RevBoard.service;
 
 import java.util.List;
 
-import org.zerock.RevBoard.domain.Criteria;
 import org.zerock.RevBoard.domain.ReplyVO;
 
 
