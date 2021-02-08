@@ -2,11 +2,30 @@
   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %> 
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
+ 
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script>
+var appRoot = '${root}';
+var seq = ${board.qa_seq};
+</script>
+<script
+  src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="${root }/resources/js/qa_reply.js"></script>
+
+
 <style>
+
 #btn_add {
     color: #fff;
     font-size: 15px;
@@ -17,6 +36,17 @@
     line-height: 45px;
     float: right;
 }
+#reply-submit-button {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+}
+
 #table {
     border: 2px solid black;
 }
@@ -24,23 +54,51 @@
 	max-width: 100%
 }
 </style>
+
+
+
 <script>
-var appRoot = '${root}';
-var seq = ${board.qa_seq};
+
+$(document).ready(function() {
+	// 날짜 형식
+	function dateString(date) {
+		var d = new Date(date);
+		return d.toISOString().split("T")[0];
+	}
+	
+
+	
+	$("#reply-submit-button").click(function() {
+		console.log("등록 버튼 클릭");
+		
+		// input 에서 value 가져와서 변수에 저장
+		var reply_content = $("#reply-input").val();
+		var reply_writer = $("#replyer-input").val();		
+		// ajax 요청을 위한 데이터 만들기
+		var data = {reply_boardseq: reply_boardseq, reply_content: reply_content, reply_writer: reply_writer}
+		
+		
+		replyService.add(data, 
+				function() {
+					alert("댓글 등록에 성공");
+				}, 
+				function() {
+					alert("댓글 등록에 실패");
+				});	
+		// 모달창 닫기
+		$("#new-reply-modal").modal("hide");
+		
+		// 모달창 내의 input 요소들 value를 초기화
+		$("#new-reply-modal input").val("");
+		
+	});			
+	
+
+});
+
 </script>
 
 
-<meta charset="UTF-8">
-<link rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script
-  src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
-<script src="${root }/resources/js/reply.js"></script>
 
 <title>게시물 보기</title>
 
@@ -88,7 +146,7 @@ var seq = ${board.qa_seq};
 		  	 <strong><label for="input6">내용</label> <br>	</strong>	  	
 		  	<div class="form-group" contentEditable="false" id="table">
 		  	<c:out value="${board.qa_content }" /> <br>
-		  	<img src="${root }/resources/upload/${board.qa_filename }" id="image"> <br>
+		  	<img src="${root }/resources/qaboard/upload/${board.qa_filename }" id="image"> <br>
 		  	
 			</div>
 			<small class="form-text text-primary">
@@ -117,7 +175,7 @@ var seq = ${board.qa_seq};
 		  	
 		  	<div class="form-group">
 		    <label for="input6">작성자</label>
-		    <input readonly value='<c:out value="${board.qa_writer }" />' type="text" class="form-control" id="input7">
+		    <input readonly value='<c:out value="${board.qa_writer }" />' type="text" class="form-control" id="input8">
 		  	</div>
 		  	
 
@@ -174,13 +232,28 @@ var seq = ${board.qa_seq};
 
 						</c:forEach>
 						
+						
 
 						</tbody>
 						</table>
+						
+
+					<label for="reply-input">내용</label>
+					<input type="text" name="reply_content" value="${reply_content }" id="reply-input"/><br>
+					<label for="replyer-input">작성자</label> 
+					<input readonly type="text" name="reply_writer" value="${authUser.user_nickname }" id="replyer-input"/><br>
+					<input type="hidden" type="text" name="reply_boardseq" value="${board.qa_seq }"/>		
+					<c:if test="${errors.reply_noContent }">
+						<small class="form-text text-danger"> 댓글 내용을 입력 해주세요. </small>
+					</c:if>
+
+					<button id="reply-submit-button">댓글쓰기</button>
+
+
 					
 		</div>
 	</div>
-
+</div>
 </body>
 
 </html>

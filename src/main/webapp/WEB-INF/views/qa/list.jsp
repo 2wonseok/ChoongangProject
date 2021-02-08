@@ -65,7 +65,7 @@
   cursor: pointer;
 }
 [type=checkbox]:checked + label {
-  outline: 2px solid #1e263c;
+  outline: 3px solid #1e263c;
   margin: 8px;
 
 }
@@ -192,6 +192,8 @@ function checkTree(chk){
             <td>
             <c:url value="/qa/get" var="boardLink">
             	<c:param value="${board.qa_seq }" name="qa_seq" />
+
+            	
             	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
             	<c:param value="${pageMaker.cri.amount }" name="amount" />
             	<c:param value="${pageMaker.cri.type }" name="type"	/>

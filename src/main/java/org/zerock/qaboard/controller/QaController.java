@@ -38,9 +38,6 @@ public class QaController {
 	private QaService service;	
 	private QaReplyService reply_service;
 	
-
-
-	
 //	@RequestMapping(value="/list", method = RequestMethod.GET)
 //	@GetMapping("/list") 
 	// 메소드가 void 타입의 경우 return 경로가 view(jsp)가 됨
@@ -102,7 +99,7 @@ public class QaController {
 		}
 		
 		//파일이 업로드 될 경로 설정 
-		String saveDir = request.getSession().getServletContext().getRealPath("/resources/qaboad/upload"); 
+		String saveDir = request.getSession().getServletContext().getRealPath("/resources/qaboard/upload"); 
 		
 		//위에서 설정한 경로의 폴더가 없을 경우 생성 
 		System.out.println(saveDir);
@@ -211,7 +208,7 @@ public class QaController {
 		
 		
 		// 파일이 업로드 될 경로 설정
-		String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload");
+		String saveDir = request.getSession().getServletContext().getRealPath("/resources/qaboard/upload");
 
 		// 위에서 설정한 경로의 폴더가 없을 경우 생성
 		System.out.println(saveDir);

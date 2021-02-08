@@ -23,5 +23,9 @@ public class QaReplyServiceImpl implements QaReplyService{
 		return mapper.getList(cri, qa_seq);
 	}
 	
+	@Override
+	public void register(QaReplyVO board) {
+		mapper.insertSelectKey(board);
+	}	
 
 }

@@ -10,16 +10,16 @@
 		<foreach item="type" collection="typeArr" separator="OR">
 			<choose>
 				<when test="type == 'T'.toString()">
-					qa_title LIKE '%'||#{keyword}||'%'
+					UPPER(qa_title) LIKE UPPER('%'||#{keyword}||'%')
 				</when>
 				<when test="type == 'C'.toString()">
-					qa_content LIKE '%'||#{keyword}||'%'
+					UPPER(qa_content) LIKE UPPER('%'||#{keyword}||'%')
 				</when>
 				<when test="type == 'W'.toString()">
-					qa_writer LIKE '%'||#{keyword}||'%'
+					UPPER(qa_writer) LIKE UPPER('%'||#{keyword}||'%')
 				</when>
 				<when test="type == 'S'.toString()">
-					qa_category LIKE '%'||#{keyword}||'%'
+					UPPER(qa_category) LIKE UPPER('%'||#{keyword}||'%')
 				</when>
 
 			</choose>
