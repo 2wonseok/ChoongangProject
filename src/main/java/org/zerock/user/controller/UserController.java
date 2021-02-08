@@ -187,8 +187,25 @@ public class UserController {
 		return "redirect:/main/index";
 	}
 	
+	@GetMapping("/userRemove") // 회원 탈퇴
+	public void RemoveUser() {
+		
+	}
+	
+	@PostMapping("/userRemove") // 회원 탈퇴 처리
+	public String UserRemove(UserVO user, HttpServletRequest req) {
+		HttpSession session = req.getSession(false);
+		
+		if (session != null) {
+			session.invalidate();
+		}
+		
+		return "redirect:/main/index";
+	}
+	
 	@GetMapping("/sendSMS") // 휴대폰 인증 
-	public @ResponseBody String sendSMS(String user_phone, RedirectAttributes rttr) {
+	public @ResponseBody void sendSMS(String user_phone, HttpSession session) {
+		
 		Random rand  = new Random();
     String numStr = "";
     for(int i=0; i<4; i++) {
@@ -200,8 +217,20 @@ public class UserController {
     System.out.println("인증번호 : " + numStr);
     service.smsService(user_phone,numStr);
 //    rttr.addFlashAttribute("AuthenticationNum", numStr);
-    
-    return numStr;
+    session.setAttribute("phoneConfirm", numStr);
+	}
+	
+	@GetMapping("/authentication") // 인증번호 확인
+	public @ResponseBody int authentication(String phoneConfirm, HttpSession session) {
+		int result = 1;
+		
+		if (session.getAttribute("phoneConfirm").equals(phoneConfirm)) {
+			result = 0;
+		} else {
+			result = 1;
+		}
+		
+		return result;
 	}
 	
 	@GetMapping("/findId")

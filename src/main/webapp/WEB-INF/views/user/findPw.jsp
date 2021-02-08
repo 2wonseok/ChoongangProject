@@ -47,34 +47,48 @@ $(document).ready(function() {
 	// 휴대폰 인증 관련 AJAX 
 	$("#user_phone").keyup(function() { 
 		$("#btn_search").attr("disabled", "disabled"); 
-		$('#zip_code_btn').click(function(){
-			var user_phone = $('#user_phone').val();
-			alert('인증번호 발송 완료!');
-			
-			$.ajax({
-			    type: "GET",
-			    url: "${root}/user/sendSMS",
-			    data: {
-			        "user_phone" : user_phone
-			    },
-			    success: function(res) {
-		        $('#zip_code_btns').click(function(){
-		            if($.trim(res) == $('#phoneConfirm').val()) {
-		            	$("#user_phone").attr("readonly", true);
-									$("#phoneConfirm").attr("readonly", true);
-									$("#phone-success").show(); 
-									$("#phone-danger").hide();
-									$("#btn_search").removeAttr("disabled"); 
-		            } else {
-									$("#phone-success").hide(); 
-									$("#phone-danger").show(); 
-									$("#btn_search").attr("disabled", "disabled"); 
-		            }
-		        })
-			    }
-			});
+	}); 	
+	
+	$('#zip_code_btn').click(function(){
+		var user_phone = $('#user_phone').val();
+		alert('인증번호 발송 완료!');
+		
+		$.ajax({
+		    type: "GET",
+		    url: "${root}/user/sendSMS",
+		    data: {
+		        "user_phone" : user_phone
+		    }
 		});
-	}); 
+	});
+	
+	//인증번호 확인
+	$('#zip_code_btns').click(function() {
+		var phoneConfirm = $('#phoneConfirm').val();		
+
+		$.ajax ({
+			type: "GET",
+			url: "${root}/user/authentication",
+			dataType : "json",
+			data: { "phoneConfirm" : phoneConfirm},
+			success: function(res) {
+				if(res == 0) {
+					$("#user_phone").attr("readonly", true);
+					$("#phoneConfirm").attr("readonly", true);
+					$("#phone-success").show(); 
+					$("#phone-danger").hide();
+					$("#btn_add").removeAttr("disabled"); 
+				} else {
+					$("#phone-success").hide(); 
+					$("#phone-danger").show(); 
+					$("#btn_add").attr("disabled", "disabled"); 
+				}
+		 }
+			
+		});
+	 
+  });
+	
 	
 });
 </script>

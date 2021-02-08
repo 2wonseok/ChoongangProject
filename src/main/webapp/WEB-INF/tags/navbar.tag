@@ -96,6 +96,9 @@
 					<li class="nav-item active">
 					  <a class="nav-link" href="${root }/user/userRead?user_id=${authUser.user_id}">마이페이지</a>
 					</li>
+					<li class="nav-item active">
+					  <a class="nav-link" href="${root }/user/userRemove?user_id=${authUser.user_id}">탈퇴</a>
+					</li>
 				</c:if>
 			</ul>
 			<form role="search" action="" method="get" name="simpleSearch" novalidate="novalidate">

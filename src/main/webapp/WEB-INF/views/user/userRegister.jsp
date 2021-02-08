@@ -57,45 +57,51 @@ $(document).ready(function() {
 				} 
 			} 
 		}); 
-	
-/* 		$("#nickCheck").click(function(e) {
-			var user_nick = $("#user_nickname").val();
-			e.preventDefault();
-			
-			var popup = window.open("${root}/user/nickCheck","pop","width=570,height=420, scrollbars=yes, resizable=yes");
-			
-		}); */
 		
 		// 휴대폰 인증 관련 AJAX 
 	$("#user_phone").keyup(function() { 
 		$("#btn_add").attr("disabled", "disabled"); 
-		$('#zip_code_btn').click(function(){
-			var user_phone = $('#user_phone').val();
-			alert('인증번호 발송 완료!');
-			
-			$.ajax({
-			    type: "GET",
-			    url: "${root}/user/sendSMS",
-			    data: {
-			        "user_phone" : user_phone
-			    },
-			    success: function(res) {
-		        $('#zip_code_btns').click(function(){
-		            if($.trim(res) == $('#phoneConfirm').val()) {
-									$("#phoneConfirm").attr("readonly", true);
-									$("#phone-success").show(); 
-									$("#phone-danger").hide();
-									$("#btn_add").removeAttr("disabled"); 
-		            } else {
-									$("#phone-success").hide(); 
-									$("#phone-danger").show(); 
-									$("#btn_add").attr("disabled", "disabled"); 
-		            }
-		        })
-			    }
-			});
+	}); 	
+		
+	$('#zip_code_btn').click(function(){
+		var user_phone = $('#user_phone').val();
+		alert('인증번호 발송 완료!');
+		
+		$.ajax({
+		    type: "GET",
+		    url: "${root}/user/sendSMS",
+		    data: {
+		        "user_phone" : user_phone
+		    }
 		});
-	}); 
+	});
+		
+	//인증번호 확인
+	$('#zip_code_btns').click(function() {
+		var phoneConfirm = $('#phoneConfirm').val();		
+
+		$.ajax ({
+			type: "GET",
+			url: "${root}/user/authentication",
+			dataType : "json",
+			data: { "phoneConfirm" : phoneConfirm},
+			success: function(res) {
+				if(res == 0) {
+					$("#user_phone").attr("readonly", true);
+					$("#phoneConfirm").attr("readonly", true);
+					$("#phone-success").show(); 
+					$("#phone-danger").hide();
+					$("#btn_add").removeAttr("disabled"); 
+				} else {
+					$("#phone-success").hide(); 
+					$("#phone-danger").show(); 
+					$("#btn_add").attr("disabled", "disabled"); 
+				}
+		 }
+			
+		});
+	 
+  });
 		
 	// ID 중복 체크 관련 스크립트
 	$("#idCheck").click(function() {
@@ -277,11 +283,11 @@ $(document).ready(function() {
 		    <label for="user_phone">휴대폰</label>
 		    <input type="text" class="form-control" style="width:77%;" name="user_phone" 
 		    	id="user_phone" value="" placeholder="'-' 제외하고 입력"  required>
-		    <button id="zip_code_btn">인증하기</button><br>
+		    <button type="button" id="zip_code_btn">인증하기</button><br>
 		    <label for="input8-phone">인증번호</label>
 		    <input type="text" class="form-control" style="width:83%;" name="phoneConfirm" 
-		    	id="phoneConfirm" value="" placeholder="인증번호를 입력해주세요." required>
-		    <button id="zip_code_btns" >완료</button>
+		    	id="phoneConfirm"  placeholder="인증번호를 입력해주세요." required>
+		    <button type="button" id="zip_code_btns" >완료</button>
 		    <div class="alert alert-success" id="phone-success">인증되었습니다.</div> 
 		 		<div class="alert alert-danger" id="phone-danger">인증 번호가 일치하지 않습니다.</div>
 		  </div>
