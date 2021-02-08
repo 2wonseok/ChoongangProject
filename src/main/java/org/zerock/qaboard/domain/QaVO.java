@@ -1,5 +1,6 @@
 package org.zerock.qaboard.domain;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import lombok.Data;
@@ -38,4 +39,11 @@ public class QaVO {
 	private Date qa_regdate;
 	private Date qa_updatedate;	
 	
+	public Date getQa_regdateKST() {
+		return Date.from(qa_regdate.toInstant().plus(9, ChronoUnit.HOURS));
+	}
+	
+	public Date getQa_updatedateKST() {
+		return Date.from(qa_updatedate.toInstant().plus(9, ChronoUnit.HOURS));
+	}
 }

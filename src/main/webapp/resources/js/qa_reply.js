@@ -2,14 +2,14 @@
 
 var replyService = (function() {
 
-	function addMethod(test, good, miss) {
+	function add(data, good, miss) {
 		console.log("add1 method");
-		console.log(test);
+		console.log(data);
 		
 		$.ajax({
 			type: "post",
 			url: appRoot + "/reply/register",			// context root로 변경
-			data: JSON.stringify(test),					// form data를 json으로
+			data: JSON.stringify(data),					// form data를 json으로
 			contentType: "application/json; charset=utf-8",
 			success: function(result, status, xhr) {
 				if(good) {
@@ -21,11 +21,11 @@ var replyService = (function() {
 				miss(er);
 				}
 			}
-		})
+		});
 	}
 	
 	return {
-		add: addMethod,
+		add: add,
 
 		};
 	

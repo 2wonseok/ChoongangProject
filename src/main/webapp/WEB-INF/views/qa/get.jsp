@@ -61,12 +61,22 @@ var seq = ${board.qa_seq};
 
 $(document).ready(function() {
 	// 날짜 형식
+	
+	/* 
 	function dateString(date) {
 		var d = new Date(date);
 		return d.toISOString().split("T")[0];
 	}
-	
-
+	 */
+	 
+//	reply_seq NUMBER(10) PRIMARY KEY,
+//	reply_content VARCHAR2(3000) NOT NULL,
+//	reply_writer VARCHAR2(30) NOT NULL,
+//	reply_regdate DATE,
+//	reply_updatedate DATE,
+//	reply_boardname VARCHAR2(10) NOT NULL,
+//	reply_boardseq NUMBER(10) NOT NULL,
+//	reply_filename VARCHAR2(3000)
 	
 	$("#reply-submit-button").click(function() {
 		console.log("등록 버튼 클릭");
@@ -75,15 +85,14 @@ $(document).ready(function() {
 		var reply_content = $("#reply-input").val();
 		var reply_writer = $("#replyer-input").val();		
 		// ajax 요청을 위한 데이터 만들기
-		var data = {reply_boardseq: reply_boardseq, reply_content: reply_content, reply_writer: reply_writer}
-		
-		
+		var data = {reply_boardseq: seq, reply_content: reply_content, reply_writer: reply_writer}
+				
 		replyService.add(data, 
 				function() {
-					alert("댓글 등록에 성공");
+					alert("댓글 등록 성공");
 				}, 
 				function() {
-					alert("댓글 등록에 실패");
+					alert("댓글 등록 실패");
 				});	
 		// 모달창 닫기
 		$("#new-reply-modal").modal("hide");
@@ -106,6 +115,7 @@ $(document).ready(function() {
 <body>
 
 	<u:navbar></u:navbar>
+
 
 	
 <div class="container-sm">
@@ -138,6 +148,8 @@ $(document).ready(function() {
 
 	 	</div>
 	 		 	 --%>
+	 		 	 
+	 		 	 
 			<div class="form-group">
 		    <strong><label for="input5">제목</label></strong>
 		    <input readonly value='<c:out value="${board.qa_title }" />' type="text" class="form-control">
@@ -150,12 +162,12 @@ $(document).ready(function() {
 		  	
 			</div>
 			<small class="form-text text-primary">
-	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 h시m분" value="${board.qa_regdate}" /> 에 작성 되었습니다.
+	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 h시m분" value="${board.qa_regdateKST}" /> 에 작성 되었습니다.
 	 		</small>
 			<c:if test="${!empty board.qa_updatedate}">
 	 		<div class="form-group">
 	 		<small class="form-text text-danger">
-	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 h시m분" value="${board.qa_updatedate}" /> 에 수정 되었습니다.
+	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 h시m분" value="${board.qa_updatedateKST}" /> 에 수정 되었습니다.
 	 		</small>
 	 		</div>
 	 		</c:if>

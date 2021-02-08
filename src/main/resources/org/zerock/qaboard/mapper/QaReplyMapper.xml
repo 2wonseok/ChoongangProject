@@ -27,6 +27,8 @@
       INSERT INTO tbl_reply (reply_seq, reply_content, reply_writer, reply_regdate, reply_boardname, reply_filename, reply_boardseq) 
       VALUES (#{reply_seq}, #{reply_content}, #{reply_writer}, SYSDATE, 'qaboard', #{reply_filename}, #{reply_boardseq})
    </insert>  
+   
+   
 
  
    
