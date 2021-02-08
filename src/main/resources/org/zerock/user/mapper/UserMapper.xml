@@ -100,4 +100,8 @@
 	<delete id="delete">
 		delete from tbl_user where user_seq = #{user_seq}
 	</delete>
+	
+	<delete id="userRemove">
+		DELETE FROM tbl_user WHERE user_id = #{user_id}
+	</delete>
 </mapper>

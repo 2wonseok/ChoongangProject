@@ -29,4 +29,5 @@ public interface UserMapper {
 	
 	public void pointUpdate(UserVO user);
 	
+	public void userRemove(String user_id);
 }

@@ -1,6 +1,7 @@
 package org.zerock.user.controller;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,7 @@ import org.zerock.user.domain.PageDTO;
 import org.zerock.user.domain.UserVO;
 import org.zerock.user.service.UserService;
 
+
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import net.nurigo.java_sdk.api.Message;
@@ -35,6 +38,8 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 @RequestMapping("/user/*")
 public class UserController {
 	
+	private BCryptPasswordEncoder pwdEncoder;
+	
 	private UserService service;
 	
 	@GetMapping("/userRegister") //회원 가입 페이지 로딩
@@ -44,9 +49,12 @@ public class UserController {
 	
 	@PostMapping("/userRegister") // 회원 가입 처리
 	public String register(UserVO user, Model model, RedirectAttributes rttr) {
+		String inputPass = user.getUser_password();
+		String pwd = pwdEncoder.encode(inputPass);
+		user.setUser_password(pwd);
+		
 		service.register(user);
-//		rttr.addFlashAttribute("result", board.getBno());
-//		rttr.addFlashAttribute("message", board.getBno()+"번 글이 등록되었습니다.");
+
 		return "redirect:/main/index";
 	}
 	
@@ -86,7 +94,9 @@ public class UserController {
 	public String modify(UserVO user, @RequestParam String changePw, Criteria cri, RedirectAttributes rttr) {
 		UserVO vo = service.getUser(user.getUser_id());
 		
-		if (!vo.getUser_password().equals(user.getUser_password())) {
+		boolean pwdMatch = pwdEncoder.matches(user.getUser_password(), vo.getUser_password());
+		
+		if (pwdMatch == false) {
 			rttr.addFlashAttribute("notMatch", "현재 비밀번호가 맞지 않습니다.");
 			rttr.addAttribute("user_id", vo.getUser_id());	
 			rttr.addAttribute("pageNum", cri.getPageNum());
@@ -95,7 +105,9 @@ public class UserController {
 			return "redirect:/user/userModify";
 		}
 		
-		user.setUser_password(changePw);
+		String inputPass = changePw;
+		String pwd = pwdEncoder.encode(inputPass);
+		user.setUser_password(pwd);
 		
 		if (service.update(user)) {
 			rttr.addFlashAttribute("result", "modifySuccess");
@@ -107,7 +119,7 @@ public class UserController {
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
 		
-		return "redirect:/user/userList";
+		return "redirect:/main/index";
 	}
 	
 	@PostMapping("/userDelete") // 회원 삭제
@@ -165,13 +177,19 @@ public class UserController {
 	public String login(UserVO user, RedirectAttributes rttr, HttpSession session) {
 		UserVO vo = service.getUser(user.getUser_id());
 		
-		if (vo == null || !user.getUser_id().equals(vo.getUser_id()) || 
-				!user.getUser_password().equals(vo.getUser_password())) {
+		if (vo == null || !user.getUser_id().equals(vo.getUser_id())) {
 			rttr.addFlashAttribute("noUser", "일치하는 정보가 없습니다.");
 			return "redirect:/user/login";
-		} else {
+		}
+				
+		boolean pwdMatch = pwdEncoder.matches(user.getUser_password(), vo.getUser_password());
+		
+		if (vo != null && pwdMatch == true) {
 			session.setAttribute("authUser", vo);
 			return "redirect:/main/index";
+		} else {
+			rttr.addFlashAttribute("noUser", "일치하는 정보가 없습니다.");
+			return "redirect:/user/login";
 		}
 		
 	}
@@ -193,7 +211,18 @@ public class UserController {
 	}
 	
 	@PostMapping("/userRemove") // 회원 탈퇴 처리
-	public String UserRemove(UserVO user, HttpServletRequest req) {
+	public String UserRemove(UserVO user, HttpServletRequest req, RedirectAttributes rttr) {
+		UserVO vo = service.getUser(user.getUser_id());
+		
+		boolean pwdMatch = pwdEncoder.matches(user.getUser_password(), vo.getUser_password());
+		
+		if (pwdMatch == false) {
+			rttr.addFlashAttribute("errorPw", "비밀번호가 맞지 않습니다.");
+			return "redirect:/user/userRemove";
+		}
+		
+		service.userRemove(user.getUser_id());
+		
 		HttpSession session = req.getSession(false);
 		
 		if (session != null) {

@@ -103,4 +103,9 @@ public class UserServiceImpl implements UserService {
 		return mapper.findUser(user_phone);
 	}
 
+	@Override
+	public void userRemove(String user_id) {
+		mapper.userRemove(user_id);
+	}
+
 }

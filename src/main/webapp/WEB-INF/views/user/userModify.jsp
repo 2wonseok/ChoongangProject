@@ -56,7 +56,7 @@ $(document).ready(function() {
 	$("#nickCheckFail").hide();
 	$("#nickYes").hide();
 	
-	$("input").keyup(function() { 
+	$("#changePw").keyup(function() { 
 		var pwd1=$("#changePw").val(); 
 		var pwd2=$("#changeConfirmPw").val(); 
 		
@@ -73,7 +73,7 @@ $(document).ready(function() {
 		} 
 	});
 	
-	$("input").keyup(function() {
+	$("#user_nickname").keyup(function() {
 		$("#btn_add").attr("disabled", "disabled");
 		$("#nickCheck").click(function() {
 			var user_nickname = $("#user_nickname").val();

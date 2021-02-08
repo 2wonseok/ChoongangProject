@@ -30,4 +30,6 @@ public interface UserService {
 	public void pointUpdate(UserVO user);
 	
 	public void smsService(String user_phone, String cerNum);
+	
+	public void userRemove(String user_id);
 }
