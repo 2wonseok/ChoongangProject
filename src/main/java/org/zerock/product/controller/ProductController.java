@@ -94,6 +94,7 @@ public class ProductController {
 			//list를 string 쉼표구분으로 만들기 
 			String filenames = String.join(",", reNames);
 		product.setProduct_filename(filenames);
+		System.out.println(filenames);
 		/* System.out.println(product.getProduct_filename()); */
 		
 			/* 다시 list로 얻는 방법 
@@ -159,14 +160,18 @@ public class ProductController {
 		model.addAttribute("product", vo);
 		model.addAttribute("cri", cri);
 		
+		String preFileNames = vo.getProduct_filename();
 		//상품파일이름을 list로 보내줌
-		List<String> fileNamesList = Arrays.asList(vo.getProduct_filename().split(","));
+		List<String> fileNamesList = Arrays.asList(preFileNames.split(","));
 		System.out.println(fileNamesList);
 		model.addAttribute("fileNamesList", fileNamesList);
+		model.addAttribute("preFileNames", preFileNames);
 	}
 
 	@PostMapping("/modify")
 	public String modify(ProductVO product, Criteria cri, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request, Model model) {
+		
+		
 		
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
@@ -215,13 +220,14 @@ public class ProductController {
 				}
 				
 				
-				/* 파일이 하나도 첨부되어있지 않을때 다시돌려보냄 */
+				/* 파일이 하나도 첨부되어있지 않을때 다시돌려보냄=>수정시는 하나이상 반드시있음 
 				if (reNames.size() == 0) {
 					model.addAttribute("message", "상품이미지를 한 개이상 등록해야합니다.");
 					model.addAttribute("product", product);
 					model.addAttribute("cri", cri);
 					return "/product/modify";
 				}
+				*/
 				
 		//철수추가 파일 올린 후에 그 이름을 product에 복사
 			//list를 string 쉼표구분으로 만들기 
@@ -234,6 +240,27 @@ public class ProductController {
 			System.out.println(fileNamesList);
 			*/		
 		
+		/* 만약 첨부파일이 변동없다면 upload는 널이었을 것 */
+		if(reNames.size() == 0) {
+			product.setProduct_filename(request.getParameter("preFileNames"));
+		} else {
+			/* 변동있다면 이전그림지우기 */
+			String oldFileNames = request.getParameter("preFileNames");
+			List<String> fileNamesList = Arrays.asList(oldFileNames.split(","));
+			System.out.println(fileNamesList);
+			
+			String saveDir2 = request.getSession().getServletContext().getRealPath("/resources/upload"); 
+			
+			/* 그림파일삭제 */
+			for(String f : fileNamesList) { 
+				if(!f.isEmpty()) { 
+					File file = new File(saveDir2+"/"+f);			
+					file.delete();
+					} 
+			}
+			
+		}
+		
 		if (service.modify(product)) {
 			rttr.addFlashAttribute("message", "해당 상품정보가 수정되었습니다.");
 		}
@@ -242,11 +269,32 @@ public class ProductController {
 	}
 
 	@PostMapping("/remove")
-	public String remove(@RequestParam("product_seq") int product_seq, Criteria cri, RedirectAttributes rttr) {
-
+	public String remove(@RequestParam("product_seq") int product_seq, Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
 		
+		ProductVO vo = service.get(product_seq);
+
+		/* 지우는 사람이 로그인 본인인지 비교 */
+		if (request.getSession().getAttribute("authUser").equals(vo.getProduct_seller())) {
+			return "redirect:/product/list";
+		}
+		
+		
+		/* 상품db지우기 전에 그림지우기 */
+		List<String> fileNamesList = Arrays.asList(vo.getProduct_filename().split(","));
+		System.out.println(fileNamesList);
+		
+		String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload"); 
 		
 		if (service.remove(product_seq)) {
+			
+			/* 그림파일삭제 */
+			for(String f : fileNamesList) { 
+				if(!f.isEmpty()) { 
+					File file = new File(saveDir+"/"+f);			
+					file.delete();
+					} 
+			}
+			
 			rttr.addFlashAttribute("message","해당 상품이 삭제되었습니다.");
 		}
 

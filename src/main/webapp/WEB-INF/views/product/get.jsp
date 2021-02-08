@@ -147,6 +147,7 @@ $(document).ready(function(){
 					
 					<!--상품 왼쪽아래 부가정보  -->
 					<tr>
+						<!--이미지리스트썸네일  -->
 						<td valign=top>
 							<c:forEach items="${productImgList }" var="productImg" varStatus="imgNum">
 								<img class="hoveredImage"alt="" src="${root }/resources/upload/${productImg}" height="80px" width="70px">
