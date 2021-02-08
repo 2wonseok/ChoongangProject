@@ -121,27 +121,29 @@ table.type05 td {
 									<td>상품 등록</td>
 								</tr>
 								<tr>
-									<th scope="row">상품 이름</th>
+									<th scope="row">상품 이름 *</th>
 									<td><input id="product_name" name="product_name" type="text" value="${product.product_name }"></td>
 								</tr>
 								<tr>
-									<th scope="row">상품 단위 가격</th>
+									<th scope="row">상품 단위 가격 * </th>
 									<td><input id="product_price" name="product_price" type="number" value="${product.product_price }"></td>
 								</tr>
 								<tr>
-									<th scope="row">상품 수량</th>
+									<th scope="row">상품 수량 * </th>
 									<td><input id="product_quantity" name="product_quantity" type="number" value="${product.product_quantity }"></td>
 								</tr>
 								<tr>
-									<th scope="row">상품 판매자id</th><!--value=authUser로 넣을 예정  -->
-									<td><input id="product_seller" name="product_seller" type="text" value=${authUser.user_id } style="background-color:silver;"readonly></td>
+									<th scope="row">상품 판매자(Nick / id)</th><!--value=authUser로 넣을 예정  -->
+									<td><input id="product_seller" type="text" value="${authUser.user_nickname } / ${authUser.user_id }" style="background-color:silver;"readonly>
+										<input name="product_seller" type="text" value="${authUser.user_id }" hidden="hidden">
+									</td>
 								</tr>
 								<tr>
 									<th scope="row">상품 카테고리 번호(카테고리테이블에서 가져와서 넣어질 예정)</th>
 									<td> <input name="category_seq" type="number" value="${product.category_seq }"></td>
 								</tr>
 								<tr>
-									<th scope="row">상품 설명</th>
+									<th scope="row">상품 설명 *</th>
 									<td><textarea id="product_info" name="product_info" rows="10" cols="23">${product.product_info }</textarea></td>
 								</tr>
 							</tbody>

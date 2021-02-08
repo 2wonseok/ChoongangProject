@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
@@ -101,12 +102,12 @@ $(document).ready(function(){
 								<h5 class="text-right"><c:out value="${price }"></c:out>원</h5>					
 								<fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
 								<p class="text-right"><c:out value="${quantity }"></c:out>개 남음</p>
-								<p class="text-right">판매자 : <c:out value="${product.product_seller }"></c:out></p>
+								<p class="text-right">판매자 : <c:out value="${ user_nick } / (${fn:substring(product.product_seller, 0, 3)}***)"></c:out></p>
 								<p class="text-left">상품설명 </p>
 								
 								<textarea style="resize: none;" rows="15" cols="50" readonly><c:out value="${product.product_info }"></c:out></textarea>
 	
-								<c:if test="${product.product_seller eq authUser.user_id}">
+								<c:if test="${product.product_seller eq authUser.user_id}">	
 									<div class="row justify-content-center">
 										<!--수정버튼(작성자만보이도록)  -->
 										<c:url value="/product/modify" var="productModify">

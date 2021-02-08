@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
@@ -33,7 +34,6 @@
 			}
 		}
 		
-		
 	});
 </script>
 		
@@ -56,12 +56,17 @@
 	    width:14.1rem;
 	    height:30rem;
 	}
+	
+	#di {
+	    width: 14.0rem;
+	    height:16.0rem;
+	}
+	
 	.card img {
 	    width: 14.0rem;
 	    height:16.0rem;
 	}
 	.card p{
-		 
 	    text-overflow:ellipsis;
 	    height:40px;
 	    line-height:20px;	
@@ -70,7 +75,6 @@
 	}
 	
 	.cardLine1{
-		 
 	    text-overflow:ellipsis;
 	    height:20px;
 	    line-height:20px;	
@@ -108,8 +112,9 @@
 					
 						<div class="card m-2">
 							<a href="${productLink }" >
-								
-								<img class="card-img-top" src="${root }/resources/upload/${product.product_filename }" alt="Card image cap">
+								<div id="di">
+									<img class="card-img-top" src="${root }/resources/upload/${product.product_filename }" alt="Card image cap">
+								</div>
 								<div class="card-body" >
 						            <fmt:formatNumber value="${product.product_price }" type="number" var="price"></fmt:formatNumber>
 									<h5 class="card-title"><c:out value="${price }"></c:out>원</h5>
@@ -123,7 +128,7 @@
 									<div class="cardLine1">(${quantity })개 남음</div>
 							</a>
 										<hr>
-								    <p class="card-text">판매자:<c:out value="${product.product_seller }"></c:out></p>
+								    <p class="card-text">판매자 : <c:out value="${ userIdNick[product.product_seller] } / (${fn:substring(product.product_seller, 0, 3)}***)"></c:out></p>
 								</div>
 								
 						</div>
