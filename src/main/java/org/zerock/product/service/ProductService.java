@@ -17,6 +17,8 @@ public interface ProductService {
 	public ProductVO getCountUp(int product_seq);
 	 
 	public boolean remove(int product_seq);
+
+	public boolean finish(int product_seq);
 	
 	public boolean modify(ProductVO product);
 	 

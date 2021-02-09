@@ -57,11 +57,12 @@
 	    height:30rem;
 	}
 	
-	#di {
+	.img_box {
 	    width: 14.0rem;
 	    height:16.0rem;
+	    position: relative;
 	}
-	
+		
 	.card img {
 	    width: 14.0rem;
 	    height:16.0rem;
@@ -95,10 +96,10 @@
 			<hr>
 			<h3>[철수안내] 로그인을 해야 상품등록 버튼이 생김.</h3>
 			<div class="row">
-			<div class="col-md-6, col-md-offset-3">
+				<div class="col-md-6, col-md-offset-3">
 			
 			
-				<div class="row d-flex justify-content-center">
+					<div class="row d-flex justify-content-center">
 					<!--상품 bootstrap card 시작  -->
 					<c:forEach items="${list }" var="product">
 			
@@ -109,11 +110,20 @@
 			            	<c:param name="type" value="${pageDTO.cri.type }"></c:param>
 				    		<c:param name="keyword" value="${pageDTO.cri.keyword }"></c:param>            	
 			            </c:url>
-					
+			            <c:set var="visibility" value="100%"></c:set>
+						<c:if test="${product.product_status == 1 }">
+							<c:set var="visibility" value="30%"></c:set>
+						</c:if>
+			            
+						<a href="${productLink }" >
 						<div class="card m-2">
-							<a href="${productLink }" >
-								<div id="di">
-									<img class="card-img-top" src="${root }/resources/upload/${product.product_filename }" alt="Card image cap">
+								<div class="img_box">
+									<img style="opacity : ${visibility}" src="${root }/resources/upload/${product.product_filename }" alt="Card image cap">
+									<div style="position:absolute;top:45%;left:30%">
+										<c:if test="${product.product_status == 1 }">
+											<h5>판매 종료</h5>
+										</c:if>
+									</div>
 								</div>
 								<div class="card-body" >
 						            <fmt:formatNumber value="${product.product_price }" type="number" var="price"></fmt:formatNumber>
@@ -126,22 +136,27 @@
 									</div>
 						            <fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
 									<div class="cardLine1">(${quantity })개 남음</div>
-							</a>
 										<hr>
-								    <p class="card-text">판매자 : <c:out value="${ userIdNick[product.product_seller] } / (${fn:substring(product.product_seller, 0, 3)}***)"></c:out></p>
+						</a>
+								    <p class="card-text">판매자 : <c:out value="${ product.user_nickname}"></c:out></p>
 								</div>
-								
 						</div>
 					</c:forEach>
 				</div>
 			
-				<!--상품 bootstrap card 끝  -->
+				<!--상품 bootstrap card 끝  -->			
+			</div>
+		</div>
 			<hr>
 		<c:if test="${not empty authUser.user_id}">
-			<button onclick = "location.href = '${root}/product/register'" class="btn_add">상품 등록</button>
-		</c:if>
-			
+			<div class="row">
+				<div class=col-10>
+				</div>
+				<div>
+					<button onclick = "location.href = '${root}/product/register'" class="btn_add">상품 등록</button>
+				</div>
 			</div>
+		</c:if>
 	</div>
 	
 	
@@ -212,7 +227,6 @@
 	  </div>
 	</div>
 	<!--모달창끝-->
-
 
 </body>
 </html>

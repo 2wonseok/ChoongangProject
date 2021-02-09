@@ -47,6 +47,11 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
+	public boolean finish(int product_seq) {
+		return mapper.stopSelling(product_seq) == 1;
+	}
+	
+	@Override
 	public boolean modify(ProductVO product) {
 		return mapper.update(product) ==1;
 	}

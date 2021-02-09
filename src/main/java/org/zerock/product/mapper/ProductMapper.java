@@ -17,6 +17,8 @@ public interface ProductMapper {
 	
 	public int delete(int productSeq);
 
+	public int stopSelling(int productSeq);
+
 	//수정 시 영향받는 항목
 	//product_name, product_filename, product_info
 	public int update(ProductVO product);

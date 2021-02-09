@@ -147,24 +147,6 @@ public class ProductController {
 		//statrPage, endPage, (prev, next = boolean), total, cri
 		//생성자로 cri와 totla을 받아서 endPage와 startPage prev, next를 계산함
 		
-		
-		/* seller(user_seq)에 따른 닉네임 얻고 넘겨주기 */
-		/* seller(user_seq)에 따른 닉네임 얻고 넘겨주기 */
-		Map<Integer, String> userIdNick = new HashMap<Integer, String>();
-		for(ProductVO productVO :list) {
-			int user_seq = productVO.getProduct_seller();
-			UserVO userVO = userService.getUserSeq(user_seq);
-			
-			String user_nick ="";
-			if(userVO == null) {
-				user_nick ="탈퇴한 유저";
-			}
-			user_nick = userVO.getUser_nickname();				
-			
-			userIdNick.put(user_seq, user_nick);
-		}		
-		model.addAttribute("userIdNick", userIdNick);
-		
 		model.addAttribute("list", list);
 		model.addAttribute("pageDTO", dto);
 	}
@@ -179,20 +161,20 @@ public class ProductController {
 		List<String> fileNamesList = Arrays.asList(vo.getProduct_filename().split(","));
 		model.addAttribute("productImgList", fileNamesList);
 		
-		/* seller(user_id)에 따른 닉네임 얻고 넘겨주기 */
-		
-		String user_id = vo.getProduct_seller();
-		UserVO userVO = userService.getUser(user_id);
-		String user_nick = userVO.getUser_nickname();
-				
-		model.addAttribute("user_nick", user_nick);
-		
 	}
 	
 	@GetMapping("/modify")
-	public void modify(@RequestParam("product_seq") int product_seq, @ModelAttribute("cri") Criteria cri, Model model) {
+	public String modify(@RequestParam("product_seq") int product_seq, @ModelAttribute("cri") Criteria cri, Model model, HttpServletRequest request, RedirectAttributes rttr) {
 		
 		ProductVO vo = service.get(product_seq);
+		
+		/* 로그인 본인인지 비교 */
+		UserVO userVO = (UserVO) request.getSession().getAttribute("authUser");
+		if (userVO.getUser_seq() != vo.getProduct_seller()) {
+			rttr.addFlashAttribute("message","본인이 아닙니다");
+			return "redirect:/product/list";
+		}
+		
 		model.addAttribute("product", vo);
 		model.addAttribute("cri", cri);
 		
@@ -202,22 +184,17 @@ public class ProductController {
 		System.out.println(fileNamesList);
 		model.addAttribute("fileNamesList", fileNamesList);
 		model.addAttribute("preFileNames", preFileNames);
+		
+		return "/product/modify";
 	}
 
 	@PostMapping("/modify")
 	public String modify(ProductVO product, Criteria cri, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request, Model model) {
 		
-		
-		
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
-		
-		/* 수정하는 사람이 로그인 본인인지 비교 */
-		if (request.getSession().getAttribute("authUser").equals(product.getProduct_seller())) {
-			return "redirect:/product/list";
-		}
 		
 		//파일 올리는 방법 복사
 				//파일이 업로드 될 경로 설정 
@@ -297,13 +274,40 @@ public class ProductController {
 			
 		}
 		
+		int product_seq = product.getProduct_seq();
 		if (service.modify(product)) {
 			rttr.addFlashAttribute("message", "해당 상품정보가 수정되었습니다.");
+			rttr.addAttribute("product_seq", product_seq);
 		}
 		 
-		return "redirect:/product/list";
+		return "redirect:/product/get";
 	}
 
+	@PostMapping("/finish")
+	public String finish(@RequestParam("product_seq") int product_seq, Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
+		
+		ProductVO vo = service.get(product_seq);
+		
+		/* 로그인 본인인지 비교 */
+		UserVO userVO = (UserVO) request.getSession().getAttribute("authUser");
+		if (userVO.getUser_seq() != vo.getProduct_seller()) {
+			rttr.addFlashAttribute("message","본인이 아닙니다");
+			return "redirect:/product/list";
+		}
+		
+		if (service.finish(product_seq)) {
+			rttr.addFlashAttribute("message","해당 상품 판매가 종료되었습니다.");
+		}
+		
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
+		return "redirect:/product/list";
+	}
+	
+	
 	@PostMapping("/remove")
 	public String remove(@RequestParam("product_seq") int product_seq, Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
 		

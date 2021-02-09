@@ -7,10 +7,10 @@
 
 	<insert id="insert">
 		insert into tbl_product (product_seq, product_name, product_price,
-		product_quantity, product_seller, product_filename, product_info, category_seq)
+		product_quantity, product_seller, product_filename, product_info, category_seq, user_nickname)
 		values (product_seq.nextval, #{product_name}, #{product_price},
 		#{product_quantity}, #{product_seller}, #{product_filename},
-		#{product_info}, #{category_seq})
+		#{product_info}, #{category_seq}, #{user_nickname})
 	</insert>
 
 	<!-- 여기까지 구현완료 -->
@@ -43,12 +43,12 @@
 <![CDATA[   
    SELECT
     product_seq, product_name, product_price, product_quantity,
-    product_seller, product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate
+    product_seller, product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate, user_nickname 
    FROM
     (
      SELECT 
       ROW_NUMBER() OVER (ORDER BY product_seq DESC) rn, product_seq, product_name, product_price, product_quantity,
-    product_seller, product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate
+    product_seller, product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate, user_nickname 
    FROM
       tbl_product
 ]]>
@@ -92,6 +92,16 @@
 		product_filename = #{product_filename},
 		product_info = #{product_info},
 		category_seq = #{category_seq},
+		user_nickname = #{user_nickname},
+		product_updateDate = sysdate
+		WHERE
+		product_seq = #{product_seq}
+	</update>
+
+	<update id="stopSelling">
+		UPDATE tbl_product
+		SET
+		product_status = 1,
 		product_updateDate = sysdate
 		WHERE
 		product_seq = #{product_seq}

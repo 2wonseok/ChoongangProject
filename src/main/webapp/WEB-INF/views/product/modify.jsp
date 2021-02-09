@@ -134,8 +134,10 @@ table.type05 td {
 									<td><input id="product_quantity" name="product_quantity" type="number" value="${product.product_quantity }" style="background-color:silver;" readonly></td>
 								</tr>
 								<tr>
-									<th scope="row">상품 판매자id</th><!--value=authUser로 넣을 예정  -->
-									<td><input name="product_seller" type="text" value=${product.product_seller } style="background-color:silver;"readonly></td>
+									<th scope="row">상품 판매자(Nickname)</th><!--value=authUser로 넣을 예정  -->
+									<td><input id="user_nickname" name="user_nickname" type="text" value="${authUser.user_nickname }" style="background-color:silver;"readonly>
+										<input id="product_seller" name="product_seller" type="text" value="${authUser.user_seq }" hidden="hidden">
+									</td>
 								</tr>
 								<tr>
 									<th scope="row">상품 카테고리 번호(카테고리테이블에서 가져와서 넣어질 예정)</th>

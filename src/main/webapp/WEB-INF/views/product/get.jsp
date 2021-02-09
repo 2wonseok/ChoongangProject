@@ -33,6 +33,17 @@ $(document).ready(function(){
 	})
 	
 	
+	/*모달창-메세지넘어왔을때나오게함  */
+	var message = '${message}';
+	checkModal(message);
+	history.replaceState({}, null, null);//뒤로가기로왔을시에없앰?
+	function checkModal(message){
+		if (message && history.state == null) {
+			$("#myModal .modal-body p").html(message)
+			$("#myModal").modal("show");
+		}
+	}
+	
 });
 </script>
 
@@ -90,8 +101,19 @@ $(document).ready(function(){
 					
 					<tr>
 					<!-- 상품정보 왼쪽위 이미지  -->
+						<c:set var="visibility" value="100%"></c:set>
+						<c:if test="${product.product_status == 1 }">
+							<c:set var="visibility" value="30%"></c:set>
+						</c:if>
 						<td class="tableLeftUp">
-							<img id="productMainImage" class="card-img-top" src="${root }/resources/upload/${productImgList[0] }" alt="제품이미지">
+							<div style="position : relative;">
+								<img style="opacity : ${visibility}"  id="productMainImage" class="card-img-top" src="${root }/resources/upload/${productImgList[0] }" alt="제품이미지">
+								<div style="position:absolute;top:45%;left:40%">
+									<c:if test="${product.product_status == 1 }">
+										<h5>판매 종료</h5>
+									</c:if>
+								</div>
+							</div>
 						</td>
 						
 					<!-- 상품정보 오른쪽 항목 -->
@@ -102,12 +124,13 @@ $(document).ready(function(){
 								<h5 class="text-right"><c:out value="${price }"></c:out>원</h5>					
 								<fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
 								<p class="text-right"><c:out value="${quantity }"></c:out>개 남음</p>
-								<p class="text-right">판매자 : <c:out value="${ user_nick } / (${fn:substring(product.product_seller, 0, 3)}***)"></c:out></p>
+								<p class="text-right">판매자 : <c:out value="${ product.user_nickname }"></c:out></p>
 								<p class="text-left">상품설명 </p>
 								
 								<textarea style="resize: none;" rows="15" cols="50" readonly><c:out value="${product.product_info }"></c:out></textarea>
 	
-								<c:if test="${product.product_seller eq authUser.user_id}">	
+							<c:if test="${product.product_status != 1 }">
+								<c:if test="${product.product_seller eq authUser.user_seq}">	
 									<div class="row justify-content-center">
 										<!--수정버튼(작성자만보이도록)  -->
 										<c:url value="/product/modify" var="productModify">
@@ -121,28 +144,32 @@ $(document).ready(function(){
 										<button class="btn_add mx-2" type="button" onclick="location.href='${productModify}' ">정보 수정</button>
 										
 										<!--삭제버튼(작성자만보이도록)-->
-										<c:url value="/product/remove" var="productRemove">
+										<c:url value="/product/finish" var="productFinish">
 											<c:param name="product_seq" value="${product.product_seq }"></c:param>
 							            	<c:param name="pageNum" value="${cri.pageNum }"></c:param>
 							            	<c:param name="amount" value="${cri.amount }"></c:param>
 							            	<c:param name="type" value="${cri.type }"></c:param>
 								    		<c:param name="keyword" value="${cri.keyword }"></c:param>      
 										</c:url>
-										<form action="${productRemove }" method="post">
+										<form action="${productFinish }" method="post">
 											<button class="btn_add mx-2">판매종료</button>
 										</form>	
 									</div>
 								</c:if>
+							
+								<div class="d-flex justify-content-center mt-2 align-middle">
+									<form action="" method="get">
+										<span>구매 수량</span>
+										<input style="width:80px" min="1" name="order_quantity" type="number" />
+										<button class="btn_add mx-2">구매</button>
+									</form>
+								</div>	
+							</c:if>
+							<c:if test="${product.product_status == 1 }">
+								<p>판매가 종료되었습니다.</p>
+							</c:if>
+							
 							</div>
-							
-							<div class="d-flex justify-content-center mt-2 align-middle">
-								<form action="" method="get">
-									<span>구매 수량</span>
-									<input name="order_quantity" type="number">
-									<button class="btn_add mx-2">구매</button>
-								</form>
-							</div>	
-							
 						</td>
 					</tr>
 					
@@ -151,10 +178,14 @@ $(document).ready(function(){
 						<!--이미지리스트썸네일  -->
 						<td valign=top>
 							<c:forEach items="${productImgList }" var="productImg" varStatus="imgNum">
-								<img class="hoveredImage"alt="" src="${root }/resources/upload/${productImg}" height="80px" width="70px">
+								<img style="opacity : ${visibility}" class="hoveredImage"alt="" src="${root }/resources/upload/${productImg}" height="80px" width="70px">
 							</c:forEach>
 							<hr>
 							<p>부가정보란</p>
+						<fmt:setTimeZone value = "GMT+18" />
+								<p>상품 등록일 : <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" value="${product.product_regdate }"/> </p>
+								<p>상품 정보 수정일 : <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" value="${product.product_updatedate }"/> </p>
+				
 						</td>
 					</tr>
 				
@@ -163,6 +194,27 @@ $(document).ready(function(){
 		<hr>
 		<br>
 	</div>
+
+<!--모달창시작-->
+	<div id="myModal" class="modal" tabindex="-1">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">알림</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <p>처리가완료되었습니다</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!--모달창끝-->
 
 </body>
 </html>
