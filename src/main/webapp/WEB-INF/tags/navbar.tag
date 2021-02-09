@@ -72,6 +72,34 @@
 				<li class="nav-item active">
 				  <a class="nav-link" href="${root }/qa/list">Q/A</a>
 				</li>
+				<c:if test="${authUser.user_grade == 0 }">
+					<li class="nav-item active">
+						<a class="nav-link" href="${root }/user/userList">회원관리</a>
+					</li>
+				</c:if>
+			</ul>
+			<div style="margin-left:70px;">
+				<form role="search" action="" method="get" name="simpleSearch" novalidate="novalidate">
+					<fieldset>
+						<div class="d-flex justify">
+							<label class="visually-hidden" for="q" hidden>카탈로그 검색하기</label>
+							<input class="form-control" style="width:220px;" type="text"  value="" placeholder="search" autocomplete="off" aria-invalid="false">
+							&nbsp;
+							<input type="hidden" name="lang" value="ko_KR">
+							<button type="submit"><i class="fas fa-search" aria-hidden="true"></i></button>
+						</div>	
+					</fieldset>
+				</form>
+			</div>
+			<ul class="navbar-nav" style="margin-left:auto;">
+				<c:if test="${authUser.user_id != null }">
+					<li class="nav-item active">
+					  <a class="nav-link" href="${root }/user/userRead?user_id=${authUser.user_id}">
+					 		<i class="fas fa-user-edit" aria-hidden="true"></i>
+					 		마이페이지
+					  </a>
+					</li>
+				</c:if>
 				<c:choose>
 					<c:when test="${authUser != null}">
 						<li class="nav-item active">
@@ -80,32 +108,20 @@
 					</c:when>
 					<c:otherwise>
 						<li class="nav-item active">
-						  <a class="nav-link" href="${root }/user/login">로그인</a>
+						  <a class="nav-link" href="${root }/user/login">
+						  	<i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+						  	로그인
+						  </a>
 						</li>
 						<li class="nav-item active">
-						  <a class="nav-link" href="${root }/user/userRegister">회원가입</a>
+						  <a class="nav-link" href="${root }/user/userRegister">
+						  	<i class="fas fa-user-plus" aria-hidden="true"></i>
+						  	회원가입
+						  </a>
 						</li>
 					</c:otherwise>	
 				</c:choose>	      	      
-				<c:if test="${authUser.user_grade == 0 }">
-					<li class="nav-item active">
-						<a class="nav-link" href="${root }/user/userList">회원관리</a>
-					</li>
-				</c:if>
-				<c:if test="${authUser.user_id != null }">
-					<li class="nav-item active">
-					  <a class="nav-link" href="${root }/user/userRead?user_id=${authUser.user_id}">마이페이지</a>
-					</li>
-				</c:if>
 			</ul>
-			<form role="search" action="" method="get" name="simpleSearch" novalidate="novalidate">
-				<fieldset>
-					<label class="visually-hidden" for="q" hidden>카탈로그 검색하기</label>
-					<input class="text-input valid" type="text" id="q" name="q" value="" placeholder="search" autocomplete="off" aria-invalid="false">
-					<input type="hidden" name="lang" value="ko_KR">
-					<button type="submit"><i class="fas fa-search" aria-hidden="true"></i></button>
-				</fieldset>
-			</form>
 		</div>
 	</nav>
 </div>
