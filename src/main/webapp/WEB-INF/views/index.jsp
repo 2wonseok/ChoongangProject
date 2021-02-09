@@ -20,7 +20,7 @@
 <title>임시 메인 페이지</title>
 </head>
 <body>
-<u:navbar/>
+<u:mainNav/>
 접속 아이디 : ${authUser.user_id} <br>
 등급 : <c:choose>
 					<c:when test="${authUser.user_grade < 1}">관리자</c:when>
