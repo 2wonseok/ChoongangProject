@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.zerock.qaboard.domain.Criteria;
 import org.zerock.qaboard.domain.QaReplyVO;
+import org.zerock.qaboard.domain.QaVO;
 
 
 public interface QaReplyMapper {
@@ -18,4 +19,6 @@ public interface QaReplyMapper {
 	public int delete(int reply_seq);
 	
 	public int update(QaReplyVO reply);
+	
+	public QaReplyVO get(int reply_seq);
 }

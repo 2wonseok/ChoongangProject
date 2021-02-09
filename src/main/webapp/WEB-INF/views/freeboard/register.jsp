@@ -44,8 +44,8 @@
 					</div>
 
 					<div class="form-group">
-						<label for="input2">작성자</label> <input name="free_writer" type="text"
-							class="form-control" id="input2" placeholder="이름을 입력하세요.">
+						<label for="input2">닉네임</label> <input type="checkbox" name="anonmyous" value="y">익명
+						<input name="free_nickname" type="text" class="form-control" id="input2" value="${user.user_nickname }">
 					</div>
 
 					<button type="submit" class="btn btn-primary">등록</button>

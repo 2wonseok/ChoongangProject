@@ -44,7 +44,7 @@ var replyService = (function() {
 	function remove(reply_seq, callback, error) {
 		$.ajax({
 			type: "delete",
-			url: appRoot + "/replies/" + reply_seq,
+			url: appRoot + "/reply/" + reply_seq,
 			success: function(result, status, xhr) {
 				if(callback) {
 					callback(result);
@@ -58,10 +58,30 @@ var replyService = (function() {
 		})
 	}
 	
+	function modify(reply, callback, error) {
+		$.ajax({
+			type: "put",
+			url: appRoot + "/reply/" + reply_seq,
+			data: JSON.stringify(reply),
+			contentType: "application/json; charset=utf-8",
+			success: function(result, status, xhr) {
+				if(callback) {
+					callback(result);
+				}
+			},
+			error: function(xhr, status, er) {
+				if(error) {
+					error(er);
+				}
+			}
+		})
+	}
+	
 	return {
 		getList: getList,
 		add: add,
-		remove: remove
+		remove: remove,
+		modify: modify
 		};
 	
 })();

@@ -2,6 +2,8 @@ package org.zerock.freeboard.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.zerock.freeboard.domain.FreeBoardCriteria;
 import org.zerock.freeboard.domain.FreeBoardPageDTO;
 import org.zerock.freeboard.domain.FreeBoardVO;
 import org.zerock.freeboard.service.FreeBoardService;
+import org.zerock.user.domain.UserVO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -31,14 +34,16 @@ public class FreeBoardController {
 	private FreeBoardService service;
 
 	@GetMapping("/list")
-	public void list(@ModelAttribute("cri") FreeBoardCriteria cri, Model model) {
+	public void list(@ModelAttribute("cri") FreeBoardCriteria cri, Model model,HttpServletRequest request) {
 		// DB에서 list를 받아온다
+		
 		List<FreeBoardVO> list = service.getList(cri);
-
+//		UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
+//		System.out.println(user.getUser_nickname());
 		int total = service.getTotal(cri);
 
 		FreeBoardPageDTO dto = new FreeBoardPageDTO(cri, total);
-
+		
 		// jsp에서 받을 이름
 		model.addAttribute("list", list);
 		model.addAttribute("pageMaker", dto);
@@ -46,13 +51,40 @@ public class FreeBoardController {
 	}
 
 	@GetMapping("/register")
-	public void register(@ModelAttribute("cri") FreeBoardCriteria cri) {
-
+	public void register(@ModelAttribute("cri") FreeBoardCriteria cri, Model model, HttpServletRequest request) {
+		try {
+			UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
+			System.out.println("user nick name : "+user.getUser_nickname());
+			model.addAttribute("user", user);
+			
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			System.out.println("Session 정보 없음");
+			e.printStackTrace();
+		}
 	}
 
 	@PostMapping("/register")
-	public String reegister(FreeBoardVO freeVO, RedirectAttributes rttr) {
-
+	public String reegister(FreeBoardVO freeVO, RedirectAttributes rttr, HttpServletRequest request) {
+		
+		UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
+		
+		String anonmyous=request.getParameter("anonmyous");
+		System.out.println("POST anonmyous : "+anonmyous);
+		
+		try {
+			if(anonmyous.equals("y")) {
+				freeVO.setFree_nickname("익명");
+			}
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			System.out.println("선택없음");
+			e.printStackTrace();
+		}
+		
+		freeVO.setFree_writer(user.getUser_nickname());
+		freeVO.setFree_writer(user.getUser_name());
+		System.out.println("freeVO : "+freeVO.toString());
 		service.register(freeVO);
 
 		rttr.addFlashAttribute("result", freeVO.getFree_seq());

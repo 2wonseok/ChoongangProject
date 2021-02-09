@@ -3,6 +3,8 @@ package org.zerock.qaboard.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +40,8 @@ public class ReplyController {
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<QaReplyVO>> getList(
 			@PathVariable("page") int page,
-			@PathVariable("qa_seq") int qa_seq) {
+			@PathVariable("qa_seq") int qa_seq,
+			Model model) {
 		Criteria cri = new Criteria(page, 5);
 
 		List<QaReplyVO> list = reply_service.getList(cri, qa_seq);
@@ -74,14 +77,14 @@ public class ReplyController {
 	
 	@DeleteMapping(path = "/{reply_seq}", 
 			produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> remove(@PathVariable("reply_boardseq") int reply_boardseq) {
+	public ResponseEntity<String> remove(@PathVariable("reply_seq") int reply_seq) {
 		
-		int cnt = reply_service.delete(reply_boardseq);
+		int cnt = reply_service.delete(reply_seq);
 		
 		log.info(cnt);
 		
 		if(cnt == 1) {
-			return new ResponseEntity<String>("success /rno delete", HttpStatus.OK);
+			return new ResponseEntity<String>("success /reply_seq delete", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}	

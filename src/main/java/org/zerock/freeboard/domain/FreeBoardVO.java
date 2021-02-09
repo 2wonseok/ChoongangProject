@@ -14,6 +14,8 @@ public class FreeBoardVO {
 	private String free_content;
 	//작성자
 	private String free_writer;
+	//닉네임
+	private String free_nickname;
 	//공지사항
 	private int free_notice;
 	//조회수

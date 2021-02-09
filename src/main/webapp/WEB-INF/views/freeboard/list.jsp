@@ -75,7 +75,7 @@
         <tr>
           <th>#번호</th>
           <th>제목</th>
-          <th>작성자</th>
+          <th>닉네임</th>
           <th>작성일</th>
           <th>수정일</th>
           <th>조회수<th>
@@ -104,7 +104,7 @@
             </a>
             
             </td>
-            <td><c:out value="${freeVO.free_writer}" /></td>
+            <td><c:out value="${freeVO.free_nickname}" /></td>
             <td><fmt:formatDate pattern="yyyy-MM-dd" 
               value="${freeVO.free_regdate}" /></td>
             <td><fmt:formatDate pattern="yyyy-MM-dd"

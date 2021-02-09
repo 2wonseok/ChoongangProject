@@ -20,7 +20,7 @@ var free_seq = ${freeboard.free_seq};
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-<script src="${root }/resources/js/reply.js"></script>
+<script src="${root }/resources/free_js/reply.js"></script>
 
 <script>
 // console.log(replyService.name);
@@ -112,7 +112,7 @@ replyService.get(21, function(data) {
 			var replyer = $("#replyer-input").val();
 			
 			// ajax 요청을 위한 데이터 만들기
-			var data = {bno: bno, reply:reply , replyer:replyer};
+			var data = {reply_boardseq: reply_boardseq, reply_content:reply_content , reply_writer:reply_writer};
 			
 			
 			replyService.add(data,
@@ -134,7 +134,7 @@ replyService.get(21, function(data) {
 		});
 		
 		// reply-ul 클릭 이벤트 처리
-		$("#reply-ul").on("click", "li", function() {
+	/* 	$("#reply-ul").on("click", "li", function() {
 			// console.log("reply ul clicked......");
 			console.log($(this).attr("data-rno"));
 			
@@ -176,7 +176,7 @@ replyService.get(21, function(data) {
 		showList();
 		
 		
-		
+		 */
 	});
 </script>
 
@@ -217,7 +217,7 @@ replyService.get(21, function(data) {
 
 					<div class="form-group">
 						<label for="input2">작성자</label> <input readonly 
-						    value='<c:out value="${freeVO.free_writer }" />' type="text"
+						    value='<c:out value="${freeVO.free_nickname }" />' type="text"
 							class="form-control" id="input2" >
 					</div>
 					

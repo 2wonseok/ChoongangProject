@@ -34,13 +34,14 @@
     <select id="getListWithPaging" resultType="org.zerock.freeboard.domain.FreeBoardVO">
 <![CDATA[   
    SELECT
-    free_seq, free_title, free_content,
+    free_seq, free_title, free_content,free_nickname,
     free_writer, free_regdate, free_updatedate,free_readcnt
    FROM
     (
      SELECT 
       ROW_NUMBER() OVER (ORDER BY free_seq DESC) rn,
       free_seq, free_title, free_content, free_writer,
+      free_nickname,
       free_regdate, free_updatedate,free_readcnt
      FROM
       tbl_freeboard
@@ -57,8 +58,8 @@
     
    
    <insert id="insert">
-      INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer)
-      VALUES (free_seq.nextval, #{free_title}, #{free_content}, #{free_writer})
+      INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer, free_nickname)
+      VALUES (free_seq.nextval, #{free_title}, #{free_content}, #{free_writer}, #{free_nickname})
    </insert>
    
    <insert id="insertSelectKey">
@@ -66,8 +67,8 @@
       SELECT free_seq.nextval FROM dual
       </selectKey>
    
-      INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer,free_regdate,free_updatedate)
-      VALUES (#{free_seq }, #{free_title}, #{free_content}, #{free_writer},sysdate,sysdate)
+      INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer,free_nickname,free_regdate,free_updatedate)
+      VALUES (#{free_seq }, #{free_title}, #{free_content}, #{free_writer}, #{free_nickname},sysdate,sysdate)
    </insert>
  
    <select id="read" resultType="org.zerock.freeboard.domain.FreeBoardVO">
