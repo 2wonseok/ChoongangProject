@@ -118,10 +118,8 @@
 								</c:if>
 							</a></td>
 							<td><c:out value="${rev.rev_writer}" /></td>
-							<td><fmt:formatDate pattern="yyyy-MM-dd/HH:mm"
-									value="${rev.rev_regdate}" /></td>
-							<td><fmt:formatDate pattern="yyyy-MM-dd/HH:mm"
-									value="${rev.rev_updatedate}" /></td>
+							<td><fmt:formatDate value='${rev.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/></td>
+							<td><fmt:formatDate value='${rev.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/></td>
 									<td>${rev.rev_good }</td>
 									<td>${rev.rev_hate }</td>
 									<td>${rev.rev_readCnt }</td>

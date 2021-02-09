@@ -88,9 +88,8 @@
 	 <%-- 파일 <input type="file" name="upload" class="form-group" value="${filename }"/>
 	<br> --%>
 	 <div class = "inputArea">
-	<label for="revImg">이미지</label>.
+	<label for="revImg"></label>
 	 <%-- <label><input type="file" id="revImg" name="upload" value="${RevVO.rev_filename }"/></label>  --%> 
-	 <label><input type="file" name="upload" id="revImg"/></label>
 	 <div class="select_img"><img src="" /></div>
 	 
 	<script>
@@ -104,7 +103,54 @@
 	   }
 	  });
  </script>
- 	
+ 	<!--이미지첨부시작  -->
+							<div class = "input_wrap">
+								 <input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*"/>
+							</div>	
+							<div class="imgs_wrap">
+								<img id="img"/>
+							</div>
+						
+							<script>
+							  
+							  $("#input_imgs").on("change", handleImgFileSelect);
+
+							  //이미지셀렉트
+							  function handleImgFileSelect(e){
+									//이미지 정보를 초기화
+									$(".imgs_wrap").empty();
+									
+									var files = e.target.files;
+									var filesArr = Array.prototype.slice.call(files);
+								
+									filesArr.forEach(function(f){
+										if(!f.type.match("image.*")){
+											
+											// 이전에 쓰던 모달창 복붙한거로나오게
+											var message = "그림파일형석만 허용됩니다";
+											function checkModal(message){
+												if (message && history.state == null) {
+													$("#myModal .modal-body p").html(message)
+													$("#myModal").modal("show");
+												}
+											}
+											checkModal(message);
+											
+											return;
+										}
+										
+										var reader = new FileReader();
+										reader.onload = function(e){
+											
+											 var html = "<div><img width=\"500\" src=\""+e.target.result+"\"></div>";
+											$(".imgs_wrap").append(html);
+										
+										}
+										reader.readAsDataURL(f);
+									});
+							 }
+						 	</script>
+						<!--이미지첨부끝 -->
 	</div>
 	<input type="submit"  value="글 등록">
 	</form>

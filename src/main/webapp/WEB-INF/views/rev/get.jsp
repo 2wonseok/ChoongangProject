@@ -40,7 +40,7 @@
 </style>
 <script>
 	var appRoot = '${root}'; // 자바스크립트 코드에서 contextPath를 쓰기위해 선언.
-	var rev_seq = ${RevBoard.rev_seq};
+	var rev_seq = ${RevBoard.rev_seq}; 
 	var authUser = '${authUser.user_id}';
 </script>
 <meta charset="UTF-8">
@@ -53,6 +53,22 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+/* $(document).ready(function(){
+	
+	/*밑의 이미지를 호버하면 main이미지가 바뀌는 js */
+	/*일단 아래 섬네일에서 호버된걸 선택  */
+	$(".hoveredImage").hover(function(){
+		
+		/* 호버된 이미지의 src값  */
+		var hovered = $(this).attr("src");
+		/* 왼쪽위의 주소를 변경 */
+		$("#productMainImage").attr("src",hovered);
+	})
+	
+	
+}); */
+</script>
 <script src="${root }/resources/rev_js/rev.js"></script>
 <script>
 
@@ -152,12 +168,11 @@ $("#reply-ul").on("click", "li",  function() { // on메소드를 이용해서 re
 		//<button id="reply-delete-button"type="button" class="btn btn-danger">삭제</button>
 		//</div>
 		
-		var modifyMd = $("#modify-footer");
+		1
 		var namei = data.reply_writer;
 		var ok = '';
 		if (authUser == data.reply_writer) {
-			console.log(data.reply_writer);
-
+			$('#reply_content-input3').attr("readonly", false);
 			ok = '<div id="confirm">'
 			+ '<button id="reply-modify-button" type="button" class="btn btn-primary">수정</button>'
 			+ '<button id="reply-delete-button" type="button" class="btn btn-danger">삭제</button>'
@@ -166,8 +181,48 @@ $("#reply-ul").on("click", "li",  function() { // on메소드를 이용해서 re
 			modifyMd.empty();
 			modifyMd.append(ok);
 			
+			//수정 버튼 이벤트 처리
+			$("#reply-modify-button").click(function() {
+				var reply_seq = $("#reply_seq-input3").val();
+				var reply_content = $("#reply_content-input3").val();
+				var data = {reply_seq: reply_seq, reply_content: reply_content}
+				
+				replyService.update(data, function() {
+					alert("댓글을 수정하였습니다.");
+					$("#modify-reply-modal").modal("hide");		
+					showList();
+				}); 
+			});
+			
+			//삭제 버튼 이벤트 처리
+			$("#reply-delete-button").click(function() {
+				var reply_seq = $("#reply_seq-input3").val();
+				var data = {reply_seq: reply_seq}
+				
+				replyService.remove(data, function() {
+					alert("댓글을 삭제하였습니다.");
+					$("#modify-reply-modal").modal("hide");
+					showList();
+				});
+			});
+			showList();
+			
+			
+			
 		} else {
 			modifyMd.empty();
+			
+			$('#reply_content-input3').attr("readonly", true);
+			
+			ok = '<div id="confirm">'
+			+ '<button id="reply-close-button" type="button" class="btn btn-primary">닫기</button>'
+			+ '</div>'
+			modifyMd.append(ok);
+			
+			$("#reply-close-button").click(function() {
+				$("#modify-reply-modal").modal("hide");
+			})
+			
 		}
 		
 		$("#reply_seq-input3").val(data.reply_seq);
@@ -278,10 +333,13 @@ showList();
 						value='<c:if test="${RevBoard.rev_category eq 1}">모자</c:if><c:if test="${RevBoard.rev_category eq 2}">신발</c:if><c:if test="${RevBoard.rev_category eq 3}">상의</c:if><c:if test="${RevBoard.rev_category eq 4}">하의</c:if>' type="text" class="form-control" id="input2" />
 						
 				</div>
-				<div class="form-group">
+				<div class="form-group" >
 					<label for="input3">파일이름</label> <input readonly
-						value="${RevBoard.rev_filename }" type="text" class="form-control" id="input3" />
-						<img alt="" src="${root }/resources/upload/${RevBoard.rev_filename}">
+						value="${RevBoard.rev_filename }" type="text" class="form-control" id="input3" />						
+						<c:forEach items="${RevfileNameList }" var="revImg" varStatus="imgNum">
+						<img class="hoveredImage" alt="" src="${root }/resources/upload/${revImg}" height="280px" width="260px">
+						</c:forEach>
+						
 				</div>
 				<div class="form-group">
 					<label for="input4">제목</label> <input readonly
@@ -319,8 +377,9 @@ showList();
 				
 				<div class="form-group">
 						<label for="input9">작성일</label> <input  name="rev_regdate"
-							value="${RevBoard.rev_regdate }" type="text" class="form-control"
+							value="<fmt:formatDate value='${RevBoard.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/>" class="form-control"
 							id="input9"  readonly/>
+						
 					</div>
 			</div>
 			

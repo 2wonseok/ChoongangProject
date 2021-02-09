@@ -97,9 +97,61 @@ $(document).ready(function() {
 					</div>
 					
 					<div class="form-group">
-						<label for="input3">파일이름</label> <input  name="upload"
+						<%--<label for="input3">파일이름</label> <input  name="upload"
 							value="${RevBoard.rev_filename }" type="file" class="form-control"
-							id="input3" />
+							id="input3" /> --%>
+							<!--이미지첨부시작  -->
+							<label for="input3">파일이름</label>
+							<input type="text" value="${preFileNames }" name ="preFileNames" hidden="hidden">							
+							<div class = "input_wrap">
+								 <input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*"/>
+							</div>
+							<div class="imgs_wrap">
+								<c:forEach items="${fileNamesList }" var="product_img">	
+									<div>
+										<img width="500" src="${root }/resources/upload/${product_img }"/>
+									</div>
+								</c:forEach>
+							</div>
+							<script>
+							  
+							  $("#input_imgs").on("change", handleImgFileSelect);
+
+							  //이미지셀렉트
+							  function handleImgFileSelect(e){
+									//이미지 정보를 초기화
+									$(".imgs_wrap").empty();
+									
+									var files = e.target.files;
+									var filesArr = Array.prototype.slice.call(files);
+								
+									filesArr.forEach(function(f){
+										if(!f.type.match("image.*")){
+											
+											// 이전에 쓰던 모달창 복붙한거로나오게
+											var message = "그림파일형석만 허용됩니다";
+											function checkModal(message){
+												if (message && history.state == null) {
+													$("#myModal .modal-body p").html(message)
+													$("#myModal").modal("show");
+												}
+											}
+											checkModal(message);
+											
+											return;
+										}
+										
+										var reader = new FileReader();
+										reader.onload = function(e){
+											
+											 var html = "<div><img width=\"500\" src=\""+e.target.result+"\"></div>";
+											$(".imgs_wrap").append(html);
+										
+										}
+										reader.readAsDataURL(f);
+									});
+							 }
+						 	</script>
 					</div>
 					
 					

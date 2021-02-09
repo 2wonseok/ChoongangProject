@@ -30,6 +30,7 @@ import org.zerock.RevBoard.domain.RevVO;
 import org.zerock.RevBoard.service.RevBoardService;
 import org.zerock.user.domain.UserVO;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
@@ -100,12 +101,15 @@ public class RevBoardController {
 						reNames.add(reName);
 					} 
 				}
-				if (!reNames.isEmpty()) {
+				if (!reNames.isEmpty()) { // 파일이 비어있지않을때 
 				revVo.setRev_filename(reNames.get(0));
-				} else {
+				} else { // 파일이 비어있을때
 					revVo.setRev_filename("");
 				}
-				
+				//list를 string 쉼표구분으로 만들기 
+				String filenames = String.join(",", reNames);
+				revVo.setRev_filename(filenames);
+				System.out.println(filenames);
 
 		if(!errors.isEmpty()) {
 			rttr.addFlashAttribute("errors", errors);
@@ -156,8 +160,16 @@ public class RevBoardController {
 	@GetMapping({"/get"})
 	public ModelAndView get(@RequestParam int rev_seq, @ModelAttribute("cri") Criteria cri, Model model,HttpServletRequest req, HttpServletResponse res) {
 		UserVO user = (UserVO) req.getSession().getAttribute("authUser");
+		
+		
+		
 		// 해당 게시판 번호를 받아 리뷰 상세페이지로 넘겨줌
 		RevVO rev = service.get(rev_seq);
+		
+		//여러 상품파일이름을 list로 변환하고 넘겨줌
+				List<String> fileNamesList = Arrays.asList(rev.getRev_filename().split(","));
+				model.addAttribute("RevfileNameList", fileNamesList);
+		
 		ModelAndView view = new ModelAndView();
 		
 		Cookie[] cookies = req.getCookies();
@@ -224,7 +236,7 @@ public class RevBoardController {
 			model.addAttribute("RevBoard", rev);
 			view.setViewName("/rev/get");
 			return view;
-		} else {
+		} else { 
 			//에러페이지 설정
 			view.setViewName("error/reviewError");
 			return view;
@@ -250,6 +262,12 @@ public class RevBoardController {
 		RevVO rev = service.get(rev_seq);
 		
 		model.addAttribute("RevBoard", rev);
+		
+		String preFileNames = rev.getRev_filename();
+		
+		List<String> fileNamesList = Arrays.asList(rev.getRev_filename().split(","));
+		model.addAttribute("preFileNames", preFileNames);
+		model.addAttribute("fileNamesList", fileNamesList);
 	}
 	
 	
@@ -317,6 +335,30 @@ public class RevBoardController {
 		}
 		
 		
+		//list를 string 쉼표구분으로 만들기 
+		String filenames = String.join(",", reNames);
+		revVo.setRev_filename(filenames);
+		System.out.println(filenames);
+		
+		if(reNames.size() == 0) { // 
+			revVo.setRev_filename(request.getParameter("preFileNames"));
+		} else {
+			/* 변동있다면 이전그림지우기 */
+			String oldFileNames = request.getParameter("preFileNames");
+			List<String> fileNamesList = Arrays.asList(oldFileNames.split(","));
+			System.out.println(fileNamesList);
+			
+			String saveDir2 = request.getSession().getServletContext().getRealPath("/resources/upload"); 
+			
+			/* 그림파일삭제 */
+			for(String f : fileNamesList) { 
+				if(!f.isEmpty()) { 
+					File file = new File(saveDir2+"/"+f);			
+					file.delete();
+					} 
+			}
+			
+		}
 		
 		
 		

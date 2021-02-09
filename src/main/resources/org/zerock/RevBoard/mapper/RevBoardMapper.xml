@@ -69,10 +69,10 @@
 		<!-- <![CDATA[]]> 는 부등호를 사용하기위해 씀 -->
     <![CDATA[ 
     SELECT rev_seq, rev_category, rev_title, rev_content, rev_writer, rev_filename,
-        rev_readcnt, rev_good, rev_hate, rev_regdate, rev_updatedate FROM 
+        rev_readcnt, rev_good, rev_hate, rev_regdate, rev_updatedate, rev_replyCnt FROM 
         ( SELECT ROW_NUMBER() OVER (ORDER BY rev_seq DESC) rn,
         rev_seq, rev_category, rev_title, rev_content, rev_writer, rev_filename,
-        rev_readcnt, rev_good, rev_hate, rev_regdate, rev_updatedate FROM tbl_reviewboard
+        rev_readcnt, rev_good, rev_hate, rev_regdate, rev_updatedate, rev_replyCnt FROM tbl_reviewboard
   ]]>
   			<include refid="criteria"></include>
   			<![CDATA[ 
