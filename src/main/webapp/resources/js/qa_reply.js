@@ -48,15 +48,15 @@ var replyService = (function() {
 			success: function(result, status, xhr) {
 				if(callback) {
 					callback(result);
-				}
+				};
 			},
 			error: function(xhr, status, er) {
 				if(error) {
 				error(er);
-				}
+				};
 			}
-		})
-	}
+		});
+	};
 	
 	function modify(reply, callback, error) {
 		$.ajax({
@@ -67,15 +67,15 @@ var replyService = (function() {
 			success: function(result, status, xhr) {
 				if(callback) {
 					callback(result);
-				}
+				};
 			},
 			error: function(xhr, status, er) {
 				if(error) {
 					error(er);
-				}
+				};
 			}
-		})
-	}
+		});
+	};
 	
 	return {
 		getList: getList,

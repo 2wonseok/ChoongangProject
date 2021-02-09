@@ -72,8 +72,7 @@ public class ReplyController {
 	}
 
 	
-	// 댓글 삭제
-	
+	// 댓글 삭제	
 	
 	@DeleteMapping(path = "/{reply_seq}", 
 			produces = MediaType.TEXT_PLAIN_VALUE)

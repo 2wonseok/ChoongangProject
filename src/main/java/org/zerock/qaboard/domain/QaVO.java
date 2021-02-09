@@ -31,7 +31,7 @@ public class QaVO {
 	private String qa_category;
 	private String qa_title;
 	private String qa_writer;
-	private String qa_readcnt;
+	private int qa_readcnt;
 	private String qa_content;
 	private String qa_secret;
 	private String qa_status;

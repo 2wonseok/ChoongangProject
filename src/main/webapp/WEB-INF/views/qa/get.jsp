@@ -55,7 +55,6 @@ var nickname = '${authUser.user_nickname}';
 </style>
 
 
-
 <script>
 
 $(document).ready(function() {
@@ -75,8 +74,6 @@ $(document).ready(function() {
 		var d = new Date(date);
 		return d.toISOString().split("T")[0];
 	};
-	
-	
 
 	// 댓글 목록 가져오기
 	function showList() {			
@@ -99,62 +96,77 @@ $(document).ready(function() {
 				+ '<h5>'
 				+ list[i].reply_content
 				+ '</h5>'
-				replyUL.append(replyLI);
-					
+				replyUL.append(replyLI);					
 				// 댓글 작성자와 댓글의 닉네임이 동일할시
 				if(writer == nickname) {
 					replyUL.append(
-							'<div>'
 							// 삭제 버튼
-							+ '<input type="hidden" id="reply_seq" value="' + list[i].reply_seq + '">'
-							+ '<button type="button" id="reply_delete">삭제</button> </div></li>'
-							// 수정 버튼
-							+ '<input type="hidden" id="reply_seq" value="' + list[i].reply_seq + '">'
-							+ '<button type="button" id="reply_modify">수정</button> <hr></div></li>'
-							
-							+ '</div>');
-					
-					// 삭제 버튼 이벤트 처리
-					$("#reply_delete").click(function() {
-					
-						var reply_seq = $("#reply_seq").val();
-						
-					if(confirm("삭제 하시겠습니까?") == true){
-						replyService.remove(reply_seq, function() {
-							alert("댓글 삭제 완료.");
-
-							showList();								
-							});						
-						} else {
-							showList();		
-						};						
-					});
-					
-					// 수정 버튼 이벤트 처리
-					$("#reply_modify").click(function() {
-						console.log("수정 클릭");
-						
-						var reply_seq = $("#reply_seq").val();
-						var reply_content = $("#reply_modify").val();
-						var data = {reply_seq: reply_seq, reply_content: reply_content};
-						
-						replyService.modify(data, function() {
-							alert("댓글을 수정 하였습니다.");
-							$("#modify-delete-reply-modal").modal('hide');
-							showList();
-						});
-						
-					});
-					
+							'<div>'
+							+ '<input type="hidden" class="reply_seq" value="' + list[i].reply_seq + '">'
+							+ '<button type="button" class="reply_delete">삭제</button>'
+							+ '</div></li>'		
+							+ '<div>'
+							+ '<input type="hidden" class="reply_modify_seq" value="' + list[i].reply_seq + '">'
+							+ '<button type="button" class="reply_modify">수정</button>'
+							+ '<hr></div></li>'								
+							);					
 				} else {
 					replyUL.append('<hr></div></li>');
-				}		
-
-			}
+				};
+			};
 			
-
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			// 삭제 버튼 이벤트 처리
+			$(".reply_delete").click(function() {
+				console.log("삭제 클릭");
+								
+			var reply_seq = $(".reply_seq").val();
+				'<input type="hidden" class="reply_modify_seq" value="' + reply_seq + '">';
+				
+			if(confirm("삭제 하시겠습니까?") == true){
+				replyService.remove(reply_seq, function() {
+					alert("댓글 삭제 완료.");
+					showList();								
+					});						
+				} else {
+					showList();		
+				};						
+			});
+			
+			// 수정 버튼 이벤트 처리
+			$(".reply_modify").click(function() {
+				console.log("수정 클릭");
+/* 						   var tag = '<input type="button" id="btn" value="버튼"/>';
+							   $("body").append(tag);
+							});
+							$(document).on("click","#btn",function(){ 
+							   alert("click"); 
+							 });
+					 */
+				
+				var reply_seq = $(".reply_seq").val();
+				console.log(reply_seq);
+				var reply_content = $(".reply_modify").val();
+				var data = {reply_seq: reply_seq, reply_content: reply_content};
+				
+				replyService.modify(data, function() {
+					alert("댓글을 수정 하였습니다.");
+					$("#modify-delete-reply-modal").modal('hide');
+					showList();
+				});				
+			}); 
+			
 		});
-	}
+	};
 	
 	
 	$("#reply-submit-button").click(function() {
@@ -184,14 +196,15 @@ $(document).ready(function() {
 
 	});			
 	
-
-	
-	
 	// 댓글 목록 함수 showList() 불러오기
 	showList();
 });
 
 </script>
+
+
+
+
 
 
 
