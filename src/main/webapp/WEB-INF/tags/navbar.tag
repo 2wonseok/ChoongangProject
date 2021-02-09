@@ -78,7 +78,7 @@
 					</li>
 				</c:if>
 			</ul>
-			<div style="margin-left:70px;">
+			<div style="margin-left:200px;">
 				<form role="search" action="" method="get" name="simpleSearch" novalidate="novalidate">
 					<fieldset>
 						<div class="d-flex justify">
