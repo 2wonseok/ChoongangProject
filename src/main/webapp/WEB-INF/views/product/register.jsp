@@ -133,9 +133,9 @@ table.type05 td {
 									<td><input id="product_quantity" name="product_quantity" type="number" value="${product.product_quantity }"></td>
 								</tr>
 								<tr>
-									<th scope="row">상품 판매자(Nick / id)</th><!--value=authUser로 넣을 예정  -->
-									<td><input id="product_seller" type="text" value="${authUser.user_nickname } / ${authUser.user_id }" style="background-color:silver;"readonly>
-										<input name="product_seller" type="text" value="${authUser.user_id }" hidden="hidden">
+									<th scope="row">상품 판매자(Nick)</th><!--value=authUser로 넣을 예정  -->
+									<td><input id="user_nickname" name="user_nickname" type="text" value="${authUser.user_nickname }" style="background-color:silver;"readonly>
+										<input id="product_seller" name="product_seller" type="text" value="${authUser.user_seq }" hidden="hidden">
 									</td>
 								</tr>
 								<tr>

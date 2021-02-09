@@ -43,10 +43,11 @@ public class ProductController {
 	private UserService userService;
 	
 	@GetMapping("/register")
-	public String register(@ModelAttribute("cri") Criteria cri, HttpServletRequest request) {
+	public String register(@ModelAttribute("cri") Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
 		
 		/* 로그인 해야지만 register를 할 수 있게끔 */
 		if (request.getSession().getAttribute("authUser") == null) {
+			rttr.addFlashAttribute("message","로그인 되어있지 않습니다.");
 			return "redirect:/product/list";
 		}
 		return "/product/register";
@@ -147,13 +148,20 @@ public class ProductController {
 		//생성자로 cri와 totla을 받아서 endPage와 startPage prev, next를 계산함
 		
 		
-		/* seller(user_id)에 따른 닉네임 얻고 넘겨주기 */
-		Map<String, String> userIdNick = new HashMap<String, String>();
+		/* seller(user_seq)에 따른 닉네임 얻고 넘겨주기 */
+		/* seller(user_seq)에 따른 닉네임 얻고 넘겨주기 */
+		Map<Integer, String> userIdNick = new HashMap<Integer, String>();
 		for(ProductVO productVO :list) {
-			String user_id = productVO.getProduct_seller();
-			UserVO userVO = userService.getUser(user_id);
-			String user_nick = userVO.getUser_nickname();
-			userIdNick.put(user_id, user_nick);
+			int user_seq = productVO.getProduct_seller();
+			UserVO userVO = userService.getUserSeq(user_seq);
+			
+			String user_nick ="";
+			if(userVO == null) {
+				user_nick ="탈퇴한 유저";
+			}
+			user_nick = userVO.getUser_nickname();				
+			
+			userIdNick.put(user_seq, user_nick);
 		}		
 		model.addAttribute("userIdNick", userIdNick);
 		

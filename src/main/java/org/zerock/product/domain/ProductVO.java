@@ -8,10 +8,11 @@ import lombok.Data;
 public class ProductVO {
 	//등록시하드코딩컬럼
 	private int product_seq;
+	private String user_nickname;
 	//업데이트시 수정안되는컬럼
 	private int product_price;
 	private int product_quantity;
-	private String product_seller;
+	private int product_seller;
 	//업데이트시 수정되는컬럼(+updatedate하드코딩)
 	private String product_name;
 	private String product_filename;
