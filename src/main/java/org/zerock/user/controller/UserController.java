@@ -233,7 +233,15 @@ public class UserController {
 	}
 	
 	@GetMapping("/sendSMS") // 휴대폰 인증 
-	public @ResponseBody void sendSMS(String user_phone, HttpSession session) {
+	public @ResponseBody int sendSMS(String user_phone, HttpSession session) {
+		UserVO phoneCheck = service.findUser(user_phone);
+		
+		System.out.println(phoneCheck.getUser_phone());
+		
+		if (phoneCheck.getUser_phone() != null) {
+			session.setAttribute("inUse", "이미 등록된 번호입니다.");
+			return 1;
+		}
 		
 		Random rand  = new Random();
     String numStr = "";
@@ -247,6 +255,8 @@ public class UserController {
     service.smsService(user_phone,numStr);
 //    rttr.addFlashAttribute("AuthenticationNum", numStr);
     session.setAttribute("phoneConfirm", numStr);
+    
+    return 0;
 	}
 	
 	@GetMapping("/authentication") // 인증번호 확인

@@ -43,17 +43,12 @@ $(document).ready(function() {
 		$("#idLengthFail").hide();
 		$("#nicknameLengthFail").hide();
 		$("#passwordLengthFail").hide();
+		$("#inUse").hide();
 		
 		// 비밀번호 일치 확인
-		$("input").keyup(function() { 
+		$("input").keyup(function() {  
 			var pwd1=$("#input3-password").val(); 
 			var pwd2=$("#input4-confirmPassword").val(); 
-			
-			if ($(this).val().length < 4 ) {
-				$("#passwordLengthFail").show();
-			} else {
-				$("#passwordLengthFail").hide();
-			}
 			
 			if(pwd1 != "" || pwd2 != "") { 
 				if(pwd1 == pwd2) { 
@@ -75,13 +70,19 @@ $(document).ready(function() {
 		
 	$('#zip_code_btn').click(function(){
 		var user_phone = $('#user_phone').val();
-		alert('인증번호 발송 완료!');
 		
 		$.ajax({
 		    type: "GET",
 		    url: "${root}/user/sendSMS",
 		    data: {
 		        "user_phone" : user_phone
+		    },
+		    success: function(res) {
+		    	if (res == 0) {
+		    		alert('인증번호 발송 완료!');
+		    	} else {
+		    		$("#inUse").show();
+		    	}
 		    }
 		});
 	});
@@ -185,6 +186,7 @@ $(document).ready(function() {
 	
 //글자 수 제한 아이디
 	$('#user_id').on("blur keyup", function() {
+		$("#btn_add").attr("disabled", "disabled");
 		if ($(this).val().length < 4 ) {
 			$("#idLengthFail").show();
 			$("#idCheck").attr("disabled", "disabled");
@@ -195,9 +197,17 @@ $(document).ready(function() {
 		
   	$(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
   });	
+  
+	$('#input3-password').on("blur keyup", function() {
+		if ($(this).val().length < 4 ) {
+			$("#passwordLengthFail").show();
+		} else {
+			$("#passwordLengthFail").hide();
+		}
+	});	
 	
 	$('#user_nickname').on("blur keyup", function() {
-		if ($(this).val().length < 4 ) {
+		if ($(this).val().length < 2 ) {
 			$("#nicknameLengthFail").show();
 			$("#nickCheck").attr("disabled", "disabled");
 		} else {
@@ -208,7 +218,7 @@ $(document).ready(function() {
   });	
 	// 글자 수 제한 닉네임
   $('#user_nickname').blur(function() {
-  	
+	  $("#btn_add").attr("disabled", "disabled");
     var thisObject = $(this);
     
     var limit = thisObject.attr("limitbyte"); //제한byte를 가져온다.
@@ -331,7 +341,7 @@ $(document).ready(function() {
 		    <label for="input8-nickname">닉네임</label>
 		    <input type="text" class="form-control" limitbyte="24" style="width:77%;" name="user_nickname" id="user_nickname" 
 		    	value="" placeholder="중복 확인을 눌러주세요" required>
-		    <small class="text-danger" id="nicknameLengthFail">최소 4글자 이상 입력해주세요.</small>
+		    <small class="text-danger" id="nicknameLengthFail">최소 2글자 이상 입력해주세요.</small>
 		    <button type="button" class="btn_check"  id="nickCheck">중복확인</button>
 		    <small class="text-dark" id="nickCheckSuccess">사용 가능합니다.</small>
 		    <button type="button" id="nickYes">확인</button>
@@ -361,7 +371,9 @@ $(document).ready(function() {
 		    <label for="user_phone">휴대폰</label>
 		    <input type="text" class="form-control" style="width:77%;" name="user_phone" 
 		    	id="user_phone" value="" placeholder="'-' 제외하고 입력"  required>
-		    <button type="button" id="zip_code_btn">인증하기</button><br>
+		    <button type="button" id="zip_code_btn">인증하기</button>
+		    <small class="text-danger" id="inUse">이미 등록된 번호입니다.</small>
+		    <br>
 		    <label for="input8-phone">인증번호</label>
 		    <input type="text" class="form-control" style="width:83%;" name="phoneConfirm" 
 		    	id="phoneConfirm"  placeholder="인증번호를 입력해주세요." required>

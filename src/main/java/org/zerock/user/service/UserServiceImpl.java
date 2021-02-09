@@ -108,4 +108,9 @@ public class UserServiceImpl implements UserService {
 		mapper.userRemove(user_id);
 	}
 
+	@Override
+	public UserVO getUserSeq(int user_seq) {
+		return mapper.getUserSeq(user_seq);
+	}
+
 }
