@@ -134,4 +134,9 @@
         WHERE
             user_id = #{user_id}
     </update>
+    
+    <update id="updateReplyCnt">
+		UPDATE tbl_reviewboard SET rev_replycnt = rev_replycnt + #{amount}
+		WHERE rev_seq = #{reply_boardseq}
+	</update>
 </mapper>

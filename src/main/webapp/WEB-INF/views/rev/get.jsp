@@ -124,7 +124,10 @@ $("#reply-submit-button").click(function() {
 	// 모달창 닫기
 	$("#new-reply-modal").modal("hide");
 	// 모달창 내의 input 요소들 value들 초기화
-	$("#new-reply-modal input").val("");
+	$("#reply_content-input2").val("");
+	
+	
+	
 	
 	
 	
@@ -395,17 +398,17 @@ showList();
 					</button>
 				</div>
 				<div class="modal-body">
-					<div class="form-group">
-						<label for="reply_content-input2" class="col-form-label">
+					<div class="form-group" >
+						<label for="reply_content-input2" class="col-form-label" >
 							댓글
 						</label>
-						<input type="text" class="form-control" id ="reply_content-input2">
+						<input type="text" class="form-control" id ="reply_content-input2" >
 					</div>
 					<div class="form-group">
-						<label for="reply_writer-input2" class="col-form-label">
+						<label for="reply_writer-input2" class="col-form-label" id="reply-writer">
 							작성자
 						</label>
-						<input type="text" class="form-control" id="reply_writer-input2" value="${sessionScope.authUser.user_id}" readonly>
+						<input type="text" class="form-control" id="reply_writer-input2" value="${authUser.user_id}" readonly>
 					</div>
 				</div>
 				

@@ -16,7 +16,29 @@
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+	$(document).ready(
+			function() {
 
+				var result = '${result}';
+				var message = '${message}';
+
+				// checkModal(result);
+				checkModal2(message);
+
+				history.replaceState({}, null, null);
+
+				function checkModal2(message) {
+
+					if (message && history.state == null) {
+						$("#myModal .modal-body p").html(message);
+						$("#myModal").modal("show");
+					}
+				}
+
+				
+			});
+</script>
 <title>구매후기 글등록</title>
 </head>
 <body>

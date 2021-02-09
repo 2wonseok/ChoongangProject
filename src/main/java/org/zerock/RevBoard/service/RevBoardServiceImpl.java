@@ -79,4 +79,10 @@ public class RevBoardServiceImpl implements RevBoardService{
 	public int boardSelect(String rev_writer) {
 		return mapper.boardSelect(rev_writer);
 	}
+	
+	@Override
+	public void pointUpdate(String user_id) {
+		mapper.pointUpdate(user_id);
+		
+	}
 }

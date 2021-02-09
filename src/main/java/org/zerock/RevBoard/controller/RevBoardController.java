@@ -124,7 +124,16 @@ public class RevBoardController {
 		revVo.setRev_writer(user.getUser_id());
 		
 		service.register(revVo);
+		rttr.addFlashAttribute("result" , "success");
+		rttr.addFlashAttribute("message", revVo.getRev_writer() + " 님" + revVo.getRev_seq() + " 번 글이 등록되었습니다.");
 		
+		int cnt = service.boardSelect(revVo.getRev_writer());
+		if (cnt == 5) {
+			service.pointUpdate(user.getUser_id());
+			rttr.addFlashAttribute("result", revVo.getRev_writer());	// 객체로 붙게됨.
+			rttr.addFlashAttribute("message", revVo.getRev_writer() + "님 포인트 500000원이 증정됐습니다.");
+			
+		}
 		
 		return "redirect:/rev/list";
 	}
@@ -311,7 +320,10 @@ public class RevBoardController {
 		
 		
 		
-			service.moidfy(revVo);			
+			if(service.moidfy(revVo)) {
+				rttr.addFlashAttribute("result" , "success");
+				rttr.addFlashAttribute("message", revVo.getRev_seq() + "번 글이 수정 됐습니다.");
+			}
 		
 		
 		

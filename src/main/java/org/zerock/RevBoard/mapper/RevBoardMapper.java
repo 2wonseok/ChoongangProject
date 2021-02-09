@@ -2,6 +2,7 @@ package org.zerock.RevBoard.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.zerock.RevBoard.domain.Criteria;
 import org.zerock.RevBoard.domain.RevVO;
 
@@ -30,4 +31,8 @@ public interface RevBoardMapper {
 	public int addHate(int rev_seq);
 	
 	public int boardSelect(String rev_writer);
+	
+	public void pointUpdate(String user_id);
+	
+	public void updateReplyCnt(@Param("reply_boardseq") int reply_boardseq, @Param("amount") int amount);
 }

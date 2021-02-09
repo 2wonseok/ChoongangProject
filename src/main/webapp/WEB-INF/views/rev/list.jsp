@@ -28,7 +28,29 @@
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+	$(document).ready(
+			function() {
 
+				var result = '${result}';
+				var message = '${message}';
+
+				// checkModal(result);
+				checkModal2(message);
+
+				history.replaceState({}, null, null);
+
+				function checkModal2(message) {
+
+					if (message && history.state == null) {
+						$("#myModal .modal-body p").html(message);
+						$("#myModal").modal("show");
+					}
+				}
+
+				
+			});
+</script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -91,6 +113,9 @@
 							<td><c:if test="${rev.rev_category eq 1}">모자</c:if><c:if test="${rev.rev_category eq 2}">신발</c:if><c:if test="${rev.rev_category eq 3}">상의</c:if><c:if test="${rev.rev_category eq 4}">하의</c:if></td>
 							<td><a href="${revLink }"> <c:out
 										value="${rev.rev_title}" />
+								<c:if test="${rev.rev_replyCnt gt 0 }"> <!-- gt는 > 이거랑같음 -->
+								<span class="badge badge-info">${rev.rev_replyCnt }</span>
+								</c:if>
 							</a></td>
 							<td><c:out value="${rev.rev_writer}" /></td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd/HH:mm"
@@ -108,6 +133,26 @@
 					<c:if test="${ sessionScope.authUser.user_id != null }">
 					<a id="btn_add" class="btn btn-info" href="${root }/rev/register">후기 쓰기</a>
 					</c:if>
+		</div>
+	</div>
+	<div id="myModal" class="modal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">알림</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>성공적으로 처리 됐습니다!</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
 		</div>
 	</div>
 		<div class="container-sm mt-3">

@@ -17,4 +17,5 @@ public class RevVO {
 	private int rev_hate;
 	private Date rev_regdate;
 	private Date rev_updatedate;
+	private int rev_replyCnt;
 }

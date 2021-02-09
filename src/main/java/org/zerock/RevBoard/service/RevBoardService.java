@@ -30,4 +30,6 @@ public interface RevBoardService {
 	public int addHate(int rev_seq);
 	
 	public int boardSelect(String rev_writer);
+	
+	public void pointUpdate(String user_id);
 }
