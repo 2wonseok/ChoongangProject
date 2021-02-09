@@ -32,6 +32,16 @@
 			
 		});
 		
+		$("#userOrderList").click(function() {
+			$(".tableBWrite").attr("hidden", true);
+			$(".tableOrder").removeAttr("hidden");
+		});
+		
+		$("#userInfo").click(function() {
+			$(".tableOrder").attr("hidden", true);
+			$(".tableBWrite").removeAttr("hidden");
+		});
+		
 	});	
 
 </script>
@@ -75,6 +85,37 @@
     vertical-align: top;
     line-height: 25px;
 }
+
+.tableOrder {
+    clear: both;
+    display: table;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-top: 3px solid #4a4a4a;
+    margin-bottom: 20px;
+}
+.tableOrder tbody th {
+    background: #f5f5f5;
+    position: relative;
+    padding: 15px 25px;
+    font-size: 17px;
+    text-align: left;
+    color: #222222;
+    border-bottom: 1px solid #dedede;
+    width: 140px;
+    font-weight: normal;
+}
+.tableOrder tbody td {
+    border-bottom: 1px solid #dedede;
+    color: #555555;
+    font-size: 14px;
+    padding: 17px;
+    position: relative;
+    vertical-align: top;
+    line-height: 25px;
+}
+
 #btn_remove {
     color: #fff;
     font-size: 15px;
@@ -103,6 +144,12 @@
     margin-top: -5px;
     margin-right: -17px;
 }
+#userInfo, #userOrderList {
+	color: #000; 
+	font-weight: 540; 
+	font-size: 28px; 
+	line-height: 20px;
+}
 </style>
 <body>
 <u:navbar/>
@@ -110,7 +157,7 @@
 	<c:when test="${authUser.user_grade == 0 || authUser.user_id eq read.user_id && authUser.user_id != null}">
 		<div class="container">
 			<section id="container">
-				<h3>회원 정보 보기</h3>
+				<h3><a href="#" id="userInfo">회원 정보 보기</a>&nbsp; | &nbsp;<a href="#" id="userOrderList">주문 내역</a></h3>
 				<table class="tableBWrite">
 					<tbody>
 						<tr>
@@ -189,6 +236,86 @@
 						</tr>		
 					</tbody>
 				</table>
+				
+				<table class="tableOrder" hidden>
+					<tbody>
+						<tr>
+							<th style="width:300px;">상품명</th>
+							<td>데스크탑</td>
+						</tr>
+						<tr>
+							<th>판매자</th>
+							<td>후후하핳</td>
+						</tr>
+						<tr>
+							<th>닉네임</th>
+							<td>키키키킼</td>
+						</tr>
+						<tr>
+							<th>구매금액</th>
+							<td>1,000,000원</td>
+						</tr>
+						<tr>
+							<th>상태</th>
+							<td>배송완료</td>
+						</tr>
+						<tr>
+							<th>연락처</th>
+							<td>${read.user_phone }</td>
+						</tr>
+						<tr>
+							<th>생년월일</th>
+							<td>${read.user_birth }</td>
+						</tr>
+						<tr>
+							<th>회원등급</th>
+							<td>
+								<div class="d-flex justify-content-between" style="margin-top: 12px;">
+								<c:choose>
+									<c:when test="${read.user_grade == 0}">
+					 					<div class="d-flex">관리자</div>
+									</c:when>
+									<c:otherwise>
+										<div class="d-flex">Lv.${read.user_grade }</div>
+									</c:otherwise>
+								</c:choose>
+				 					<form action="${root }/user/gradeUpdate" id="gradeUpdateFrom" method="post">	
+										<div class="d-flex">
+											<input type="hidden" name="user_seq" value="${read.user_seq }">		
+											<input type="hidden" name="user_id" value="${read.user_id }">		
+											<input type="hidden" name="pageNum" value="${cri.pageNum }">		
+											<input type="hidden" name="amount" value="${cri.amount }">		
+											<input type="hidden" name="type" value="${cri.type }">		
+											<input type="hidden" name="keyword" value="${cri.keyword }">
+											<c:if test="${authUser.user_grade == 0 }">
+												<c:choose>
+													<c:when test="${read.user_grade == 0}">
+														<small class="form-text text-default">일반</small>
+														<input type="checkbox" class="form-control" style="width:30px; height:20px; margin-top:5px;" id="user_grade" name="user_grade" value="1"/>
+													</c:when>
+													<c:otherwise>
+														<small class="form-text text-default">관리자</small>
+														<input type="checkbox" class="form-control" style="width:30px; height:20px; margin-top:5px;" id="user_grade" name="user_grade" value="0"/>
+													</c:otherwise>
+												</c:choose>
+												<input type="submit" onclick="if(!confirm('변경하시겠습니까?')){return false;}" value="적용" id="btn_manager">
+											</c:if>
+										</div>
+									</form>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>포인트</th>
+							<td><fmt:formatNumber value="${read.user_point }" type="number"></fmt:formatNumber> 포인트</td>
+						</tr>	
+						<tr>
+							<th>가입일</th>
+							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${read.user_regdate }"/></td>
+						</tr>		
+					</tbody>
+				</table>
+				
 				<div style="float:right;">
 					<c:url value="/user/userModify" var="modLink">
 						<c:if test="${cri.type != null && cri.keyword != null }">

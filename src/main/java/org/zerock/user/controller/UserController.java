@@ -91,7 +91,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/userModify") // 회원 정보 수정
-	public String modify(UserVO user, @RequestParam String changePw, Criteria cri, RedirectAttributes rttr) {
+	public String modify(UserVO user, @RequestParam String changePw, Criteria cri, RedirectAttributes rttr, HttpSession session) {
 		UserVO vo = service.getUser(user.getUser_id());
 		
 		boolean pwdMatch = pwdEncoder.matches(user.getUser_password(), vo.getUser_password());
@@ -110,6 +110,7 @@ public class UserController {
 		user.setUser_password(pwd);
 		
 		if (service.update(user)) {
+			session.setAttribute("authUser", user);
 			rttr.addFlashAttribute("result", "modifySuccess");
 			rttr.addFlashAttribute("message", user.getUser_seq()+"번 회원 정보가 수정되었습니다.");
 		}
@@ -235,8 +236,6 @@ public class UserController {
 	@GetMapping("/sendSMS") // 휴대폰 인증 
 	public @ResponseBody int sendSMS(String user_phone, HttpSession session) {
 		UserVO phoneCheck = service.findUser(user_phone);
-		
-		System.out.println(phoneCheck.getUser_phone());
 		
 		if (phoneCheck.getUser_phone() != null) {
 			session.setAttribute("inUse", "이미 등록된 번호입니다.");

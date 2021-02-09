@@ -20,8 +20,10 @@
 <title>임시 메인 페이지</title>
 </head>
 <body>
-<u:navbar/>
+<u:mainNav/>
+<%-- <u:navbar/> --%>
 접속 아이디 : ${authUser.user_id} <br>
+접속 닉네임 : ${authUser.user_nickname} <br>
 등급 : <c:choose>
 					<c:when test="${authUser.user_grade < 1}">관리자</c:when>
 					<c:when test="${authUser.user_grade > 0}">일반</c:when>
