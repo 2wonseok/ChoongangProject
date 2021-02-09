@@ -15,7 +15,4 @@ public interface QaReplyService {
 	public int delete(int reply_seq);
 	
 	public int update(QaReplyVO reply);
-	
-	public QaReplyVO get(int reply_seq);	
-	
 }

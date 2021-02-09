@@ -36,10 +36,4 @@ public class QaReplyServiceImpl implements QaReplyService{
 	public int update(QaReplyVO reply) {
 		return mapper.update(reply);
 	}
-	
-	@Override
-	public QaReplyVO get(int reply_seq) {
-
-		return mapper.get(reply_seq);
-	}
 }

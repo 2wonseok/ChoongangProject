@@ -1,6 +1,5 @@
 package org.zerock.qaboard.domain;
 
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import lombok.Data;
@@ -26,8 +25,4 @@ public class QaReplyVO {
 	private String reply_boardname;
 	private String reply_filename;
 	
-	public Date getReply_regdateKST() {
-		return Date.from(reply_regdate.toInstant().plus(9, ChronoUnit.HOURS));
-	}
-
 }

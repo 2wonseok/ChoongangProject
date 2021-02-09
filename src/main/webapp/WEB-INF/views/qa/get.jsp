@@ -12,7 +12,6 @@
 <script>
 var appRoot = '${root}';
 var seq = ${board.qa_seq};
-var nickname = '${authUser.user_nickname}';
 </script>
 <script
   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -22,7 +21,7 @@ var nickname = '${authUser.user_nickname}';
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script src="${root }/resources/js/qa_reply.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
 <style>
 
 #btn_add {
@@ -76,83 +75,28 @@ $(document).ready(function() {
 		return d.toISOString().split("T")[0];
 	};
 	
-	
-
 	// 댓글 목록 가져오기
 	function showList() {			
 		replyService.getList({qa_seq: seq}, function(list) {
 			
 			var replyUL = $("#reply_list");
-			replyUL.empty();
+			replyUL.empty();				
 			
 
 			for (var i = 0; i < list.length; i++) {
-				
-				var writer = list[i].reply_writer;
-				var regdate = list[i].reply_regdateKST;
-				
 				var replyLI = '<li class="media" data-rno="'
-				+ list[i].reply_seq + '"><div class="media-body">'
-				+ list[i].reply_writer + '<small class="float-right text-primary">'
-				+ moment(list[i].reply_regdateKST).format('YYYY.MM.DD.HH:mm')
-				+ '</small><br>'
-				+ '<h5>'
+				+ list[i].reply_seq + '"><div class="media-body"><h5>'
+				+ list[i].reply_writer + '<small class="float-right">'
+				+ dateString(list[i].reply_regdate) + "</small><h5>"
 				+ list[i].reply_content
-				+ '</h5>'
+				+ '<c:if test="${reply_writer eq authUser.user_nickname}">'
+				+ '<button type="button" id="reply_delete">삭제</button>'
+				+ '</c:if>'
+				+ "<hr></div></li>";
+				
+			console.log(replyLI);
 				replyUL.append(replyLI);
-					
-				// 댓글 작성자와 댓글의 닉네임이 동일할시
-				if(writer == nickname) {
-					replyUL.append(
-							'<div>'
-							// 삭제 버튼
-							+ '<input type="hidden" id="reply_seq" value="' + list[i].reply_seq + '">'
-							+ '<button type="button" id="reply_delete">삭제</button> </div></li>'
-							// 수정 버튼
-							+ '<input type="hidden" id="reply_seq" value="' + list[i].reply_seq + '">'
-							+ '<button type="button" id="reply_modify">수정</button> <hr></div></li>'
-							
-							+ '</div>');
-					
-					// 삭제 버튼 이벤트 처리
-					$("#reply_delete").click(function() {
-					
-						var reply_seq = $("#reply_seq").val();
-						
-					if(confirm("삭제 하시겠습니까?") == true){
-						replyService.remove(reply_seq, function() {
-							alert("댓글 삭제 완료.");
-
-							showList();								
-							});						
-						} else {
-							showList();		
-						};						
-					});
-					
-					// 수정 버튼 이벤트 처리
-					$("#reply_modify").click(function() {
-						console.log("수정 클릭");
-						
-						var reply_seq = $("#reply_seq").val();
-						var reply_content = $("#reply_modify").val();
-						var data = {reply_seq: reply_seq, reply_content: reply_content};
-						
-						replyService.modify(data, function() {
-							alert("댓글을 수정 하였습니다.");
-							$("#modify-delete-reply-modal").modal('hide');
-							showList();
-						});
-						
-					});
-					
-				} else {
-					replyUL.append('<hr></div></li>');
-				}		
-
 			}
-			
-
 		});
 	}
 	
@@ -169,12 +113,12 @@ $(document).ready(function() {
 		
 		replyService.add(data, 
 				function() {
-					alert("[" + reply_content + "]" + "댓글 등록 완료");
+					alert("댓글 등록 성공");
 					// 댓글 등록 성공 확인창 누른후 리스트 보여주기
 					showList();
 				}, 
 				function() {
-					alert("내용을 입력 하세요");
+					alert("댓글 등록 실패");
 				});	
  		// 모달창 닫기
 		$("#new-reply-modal").modal("hide");
@@ -184,7 +128,18 @@ $(document).ready(function() {
 
 	});			
 	
-
+	// 삭제 버튼 이벤트 처리
+	$("#reply_delete").click(function() {
+		
+		var rno = $("#replyseq").val();
+		
+		replyService.remove(rno, function() {
+			alert("댓글을 삭제 하였습니다.");
+			$("#modify-delete-reply-modal").modal('hide');
+			showList();
+		});
+		
+	});
 	
 	
 	// 댓글 목록 함수 showList() 불러오기
@@ -271,7 +226,11 @@ $(document).ready(function() {
 		    <input readonly value='<c:out value="${board.qa_readcnt }" />' type="text" class="form-control" id="input7">
 		  	</div>
 		  	
-	  	
+		  	<div class="form-group">
+		    <label for="input6">작성자</label>
+		    <input readonly value='<c:out value="${board.qa_writer }" />' type="text" class="form-control" id="input8">
+		  	</div>
+		  	
 
 		  <%-- 	
 		  	<c:url value="/board/modify" var="modifyLink">
@@ -296,36 +255,31 @@ $(document).ready(function() {
 		  	<c:if test="${authUser.user_grade == 0 && board.qa_writer == authUser.user_nickname }">
 					<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
 			</c:if>
-			<br><br>
 <!-- 
 // 댓글 목록 AJAX
  -->
- 
-
-	
 <div class="card-body">
-	<ul class="list-unstyled" id="reply_list"> 	
-	</ul>
+
+
+	<ul class="list-unstyled" id="reply_list"> </ul>
+	<c:if test="${reply_writer eq authUser.user_nickname}">
+	아아아아
+	</c:if>
+	
+
 </div>
-<c:if test="${empty authUser.user_nickname}">
-	로그인시 댓글 작성 가능. (로그인 마크)
-</c:if>
 
+<label for="reply-input">내용</label>
+	<input type="text" name="reply_content" value="${reply_content }" id="reply_content_input"/><br>	
 
-
-
-<c:if test="${not empty authUser.user_nickname}">
-<label for="reply-input">댓글</label>
-	<input class="form-control" type="text" name="reply_content" value="${reply_content }" id="reply_content_input"/><br>	
-
-	<!-- // 작성자 hidden 처리 -->	
-	<input readonly type="hidden" type="text" name="reply_writer" value="${authUser.user_nickname }" id="reply_writer_input"/><br>
+<label for="replyer-input">작성자</label> 
+	<input readonly type="text" name="reply_writer" value="${authUser.user_nickname }" id="reply_writer_input"/><br>
 	
 <c:if test="${errors.reply_noContent }">
 <small class="form-text text-danger"> 댓글 내용을 입력 해주세요. </small>
 </c:if>
+
 <button id="reply-submit-button">댓글쓰기</button> 
-</c:if>
 
 		</div>
 	</div>
