@@ -63,7 +63,7 @@
 }
 </style>
 <body>
-<u:navbar/>
+<u:mainNav/>
 <c:choose>
 	<c:when test="${authUser.user_id != null}">
 	<div class="container">

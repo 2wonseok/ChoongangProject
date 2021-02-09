@@ -152,7 +152,7 @@
 }
 </style>
 <body>
-<u:navbar/>
+<u:mainNav/>
 <c:choose>
 	<c:when test="${authUser.user_grade == 0 || authUser.user_id eq read.user_id && authUser.user_id != null}">
 		<div class="container">

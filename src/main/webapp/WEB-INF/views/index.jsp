@@ -16,9 +16,27 @@
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
 <title>임시 메인 페이지</title>
 </head>
+<style>
+#footdiv {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 30px 30px 30px;
+    text-align: center;
+    color: gray;
+    white-space: pre-line;
+    position:absolute;
+  	bottom:0;
+}
+#map {
+    width: 600px;
+    height: 400px;
+    position: absolute;
+    margin-top: -340px;
+    margin-left: 255px;
+}
+</style>
 <body>
 <u:mainNav/>
 접속 아이디 : ${authUser.user_id} <br>
@@ -27,111 +45,43 @@
 					<c:when test="${authUser.user_grade > 0}">일반</c:when>
 					<c:otherwise></c:otherwise>
 			</c:choose>
-<!--     채팅창 -->
-<div id="_chatbox" style="display: none">
-	<fieldset>
-		<div id="messageWindow"></div>
-		<br /> <input id="inputMessage" type="text" onkeyup="enterkey()" />
-		<input type="submit" value="send" onclick="send()" />
-	</fieldset>
-</div>
-<img class="chat" src="/resources/chat.png" /> 
+
+
+<!-- 푸터 -->
+<footer>
+	<div id="footdiv">
+		<div class="container">
+			<div id="map"></div>
+		</div>
+		
+            사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
+            주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
+		
+	</div>
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=80e0462cf0816d5f855221ad79425d44"></script>
+		<script>				
+			$(document).ready(function() {
+				var container = document.getElementById('map');
+				var options = {
+					center: new kakao.maps.LatLng(37.55644880228536, 126.94519155495574),
+					level: 3
+				};
+		
+				var map = new kakao.maps.Map(container, options);
+				
+				// 마커가 표시될 위치입니다 
+				var markerPosition  = new kakao.maps.LatLng(37.55644880228536, 126.94519155495574); 
+	
+				// 마커를 생성합니다
+				var marker = new kakao.maps.Marker({
+				    position: markerPosition
+				});
+
+				// 마커가 지도 위에 표시되도록 설정합니다
+				marker.setMap(map)
+				
+			});
+		</script>
+</footer>
 </body>
 </html>
-
-
-<!-- 말풍선아이콘 클릭시 채팅창 열고 닫기 -->
-<script>
-	$(".chat").on({
-		"click" : function() {
-			if ($(this).attr("src") == "/resources/chat.png") {
-				$(".chat").attr("src", "/resources/chathide.png");
-				$("#_chatbox").css("display", "block");
-			} else if ($(this).attr("src") == "/resources/chathide.png") {
-				$(".chat").attr("src", "/resources/chat.png");
-				$("#_chatbox").css("display", "none");
-			}
-		}
-	});
-</script>
-<script type="text/javascript">
-	var textarea = document.getElementById("messageWindow");
-	var webSocket = new WebSocket('ws://172.30.1.47:8080/broadcasting');
-	var inputMessage = document.getElementById('inputMessage');
-	webSocket.onerror = function(event) {
-		onError(event)
-	};
-	webSocket.onopen = function(event) {
-		onOpen(event)
-	};
-	webSocket.onmessage = function(event) {
-		onMessage(event)
-	};
-	function onMessage(event) {
-		var message = event.data.split("|");
-		var sender = message[0];
-		var content = message[1];
-		if (content == "") {
-
-		} else {
-			if (content.match("/")) {
-				if (content.match(("/" + $("#chat_id").val()))) {
-					var temp = content.replace("/" + $("#chat_id").val(),
-							"(귓속말) :").split(":");
-					if (temp[1].trim() == "") {
-					} else {
-						$("#messageWindow").html(
-								$("#messageWindow").html()
-										+ "<p class='whisper'>"
-										+ sender
-										+ content.replace("/"
-												+ $("#chat_id").val(),
-												"(귓속말) :") + "</p>");
-					}
-				} else {
-				}
-			} else {
-				if (content.match("!")) {
-					$("#messageWindow")
-							.html(
-									$("#messageWindow").html()
-											+ "<p class='chat_content'><b class='impress'>"
-											+ sender + " : " + content
-											+ "</b></p>");
-				} else {
-					$("#messageWindow").html(
-							$("#messageWindow").html()
-									+ "<p class='chat_content'>" + sender
-									+ " : " + content + "</p>");
-				}
-			}
-		}
-	}
-	function onOpen(event) {
-		$("#messageWindow").html("<p class='chat_content'>채팅에 참여하였습니다.</p>");
-	}
-	function onError(event) {
-		alert(event.data);
-	}
-	function send() {
-		if (inputMessage.value == "") {
-		} else {
-			$("#messageWindow").html(
-					$("#messageWindow").html() + "<p class='chat_content'>나 : "
-							+ inputMessage.value + "</p>");
-		}
-		webSocket.send($("#chat_id").val() + "|" + inputMessage.value);
-		inputMessage.value = "";
-	}
-	//     엔터키를 통해 send함
-	function enterkey() {
-		if (window.event.keyCode == 13) {
-			send();
-		}
-	}
-	//     채팅이 많아져 스크롤바가 넘어가더라도 자동적으로 스크롤바가 내려가게함
-	window.setInterval(function() {
-		var elem = document.getElementById('messageWindow');
-		elem.scrollTop = elem.scrollHeight;
-	}, 0);
-</script>

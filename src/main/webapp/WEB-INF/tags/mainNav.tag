@@ -157,7 +157,7 @@ a {
     border-radius: 4px;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    z-index: 10;
+    z-index: 100;
 }
 .c_gnb_menulist {
     padding: 10px 0px;
@@ -267,16 +267,16 @@ a {
 								<a href="#" data-log-actionid-area="header_util" data-log-actionid-label="coupon">나의 쿠폰</a>
 							</li>
 							<li>
-								<a href="#" data-log-actionid-area="header_util" data-log-actionid-label="my_orderdlv_inquiry">주문/배송조회</a>
+								<a href="#" >주문/배송조회</a>
 							</li>
 							<li>
-								<a href="#" data-log-actionid-area="header_util" data-log-actionid-label="cancel_returned_exchange">취소/반품/교환</a>
+								<a href="#" >취소/반품/교환</a>
 							</li>
 							<li>
-								<a href="#" data-log-actionid-area="header_util" data-log-actionid-label="customer_center">고객센터</a>
+								<a href="#" >고객센터</a>
 							</li>
 							<li>
-								<a href="${root }/user/userRead" data-log-actionid-area="header_util" data-log-actionid-label="member_info">회원정보</a>
+								<a href="${root }/user/userRead?user_id=${authUser.user_id}">회원정보</a>
 							</li>
 						</ul>
 					</div>
@@ -310,15 +310,24 @@ a {
 						<li>
 							<a href="${root }/product/list" class="">상품목록</a>
 						</li>
-						<li>
-							<a href="${root }/user/userList" class="">회원관리</a>
-						</li>
+						<c:if test="${authUser.user_grade == 0 }">
+							<li>
+								<a href="${root }/user/userList" class="">회원관리</a>
+							</li>
+						</c:if>
 					</ul>
 				</div>
 				<div class="c_util_etc">
 					<div class="group login_status">
-						<a href="${root }/user/login">로그인</a>&nbsp; &nbsp; 
-						<a href="${root }/user/userRegister">회원가입</a>
+						<c:choose>
+							<c:when test="${authUser == null}">
+								<a href="${root }/user/login">로그인</a>&nbsp; &nbsp; 
+								<a href="${root }/user/userRegister">회원가입</a>
+							</c:when>
+							<c:otherwise>
+								<a href="${root }/user/logout">로그아웃</a>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</div>

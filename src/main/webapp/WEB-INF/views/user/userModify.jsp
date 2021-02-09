@@ -202,7 +202,7 @@ $(document).ready(function() {
 }
 </style>
 <body>
-<u:navbar/>
+<u:mainNav/>
 <c:choose>
 	<c:when test="${authUser.user_grade == 0 || authUser.user_id eq read.user_id}">
 		<div class="container">

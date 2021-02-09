@@ -165,7 +165,7 @@ function reload() {
 
 </style>
 <body>
-<u:navbar/>
+<u:mainNav/>
 <c:choose>
 	<c:when test="${authUser.user_grade == 0}">
 		<div class="container">

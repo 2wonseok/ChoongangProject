@@ -57,9 +57,12 @@
 }
 </style>
 <body>
-<u:navbar/>
+<u:mainNav/>
 <div class="container">
 	<section id="container">
+		<div class="container">
+			<img alt="noImg" src="/resources/logo/BCDLogo3.png" style="margin-left:100px; width:50%; height:50%;">
+		</div>
 		<form action="${root }/user/login" method="post">
 			<div class="form-group">
 		    <input type="text" class="form-control" placeholder="아이디" name="user_id" id="input1-id" value="">

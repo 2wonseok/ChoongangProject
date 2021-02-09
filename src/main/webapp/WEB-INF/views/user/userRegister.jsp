@@ -318,7 +318,7 @@ $(document).ready(function() {
 }
 </style>
 <body>
-<u:navbar/>
+<u:mainNav/>
 <div class="container">
 <section id="container">
 	<h3>회원가입</h3><br>
