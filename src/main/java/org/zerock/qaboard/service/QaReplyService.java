@@ -10,7 +10,9 @@ public interface QaReplyService {
 
 	public List<QaReplyVO> getList(Criteria cri, int qa_seq);
 	
-	public void register(QaReplyVO board);
+	public int register(QaReplyVO reply);
 	
+	public int delete(int reply_seq);
 	
+	public int update(QaReplyVO reply);
 }

@@ -36,7 +36,6 @@ import lombok.extern.log4j.Log4j;
 public class QaController {
 	
 	private QaService service;	
-	private QaReplyService reply_service;
 	
 //	@RequestMapping(value="/list", method = RequestMethod.GET)
 //	@GetMapping("/list") 
@@ -160,12 +159,7 @@ public class QaController {
 		QaVO vo = service.get(qa_seq);
 		service.addCnt(qa_seq);
 		model.addAttribute("board", vo);
-		
 
-
-		// 댓글 리스트 가져오기
-		List<QaReplyVO> list = reply_service.getList(cri, qa_seq);
-		model.addAttribute("reply_list", list);
 
 	}
 	

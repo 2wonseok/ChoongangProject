@@ -2,8 +2,7 @@
   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
- 
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +21,6 @@ var seq = ${board.qa_seq};
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script src="${root }/resources/js/qa_reply.js"></script>
-
 
 <style>
 
@@ -60,15 +58,7 @@ var seq = ${board.qa_seq};
 <script>
 
 $(document).ready(function() {
-	// 날짜 형식
 	
-	/* 
-	function dateString(date) {
-		var d = new Date(date);
-		return d.toISOString().split("T")[0];
-	}
-	 */
-	 
 //	reply_seq NUMBER(10) PRIMARY KEY,
 //	reply_content VARCHAR2(3000) NOT NULL,
 //	reply_writer VARCHAR2(30) NOT NULL,
@@ -78,31 +68,82 @@ $(document).ready(function() {
 //	reply_boardseq NUMBER(10) NOT NULL,
 //	reply_filename VARCHAR2(3000)
 	
+	// 날짜 형식
+	
+	function dateString(date) {
+		var d = new Date(date);
+		return d.toISOString().split("T")[0];
+	};
+	
+	// 댓글 목록 가져오기
+	function showList() {			
+		replyService.getList({qa_seq: seq}, function(list) {
+			
+			var replyUL = $("#reply_list");
+			replyUL.empty();				
+			
+
+			for (var i = 0; i < list.length; i++) {
+				var replyLI = '<li class="media" data-rno="'
+				+ list[i].reply_seq + '"><div class="media-body"><h5>'
+				+ list[i].reply_writer + '<small class="float-right">'
+				+ dateString(list[i].reply_regdate) + "</small><h5>"
+				+ list[i].reply_content
+				+ '<c:if test="${reply_writer eq authUser.user_nickname}">'
+				+ '<button type="button" id="reply_delete">삭제</button>'
+				+ '</c:if>'
+				+ "<hr></div></li>";
+				
+			console.log(replyLI);
+				replyUL.append(replyLI);
+			}
+		});
+	}
+	
+	
 	$("#reply-submit-button").click(function() {
 		console.log("등록 버튼 클릭");
 		
 		// input 에서 value 가져와서 변수에 저장
-		var reply_content = $("#reply-input").val();
-		var reply_writer = $("#replyer-input").val();		
+		var reply_content = $("#reply_content_input").val();
+		var reply_writer = $("#reply_writer_input").val();		
 		// ajax 요청을 위한 데이터 만들기
 		var data = {reply_boardseq: seq, reply_content: reply_content, reply_writer: reply_writer}
-				
+		
+		
 		replyService.add(data, 
 				function() {
 					alert("댓글 등록 성공");
+					// 댓글 등록 성공 확인창 누른후 리스트 보여주기
+					showList();
 				}, 
 				function() {
 					alert("댓글 등록 실패");
 				});	
-		// 모달창 닫기
+ 		// 모달창 닫기
 		$("#new-reply-modal").modal("hide");
 		
 		// 모달창 내의 input 요소들 value를 초기화
-		$("#new-reply-modal input").val("");
-		
+		$("#reply_content_input").val(""); 
+
 	});			
 	
-
+	// 삭제 버튼 이벤트 처리
+	$("#reply_delete").click(function() {
+		
+		var rno = $("#replyseq").val();
+		
+		replyService.remove(rno, function() {
+			alert("댓글을 삭제 하였습니다.");
+			$("#modify-delete-reply-modal").modal('hide');
+			showList();
+		});
+		
+	});
+	
+	
+	// 댓글 목록 함수 showList() 불러오기
+	showList();
 });
 
 </script>
@@ -214,55 +255,32 @@ $(document).ready(function() {
 		  	<c:if test="${authUser.user_grade == 0 && board.qa_writer == authUser.user_nickname }">
 					<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
 			</c:if>
+<!-- 
+// 댓글 목록 AJAX
+ -->
+<div class="card-body">
 
 
-				<table class="table table-striped table-hover">
-					<thead>
-						<tr>
-							<th>NO</th>
-							<th>내용 (<i class="far fa-calendar-alt"></i>)</th>
-							<th>닉네임</th>						
+	<ul class="list-unstyled" id="reply_list"> </ul>
+	<c:if test="${reply_writer eq authUser.user_nickname}">
+	아아아아
+	</c:if>
+	
 
-						</tr>
-					</thead>
-					<tbody>
+</div>
 
-						<c:forEach items="${reply_list }" var="reply">
-							<tr>
-								<td><Strong class="text-primary">${reply.reply_seq}</Strong></td>
-								
-								<td><small class="text-info">${reply.reply_content}</small>
-								<div>
-								<small class="form-text text-secondary">
-						 		<fmt:formatDate pattern="yyyy.MM.dd. hh.mm" value="${board.qa_regdate}" />
-						 		</small>
-								</div>
-								</td>
-								<td>${reply.reply_writer}</td>
-								
-							</tr>
+<label for="reply-input">내용</label>
+	<input type="text" name="reply_content" value="${reply_content }" id="reply_content_input"/><br>	
 
-						</c:forEach>
-						
-						
+<label for="replyer-input">작성자</label> 
+	<input readonly type="text" name="reply_writer" value="${authUser.user_nickname }" id="reply_writer_input"/><br>
+	
+<c:if test="${errors.reply_noContent }">
+<small class="form-text text-danger"> 댓글 내용을 입력 해주세요. </small>
+</c:if>
 
-						</tbody>
-						</table>
-						
+<button id="reply-submit-button">댓글쓰기</button> 
 
-					<label for="reply-input">내용</label>
-					<input type="text" name="reply_content" value="${reply_content }" id="reply-input"/><br>
-					<label for="replyer-input">작성자</label> 
-					<input readonly type="text" name="reply_writer" value="${authUser.user_nickname }" id="replyer-input"/><br>
-					<input type="hidden" type="text" name="reply_boardseq" value="${board.qa_seq }"/>		
-					<c:if test="${errors.reply_noContent }">
-						<small class="form-text text-danger"> 댓글 내용을 입력 해주세요. </small>
-					</c:if>
-
-					<button id="reply-submit-button">댓글쓰기</button>
-
-
-					
 		</div>
 	</div>
 </div>

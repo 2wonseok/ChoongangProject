@@ -19,13 +19,21 @@ public class QaReplyServiceImpl implements QaReplyService{
 	
 	@Override
 	public List<QaReplyVO> getList(Criteria cri, int qa_seq) {
-
 		return mapper.getList(cri, qa_seq);
 	}
 	
 	@Override
-	public void register(QaReplyVO board) {
-		mapper.insertSelectKey(board);
+	public int register(QaReplyVO reply) {
+		return mapper.insertSelectKey(reply);
 	}	
+	
+	@Override
+	public int delete(int reply_seq) {
+		return mapper.delete(reply_seq);
+	}
 
+	@Override
+	public int update(QaReplyVO reply) {
+		return mapper.update(reply);
+	}
 }
