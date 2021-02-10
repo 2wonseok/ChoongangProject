@@ -7,7 +7,7 @@ import org.zerock.product.domain.ProductOptionVO;
 import org.zerock.product.domain.ProductVO;
 
 public interface ProductMapper {
-
+	
 	public void insert(ProductVO product);
 	
 	public int insertReturnSeq(ProductVO product);
@@ -29,6 +29,8 @@ public interface ProductMapper {
 	public int update(ProductVO product);
 		
 	public int getTotalCount(Criteria cri);
+
+	public List<ProductOptionVO> getProductOptionList(int product_seq);
 
 	
 	

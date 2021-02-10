@@ -44,6 +44,11 @@ $(document).ready(function(){
 		}
 	}
 	
+	/* 옵션클릭시 아래에 추가 */
+	 $(".optionClicked").click(function(){
+	     
+	 });
+	
 });
 </script>
 
@@ -100,7 +105,7 @@ $(document).ready(function(){
 				<table>
 					
 					<tr>
-					<!-- 상품정보 왼쪽위 이미지  -->
+						<!-- 상품정보 왼쪽위 이미지  -->
 						<c:set var="visibility" value="100%"></c:set>
 						<c:if test="${product.product_status == 1 }">
 							<c:set var="visibility" value="30%"></c:set>
@@ -116,7 +121,7 @@ $(document).ready(function(){
 							</div>
 						</td>
 						
-					<!-- 상품정보 오른쪽 항목 -->
+						<!-- 상품정보 오른쪽 항목 -->
 						<td rowspan="2" class="align-top">
 							<div class="m-5">
 								<h3 class="text-left"><c:out value="${product.product_name }"></c:out></h3>
@@ -156,14 +161,6 @@ $(document).ready(function(){
 										</form>	
 									</div>
 								</c:if>
-							
-								<div class="d-flex justify-content-center mt-2 align-middle">
-									<form action="" method="get">
-										<span>구매 수량</span>
-										<input style="width:80px" min="1" name="order_quantity" type="number" />
-										<button class="btn_add mx-2">구매</button>
-									</form>
-								</div>	
 							</c:if>
 							<c:if test="${product.product_status == 1 }">
 								<p>판매가 종료되었습니다.</p>
@@ -186,6 +183,26 @@ $(document).ready(function(){
 								<p>상품 등록일 : <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" value="${product.product_regdate }"/> </p>
 								<p>상품 정보 수정일 : <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" value="${product.product_updatedate }"/> </p>
 				
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="d-flex justify-content-center mt-2 align-middle">
+								<form action="" method="get">
+									
+									<select>
+										<c:forEach items="${ poList}" var="poLi" >
+											<option class="optionClicked"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
+										</c:forEach>
+									</select>
+											
+									<!--이전에 쓰던거 박제(지울거) 
+									<span>구매 수량</span>
+									<input style="width:80px" min="1" name="order_quantity" type="number" />
+									 -->
+									<button class="btn_add mx-2">구매</button>
+								</form>
+							</div>
 						</td>
 					</tr>
 				

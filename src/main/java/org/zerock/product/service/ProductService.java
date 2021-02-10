@@ -3,6 +3,7 @@ package org.zerock.product.service;
 import java.util.List;
 
 import org.zerock.product.domain.Criteria;
+import org.zerock.product.domain.ProductOptionVO;
 import org.zerock.product.domain.ProductVO;
 
 
@@ -25,5 +26,7 @@ public interface ProductService {
 	public boolean modify(ProductVO product);
 	 
 	public int getTotal(Criteria cri);
+
+	public List<ProductOptionVO> getProductOption(int product_seq);
 	
 }

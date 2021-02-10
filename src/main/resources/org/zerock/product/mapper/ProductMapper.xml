@@ -14,13 +14,19 @@
 	</insert>
 
 	<insert id="insertProductOption" >
-		insert into tbl_productoption (product_seq, po_name, po_quantity, po_price
+		insert into tbl_productoption (productoption_seq, product_seq, po_name, po_quantity, po_price
 		) values 
-		 (#{product_seq}
+		 (productoption_seq.nextval
+		 ,#{product_seq}
 		 ,#{po_name}
 		 ,#{po_quantity}
 		 ,#{po_price})
 	</insert>
+	
+	<select id="getProductOptionList" resultType="org.zerock.product.domain.ProductOptionVO">
+		SELECT productoption_seq, product_seq, po_name, po_quantity, po_price FROM tbl_productoption 
+		WHERE product_seq = #{product_seq}
+	</select>
 	
 	<insert id="insertReturnSeq" keyProperty="product_seq">
 		<selectKey keyProperty="product_seq" order="BEFORE" resultType="Integer">
@@ -53,7 +59,6 @@
 
 	<!-- <select id="getList" resultType="org.zerock.domain.BoardVO"> <![CDATA[ 
 		select * from tbl_board where bno > 0 ]]> </select> -->
-
 
 	<select id="getListWithPaging"
 		resultType="org.zerock.product.domain.ProductVO">

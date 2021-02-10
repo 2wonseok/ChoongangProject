@@ -56,6 +56,36 @@ public class ProductController {
 
 	@PostMapping("/register")
 	public String register(String[] po_name, String[] po_quantity, String[] po_price, ProductVO product, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request) {
+
+		/*상품옵션이 비었을때 돌려보냄*/
+			for(String po_p : po_price) {
+				System.out.println(po_p);				
+			}
+			String emp = "";
+			/* 숫자배열2개 내 최소값이 0보다 커야함을표시 */
+			int cnt = 0;	
+				for(int i = 0; i < po_quantity.length; i++) {
+					if(!po_quantity[i].equals(emp) && Integer.parseInt(po_quantity[i]) <= 0 ) {
+						cnt++;
+					}
+				}
+				for(int i = 0; i < po_price.length; i++) {
+					if(!po_price[i].equals(emp) && Integer.parseInt(po_price[i]) <= 0 ) {
+						cnt++;
+					}
+				}
+			if(/* 옵션하나도안넣으면안됨 */
+				Arrays.asList(po_name).size() == 0 || Arrays.asList(po_quantity).size() == 0 || Arrays.asList(po_price).size() == 0 ||
+				/* 빈값이 있으면 안됨 */
+				Arrays.asList(po_name).contains(emp) || Arrays.asList(po_quantity).contains(emp) || Arrays.asList(po_price).contains(emp) ||
+				/* 숫자들은 무조건 0보다 커야함 */
+				cnt !=0
+				) {
+				rttr.addFlashAttribute("product", product);
+				rttr.addFlashAttribute("message", "상품옵션항목이 올바르지 않습니다");
+				return "redirect:/product/register";
+			}
+		
 		
 		//파일 올리는 방법 복사
 				//파일이 업로드 될 경로 설정 
@@ -166,6 +196,8 @@ public class ProductController {
 	@GetMapping("/get")
 	public void get(@RequestParam("product_seq") int product_seq, @ModelAttribute("cri") Criteria cri, Model model) {
 		ProductVO vo = service.getCountUp(product_seq);
+		List<ProductOptionVO> poVOList = service.getProductOption(product_seq);
+		model.addAttribute("poList", poVOList);
 		model.addAttribute("product", vo);
 		model.addAttribute("cri", cri);
 		

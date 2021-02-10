@@ -17,6 +17,11 @@ import lombok.AllArgsConstructor;
 public class ProductServiceImpl implements ProductService {
 
 	private ProductMapper mapper;
+	
+	@Override
+	public List<ProductOptionVO> getProductOption(int product_seq) {
+		return mapper.getProductOptionList(product_seq);
+	}
 
 	@Override
 	public void register(ProductVO product) {
