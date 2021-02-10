@@ -31,9 +31,9 @@
 }
 #map {
     width: 600px;
-    height: 400px;
+    height: 300px;
     position: absolute;
-    margin-top: -340px;
+    margin-top: -240px;
     margin-left: 255px;
 }
 </style>

@@ -74,10 +74,12 @@ $(document).ready(function() {
 		$.ajax({
 		    type: "GET",
 		    url: "${root}/user/sendSMS",
+		    dataType : "json",
 		    data: {
 		        "user_phone" : user_phone
 		    },
 		    success: function(res) {
+		    	console.log(res);
 		    	if (res == 0) {
 		    		alert('인증번호 발송 완료!');
 		    	} else {
