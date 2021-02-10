@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="u" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="u"  tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,75 +12,131 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-<title>로그인 페이지</title>
+ <!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script>
+$(document).ready(function() {
+
+});	
+</script>
+<title>Insert title here</title>
 </head>
 <style>
-#container {
-    clear: both;
+
+html, body {
+    height: 100%;
+}
+
+.medium-small {
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 0;
+}
+
+.login-form {
+    width: 450px;
+}
+
+
+.login-form-text {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+}
+
+.login-text {
+    margin-top: -6px;
+    margin-left: -6px !important;
+}
+
+.margin {
+    margin: 0 !important;
+}
+
+.pointer-events {
+  pointer-events: auto !important;
+}
+
+.input-field >.material-icons  {
+  padding-top:10px;
+}
+
+.input-field div.error{
     position: relative;
-    margin: 50px auto 0px;
-    padding: 0 0 50px 0;
-    width: 480px;
-    z-index: 1;
+    top: -1rem;
+    left: 3rem;
+    font-size: 0.8rem;
+    color:#FF4081;
+    -webkit-transform: translateY(0%);
+    -ms-transform: translateY(0%);
+    -o-transform: translateY(0%);
+    transform: translateY(0%);
 }
-#btn_add {
-    color: #fff;
-    font-size: 15px;
-    border: none;
-    background: #1e263c;
-    padding: 0px 50px;
-    margin: 0 0px;
-    line-height: 45px;
-    float: right;
-}
-#zip_code_btn {
-    color: #fff;
-    font-size: 15px;
-    border: none;
-    background: #1e263c;
-    padding: 0px 25px;
-    margin: 0 0px;
-    margin-top: -41px;
-    line-height: 45px;
-    float: right;
-}
-#idCheck {
-    color: #fff;
-    font-size: 15px;
-    border: none;
-    background: #1e263c;
-    padding: 0px 25px;
-    margin: 0 0px;
-    margin-top: -41px;
-    line-height: 45px;
-    float: right;
+.col {
+    -ms-flex-preferred-size: 0;
+    flex-basis: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    max-width: 101%;
 }
 </style>
 <body>
 <u:mainNav/>
 <div class="container">
-	<section id="container">
-		<div class="container">
-			<img alt="noImg" src="/resources/logo/BCDLogo3.png" style="margin-left:100px; width:50%; height:50%;">
-		</div>
-		<form action="${root }/user/login" method="post">
-			<div class="form-group">
-		    <input type="text" class="form-control" placeholder="아이디" name="user_id" id="input1-id" value="">
-		  </div>
-		  <div class="form-group">
-		    <input type="password" class="form-control" placeholder="비밀번호" name="user_password" id="input2-password">
-		  </div>
-		  <c:if test="${noUser != null}">
-		   <div class="alert alert-danger" >${noUser }</div> 
-		  </c:if>
-		 	<input type="submit" value="로그인" id="btn_add" class="btn btn-block btn-lg"> <br><hr>
-		 	<div class="container d-flex justify-content-center">
-		 	<a href="#" onclick="window.open('${root}/user/findId','아이디찾기','width=500px;,height=300px;,location=no,status=no,scrollbars=no');" style="color:gray;">아이디 찾기</a><p style="color:gray;">&nbsp;|&nbsp;</p>
-		 	<a href="#" onclick="window.open('${root}/user/findPw','비밀번호','width=500px;,height=350px;,location=no,status=no,scrollbars=no');" style="color:gray;">비밀번호 찾기</a><p style="color:gray;">&nbsp;|&nbsp;</p>
-		  <a href="${root }/user/userRegister" style="color:gray;">회원가입</a>
-		 	</div>
-	</form>
-	</section>
-</div>
+	<div id="login-page" class="row">
+		<div class="z-depth-1 card-panel" style="margin-left: 350px;">
+      <form class="login-form" action="${root }/user/login" method="post">
+        <div class="row">
+          <div class="input-field col s12 center">
+            <!-- <img src="images/login-logo.png" alt="" class="circle responsive-img valign profile-image-login"/> -->
+            <p class="center login-form-text">
+            	<img alt="noImg" src="/resources/logo/BCDLogo3.png" style="width:40%; height:40%;">
+            </p>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <!-- <i class="mdi-social-person-outline prefix"></i> -->
+            <i class="material-icons prefix">portrait</i>
+            <input id="user_id" name="user_id" type="text" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGP6zwAAAgcBApocMXEAAAAASUVORK5CYII=&quot;); cursor: auto;"/>
+            <label for="user_id" data-error="wrong" class="center-align" data-success="right">아이디</label>            
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <!-- <i class="mdi-action-lock-outline prefix"></i> -->
+            <i class="material-icons prefix">vpn_key</i>
+            <input id="user_password" name="user_password" type="password" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGP6zwAAAgcBApocMXEAAAAASUVORK5CYII=&quot;);"/>
+            <label for="user_password">패스워드</label>
+          </div>
+        </div>
+	      <c:if test="${noUser != null}">
+	      	<small class="text-danger">${noUser }</small>
+			  </c:if>
+        <div class="row">
+          <div class="input-field col s12">
+            <button type="submit" class="btn waves-effect waves-light col s12">Login</button>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="input-field col s6 m6 l6">
+            <p class="margin medium-small"><a href="${root }/user/userRegister">Register Now!</a></p>
+          </div>
+          <div class="input-field col s6 m6 l6">
+         		  <p class="margin right-align medium-small">
+              	<a href="#" onclick="window.open('${root}/user/findId','아이디찾기','width=500px;,height=300px;,location=no,status=no,scrollbars=no');">Forgot id ?</a>&nbsp;&nbsp;&nbsp;
+             		<a href="#" onclick="window.open('${root}/user/findPw','비밀번호','width=550px;,height=420px;,location=no,status=no,scrollbars=no');">Forgot password ?</a>
+              </p>
+          </div>          
+        </div>
+      </form>
+    </div>  
+  </div>
+</div>  
 </body>
 </html>

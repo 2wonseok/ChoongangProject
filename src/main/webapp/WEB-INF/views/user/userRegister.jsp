@@ -310,7 +310,6 @@ $(document).ready(function() {
 
 .login-form {
     width: 450px;
-    margin-left:390px;
 }
 
 .login-form-text {
@@ -350,7 +349,7 @@ $(document).ready(function() {
 #idConfirm:hover {
 	background: #e0e0e0;
 }
-#nickConfirm:hover {
+#nickCheck:hover {
 	background: #e0e0e0;
 }
 #zip_code_btn:hover {
@@ -371,133 +370,135 @@ $(document).ready(function() {
 <u:mainNav/>
 <div class="container">
 	<div id="login-page" class="row">
-    <form class="login-form" action="${root }/user/userRegister" method="post" id="joinForm">
-      <div class="row">
-        <div class="input-field col s12 center">
-          <h4>회원가입</h4>
-          <p class="center">BCD 쇼핑몰에 오신걸 환영합니다.</p>
-        </div>
-      </div>
-			<div class="row margin">
-        <div class="input-field col s12">
-          <!-- <i class="mdi-social-person-outline prefix"></i> -->
-          <i class="material-icons prefix">portrait</i>
-          <input id="user_id" name="user_id" type="text" required/>
-          <button type="button" id="idConfirm" class="btn waves-effect waves-light col s3">중복확인</button>
-          <label for="user_id">아이디</label>
-          <small class="text-danger" id="idLengthFail">영문 숫자 최소 4글자 이상 입력해주세요.</small>
-          <small class="text-primary" id="idCheckSuccess">사용 가능합니다.</small>
-		    	<button type="button" id="idYes">확인</button>
-          <small class="text-danger" id="idCheckFail">이미 사용중인 아이디입니다.</small>
-        </div>
-      </div>
-      <div class="row margin">
-        <div class="input-field col s12">
-          <!-- <i class="mdi-social-person-outline prefix"></i> -->
-          <i class="material-icons prefix">account_circle</i>
-          <input id="user_name" name="user_name" type="text" required/>
-          <label for="user_name">이름</label>
-        </div>
-      </div>
-
-      <div class="row margin">
-        <div class="input-field col s12">
-          <!-- <i class="mdi-social-person-outline prefix"></i> -->
-          <i class="material-icons prefix">person_outline</i>
-          <input id="user_nickname" name="user_nickname" type="text" style="cursor: auto;" required />
-          <button type="button" id="nickCheck" class="btn waves-effect col s3">중복확인</button>
-          <label for="user_nickname">닉네임</label>
-          <small class="text-danger" id="nicknameLengthFail">최소 2글자 이상 입력해주세요.</small>
-          <small class="text-primary" id="nickCheckSuccess">사용 가능합니다.</small>
-		  	  <button type="button" id="nickYes">확인</button>
-			    <small class="text-danger" id="nickCheckFail">이미 사용중인 닉네임입니다.</small>
-        </div>
-      </div>
-
-      <div class="row margin">
-        <div class="input-field col s12">
-          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
-          <i class="material-icons prefix">vpn_key</i>
-          <input id="user_password" id="user_password" name="user_password" type="password" required />
-          <label for="user_password">패스워드</label>
-          <small class="text-danger" id="passwordLengthFail">최소 4글자 이상 입력해주세요.</small>
-        </div>
-      </div>
-
-      <div class="row margin">
-        <div class="input-field col s12">
-          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
-          <i class="material-icons prefix">vpn_key</i>
-          <input id="confirmPassword" name="confirmPassword" type="password" required/>
-          <label for="confirmPassword">패스워드 확인</label>
-          <small class="text-primary" id="alert-success">비밀번호가 일치합니다.</small> 
-		 			<small class="text-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</small>
-        </div>
-      </div>
-			
-			<div class="row margin">
-        <div class="input-field col s12">
-          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
-          <i class="material-icons prefix">perm_contact_calendar</i>
-          <input id="user_birth" name="user_birth" type="date" required/>
-          <label for="user_birth">생년월일</label>
-        </div>
-      </div>
-      
-			<div class="row margin">
-        <div class="input-field col s12">
-          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
-          <i class="material-icons prefix">phone_android</i>
-          <input id="user_phone" name="user_phone" type="text" required/>
-          <button type="button" id="zip_code_btn" class="btn waves-effect waves-light col s3">인증하기</button>
-          <label for="user_phone">'-' 제외하고 입력</label>
-          <small class="text-primary" id="noUse">인증번호가 전송되었습니다.</small>
-          <small class="text-danger" id="null">번호를 입력해주세요.</small>
-          <small class="text-danger" id="inUse">이미 등록된 번호입니다.</small>
-        </div>
-      </div>
-      
-      <div class="row margin">
-        <div class="input-field col s12">
-          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
-          <i class="material-icons prefix">vpn_key</i>
-          <input id="phoneConfirm" name="phoneConfirm" type="text" required/>
-          <button type="button" id="phoneConfirmBtn" class="btn waves-effect waves-light col s2">확인</button>
-          <label for="phoneConfirm">인증번호 입력</label>
-          <small class="text-success" id="phone-success">인증되었습니다.</small> 
-		 			<small class="text-danger" id="phone-danger">인증 번호가 일치하지 않습니다.</small>
-        </div>
-      </div>
-      
-      <div class="row margin">
-        <div class="input-field col s12">
-          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
-          <i class="material-icons prefix">home</i>
-          <input id="addr" name="user_address" type="text" required/>
-          <button type="button" id="zip_code_btn" onclick="javascript:goPopup();" class="btn waves-effect waves-light col s2">검색</button>
-          <label for="user_address">주소</label>
-        </div>
-      </div>
-      
-      <div class="row margin">
-        <div class="input-field col s12">
-          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
-          <i class="material-icons prefix">home</i>
-          <input id="zipNo" name="user_addresscode" type="text" required/>
-          <label for="user_addresscode">우편번호</label>
-        </div>
-      </div>
-      
-      <div class="row">
-        <div class="input-field col s12">
-          <button type="submit" id="btn_add" class="btn waves-effect waves-light col s12">REGISTER NOW</button>
-        </div>
-        
-        <div class="input-field col s12">
-          <p class="margin center medium-small sign-up">Already have an account? <a href="./login">Login</a></p>
-        </div>
-      </div>
-    </form>
+		<div class="z-depth-1 card-panel" style="margin-left: 350px;">
+	    <form class="login-form" action="${root }/user/userRegister" method="post" id="joinForm">
+	      <div class="row">
+	        <div class="input-field col s12 center">
+	          <h4>회원가입</h4>
+	          <p class="center">BCD 쇼핑몰에 오신걸 환영합니다.</p>
+	        </div>
+	      </div>
+				<div class="row margin">
+	        <div class="input-field col s12">
+	          <!-- <i class="mdi-social-person-outline prefix"></i> -->
+	          <i class="material-icons prefix">portrait</i>
+	          <input id="user_id" name="user_id" type="text" required/>
+	          <button type="button" id="idConfirm" class="btn waves-effect waves-light col s3">중복확인</button>
+	          <label for="user_id">아이디</label>
+	          <small class="text-danger" id="idLengthFail">영문 숫자 최소 4글자 이상 입력해주세요.</small>
+	          <small class="text-primary" id="idCheckSuccess">사용 가능합니다.</small>
+			    	<button type="button" id="idYes">확인</button>
+	          <small class="text-danger" id="idCheckFail">이미 사용중인 아이디입니다.</small>
+	        </div>
+	      </div>
+	      <div class="row margin">
+	        <div class="input-field col s12">
+	          <!-- <i class="mdi-social-person-outline prefix"></i> -->
+	          <i class="material-icons prefix">account_circle</i>
+	          <input id="user_name" name="user_name" type="text" required/>
+	          <label for="user_name">이름</label>
+	        </div>
+	      </div>
+	
+	      <div class="row margin">
+	        <div class="input-field col s12">
+	          <!-- <i class="mdi-social-person-outline prefix"></i> -->
+	          <i class="material-icons prefix">person_outline</i>
+	          <input id="user_nickname" name="user_nickname" type="text" style="cursor: auto;" required />
+	          <button type="button" id="nickCheck" class="btn waves-effect col s3">중복확인</button>
+	          <label for="user_nickname">닉네임</label>
+	          <small class="text-danger" id="nicknameLengthFail">최소 2글자 이상 입력해주세요.</small>
+	          <small class="text-primary" id="nickCheckSuccess">사용 가능합니다.</small>
+			  	  <button type="button" id="nickYes">확인</button>
+				    <small class="text-danger" id="nickCheckFail">이미 사용중인 닉네임입니다.</small>
+	        </div>
+	      </div>
+	
+	      <div class="row margin">
+	        <div class="input-field col s12">
+	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
+	          <i class="material-icons prefix">vpn_key</i>
+	          <input id="user_password" id="user_password" name="user_password" type="password" required />
+	          <label for="user_password">패스워드</label>
+	          <small class="text-danger" id="passwordLengthFail">최소 4글자 이상 입력해주세요.</small>
+	        </div>
+	      </div>
+	
+	      <div class="row margin">
+	        <div class="input-field col s12">
+	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
+	          <i class="material-icons prefix">vpn_key</i>
+	          <input id="confirmPassword" name="confirmPassword" type="password" required/>
+	          <label for="confirmPassword">패스워드 확인</label>
+	          <small class="text-primary" id="alert-success">비밀번호가 일치합니다.</small> 
+			 			<small class="text-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</small>
+	        </div>
+	      </div>
+				
+				<div class="row margin">
+	        <div class="input-field col s12">
+	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
+	          <i class="material-icons prefix">perm_contact_calendar</i>
+	          <input id="user_birth" name="user_birth" type="date" required/>
+	          <label for="user_birth">생년월일</label>
+	        </div>
+	      </div>
+	      
+				<div class="row margin">
+	        <div class="input-field col s12">
+	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
+	          <i class="material-icons prefix">phone_android</i>
+	          <input id="user_phone" name="user_phone" type="text" required/>
+	          <button type="button" id="zip_code_btn" class="btn waves-effect waves-light col s3">인증하기</button>
+	          <label for="user_phone">'-' 제외하고 입력</label>
+	          <small class="text-primary" id="noUse">인증번호가 전송되었습니다.</small>
+	          <small class="text-danger" id="null">번호를 입력해주세요.</small>
+	          <small class="text-danger" id="inUse">이미 등록된 번호입니다.</small>
+	        </div>
+	      </div>
+	      
+	      <div class="row margin">
+	        <div class="input-field col s12">
+	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
+	          <i class="material-icons prefix">vpn_key</i>
+	          <input id="phoneConfirm" name="phoneConfirm" type="text" required/>
+	          <button type="button" id="phoneConfirmBtn" class="btn waves-effect waves-light col s2">확인</button>
+	          <label for="phoneConfirm">인증번호 입력</label>
+	          <small class="text-success" id="phone-success">인증되었습니다.</small> 
+			 			<small class="text-danger" id="phone-danger">인증 번호가 일치하지 않습니다.</small>
+	        </div>
+	      </div>
+	      
+	      <div class="row margin">
+	        <div class="input-field col s12">
+	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
+	          <i class="material-icons prefix">home</i>
+	          <input id="addr" name="user_address" type="text" required/>
+	          <button type="button" id="zip_code_btn" onclick="javascript:goPopup();" class="btn waves-effect waves-light col s2">검색</button>
+	          <label for="user_address">주소</label>
+	        </div>
+	      </div>
+	      
+	      <div class="row margin">
+	        <div class="input-field col s12">
+	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
+	          <i class="material-icons prefix">home</i>
+	          <input id="zipNo" name="user_addresscode" type="text" required/>
+	          <label for="user_addresscode">우편번호</label>
+	        </div>
+	      </div>
+	      
+	      <div class="row">
+	        <div class="input-field col s12">
+	          <button type="submit" id="btn_add" class="btn waves-effect waves-light col s12">REGISTER NOW</button>
+	        </div>
+	        
+	        <div class="input-field col s12">
+	          <p class="margin center medium-small sign-up">Already have an account? <a href="${root }/user/login">Login</a></p>
+	        </div>
+	      </div>
+	    </form>
+    </div>
   </div>
 </div>
 </body>

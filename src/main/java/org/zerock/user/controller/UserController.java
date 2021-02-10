@@ -243,7 +243,7 @@ public class UserController {
 			return 2;
 		} 
 		
-		if (phoneCheck == null) {
+		if (phoneCheck == null || user_phone.equals(phoneCheck.getUser_phone())) {
 			Random rand  = new Random();
 	    String numStr = "";
 	    for(int i=0; i<4; i++) {
@@ -319,5 +319,10 @@ public class UserController {
 		}
     
 		return vo;
+	}
+	
+	@GetMapping("/modifyPw")
+	public void modPw(String user_id) {
+		
 	}
 }
