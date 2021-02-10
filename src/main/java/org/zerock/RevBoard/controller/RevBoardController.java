@@ -167,9 +167,10 @@ public class RevBoardController {
 		RevVO rev = service.get(rev_seq);
 		
 		//여러 상품파일이름을 list로 변환하고 넘겨줌
-				List<String> fileNamesList = Arrays.asList(rev.getRev_filename().split(","));
-				model.addAttribute("RevfileNameList", fileNamesList);
-		
+		if (rev.getRev_filename() != null && !rev.getRev_filename().isEmpty()) {
+		List<String> fileNamesList = Arrays.asList(rev.getRev_filename().split(","));
+		model.addAttribute("RevfileNameList", fileNamesList);
+		}
 		ModelAndView view = new ModelAndView();
 		
 		Cookie[] cookies = req.getCookies();
@@ -236,7 +237,8 @@ public class RevBoardController {
 			model.addAttribute("RevBoard", rev);
 			view.setViewName("/rev/get");
 			return view;
-		} else { 
+		} 
+		else { 
 			//에러페이지 설정
 			view.setViewName("error/reviewError");
 			return view;
@@ -264,10 +266,11 @@ public class RevBoardController {
 		model.addAttribute("RevBoard", rev);
 		
 		String preFileNames = rev.getRev_filename();
-		
+		if (rev.getRev_filename() != null && !rev.getRev_filename().isEmpty()) {
 		List<String> fileNamesList = Arrays.asList(rev.getRev_filename().split(","));
 		model.addAttribute("preFileNames", preFileNames);
 		model.addAttribute("fileNamesList", fileNamesList);
+		}
 	}
 	
 	
@@ -398,8 +401,7 @@ public class RevBoardController {
 	@GetMapping(value = "/like" ,	
 			produces = MediaType.TEXT_PLAIN_VALUE)
 	public  @ResponseBody void goodAdd(@RequestParam("rev_seq") int rev_seq ) {
-		
-			service.addGood(rev_seq);
+		service.addGood(rev_seq);
 		System.out.println(service.countGood(rev_seq));
 	
 }

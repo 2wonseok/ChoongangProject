@@ -53,22 +53,7 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-<script>
-/* $(document).ready(function(){
-	
-	/*밑의 이미지를 호버하면 main이미지가 바뀌는 js */
-	/*일단 아래 섬네일에서 호버된걸 선택  */
-	$(".hoveredImage").hover(function(){
-		
-		/* 호버된 이미지의 src값  */
-		var hovered = $(this).attr("src");
-		/* 왼쪽위의 주소를 변경 */
-		$("#productMainImage").attr("src",hovered);
-	})
-	
-	
-}); */
-</script>
+
 <script src="${root }/resources/rev_js/rev.js"></script>
 <script>
 
@@ -168,7 +153,7 @@ $("#reply-ul").on("click", "li",  function() { // on메소드를 이용해서 re
 		//<button id="reply-delete-button"type="button" class="btn btn-danger">삭제</button>
 		//</div>
 		
-		1
+		var modifyMd = $("#modify-footer");
 		var namei = data.reply_writer;
 		var ok = '';
 		if (authUser == data.reply_writer) {
@@ -277,10 +262,9 @@ showList();
 		          alert("좋아요를 누르셨습니다");
 		          console.log(rev_seq);
 		      },
-		      error:function(error){
-		       
-		        alert("좋아요를 실패하셨습니다.");
-		      }
+		      error(function(e) {  
+		    	  alert("한개의 글에 한번만 클릭이 가능합니다.");
+		    	}) 
 		  });
 		});		
 	}); 
@@ -311,7 +295,7 @@ showList();
 <title>Insert title here</title>
 </head>
 <body>
-<u:navbar></u:navbar>
+<u:mainNav></u:mainNav>
 
 	<div class="container-sm">
 		<div class="row">
@@ -337,7 +321,7 @@ showList();
 					<label for="input3">파일이름</label> <input readonly
 						value="${RevBoard.rev_filename }" type="text" class="form-control" id="input3" />						
 						<c:forEach items="${RevfileNameList }" var="revImg" varStatus="imgNum">
-						<img class="hoveredImage" alt="" src="${root }/resources/upload/${revImg}" height="280px" width="260px">
+						<img class="hoveredImage" onerror="this.src='${root }/resources/noimage.jpg'" alt="" src="${root }/resources/upload/${revImg}" height="280px" width="260px">
 						</c:forEach>
 						
 				</div>

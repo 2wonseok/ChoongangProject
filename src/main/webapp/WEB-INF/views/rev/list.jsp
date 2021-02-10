@@ -54,7 +54,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<u:navbar></u:navbar>
+<u:mainNav></u:mainNav>
 <div class="container-sm">
 <c:url value="${root }/rev/list" var="searchLink">
 					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
@@ -118,8 +118,8 @@
 								</c:if>
 							</a></td>
 							<td><c:out value="${rev.rev_writer}" /></td>
-							<td><fmt:formatDate value='${rev.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/></td>
-							<td><fmt:formatDate value='${rev.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/></td>
+							<td><fmt:formatDate value='${rev.rev_regdate}' pattern='yyyy-MM-dd/hh:mm'/></td>
+							<td><fmt:formatDate value='${rev.rev_regdate}' pattern='yyyy-MM-dd/hh:mm'/></td>
 									<td>${rev.rev_good }</td>
 									<td>${rev.rev_hate }</td>
 									<td>${rev.rev_readCnt }</td>

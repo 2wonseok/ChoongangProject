@@ -42,7 +42,7 @@
 <title>구매후기 글등록</title>
 </head>
 <body>
-<u:navbar></u:navbar>
+<u:mainNav></u:mainNav>
 	<div class="container">
 	<form action="${root }/rev/register" method="POST" enctype="multipart/form-data">
 	

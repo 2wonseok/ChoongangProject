@@ -58,7 +58,7 @@ $(document).ready(function() {
 <title>Insert title here</title>
 </head>
 <body>
-<u:navbar></u:navbar>
+<u:mainNav></u:mainNav>
 	<div class="container-sm">
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
