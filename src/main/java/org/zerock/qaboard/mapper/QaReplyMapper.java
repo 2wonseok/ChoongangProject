@@ -16,7 +16,11 @@ public interface QaReplyMapper {
 	
 	public int insertSelectKey(QaReplyVO board);
 	
+	public int insertSelectKey_admin(QaReplyVO board);
+	
 	public int delete(int reply_seq);
+	
+	public int delete_admin(int reply_seq);
 	
 	public int update(QaReplyVO reply);
 	

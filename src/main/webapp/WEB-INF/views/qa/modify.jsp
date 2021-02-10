@@ -31,7 +31,7 @@ function checkTree(chk){
 </head>
 <body>
 
-	<u:navbar></u:navbar>
+<u:mainNav/>
 	
 			<h1>게시물 수정</h1>	
 

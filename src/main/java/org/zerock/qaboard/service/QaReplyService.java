@@ -12,7 +12,11 @@ public interface QaReplyService {
 	
 	public int register(QaReplyVO reply);
 	
+	public int register_admin(QaReplyVO reply);
+	
 	public int delete(int reply_seq);
+	
+	public int delete_admin(int reply_seq);
 	
 	public int update(QaReplyVO reply);
 	

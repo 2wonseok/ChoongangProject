@@ -28,12 +28,24 @@
       VALUES (#{reply_seq}, #{reply_content}, #{reply_writer}, SYSDATE, 'qaboard', #{reply_boardseq})
    </insert>  
    
+   <insert id="insertSelectKey_admin">
+      <selectKey keyProperty="reply_seq" order="BEFORE" resultType="int">
+         SELECT reply_seq.nextval FROM dual
+      </selectKey>
+      INSERT INTO tbl_reply (reply_seq, reply_content, reply_writer, reply_regdate, reply_boardname, reply_boardseq) 
+      VALUES (#{reply_seq}, #{reply_content}, #{reply_writer}, SYSDATE, 'qaboard', #{reply_boardseq})
+   </insert> 
+   
    <delete id="delete">
 		DELETE FROM tbl_reply WHERE reply_seq = #{reply_seq}
 	</delete>
 	
+	<delete id="delete_admin">
+		DELETE FROM tbl_reply WHERE reply_seq = #{reply_seq}
+	</delete>
+	
 	<update id="update">
-		UPDATE tbl_reply SET reply_content = #{reply_content}, updatedate = SYSDATE WHERE reply_seq = #{reply_seq}
+		UPDATE tbl_reply SET reply_content = #{reply_content}, reply_updatedate = SYSDATE WHERE reply_seq = #{reply_seq}
 	</update>
 	
 	<select id="get" resultType="org.zerock.qaboard.domain.QaReplyVO">

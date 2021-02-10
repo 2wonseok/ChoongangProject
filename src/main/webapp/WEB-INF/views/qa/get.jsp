@@ -46,14 +46,38 @@ var nickname = '${authUser.user_nickname}';
     float: right;
 }
 
+
+#reply-submit-button_admin {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+}
+
+
 #table {
     border: 2px solid black;
 }
 #image {
 	max-width: 100%
 }
-</style>
 
+/* .reply_content {
+	border:none;
+	border-right:0px; 
+	border-top:0px; 
+	boder-left:0px; 
+	boder-bottom:0px;
+}  */
+
+.line {
+	display: inline;
+}
+</style>
 
 <script>
 
@@ -80,58 +104,58 @@ $(document).ready(function() {
 		replyService.getList({qa_seq: seq}, function(list) {
 			
 			var replyUL = $("#reply_list");
-			replyUL.empty();
-			
+			replyUL.empty();		
 
 			for (var i = 0; i < list.length; i++) {
 				
 				var writer = list[i].reply_writer;
 				var regdate = list[i].reply_regdateKST;
 				
-				var replyLI = '<li class="media" data-rno="'
+				var replyLI = '<li class="media" data-seq="'
 				+ list[i].reply_seq + '"><div class="media-body">'
 				+ list[i].reply_writer + '<small class="float-right text-primary">'
-				+ moment(list[i].reply_regdateKST).format('YYYY.MM.DD.HH:mm')
-				+ '</small><br>'
-				+ '<h5>'
-				+ list[i].reply_content
-				+ '</h5>'
-				replyUL.append(replyLI);					
+				+ moment(regdate).format('YYYY.MM.DD.HH:mm')
+				+ '</small><br>';
+				
+				replyUL.append(replyLI);
+				
+				var replyCT =
+				'<h5>'
+				+ '<input size="30" style="border:none" readonly class="reply_content" value="'
+				+ list[i].reply_content + '">'
+				+ '</h5>';
+				
+				replyUL.append(replyCT);
+				
 				// 댓글 작성자와 댓글의 닉네임이 동일할시
 				if(writer == nickname) {
 					replyUL.append(
 							// 삭제 버튼
-							'<div>'
+							'<div class="line" >'
 							+ '<input type="hidden" class="reply_seq" value="' + list[i].reply_seq + '">'
-							+ '<button type="button" class="reply_delete">삭제</button>'
+							+ '<button class="reply_delete">삭제</button>'
 							+ '</div></li>'		
-							+ '<div>'
+							+ '<div class="line" >'
 							+ '<input type="hidden" class="reply_modify_seq" value="' + list[i].reply_seq + '">'
-							+ '<button type="button" class="reply_modify">수정</button>'
-							+ '<hr></div></li>'								
+							+ '<button class="reply_modify">수정</button>'
+							+ '<button type="button" hidden class="reply_modify_good">수정</button>'
+							+ '<hr></div></li>'
 							);					
 				} else {
 					replyUL.append('<hr></div></li>');
-				};
+				};		
+				
 			};
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 			
 			// 삭제 버튼 이벤트 처리
 			$(".reply_delete").click(function() {
 				console.log("삭제 클릭");
-								
-			var reply_seq = $(".reply_seq").val();
-				'<input type="hidden" class="reply_modify_seq" value="' + reply_seq + '">';
+
 				
+			var reply_seq = $(this).parent('div').find('.reply_seq').val();
+			console.log(reply_seq);
+			
 			if(confirm("삭제 하시겠습니까?") == true){
 				replyService.remove(reply_seq, function() {
 					alert("댓글 삭제 완료.");
@@ -139,36 +163,71 @@ $(document).ready(function() {
 					});						
 				} else {
 					showList();		
-				};						
+				};
+
 			});
 			
 			// 수정 버튼 이벤트 처리
 			$(".reply_modify").click(function() {
 				console.log("수정 클릭");
-/* 						   var tag = '<input type="button" id="btn" value="버튼"/>';
-							   $("body").append(tag);
-							});
-							$(document).on("click","#btn",function(){ 
-							   alert("click"); 
-							 });
-					 */
 				
-				var reply_seq = $(".reply_seq").val();
+				var reply_seq = $(this).parent('div').find('.reply_modify_seq').val();
 				console.log(reply_seq);
-				var reply_content = $(".reply_modify").val();
-				var data = {reply_seq: reply_seq, reply_content: reply_content};
-				
-				replyService.modify(data, function() {
-					alert("댓글을 수정 하였습니다.");
-					$("#modify-delete-reply-modal").modal('hide');
-					showList();
-				});				
-			}); 
 			
-		});
+				var _idx = null;
+				
+				
+				// reply_seq의 번호찾기 
+				for (var i = 0; i < list.length; i++) {
+					//var reply_content = $("#reply_list").find('h5')[i].children[i].value;
+					if(list[i].reply_seq == reply_seq){
+						_idx = i;
+					 	 break;  
+					}					
+				}
+ 				var con = $(".reply_content")[_idx];
+				console.log("인덱스 번호 : " + _idx);
+					
+				$('.reply_content')[_idx].readOnly = false
+				$('.reply_content')[_idx].style = false	
+				$('.reply_delete')[_idx].hidden = true
+				$('.reply_modify')[_idx].hidden = true
+				$('.reply_modify_good')[_idx].hidden = false
+				
+				// 수정 처리
+				$(".reply_modify_good").click(function() {
+					
+					console.log(list[i].reply_seq);
+					console.log(list[i].reply_content);
+
+					var reply_content = $(".reply_content")[_idx];
+					
+					var text = $(this).attr('data_text');
+
+
+					console.log(reply_content);
+
+					var data = {reply_seq: list[i].reply_seq, reply_content: reply_content_mod}; 
+					
+					
+					replyService.modify(data, function() {
+						alert("댓글을 수정 하였습니다.");
+						showList();
+
+					});
+					
+				});
+
+			});	
+			
+			
+		});		
 	};
 	
 	
+
+	
+	// 일반 유저 댓글 쓰기
 	$("#reply-submit-button").click(function() {
 		console.log("등록 버튼 클릭");
 		
@@ -176,7 +235,7 @@ $(document).ready(function() {
 		var reply_content = $("#reply_content_input").val();
 		var reply_writer = $("#reply_writer_input").val();		
 		// ajax 요청을 위한 데이터 만들기
-		var data = {reply_boardseq: seq, reply_content: reply_content, reply_writer: reply_writer}
+		var data = {reply_boardseq: seq, reply_writer: reply_writer, reply_content: reply_content};
 		
 		
 		replyService.add(data, 
@@ -194,26 +253,46 @@ $(document).ready(function() {
 		// 모달창 내의 input 요소들 value를 초기화
 		$("#reply_content_input").val(""); 
 
-	});			
+	});	
+	
+	// 관리자 댓글 쓰기
+	$("#reply-submit-button_admin").click(function() {
+		console.log("등록 버튼 클릭");
+		
+		// input 에서 value 가져와서 변수에 저장
+		var reply_content = $("#reply_content_input").val();
+		var reply_writer = $("#reply_writer_input").val();		
+		// ajax 요청을 위한 데이터 만들기
+		var data = {reply_boardseq: seq, reply_writer: reply_writer, reply_content: reply_content};
+		
+		
+		replyService.add_admin(data, 
+				function() {
+					alert("[" + reply_content + "]" + "댓글 등록 완료");
+					// 댓글 등록 성공 확인창 누른후 리스트 보여주기
+					showList();
+				}, 
+				function() {
+					alert("내용을 입력 하세요");
+				});	
+ 		// 모달창 닫기
+		$("#new-reply-modal").modal("hide");
+		
+		// 모달창 내의 input 요소들 value를 초기화
+		$("#reply_content_input").val(""); 
+
+	});
 	
 	// 댓글 목록 함수 showList() 불러오기
 	showList();
 });
 
 </script>
-
-
-
-
-
-
-
 <title>게시물 보기</title>
-
 </head>
 <body>
 
-	<u:navbar></u:navbar>
+<u:mainNav/>
 
 
 	
@@ -257,7 +336,8 @@ $(document).ready(function() {
 		  	 <strong><label for="input6">내용</label> <br>	</strong>	  	
 		  	<div class="form-group" contentEditable="false" id="table">
 		  	<c:out value="${board.qa_content }" /> <br>
-		  	<img src="${root }/resources/qaboard/upload/${board.qa_filename }" id="image"> <br>
+		  	<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${board.qa_filename }" id="image"> <br>
+		  	
 		  	
 			</div>
 			<small class="form-text text-primary">
@@ -337,7 +417,16 @@ $(document).ready(function() {
 <c:if test="${errors.reply_noContent }">
 <small class="form-text text-danger"> 댓글 내용을 입력 해주세요. </small>
 </c:if>
-<button id="reply-submit-button">댓글쓰기</button> 
+
+<!-- 일반 유저 댓글 쓰기 -->
+<c:if test="${!empty authUser.user_id && authUser.user_grade == 1}">
+<button id="reply-submit-button">댓글 쓰기</button> 
+</c:if>
+<!-- 관리자 댓글 쓰기 -->
+<c:if test="${!empty authUser.user_id && authUser.user_grade == 0}">
+<button id="reply-submit-button_admin">댓글 쓰기 (관리자)</button> 
+</c:if>
+
 </c:if>
 
 		</div>

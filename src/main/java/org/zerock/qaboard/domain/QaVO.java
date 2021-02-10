@@ -21,6 +21,7 @@ public class QaVO {
 	//	qa_secret VARCHAR2(50) DEFAULT '공개',
 	//	qa_status VARCHAR2(50) DEFAULT '답변 예정',
 	//	qa_filename VARCHAR2(3000),
+	//	qa_replycnt NUMBER(10) DEFAULT 0,
 	//	qa_regdate DATE,
 	//	qa_updatedate DATE
 	
@@ -38,6 +39,9 @@ public class QaVO {
 	private String qa_filename;
 	private Date qa_regdate;
 	private Date qa_updatedate;	
+	private int qa_replycnt;
+	private int qa_replycnt_admin;
+	
 	
 	public Date getQa_regdateKST() {
 		return Date.from(qa_regdate.toInstant().plus(9, ChronoUnit.HOURS));

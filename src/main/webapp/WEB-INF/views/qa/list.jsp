@@ -98,7 +98,7 @@ function checkTree(chk){
 <body>
 
 
-<u:navbar></u:navbar>
+<u:mainNav/>
 	
 	
 	
@@ -160,13 +160,6 @@ function checkTree(chk){
 	</form>
 </div>
 
-
-
-
-
-
-
-
 <div class="container-sm">
   <div class="row">
 
@@ -184,6 +177,7 @@ function checkTree(chk){
         </tr>
       </thead>
       <tbody>
+      
         <c:forEach items="${list }" var="board">
           <tr>
             <td>${board.qa_seq} </td>
@@ -192,8 +186,6 @@ function checkTree(chk){
             <td>
             <c:url value="/qa/get" var="boardLink">
             	<c:param value="${board.qa_seq }" name="qa_seq" />
-
-            	
             	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
             	<c:param value="${pageMaker.cri.amount }" name="amount" />
             	<c:param value="${pageMaker.cri.type }" name="type"	/>
@@ -207,44 +199,34 @@ function checkTree(chk){
             	</c:choose>
             	
 	            <c:out value="${board.qa_title}" />
-<%-- 	            <c:if test="${board.replyCnt gt 0 }">
-	            	<span class="badge badge-info">${board.replyCnt }</span>	            
-	            	</c:if> --%>
+   	            <c:if test="${board.qa_replycnt gt 0 }">
+	            	<span class="badge badge-warning">유저:${board.qa_replycnt }</span>	        
+  	           	</c:if> 
+  	           	
+  	           	<c:if test="${board.qa_replycnt_admin gt 0 }">
+	            	<span class="badge badge-success">관리자:${board.qa_replycnt_admin }</span>        
+  	           	</c:if>   	           	
             </a>
+            
             </td>     
-            
-            
-                           
             <td>${board.qa_writer} </td>               
             <td><fmt:formatDate pattern="yyyy-MM-dd" 
             value="${board.qa_regdate}" /> </td>            
-            <td>${board.qa_readcnt} </td>                  
+            <td>${board.qa_readcnt} </td>     
             <td>${board.qa_status} </td>  
           </tr>
           
         </c:forEach>
-        
-        
       </tbody>
-
     </table>
+    
+    <!-- 글쓰기 -->
 	<c:if test="${!empty authUser.user_id}">
    		<a href="/qa/register/" id="btn_add">글쓰기</a>
    	</c:if>
+   	
   </div>
-
-
 </div>
-
-
-
-
-
-
-
-
-
-
 
 <div class="container-sm mt-3">
 	<div class="row justify-content-center">

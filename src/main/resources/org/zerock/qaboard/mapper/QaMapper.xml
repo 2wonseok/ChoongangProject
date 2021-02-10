@@ -30,11 +30,11 @@
 
 	<select id="getListWithPaging" resultType="org.zerock.qaboard.domain.QaVO">
    <![CDATA[
-   SELECT qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status 
+   SELECT qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status, qa_replycnt 
    FROM
    (
    SELECT ROW_NUMBER() OVER (ORDER BY qa_seq DESC) rn, 
-   qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status     
+   qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status, qa_replycnt     
    FROM tbl_qaboard
    ]]>
    
@@ -99,9 +99,15 @@
    </select>
    
    <update id="updateReplyCnt">
-   UPDATE tbl_qaboard SET replycnt = replycnt + #{amount} 
-   WHERE qa_seq = #{qa_seq}   
+   UPDATE tbl_qaboard SET qa_replycnt = qa_replycnt + #{amount}
+	WHERE qa_seq = #{qa_seq}
    </update>
+   
+   <update id="updateReplyCnt_admin">
+   UPDATE tbl_qaboard SET qa_replycnt_admin = qa_replycnt_admin + #{amount}
+	WHERE qa_seq = #{qa_seq}
+   </update>
+   
    
    <select id="readCnt" resultType="int">
    		SELECT qa_readcnt FROM tbl_qaboard

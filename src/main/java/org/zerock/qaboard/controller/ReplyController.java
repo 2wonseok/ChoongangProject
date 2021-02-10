@@ -3,7 +3,7 @@ package org.zerock.qaboard.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.zerock.qaboard.domain.Criteria;
 import org.zerock.qaboard.domain.QaReplyVO;
 import org.zerock.qaboard.service.QaReplyService;
@@ -51,18 +51,14 @@ public class ReplyController {
 		return new ResponseEntity<List<QaReplyVO>>(list, HttpStatus.OK);
 	}
 	
-	// 댓글 등록 
+	// 댓글 등록 (유저)
 	
 	@PostMapping(path = "/register", 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> create(@RequestBody QaReplyVO vo) {
 
-		log.info("vo : " + vo);
-
 		int insertCount = reply_service.register(vo);
-
-		log.info("count : " + insertCount);
 
 		if (insertCount == 1) {
 			return new ResponseEntity<String>("success /new", HttpStatus.OK);
@@ -70,6 +66,24 @@ public class ReplyController {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	// 댓글 등록 (관리자)
+	
+	@PostMapping(path = "/register_admin", 
+			consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> create_admin(@RequestBody QaReplyVO vo) {
+
+		int insertCount = reply_service.register_admin(vo);
+
+		if (insertCount == 1) {
+			return new ResponseEntity<String>("success /new", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	
 
 	
 	// 댓글 삭제	
@@ -89,4 +103,40 @@ public class ReplyController {
 		}	
 		
 	}
+	
+	@GetMapping(path = "/{reply_seq}",
+			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<QaReplyVO> get(@PathVariable("reply_seq") int reply_seq) {
+		QaReplyVO vo = reply_service.get(reply_seq);
+		
+		log.info(vo);
+		
+		return new ResponseEntity<QaReplyVO> (vo, HttpStatus.OK);
+	}
+	
+	// 댓글 수정
+	
+	@RequestMapping(path = "/{reply_seq}", 
+			method = { RequestMethod.PUT, RequestMethod.PATCH }, 
+			consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.TEXT_PLAIN_VALUE)
+
+	public ResponseEntity<String> modify(
+			@RequestBody QaReplyVO vo, 
+			@PathVariable int reply_seq) {
+
+		vo.setReply_seq(reply_seq);
+
+		int cnt = reply_service.update(vo);
+
+		log.info(cnt);
+
+		if (cnt == 1) {
+			return new ResponseEntity<String>("success", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+
 }

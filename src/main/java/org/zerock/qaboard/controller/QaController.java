@@ -36,7 +36,6 @@ import lombok.extern.log4j.Log4j;
 public class QaController {
 	
 	private QaService service;	
-	private QaReplyService reply_service;	
 
 	
 //	@RequestMapping(value="/list", method = RequestMethod.GET)
