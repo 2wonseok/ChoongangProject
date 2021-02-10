@@ -35,14 +35,14 @@
 <![CDATA[   
    SELECT
     free_seq, free_title, free_content,free_nickname,
-    free_writer, free_regdate, free_updatedate,free_readcnt
+    free_writer, free_regdate, free_updatedate,free_readCnt
    FROM
     (
      SELECT 
       ROW_NUMBER() OVER (ORDER BY free_seq DESC) rn,
       free_seq, free_title, free_content, free_writer,
       free_nickname,
-      free_regdate, free_updatedate,free_readcnt
+      free_regdate, free_updatedate,free_readCnt
      FROM
       tbl_freeboard
 ]]>
@@ -63,7 +63,7 @@
    </insert>
    
    <insert id="insertSelectKey">
-      <selectKey keyProperty="free_seq" order="BEFORE" resultType="long">
+      <selectKey keyProperty="free_seq" order="BEFORE" resultType="int">
       SELECT free_seq.nextval FROM dual
       </selectKey>
    
@@ -93,9 +93,20 @@
    <include refid="freeboardcriteria"></include>
    </select> 
    
-    <update id="updateReplyCnt">
+ <!--    <update id="updateReplyCnt">
    UPDATE tbl_freeboard SET readcnt = readcnt + #{amount}
    WHERE free_seq = #{free_seq}
+   </update> -->
+   
+   <select id="readCnt" resultType="int">
+   		SELECT free_readCnt FROM tbl_freeboard
+		WHERE free_seq = #{free_seq}
+   </select>
+   
+   <update id="addCnt">
+   		UPDATE tbl_freeboard
+   		SET free_readCnt = free_readCnt + 1
+		WHERE free_seq = #{free_seq}
    </update>
      
 </mapper>

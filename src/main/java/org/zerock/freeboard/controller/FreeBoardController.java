@@ -51,35 +51,33 @@ public class FreeBoardController {
 	}
 
 	@GetMapping("/register")
-	public void register(@ModelAttribute("cri") FreeBoardCriteria cri, Model model, HttpServletRequest request) {
+	public void register(@ModelAttribute("cri") FreeBoardCriteria cri, Model model, 
+			HttpServletRequest request) {
+		
 		try {
 			UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
 			System.out.println("user nick name : "+user.getUser_nickname());
+			//authUser 이름 
 			model.addAttribute("user", user);
 			
 		} catch (NullPointerException e) {
-			// TODO: handle exception
+			//로그인하지않았을경우 글쓰기 불가처리
 			System.out.println("Session 정보 없음");
 			e.printStackTrace();
 		}
 	}
 
 	@PostMapping("/register")
-	public String reegister(FreeBoardVO freeVO, RedirectAttributes rttr, HttpServletRequest request) {
+	public String reegister(FreeBoardVO freeVO, RedirectAttributes rttr, 
+			HttpServletRequest request) {
 		
 		UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
 		
 		String anonmyous=request.getParameter("anonmyous");
 		System.out.println("POST anonmyous : "+anonmyous);
 		
-		try {
-			if(anonmyous.equals("y")) {
-				freeVO.setFree_nickname("익명");
-			}
-		} catch (NullPointerException e) {
-			// TODO: handle exception
-			System.out.println("선택없음");
-			e.printStackTrace();
+		if("y".equals(anonmyous)) {
+			freeVO.setFree_nickname("익명");
 		}
 		
 		freeVO.setFree_writer(user.getUser_nickname());
@@ -94,14 +92,16 @@ public class FreeBoardController {
 	}
 
 	@GetMapping({ "/get", "/modify" })
-	public void get(@RequestParam("free_seq") Long free_seq, @ModelAttribute("cri") FreeBoardCriteria cri,
-			Model model) {
+	public void get(@RequestParam("free_seq") int free_seq, @ModelAttribute("cri") 
+	FreeBoardCriteria cri,Model model) {
 
 		log.info("get method - free_seq: " + free_seq);
 		log.info(cri);
 		FreeBoardVO freeVO = service.get(free_seq);
+		service.addCnt(free_seq);
 
 		model.addAttribute("freeVO", freeVO);
+		System.out.println(freeVO.getFree_readCnt());
 //		model.addAttribute("cri", cri);
 	}
 
@@ -115,7 +115,8 @@ public class FreeBoardController {
 	}
 
 	@PostMapping("/remove")
-	public String remove(@RequestParam("free_seq") Long free_seq, FreeBoardCriteria cri, RedirectAttributes rttr) {
+	public String remove(@RequestParam("free_seq") int free_seq, FreeBoardCriteria cri, 
+			RedirectAttributes rttr) {
 
 		if (service.remove(free_seq)) {
 			rttr.addFlashAttribute("result", "success");

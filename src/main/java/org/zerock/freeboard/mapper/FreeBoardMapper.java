@@ -18,14 +18,16 @@ public interface FreeBoardMapper {
 	
 	public void insertSelectKey(FreeBoardVO freeboard);
 
-	public FreeBoardVO read(Long free_seq);
+	public FreeBoardVO read(int free_seq);
 
-	public int delete(Long free_seq);
+	public int delete(int free_seq);
 
 	public int update(FreeBoardVO freeboard);
 
-	public void updateReplyCnt(@Param("free_seq") Long free_seq, @Param("amount") int amount);
+	public void updateReplyCnt(@Param("free_seq") int free_seq, @Param("amount") int amount);
 
+	public int readCnt(int free_seq);
 	
+	public void addCnt(int free_seq);
 
 }

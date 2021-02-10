@@ -37,12 +37,12 @@ private FreeBoardMapper mapper;
 	}
 	
 	@Override
-	public FreeBoardVO get(Long free_seq) {
+	public FreeBoardVO get(int free_seq) {
 		return mapper.read(free_seq);
 	}
 	
 	@Override
-	public boolean remove(Long free_seq) {
+	public boolean remove(int free_seq) {
 		return mapper.delete(free_seq) == 1;
 	}
 	
@@ -55,5 +55,14 @@ private FreeBoardMapper mapper;
 	public int getTotal(FreeBoardCriteria cri) {
 		return mapper.getTotalCount(cri);
 	}
+	@Override
+	public void addCnt(int free_seq) {
+		mapper.addCnt(free_seq);
+		
+	}
+	@Override
+	public int readCnt(int free_seq) {
+		return mapper.readCnt(free_seq);
+		}
 	
 }

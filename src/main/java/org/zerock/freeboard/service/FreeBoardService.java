@@ -13,12 +13,16 @@ public interface FreeBoardService {
 
 	public List<FreeBoardVO> getList(FreeBoardCriteria cri);
 
-	public FreeBoardVO get(Long free_seq);
+	public FreeBoardVO get(int free_seq);
 
-	public boolean remove(Long free_seq);
+	public boolean remove(int free_seq);
 
 	public boolean modify(FreeBoardVO freeboard);
 
 	public int getTotal(FreeBoardCriteria cri);
+	
+	public int readCnt(int free_seq);
+	
+	public void addCnt(int free_seq);
 
 }
