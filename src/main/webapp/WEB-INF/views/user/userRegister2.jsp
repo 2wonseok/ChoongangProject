@@ -318,6 +318,7 @@ $(document).ready(function() {
     line-height: 45px;
     float: right;
 }
+
 </style>
 <body>
 <u:mainNav/>

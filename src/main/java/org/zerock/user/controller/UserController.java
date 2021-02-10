@@ -238,6 +238,11 @@ public class UserController {
 		UserVO phoneCheck = service.findUser(user_phone);
 		System.out.println(phoneCheck);
 		
+		if (user_phone == null || user_phone.isEmpty()) {
+			session.setAttribute("null", "번호를 입력해주세요.");
+			return 2;
+		} 
+		
 		if (phoneCheck == null) {
 			Random rand  = new Random();
 	    String numStr = "";
@@ -266,6 +271,10 @@ public class UserController {
 	@GetMapping("/authentication") // 인증번호 확인
 	public @ResponseBody int authentication(String phoneConfirm, HttpSession session) {
 		int result = 1;
+		
+		if (phoneConfirm == null || phoneConfirm.isEmpty()) {
+			return result;
+		}
 		
 		if (session.getAttribute("phoneConfirm").equals(phoneConfirm)) {
 			result = 0;

@@ -273,7 +273,7 @@ a {
 								<a href="#" >취소/반품/교환</a>
 							</li>
 							<li>
-								<a href="#" >고객센터</a>
+								<a href="${root }/qa/list" >고객센터</a>
 							</li>
 							<li>
 								<a href="${root }/user/userRead?user_id=${authUser.user_id}">회원정보</a>

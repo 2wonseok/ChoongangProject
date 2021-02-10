@@ -12,9 +12,9 @@
 	
 	<insert id="insert">
 		insert into tbl_user (user_seq, user_id, user_name, user_nickname, user_password, user_address,
-		user_addresscode, user_phone, user_gender, user_birth, user_regdate)
+		user_addresscode, user_phone, user_birth, user_regdate)
 		values (user_seq.nextval, #{user_id}, #{user_name}, #{user_nickname}, #{user_password}, 
-			#{user_address}, #{user_addresscode}, #{user_phone}, #{user_gender}, #{user_birth}, SYSDATE)
+			#{user_address}, #{user_addresscode}, #{user_phone}, #{user_birth}, SYSDATE)
 	</insert>
 
 	<sql id="criteria">
