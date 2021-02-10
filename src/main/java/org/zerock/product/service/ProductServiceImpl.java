@@ -1,10 +1,12 @@
 package org.zerock.product.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.product.domain.Criteria;
+import org.zerock.product.domain.ProductOptionVO;
 import org.zerock.product.domain.ProductVO;
 import org.zerock.product.mapper.ProductMapper;
 
@@ -20,8 +22,26 @@ public class ProductServiceImpl implements ProductService {
 	public void register(ProductVO product) {
 		mapper.insert(product);
 	}
+	
+	@Override
+	@Transactional
+	public void registerReturn(ProductVO product, String[] po_name, String[] po_quantity, String[] po_price) {
+		mapper.insertReturnSeq(product);
 		
-
+		/* 상품옵션등록-서비스로트랜잭션 */
+		//List<ProductOptionVO> optionList= new ArrayList<ProductOptionVO>(); 
+		for (int i = 0; i<po_name.length ;i++ ) {
+			ProductOptionVO poVO = new ProductOptionVO();
+			poVO.setProduct_seq(product.getProduct_seq());
+			poVO.setPo_name(po_name[i]);
+			poVO.setPo_quantity(Integer.parseInt(po_quantity[i]));
+			poVO.setPo_price(Integer.parseInt(po_price[i]));
+			//optionList.add(poVO);
+			mapper.insertProductOption(poVO);
+		}
+		
+	}
+	
 	@Override
 	public List<ProductVO> getList(Criteria cri) {
 		return mapper.getListWithPaging(cri);

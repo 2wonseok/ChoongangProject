@@ -105,7 +105,7 @@ table.type05 td {
 </head>
 <body>
 
-	<u:navbar></u:navbar>
+	<u:mainNav/>
 
 	<div class="container">
 		<div class="row d-flex justify-content-center">

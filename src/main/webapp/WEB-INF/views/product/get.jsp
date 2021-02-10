@@ -90,7 +90,7 @@ $(document).ready(function(){
 </head>
 <body>
 	
-	<u:navbar></u:navbar>
+	<u:mainNav/>
 
 	<div class="container col-8">
 

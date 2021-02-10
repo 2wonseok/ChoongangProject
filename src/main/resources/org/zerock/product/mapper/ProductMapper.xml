@@ -13,8 +13,25 @@
 		#{product_info}, #{category_seq}, #{user_nickname})
 	</insert>
 
-	<!-- 여기까지 구현완료 -->
-
+	<insert id="insertProductOption" >
+		insert into tbl_productoption (product_seq, po_name, po_quantity, po_price
+		) values 
+		 (#{product_seq}
+		 ,#{po_name}
+		 ,#{po_quantity}
+		 ,#{po_price})
+	</insert>
+	
+	<insert id="insertReturnSeq" keyProperty="product_seq">
+		<selectKey keyProperty="product_seq" order="BEFORE" resultType="Integer">
+  			select product_seq.nextval from DUAL
+  		</selectKey> 
+		insert into tbl_product (product_seq, product_name, product_price,
+		product_quantity, product_seller, product_filename, product_info, category_seq, user_nickname)
+		values (#{product_seq}, #{product_name}, #{product_price},
+		#{product_quantity}, #{product_seller}, #{product_filename},
+		#{product_info}, #{category_seq}, #{user_nickname})
+	</insert>
 
 	<sql id="criteria">
 		<where>

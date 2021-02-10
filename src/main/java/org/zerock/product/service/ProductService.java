@@ -9,6 +9,8 @@ import org.zerock.product.domain.ProductVO;
 public interface ProductService {
 	
 	public void register(ProductVO product);
+
+	public void registerReturn(ProductVO product, String[] po_name, String[] po_quantity, String[] po_price);
 	
 	public List<ProductVO> getList(Criteria cri);
 	 

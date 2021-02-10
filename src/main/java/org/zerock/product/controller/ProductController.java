@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.PageDTO;
+import org.zerock.product.domain.ProductOptionVO;
 import org.zerock.product.domain.ProductVO;
 import org.zerock.product.service.ProductService;
 import org.zerock.user.domain.UserVO;
@@ -54,7 +55,7 @@ public class ProductController {
 	}
 
 	@PostMapping("/register")
-	public String register(ProductVO product, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request) {
+	public String register(String[] po_name, String[] po_quantity, String[] po_price, ProductVO product, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request) {
 		
 		//파일 올리는 방법 복사
 				//파일이 업로드 될 경로 설정 
@@ -111,9 +112,20 @@ public class ProductController {
 			System.out.println(fileNamesList);
 			*/
 		
-		service.register(product);
+		service.registerReturn(product,po_name,po_quantity,po_price);
 		
 		rttr.addFlashAttribute("message", "상품이 등록되었습니다.");
+		
+		/* 상품옵션등록-서비스로 옮김 트랜잭션 
+		List<ProductOptionVO> optionList= new ArrayList<ProductOptionVO>(); 
+		for (int i = 0; i<po_name.length ;i++ ) {
+			ProductOptionVO poVO = new ProductOptionVO();
+			poVO.setProduct_seq(product.getProduct_seq());
+			poVO.setPo_name(po_name[i]);
+			poVO.setPo_quantity(Integer.parseInt(po_quantity[i]));
+			poVO.setPo_price(Integer.parseInt(po_price[i]));
+			optionList.add(poVO);
+		}*/
 		
 		return "redirect:/product/list";
 	}
