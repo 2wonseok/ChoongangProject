@@ -34,4 +34,6 @@ public interface UserService {
 	public void smsService(String user_phone, String cerNum);
 	
 	public void userRemove(String user_id);
+	
+	public int modifyPw(UserVO user);
 }

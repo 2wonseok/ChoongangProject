@@ -220,7 +220,7 @@ function reload() {
 					<th>아이디</th>
 					<th>이름</th>
 					<th>휴대폰</th>
-					<th>성별</th>
+					<th>등급</th>
 					<th>가입일</th>
 				</tr>
 			</thead>
@@ -245,7 +245,16 @@ function reload() {
 						</td>
 						<td><c:out value="${user.user_name}"></c:out></td>
 						<td><c:out value="${user.user_phone}"></c:out></td>
-						<td><c:out value="${user.user_gender}"></c:out></td>
+						<td>
+							<c:choose>
+								<c:when test="${user.user_grade == 0}">
+									관리자
+								</c:when>
+								<c:otherwise>
+									Lv.${user.user_grade}
+								</c:otherwise>
+							</c:choose>
+						</td>
 						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${user.user_regdate }"/></td>
 					</tr>
 				</c:forEach>

@@ -344,7 +344,9 @@
 							<input type="button" value="돌아가기" onclick="location.href='${root}/main/index'" id="btn_list">
 						</c:otherwise>
 					</c:choose>
-					<input type="button" value="탈퇴" onclick="location.href='${root}/user/userRemove'" id="btn_remove">
+					<c:if test="${authUser.user_id eq read.user_id }">
+						<input type="button" value="탈퇴" onclick="location.href='${root}/user/userRemove'" id="btn_remove">
+					</c:if>
 				</div>
 			</section>	
 		</div>

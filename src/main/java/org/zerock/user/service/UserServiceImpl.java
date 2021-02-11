@@ -113,4 +113,9 @@ public class UserServiceImpl implements UserService {
 		return mapper.getUserSeq(user_seq);
 	}
 
+	@Override
+	public int modifyPw(UserVO user) {
+		return mapper.modifyPw(user);
+	}
+
 }

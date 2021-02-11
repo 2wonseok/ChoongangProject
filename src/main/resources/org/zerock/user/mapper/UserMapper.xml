@@ -41,12 +41,12 @@
 	<select id="getListWithPaging" resultType="org.zerock.user.domain.UserVO">
 	<![CDATA[
 		SELECT 
-			user_seq, user_id, user_name, user_phone, user_gender, user_regdate
+			user_seq, user_id, user_name, user_phone, user_grade, user_regdate
 		FROM
 			(
 			SELECT
 				ROW_NUMBER() OVER (ORDER BY user_seq DESC) rn,
-		 		user_seq, user_id, user_name, user_phone, user_gender, user_regdate 
+		 		user_seq, user_id, user_name, user_phone, user_grade, user_regdate 
 			FROM tbl_user
 	]]>
 		<include refid="criteria"></include>
@@ -86,6 +86,14 @@
 		UPDATE tbl_user
 		SET
 			user_grade = #{user_grade}
+		WHERE
+			user_id = #{user_id}
+	</update>
+	
+	<update id="modifyPw">
+		UPDATE tbl_user
+		SET
+			user_password = #{user_password}
 		WHERE
 			user_id = #{user_id}
 	</update>

@@ -182,11 +182,11 @@ html, body {
 	background: #e0e0e0;
 }
 #phoneCheck {
-    margin-left: 322px;
+    margin-left: 289px;
     margin-top: -36px;
 }
 #confirmPhone {
-		margin-left: 322px;
+		margin-left: 289px;
     margin-top: -36px;
 }
 </style>

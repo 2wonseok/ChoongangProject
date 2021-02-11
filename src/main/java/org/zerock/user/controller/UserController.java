@@ -325,4 +325,16 @@ public class UserController {
 	public void modPw(String user_id) {
 		
 	}
+	
+	@PostMapping("/modifyPw")
+	public @ResponseBody int modifyPw(UserVO user) {
+		String inputPass = user.getUser_password();
+		String pwd = pwdEncoder.encode(inputPass);
+		user.setUser_password(pwd);
+		
+		int result = service.modifyPw(user);
+		
+		return result;
+	}
+
 }
