@@ -139,4 +139,48 @@
 		UPDATE tbl_reviewboard SET rev_replycnt = rev_replycnt + #{amount}
 		WHERE rev_seq = #{reply_boardseq}
 	</update>
+	
+	<!-- 좋아요 눌렀을때 +1  -->
+	<update id="goodCheck">
+    UPDATE tbl_goodCheck
+    SET like_check = like_check + 1 
+    WHERE user_seq = #{user_seq} AND rev_seq = #{rev_seq}
+  </update>
+  
+  	<!-- 좋아요 취소 -1 -->
+  <update id="goodCheck_cancel">
+    UPDATE tbl_goodCheck
+    SET like_check = 0
+    WHERE user_seq = #{user_seq} AND rev_seq = #{rev_seq}
+  </update>
+  
+	<!-- 좋아요 체크 -->
+  <select id="checkread" resultType="int">
+  	SELECT count(like_check) FROM tbl_goodCheck WHERE user_seq = #{user_seq} AND rev_seq = #{rev_seq}
+  </select>
+  
+	<!-- 좋아요 인서트 -->
+	<insert id="insertCheck">
+		INSERT INTO tbl_goodcheck (goodno, rev_seq, user_seq)
+		VALUES (goodno.nextval, #{rev_seq} , #{user_seq})
+	</insert>
+	
+	<!-- 싫어요 인서트  -->
+	<insert id="hateinsertCheck">
+		INSERT INTO tbl_hatecheck (hateno, rev_seq, user_seq)
+		VALUES (hateno.nextval, #{rev_seq} , #{user_seq})
+	</insert>
+	
+	<!-- 싫어요 체크 -->
+  <select id="hatecheckread" resultType="int">
+  	SELECT count(hate_check) FROM tbl_hateCheck WHERE user_seq = #{user_seq} AND rev_seq = #{rev_seq}
+  </select>
+  
+  <!-- 싫어요 눌렀을때 +1  -->
+	<update id="hateCheck">
+    UPDATE tbl_hateCheck
+    SET hate_check = hate_check + 1 
+    WHERE user_seq = #{user_seq} AND rev_seq = #{rev_seq}
+  </update>
+
 </mapper>

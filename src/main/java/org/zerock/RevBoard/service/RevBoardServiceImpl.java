@@ -1,9 +1,12 @@
 package org.zerock.RevBoard.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.zerock.RevBoard.domain.Criteria;
+import org.zerock.RevBoard.domain.GoodCheck;
+import org.zerock.RevBoard.domain.HateCheck;
 import org.zerock.RevBoard.domain.RevVO;
 import org.zerock.RevBoard.mapper.RevBoardMapper;
 
@@ -84,5 +87,36 @@ public class RevBoardServiceImpl implements RevBoardService{
 	public void pointUpdate(String user_id) {
 		mapper.pointUpdate(user_id);
 		
+	}
+	
+	@Override
+	public void goodCheck(int rev_seq, int user_seq) {
+		mapper.goodCheck(rev_seq, user_seq);
+		
+	}
+	//goodcheck 테이블 읽어오기
+	@Override
+	public int checkread(int user_seq, int rev_seq) {
+		return mapper.checkread(user_seq, rev_seq);
+	}
+	
+	@Override
+	public void insertCheck(GoodCheck goodCheck) {
+		mapper.insertCheck(goodCheck);
+	}
+	
+	@Override
+	public void hateCheck(int user_seq, int rev_seq) {
+		mapper.hateCheck(user_seq, rev_seq);
+	}
+	
+	@Override
+	public int hatecheckread(int user_seq, int rev_seq) {
+		return mapper.hatecheckread(user_seq, rev_seq);
+	}
+	
+	@Override
+	public void hateinsertCheck(HateCheck hateCheck) {
+		mapper.hateinsertCheck(hateCheck);
 	}
 }

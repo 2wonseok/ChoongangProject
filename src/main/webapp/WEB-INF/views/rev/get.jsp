@@ -37,11 +37,22 @@
     line-height: 45px;
     float: right;
 }
+#login_add {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+}
 </style>
 <script>
 	var appRoot = '${root}'; // 자바스크립트 코드에서 contextPath를 쓰기위해 선언.
 	var rev_seq = ${RevBoard.rev_seq}; 
 	var authUser = '${authUser.user_id}';
+	var user_seq = '${authUser.user_seq}';
 </script>
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -120,6 +131,7 @@ $("#reply-submit-button").click(function() {
 	},
 			function() {
 				alert("댓글 등록에 실패하였습니다.");
+			
 	});
 	
 	// 모달창 닫기
@@ -255,16 +267,17 @@ showList();
 		  $.ajax({
 			  method: "get",
 		      url: "/rev/like", 
-		      data: {rev_seq: rev_seq}, 
-		      
-
+		      dataType: "json",
+		      data: {rev_seq: rev_seq, user_seq: user_seq}, 
 		      success: function(data){		    	  
-		          alert("좋아요를 누르셨습니다");
-		          console.log(rev_seq);
-		      },
-		      error(function(e) {  
-		    	  alert("한개의 글에 한번만 클릭이 가능합니다.");
-		    	}) 
+		          alert(data);
+		          if (data == 0) {
+		        	  alert("좋아요를 누르셨습니다!"); 
+		          }
+		      }, error:function(error){
+		    	  alert("좋아요를 이미 누르셨습니다!");
+			     }
+		       
 		  });
 		});		
 	}); 
@@ -275,22 +288,45 @@ showList();
 				   
 				  $.ajax({
 					  method: "get",
-				      url: "/rev/hate", 
-				      data: {rev_seq: rev_seq}, 
-				      
-
-				      success: function(data){		    	  
-				          alert("싫어요를 누르셨습니다");
-				          console.log(rev_seq);
+				      url: "/rev/hate",
+				      dataType: "json",
+				      data: {rev_seq: rev_seq, user_seq: user_seq}, 
+				      success: function(data){	
+				    	  alert(rev_seq);
+				    	  alert(user_seq);
+				          if (data == 0) {
+				        	  alert("싫어요를 누르셨습니다");
+				          }
 				      },
 				      error:function(error){
-				       
-				        alert("싫어요를 실패하셨습니다.");
+				    	  alert("이미 싫어요를 누르셨습니다.");
 				      }
 				  });
 				});		
 			});
 	 
+	 $(document).ready(function() {
+		 
+		 $('#login_add').click(function(){
+			var a = confirm("로그인시 이용가능합니다. 로그인 하시겠습니까?");
+			if (a == true) {
+				location = '${root}/user/login';
+			} else if (a == false) {
+			 //alert("로그인시 이용가능 합니다.");	 
+			}
+		 });
+	 });
+	 $(document).ready(function() {
+		 
+	 	$('#new-reply-button1').click(function(){
+	 		var b = confirm("로그인시 이용가능합니다. 로그인 하시겠습니까?");
+	 		if (b == true) {
+	 		location = '${root}/user/login';
+	 		} else if (b == false) {
+	 		// 현재페이지
+	 		}
+	 	});
+	 });
 </script>
 <title>Insert title here</title>
 </head>
@@ -382,8 +418,13 @@ showList();
 					<c:param name="type" value="${cri.type }"/>
 					<c:param name="keyword" value="${cri.keyword }"/>
 				</c:url>
+		<c:if test="${authUser != null }">
 		<a id="hatebtn" class="btn btn-secondary"  href="">싫어요!</a>
 		<a id="goodbtn" class="btn btn-secondary"  href="">좋아요!</a>
+		</c:if>
+		<c:if test="${authUser == null }">
+		<a id="login_add" class="btn btn-secondary">좋아요,싫어요</a>
+		</c:if>
 		<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer}">
 		<a id="btn_add" class="btn btn-secondary"  href="${modifyLink }">글수정</a>
 		</c:if>
@@ -398,7 +439,12 @@ showList();
 						<span>
 						댓글 목록
 						</span>
+						<c:if test="${authUser != null }">
 						<button class="btn btn-info" id="new-reply-button">댓글 쓰기</button>
+						</c:if>
+						<c:if test="${authUser == null }">
+						<button class="btn btn-info" id="new-reply-button1">댓글 쓰기</button>
+						</c:if>
 					</div>
 					
 					<div class="card-body">

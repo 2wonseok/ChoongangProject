@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.zerock.RevBoard.domain.Criteria;
+import org.zerock.RevBoard.domain.GoodCheck;
+import org.zerock.RevBoard.domain.HateCheck;
 import org.zerock.RevBoard.domain.RevVO;
 
 public interface RevBoardMapper {
@@ -35,4 +37,16 @@ public interface RevBoardMapper {
 	public void pointUpdate(String user_id);
 	
 	public void updateReplyCnt(@Param("reply_boardseq") int reply_boardseq, @Param("amount") int amount);
+	
+	public void goodCheck(@Param("user_seq")int user_seq,@Param("rev_seq") int rev_seq );
+	
+	public int checkread (@Param("user_seq")int user_seq,@Param("rev_seq") int rev_seq);
+	
+	public void insertCheck(GoodCheck goodCheck);
+	
+	public void hateCheck(@Param("user_seq")int user_seq,@Param("rev_seq") int rev_seq );
+	
+	public int hatecheckread (@Param("user_seq")int user_seq,@Param("rev_seq") int rev_seq);
+	
+	public void hateinsertCheck(HateCheck hateCheck);
 }
