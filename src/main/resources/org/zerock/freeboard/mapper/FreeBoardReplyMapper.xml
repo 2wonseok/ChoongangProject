@@ -2,24 +2,50 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-<mapper namespace="org.zerock.freeboard.mapper.FreeBoardReplyMapper">
+
+<mapper
+	namespace="org.zerock.freeboard.mapper.FreeBoardReplyMapper">
 
 	<insert id="insert">
-		INSERT INTO tbl_reply (reply_seq, reply_boardname, reply_boardseq, reply_content, reply_writer, reply_regdate) 
-		VALUES (reply_seq.nextval, 
-		#{reply_boardname}, 
-		#{reply_boardseq}, 
-		#{reply_content}, 
-		#{reply_wirter}, 
-		#{reply_regdate};
+		INSERT INTO tbl_reply (reply_seq, reply_boardname,
+		reply_boardseq, reply_content, reply_writer, reply_regdate)
+		VALUES
+		(reply_seq.nextval,
+		'freeboard',
+		#{reply_boardseq},
+		#{reply_content},
+		#{reply_writer},
+		SYSDATE)
 	</insert>
 
-  <select id="read" resultType="org.zerock.freeboard.domain.FreeBoardReplyVO">
-  		<!--freeboard게시판에 댓글번호  -->
-		SELECT * FROM tbl_reply 
-		WHERE reply_boardname = 'tbl_freeboard' AND reply_boardseq = #{reply_boardseq}
+	<select id="read" resultType="org.zerock.freeboard.domain.FreeBoardReplyVO">
+		<!--freeboard게시판에 댓글번호 -->
+		SELECT * FROM tbl_reply WHERE reply_seq = #{reply_seq}
 	</select>
+
+	<delete id="delete">
+		DELETE FROM tbl_reply WHERE reply_seq = #{reply_seq}
+	</delete>
+
+	<update id="update">
+		UPDATE tbl_reply SET reply_content =
+		#{reply_content}, reply_updatedate = sysdate
+		WHERE reply_seq =
+		#{reply_seq}
+	</update>
 	
-   
+	<select id="getListWithPaging" resultType="org.zerock.freeboard.domain.FreeBoardReplyVO">
+		SELECT 	
+				reply_seq, 
+				reply_boardseq, 
+				reply_content, 
+				reply_writer, 
+				reply_regdate, 
+				reply_updatedate
+		FROM 	tbl_reply
+		WHERE 	reply_boardseq = #{free_seq}
+		ORDER BY 
+				reply_boardseq ASC
+	</select>
+
 </mapper>

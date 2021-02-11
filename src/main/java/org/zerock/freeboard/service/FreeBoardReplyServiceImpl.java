@@ -1,8 +1,11 @@
 package org.zerock.freeboard.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.zerock.freeboard.domain.FreeBoardCriteria;
 import org.zerock.freeboard.domain.FreeBoardReplyVO;
 import org.zerock.freeboard.mapper.FreeBoardMapper;
 import org.zerock.freeboard.mapper.FreeBoardReplyMapper;
@@ -25,8 +28,8 @@ public class FreeBoardReplyServiceImpl implements FreeBoardReplyService {
 		@Transactional
 		public int register(FreeBoardReplyVO vo) {
 			
-			//조회수
-//			boardMapper.updateReplyCnt(vo.getBno(), 1);
+//			조회수
+//			boardMapper.updateReplyCnt(vo.getReply_boardseq(), 1);
 			
 			return mapper.insert(vo);
 		}
@@ -36,22 +39,22 @@ public class FreeBoardReplyServiceImpl implements FreeBoardReplyService {
 			return mapper.read(reply_seq);
 		}
 
-//		@Override
-//		public int modify(ReplyVO vo) {
-//			return mapper.update(vo);
-//		}
-//
-//		@Override
-//		@Transactional
-//		public int remove(Long rno) {
-//			ReplyVO vo = mapper.read(rno);
-//			boardMapper.updateReplyCnt(vo.getBno(), -1);
-//			return mapper.delete(rno);
-//		}
+		@Override
+		public int modify(FreeBoardReplyVO vo) {
+			return mapper.update(vo);
+		}
 
-//		@Override
-//		public List<FreeBoardReplyVO> getList(FreeBoardCriteria cri, Long free_seq) {
-//			return mapper.getListWithPaging(cri, free_seq);
-//		}
+		@Override
+		@Transactional
+		public int remove(int reply_seq) {
+			FreeBoardReplyVO vo = mapper.read(reply_seq);
+//			boardMapper.updateReplyCnt(vo.getReply_boardseq(), -1);
+			return mapper.delete(reply_seq);
+		}
+
+		@Override
+		public List<FreeBoardReplyVO> getList(FreeBoardCriteria cri, int reply_boardseq) {
+			return mapper.getListWithPaging(cri, reply_boardseq);
+		}
 	
 }

@@ -58,7 +58,7 @@ public class FreeBoardController {
 			UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
 			System.out.println("user nick name : "+user.getUser_nickname());
 			//authUser 이름 
-			model.addAttribute("user", user);
+			model.addAttribute("authUser", user);
 			
 		} catch (NullPointerException e) {
 			//로그인하지않았을경우 글쓰기 불가처리
@@ -73,7 +73,7 @@ public class FreeBoardController {
 		
 		UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
 		
-		String anonmyous=request.getParameter("anonmyous");
+		String anonmyous = request.getParameter("anonmyous");
 		System.out.println("POST anonmyous : "+anonmyous);
 		
 		if("y".equals(anonmyous)) {

@@ -8,7 +8,13 @@ import lombok.Data;
 public class FreeBoardReplyVO {
 
 
-	//PK
+//	PK 댓글번호
+//	게시판 번호
+//	댓글 내용
+//	댓글 작성자
+//	댓글 작성일
+//	댓글 수정일
+//	댓글 게시판이름
 	private int reply_seq;
 	private int reply_boardseq;
 	private String reply_content;
