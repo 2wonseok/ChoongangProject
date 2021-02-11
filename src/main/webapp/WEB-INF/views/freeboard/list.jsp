@@ -63,8 +63,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-<u:navbar></u:navbar>
+<u:mainNav></u:mainNav>
 
 <div class="container-sm">
 

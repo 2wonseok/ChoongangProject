@@ -20,7 +20,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<u:navbar></u:navbar>
+	<u:mainNav></u:mainNav>
 	<div class="container-sm">
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
@@ -45,7 +45,7 @@
 
 					<div class="form-group">
 						<label for="input2">닉네임</label> <input type="checkbox" name="anonmyous" value="y">익명
-						<input name="free_nickname" type="text" class="form-control" id="input2" value="${user.user_nickname }">
+						<input name="free_nickname" type="text" class="form-control" id="input2" value="${authUser.user_nickname }">
 					</div>
 
 					<button type="submit" class="btn btn-primary">등록</button>
