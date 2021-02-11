@@ -173,10 +173,6 @@
 							<td>${read.user_nickname }</td>
 						</tr>
 						<tr>
-							<th>성별</th>
-							<td>${read.user_gender }</td>
-						</tr>
-						<tr>
 							<th>주소</th>
 							<td>${read.user_address }</td>
 						</tr>
