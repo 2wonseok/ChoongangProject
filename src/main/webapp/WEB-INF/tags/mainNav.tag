@@ -125,8 +125,9 @@ dl, ul, ol, menu, li {
     background-image: url(${root }/resources/logo/my.png);
     background-position: -106px -144px;
     width: 53px;
-    height: 48px;
+    height: 36px;
     background-size: 100% 100%;
+    margin-top: 8px;
 }
 .c_gnb_usermenu > ul > li .menu {
     overflow: hidden;
@@ -267,7 +268,7 @@ a {
 								<a href="#" data-log-actionid-area="header_util" data-log-actionid-label="coupon">나의 쿠폰</a>
 							</li>
 							<li>
-								<a href="#" >주문/배송조회</a>
+								<a href="${root }/user/userOrderList" >주문/배송조회</a>
 							</li>
 							<li>
 								<a href="#" >취소/반품/교환</a>

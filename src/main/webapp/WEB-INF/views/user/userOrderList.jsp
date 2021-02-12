@@ -1,0 +1,377 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<title>주문목록 / 배송조회</title>
+</head>
+<style>
+#container {
+    clear: both;
+    position: relative;
+    margin: 50px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1200px;
+    z-index: 1;
+}
+#orderList, #ShippingCheck {
+	color: #000; 
+	font-weight: 540; 
+	font-size: 28px; 
+	line-height: 20px;
+}
+.__next-wrap * {
+    box-sizing: border-box;
+}
+.bTiPIu {
+    width: 800px;
+    border-radius: 12px;
+    box-shadow: rgb(0 0 0 / 8%) 0px 2px 4px 0px, rgb(0 0 0 / 16%) 0px 0px 1px 0px;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 20px;
+    padding: 24px 24px 16px;
+}
+.iUvJqV {
+    height: 28px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+.janngp {
+    display: inline-block;
+    width: 50%;
+    height: 28px;
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.4;
+    letter-spacing: -0.5px;
+    color: rgb(17, 17, 17);
+}
+.eNaUsP a {
+    text-align: right;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: -0.5px;
+    color: rgb(52, 106, 255);
+    display: inline-flex;
+    vertical-align: middle;
+    position: relative;
+    width: auto;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+}
+.jmCVTz {
+    height: 16px;
+    line-height: 1;
+    margin: auto;
+    font-family: 나눔고딕, nanumgothic, 돋움, dotum, sans-serif;
+}
+.iBuZkW {
+    border-radius: 8px;
+    border: 1px solid rgb(238, 238, 238);
+    background-color: rgb(255, 255, 255);
+    margin-top: 16px;
+}
+.dGttDc {
+    width: 540px;
+    height: 100%;
+    padding: 20px;
+    border-right: 1px solid rgb(238, 238, 238);
+    vertical-align: top;
+}
+.ibYFEB {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-bottom: 4px;
+}
+.cZPmOa {
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 100%;
+    display: flex;
+    line-height: 1.5;
+}
+.dytMBJ:first-child {
+    margin-top: 20px;
+}
+.dzhZkT:empty {
+    display: none;
+}
+.dzhZkT {
+    position: relative;
+    top: -16px;
+    display: flex;
+    align-items: flex-start;
+    -webkit-box-pack: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.dZgxvg {
+    overflow: hidden;
+}
+.OtWkv {
+    display: flex;
+    flex-direction: row;
+}
+.aazNk {
+    width: 64px;
+    position: relative;
+    margin-right: 16px;
+}
+.__next-wrap a, .__next button {
+    -webkit-touch-callout: none;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+}
+.iHCTXb {
+    opacity: 1;
+}
+.XoVxb {
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    overflow: hidden;
+    user-select: none;
+    cursor: pointer;
+    border-radius: 4px;
+    display: inline-flex;
+}
+.gnMgPh {
+    user-select: none;
+    overflow: hidden;
+    flex: 1 1 0%;
+    display: flex;
+}
+.gJsjSt {
+    display: flex;
+    flex: 1 1 0%;
+    user-select: none;
+    min-width: 0px;
+    flex-direction: column;
+}
+.cbBmbp:empty {
+    display: none;
+}
+.cbBmbp:not(:last-child) {
+    margin-bottom: 4px;
+}
+.cbBmbp {
+    display: flex;
+    line-height: 1.5;
+}
+.cbBmbp:not(:last-child) {
+    margin-bottom: 4px;
+}
+.jBDGcA {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+.bEFRXv {
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}  
+.kBhIpv {
+    min-height: 2.25rem;
+    padding: 0px 12px;
+}
+.jluEnQ {
+    display: inline-flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    padding-left: 12px;
+    padding-right: 12px;
+    user-select: none;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    appearance: none;
+    height: 2.25rem;
+    border-radius: 4px;
+    color: rgb(17, 17, 17);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(221, 221, 221);
+    -webkit-tap-highlight-color: rgba(52, 106, 255, 0.1);
+    font-size: 0.875rem;
+}
+.kstGdW {
+    width: 174px;
+    height: 100%;
+    text-align: center;
+}
+.ebLxeX {
+    display: flex;
+    flex-flow: column wrap;
+    height: 100%;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 20px;
+}
+.kSkBV {
+    min-height: 2.25rem;
+    font-size: 0.875rem;
+    width: 160px;
+    margin: 4px 0px;
+}
+.iBLteB {
+    display: inline-flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    padding-left: 12px;
+    padding-right: 12px;
+    user-select: none;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    appearance: none;
+    height: 1.75rem;
+    width: 100%;
+    border-radius: 4px;
+    color: rgb(17, 17, 17);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(221, 221, 221);
+    -webkit-tap-highlight-color: rgba(52, 106, 255, 0.1);
+    font-size: 0.75rem;
+}
+</style>
+<body>
+<u:mainNav/>
+<c:choose>
+	<c:when test="${authUser != null }">
+		<div class="container">
+			<section id ="container">
+			<h3><a href="#" id="orderList">주문 목록</a>&nbsp; | &nbsp;<a href="#" id="ShippingCheck">배송조회</a></h3>
+				<div class="DesktopOrderList__Wrapper-qxzqk9-0 kWqHSE">
+					<div class="DesktopOrderBoxRoot__Wrapper-fimazj-0 bTiPIu">
+						<div class="DesktopOrderBoxHeader__Wrapper-abukv2-0 iUvJqV">
+							<div class="DesktopOrderBoxHeader__OrderDate-abukv2-1 janngp">
+								2021.02.13 주문
+							</div>
+							<div class="DesktopOrderBoxHeader__OrderDetailLink-abukv2-2 eNaUsP">
+								<span class="DesktopOrderBoxHeader__OrderDetailLinkText-abukv2-3 jmCVTz">
+									<a id="detail" href="#">주문 상세 보기 ></a>
+								</span>
+							</div>
+						</div>	
+						<div class="DesktopOrderBoxStyle__DesktopOrderBoxBundleWrapper-gnmni8-0 iBuZkW">
+							<table class="DesktopOrderBoxStyle__DesktopOrderBoxBundleTable-gnmni8-1 gPVQGK">
+								<colgroup><col width="600"></colgroup>
+								<tbody class="DesktopOrderBoxStyle__DesktopOrderBoxBundleTableBody-gnmni8-2 eYVArJ">
+									<tr class="DesktopOrderBoxStyle__DesktopOrderBoxBundleRow-gnmni8-3 gOLjDE">
+										<td class="DesktopOrderBoxStyle__DesktopOrderBoxBundleContentsWrapper-gnmni8-4 dGttDc">
+											<div class="DesktopOrderBoxBundleHeaderLayout__Wrapper-ki5ja7-0 ibYFEB">
+												<div class="DesktopOrderBoxBundleHeaderLayout__Wrapper-ki5ja7-0 ibYFEB">
+													배송 완료 2/12(금) 도착
+												</div>
+											</div>
+											<div class="DesktopOrderBoxGoodsProductList__Wrapper-sc-1jiyjbz-0 eEWKXq">
+												<div class="DesktopOrderBoxStyle__DesktopOrderBoxProductWrapper-gnmni8-8 dytMBJ">
+													<div class="DesktopOrderBoxGoodsProductNoticeMessage__Wrapper-g8964r-0 dzhZkT"></div>
+													
+													<div class="DesktopProductImageLayout__Wrapper-sc-9cwg9-1 dZgxvg">
+														<div class="DesktopProductImageLayout__ProductInfoWrapper-sc-9cwg9-2 OtWkv">
+															<div class="DesktopProductImageLayout__LeftArea-sc-9cwg9-3 aazNk">
+																<a class="SquareImg__Anchor-sc-1uwk3m0-0 XoVxb DesktopProductImageLayout__ProductImage-sc-9cwg9-0 iHCTXb">
+																	<img width="64" height="64" src="${root }/resources/logo/BCDLogo3.png" alt="애플 에어팟" class="SquareImg__Img-sc-1uwk3m0-1 cSfzyy">
+																</a>
+															</div>
+															<div class="DesktopProductImageLayout__RightArea-sc-9cwg9-5 gnMgPh">
+																<div class="DesktopProductImageLayout__ProductArea-sc-9cwg9-6 gJsjSt">
+																	<div class="DesktopOrderBoxStyle__DesktopOrderBoxProductTextWrapper-gnmni8-9 cbBmbp"></div>
+																	<div class="DesktopOrderBoxStyle__DesktopOrderBoxProductTextWrapper-gnmni8-9 DesktopOrderBoxGoodsBodyText__Paragraph-sc-8q24ha-0 cbBmbp jBDGcA">
+																		<span color="#111111" class="BodyText__BodyTextM-sc-755zt3-1 DesktopOrderBoxGoodsBodyText__ProductText-sc-8q24ha-1 jgZoAn wEFvN">
+																			애플 에어팟 프로 실리콘 케이스, 네이비
+																		</span>
+																	</div>
+																	<div class="DesktopOrderBoxStyle__DesktopOrderBoxProductTextWrapper-gnmni8-9 DesktopOrderBoxGoodsBodyText__PriceAndCartWrapper-sc-8q24ha-4 cbBmbp bEFRXv">
+																		<div class="DesktopOrderBoxGoodsBodyText__PriceTextWrapper-sc-8q24ha-2 hgNRNX">
+																			<div class="DesktopOrderBoxGoodsItemPriceAndQuantity__Wrapper-uaa4l4-0 jrOJCy">
+																				<span font-weight="normal" class="BodyText__BodyTextL-sc-755zt3-0 jbEZNk">5,000원</span>
+																				<span class="TextDot__DotContainer-sc-13xhsmd-0 AbwgC">
+																					<span class="TextDot__Dot-sc-13xhsmd-1 fYxTqY"></span>
+																				</span>
+																				<span class="BodyText__BodyTextL-sc-755zt3-0 bqCRgI">1개</span>
+																			</div>
+																		</div>
+																		<div class="DesktopOrderBoxGoodsBodyText__AddCartButtonWrapper-sc-8q24ha-3 dhufUh">
+																			<button class="RectButton__Wrapper-sc-1k9quwu-0 jluEnQ DesktopAddToCartButton__CartButton-xuyxga-0 kBhIpv">
+																				장바구니 담기</button>
+																			<div class="DesktopAddToCartButton__InfoWrapper-xuyxga-1 TTZuV"></div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</td>
+										<td class="DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceWrapper-gnmni8-5 kstGdW">
+											<div class="DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceInnerWrapper-gnmni8-6 ebLxeX">
+												<button class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
+													교환신청
+												</button>
+												<button class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
+													반품신청
+												</button>
+												<button class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
+													구매후기 쓰기
+												</button>
+												<button class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
+													판매자 문의하기
+												</button>
+											</div>
+										</td>
+									</tr>
+								
+								</tbody>
+							
+							</table>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>	
+	</c:when>
+	<c:otherwise>
+		<script>
+			alert('로그인 사용자만 이용 가능합니다.');
+			location.href="${root}/main/index";
+		</script>
+	</c:otherwise>
+</c:choose>
+
+</body>
+</html>
