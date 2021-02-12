@@ -65,11 +65,11 @@ var replyService = (function() {
 		})
 	}
 	
-	//삭제
+	//삭제 (일반)
 	function remove(reply_seq, callback, error) {
 		$.ajax({
 			type: "delete",
-			url: appRoot + "/reply/delete/" + reply_seq,
+			url: appRoot + "/reply/" + reply_seq,
 			success: function(result, status, xhr) {
 				if(callback) {
 					callback(result);
@@ -84,11 +84,11 @@ var replyService = (function() {
 	};
 	
 	
-	//관리자 삭제
+	//삭제 (관리자)
 	function remove_admin(reply_seq, callback, error) {
 		$.ajax({
 			type: "delete",
-			url: appRoot + "/reply/" + reply_seq,
+			url: appRoot + "/reply/delete/" + reply_seq,
 			success: function(result, status, xhr) {
 				if(callback) {
 					callback(result);
