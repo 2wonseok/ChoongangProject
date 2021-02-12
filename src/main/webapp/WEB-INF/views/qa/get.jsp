@@ -99,6 +99,7 @@ $(document).ready(function() {
 		return d.toISOString().split("T")[0];
 	};
 
+
 	// 댓글 목록 가져오기
 	function showList() {			
 		replyService.getList({qa_seq: seq}, function(list) {
@@ -108,47 +109,39 @@ $(document).ready(function() {
 
 			for (var i = 0; i < list.length; i++) {
 				
+				var seq = list[i].reply_seq;
+				var content = list[i].reply_content;
 				var writer = list[i].reply_writer;
 				var regdate = list[i].reply_regdateKST;
 				
-				var replyLI = '<li class="media" data-seq="'
-				+ list[i].reply_seq + '"><div class="media-body">'
-				+ list[i].reply_writer + '<small class="float-right text-primary">'
-				+ moment(regdate).format('YYYY.MM.DD.HH:mm')
-				+ '</small><br>';
+				var replyLI = 
+					'<li class="main" data-seq="'+ seq +'">'
+					+ '<div>'
+					+ '<div class="content" value="'+ content +'">' + content +'</div>'
+					+ '<small class="float-right text-primary">'
+					+ '<div class="modify">수정</div>'
+					+ '<div class="delete">삭제</div>'
+					+ '</small>'
+					+ '</div>'
+					+ '<div>'+ writer +'</div>'
+					+ '<small class="float-reft text-primary">'
+					+ moment(regdate).format('YYYY.MM.DD.HH:mm') 
+					+ '</small>'
+					+ '</li>'
+					+ '<hr>';
 				
-				replyUL.append(replyLI);
+				replyUL.append(replyLI);	
+
+			};
+			
+			if(writer == ninckname) {
+				var reply_add = 'ㅇㅇㅇㅇ';
 				
-				var replyCT =
-				'<h5>'
-				+ '<input size="30" style="border:none" readonly class="reply_content" value="'
-				+ list[i].reply_content + '">'
-				+ '</h5>';
-				
-				replyUL.append(replyCT);
-				
-				// 댓글 작성자와 댓글의 닉네임이 동일할시
-				if(writer == nickname) {
-					replyUL.append(
-							// 삭제 버튼
-							'<div class="line" >'
-							+ '<input type="hidden" class="reply_seq" value="' + list[i].reply_seq + '">'
-							+ '<button class="reply_delete">삭제</button>'
-							+ '</div></li>'		
-							+ '<div class="line" >'
-							+ '<input type="hidden" class="reply_modify_seq" value="' + list[i].reply_seq + '">'
-							+ '<button class="reply_modify">수정</button>'
-							+ '<button type="button" hidden class="reply_modify_good">수정</button>'
-							+ '<hr></div></li>'
-							);					
-				} else {
-					replyUL.append('<hr></div></li>');
-				};		
-				
+				replyUL.append(reply_add);
 			};
 
 			
-			// 삭제 버튼 이벤트 처리
+			/* // 삭제 버튼 이벤트 처리
 			$(".reply_delete").click(function() {
 				console.log("삭제 클릭");
 
@@ -218,25 +211,20 @@ $(document).ready(function() {
 					
 				});
 
-			});	
+			}); */	
 			
 			
 		});		
-	};
-	
-	
-
+	}
 	
 	// 일반 유저 댓글 쓰기
 	$("#reply-submit-button").click(function() {
-		console.log("등록 버튼 클릭");
-		
+		console.log("등록 버튼 클릭");		
 		// input 에서 value 가져와서 변수에 저장
 		var reply_content = $("#reply_content_input").val();
 		var reply_writer = $("#reply_writer_input").val();		
 		// ajax 요청을 위한 데이터 만들기
-		var data = {reply_boardseq: seq, reply_writer: reply_writer, reply_content: reply_content};
-		
+		var data = {reply_boardseq: seq, reply_writer: reply_writer, reply_content: reply_content};		
 		
 		replyService.add(data, 
 				function() {
@@ -283,6 +271,39 @@ $(document).ready(function() {
 
 	});
 	
+	// reply-list seq, content 값 불러오고 삭체 처리 처리
+	$("#reply_list").on("click", ".delete", function() {		
+		// 하나의 댓글 읽어오기
+		var seq = $(this).parent('small').parent('div').parent('li').attr("data-seq");
+		var content = $(this).parent('small').parent('div').children('div').attr("value");
+ 		alert(seq); 
+ 		alert(content); 
+ 		if(confirm("삭제 하시겠습니까?") == true){
+			replyService.remove(seq, function() {
+				alert("댓글 삭제 완료.");
+				showList();								
+				});						
+			} else {
+				showList();		
+			};
+	});
+	
+	/* 
+	'<li class="main" data-seq="'+ seq +'">'
+	+ '<div>'
+	+ '<div class="content">'+ content +'</div>'
+	+ '<small class="float-right text-primary">'
+	+ '<div class="tag">수정,삭제</div>'
+	+ '</small>'
+	+ '</div>'
+	+ '<div>'+ writer +'</div>'
+	+ '<small class="float-reft text-primary">'
+	+ moment(regdate).format('YYYY.MM.DD.HH:mm') 
+	+ '</small>'
+	+ '</li>'
+	+ '<hr>'
+	 */
+/* 	$(this).parent('div').find('.reply_modify_seq').val(); */
 	// 댓글 목록 함수 showList() 불러오기
 	showList();
 });

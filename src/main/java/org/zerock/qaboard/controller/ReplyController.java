@@ -86,8 +86,25 @@ public class ReplyController {
 	
 
 	
-	// 댓글 삭제	
+	// 댓글 삭제	(관리자)
 	
+	@DeleteMapping(path = "/delete/{reply_seq}", 
+			produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> remove_admin(@PathVariable("reply_seq") int reply_seq) {
+		
+		int cnt = reply_service.delete_admin(reply_seq);
+		
+		log.info(cnt);
+		
+		if(cnt == 1) {
+			return new ResponseEntity<String>("success /reply_seq delete", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
+		
+	}
+	
+	// 댓글 삭제 ( 일반)
 	@DeleteMapping(path = "/{reply_seq}", 
 			produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> remove(@PathVariable("reply_seq") int reply_seq) {
