@@ -277,8 +277,8 @@ showList();
 		      }, error:function(error){
 		    	  alert("좋아요를 이미 누르셨습니다!");
 			     }
-		       
 		  });
+		  
 		});		
 	}); 
 
@@ -425,7 +425,7 @@ showList();
 		<c:if test="${authUser == null }">
 		<a id="login_add" class="btn btn-secondary">좋아요,싫어요</a>
 		</c:if>
-		<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer}">
+		<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
 		<a id="btn_add" class="btn btn-secondary"  href="${modifyLink }">글수정</a>
 		</c:if>
 		<a id="btn_add" class="btn btn-secondary"  href="${listLink }">목록으로</a>

@@ -182,5 +182,13 @@
     SET hate_check = hate_check + 1 
     WHERE user_seq = #{user_seq} AND rev_seq = #{rev_seq}
   </update>
-
+	
+	<delete id="goodCheckremove">
+		DELETE FROM tbl_goodCheck WHERE rev_seq = #{rev_seq}
+	</delete>
+	<!-- 글 삭제시에 관련 싫어요행 삭제  -->
+	<delete id="hateCheckremove">
+		DELETE FROM tbl_hateCheck WHERE rev_seq = #{rev_seq}
+	</delete>
+	
 </mapper>

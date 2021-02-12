@@ -359,8 +359,10 @@ public class RevBoardController {
 
 	@PostMapping("/remove")
 	public String remove(@RequestParam("rev_seq") int rev_seq, Criteria cri, RedirectAttributes rttr) {
-
+		service.goodCheckremove(rev_seq);
+		service.hateCheckremove(rev_seq);
 		if (service.remove(rev_seq)) {
+			
 			rttr.addFlashAttribute("result", "success");
 			rttr.addFlashAttribute("message", rev_seq + "번 글이 삭제되었습니다.");
 		}
@@ -390,7 +392,9 @@ public class RevBoardController {
 			service.addGood(check.getRev_seq()); // 좋아요를 1눌러줌
 			service.goodCheck(check.getUser_seq(), check.getRev_seq()); // 좋아요를 눌러서 체크 + 1 ( 하기전엔 체크 0 )
 			return 0;
-		} 
+		}  if (cnt > 1) {
+			
+		}
 		return 1;
 	}
 
