@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.zerock.qaboard.domain.Criteria;
 import org.zerock.qaboard.domain.QaReplyVO;
@@ -131,6 +132,18 @@ public class ReplyController {
 		return new ResponseEntity<QaReplyVO> (vo, HttpStatus.OK);
 	}
 	
+	// 댓글 수정 테스트
+	@GetMapping("/modify")
+	public @ResponseBody int modifyTest(QaReplyVO vo) {
+		
+		int cnt = reply_service.update(vo);
+		
+		System.out.println("성공 여부:" + cnt);
+		
+		return cnt;
+	}
+	
+	
 	// 댓글 수정
 	
 	@RequestMapping(path = "/{reply_seq}", 
@@ -141,7 +154,7 @@ public class ReplyController {
 	public ResponseEntity<String> modify(
 			@RequestBody QaReplyVO vo, 
 			@PathVariable int reply_seq) {
-
+		
 		vo.setReply_seq(reply_seq);
 
 		int cnt = reply_service.update(vo);
