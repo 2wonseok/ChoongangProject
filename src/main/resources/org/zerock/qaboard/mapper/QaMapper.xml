@@ -30,11 +30,11 @@
 
 	<select id="getListWithPaging" resultType="org.zerock.qaboard.domain.QaVO">
    <![CDATA[
-   SELECT qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status, qa_replycnt 
+   SELECT qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status, qa_replycnt, qa_replycnt_admin 
    FROM
    (
    SELECT ROW_NUMBER() OVER (ORDER BY qa_seq DESC) rn, 
-   qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status, qa_replycnt     
+   qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status, qa_replycnt, qa_replycnt_admin    
    FROM tbl_qaboard
    ]]>
    

@@ -65,11 +65,30 @@ var replyService = (function() {
 		})
 	}
 	
-	//삭제
+	//삭제 (일반)
 	function remove(reply_seq, callback, error) {
 		$.ajax({
 			type: "delete",
 			url: appRoot + "/reply/" + reply_seq,
+			success: function(result, status, xhr) {
+				if(callback) {
+					callback(result);
+				};
+			},
+			error: function(xhr, status, er) {
+				if(error) {
+				error(er);
+				};
+			}
+		});
+	};
+	
+	
+	//삭제 (관리자)
+	function remove_admin(reply_seq, callback, error) {
+		$.ajax({
+			type: "delete",
+			url: appRoot + "/reply/delete/" + reply_seq,
 			success: function(result, status, xhr) {
 				if(callback) {
 					callback(result);
@@ -103,12 +122,26 @@ var replyService = (function() {
 		});
 	};
 	
+	function get(reply_seq, callback, error) {
+		$.get(appRoot + '/reply/' + reply_seq, function(data) {
+			if (callback) {
+				callback(data);
+			}
+		}).fail(function() {
+			if (error) {
+				error();
+			}
+		});
+	};
+	
 	return {
 		getList: getList,
 		add: add,
 		add_admin: add_admin,
 		remove: remove,
-		modify: modify
+		remove_admin: remove_admin,
+		modify: modify,
+		get: get
 		};
 	
 })();

@@ -62,6 +62,7 @@ public class QaController {
 		
 	}
 	
+	
 //	@RequestMapping(value="/register", method = RequestMethod.POST)
 	
 	@GetMapping("/register")
@@ -253,6 +254,33 @@ public class QaController {
 		return "redirect:/qa/list";
 	}
 	
+	
+
+	// test 추가본/////////////////////////////////////////
+	@GetMapping("/listTest")
+    public void list_test(@ModelAttribute("criteria") Criteria cri,
+            Model model) {
+
+        // 게시물 리스트 가져오기
+        List<QaVO> list = service.getList(cri);
+        int total = service.getTotal(cri);
+        PageDTO dto = new PageDTO(cri, total);
+        model.addAttribute("list", list);
+        model.addAttribute("pageMaker", dto);
+
+
+    }
+	
+	@GetMapping("/getTest")
+	public void get_test(@RequestParam("qa_seq") int qa_seq,
+			@ModelAttribute("criteria") Criteria cri, 
+		            Model model) {
+
+		QaVO vo = service.get(qa_seq);
+		service.addCnt(qa_seq);
+		model.addAttribute("board", vo);
+
+	}
 	
 
 }

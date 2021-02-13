@@ -204,7 +204,7 @@ $(document).ready(function() {
 					<input type="hidden" value="${cri.amount }" name="amount" /> 
 					<input type="hidden" value="${cri.type }" name="type" /> 
 					<input type="hidden" value="${cri.keyword }" name="keyword" /> 
-					<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer}">
+					<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
 					<button id="btn_add" type="submit" class="btn btn-primary">글 수정</button>
 					<button id="remove-btn" type="submit" class="btnbtn-danger">글
 						삭제</button>

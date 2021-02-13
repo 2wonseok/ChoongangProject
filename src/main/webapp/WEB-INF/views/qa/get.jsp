@@ -13,6 +13,8 @@
 var appRoot = '${root}';
 var seq = ${board.qa_seq};
 var nickname = '${authUser.user_nickname}';
+var grade = '${authUser.user_grade}';
+
 </script>
 <script
   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -74,9 +76,7 @@ var nickname = '${authUser.user_nickname}';
 	boder-bottom:0px;
 }  */
 
-.line {
-	display: inline;
-}
+
 </style>
 
 <script>
@@ -99,6 +99,7 @@ $(document).ready(function() {
 		return d.toISOString().split("T")[0];
 	};
 
+
 	// 댓글 목록 가져오기
 	function showList() {			
 		replyService.getList({qa_seq: seq}, function(list) {
@@ -108,135 +109,75 @@ $(document).ready(function() {
 
 			for (var i = 0; i < list.length; i++) {
 				
+				var seq = list[i].reply_seq;
+				var content = list[i].reply_content;
 				var writer = list[i].reply_writer;
 				var regdate = list[i].reply_regdateKST;
-				
-				var replyLI = '<li class="media" data-seq="'
-				+ list[i].reply_seq + '"><div class="media-body">'
-				+ list[i].reply_writer + '<small class="float-right text-primary">'
-				+ moment(regdate).format('YYYY.MM.DD.HH:mm')
-				+ '</small><br>';
-				
-				replyUL.append(replyLI);
-				
-				var replyCT =
-				'<h5>'
-				+ '<input size="30" style="border:none" readonly class="reply_content" value="'
-				+ list[i].reply_content + '">'
-				+ '</h5>';
-				
-				replyUL.append(replyCT);
-				
-				// 댓글 작성자와 댓글의 닉네임이 동일할시
-				if(writer == nickname) {
+								
+				// 로그인 아이디와 닉네임이 동일 하고, 등급이 1(일반) 인 경우
+				if(writer == nickname && grade == 1) {
 					replyUL.append(
-							// 삭제 버튼
-							'<div class="line" >'
-							+ '<input type="hidden" class="reply_seq" value="' + list[i].reply_seq + '">'
-							+ '<button class="reply_delete">삭제</button>'
-							+ '</div></li>'		
-							+ '<div class="line" >'
-							+ '<input type="hidden" class="reply_modify_seq" value="' + list[i].reply_seq + '">'
-							+ '<button class="reply_modify">수정</button>'
-							+ '<button type="button" hidden class="reply_modify_good">수정</button>'
-							+ '<hr></div></li>'
-							);					
-				} else {
-					replyUL.append('<hr></div></li>');
-				};		
-				
+						'<li class="main" data-seq="'+ seq +'">'
+						+ '<div>'
+						+ '<div class="content" value="'+ content +'">' + content +'</div>'	
+						+ '<small class="float-right text-primary">'
+						+ '<div class="modify">수정</div>'
+						+ '<div class="delete">삭제</div>'
+						+ '</small>'
+						+ '</div>'
+						+ '<div>'+ writer +'</div>' 
+						+ '<small class="float-reft text-primary">'
+						+ moment(regdate).format('YYYY.MM.DD.HH:mm') 
+						+ '</small>'
+						+ '</li>'
+						+ '<hr>'				
+					);			
+				} 
+				// 로그인 아이디와 닉네임이 동일 하고, 등급이 0(관리자) 인 경우
+				else if(writer == nickname && grade == 0) {
+					replyUL.append(
+						'<li class="main" data-seq="'+ seq +'">'
+						+ '<div>'
+						+ '<div class="content" value="'+ content +'">' + content +'</div>'	
+						+ '<small class="float-right text-primary">'
+						+ '<div class="modify_admin">수정</div>'
+						+ '<div class="delete_admin">삭제</div>'
+						+ '</small>'
+						+ '</div>'
+						+ '<div>'+ writer +'</div>'
+						+ '<small class="float-reft text-primary">'
+						+ moment(regdate).format('YYYY.MM.DD.HH:mm') 
+						+ '</small>'
+						+ '</li>'
+						+ '<hr>'				
+					);			
+				} else { //로그인 되어있지 않은 유저나, 로그인 되어있지만 댓글을 작성하지 않은 유저
+					replyUL.append(
+							'<li class="main" data-seq="'+ seq +'">'
+							+ '<div>'
+							+ '<div class="content" value="'+ content +'">' + content +'</div>'	
+							+ '</div>'
+							+ '<div>'+ writer +'</div>'
+							+ '<small class="float-reft text-primary">'
+							+ moment(regdate).format('YYYY.MM.DD.HH:mm') 
+							+ '</small>'
+							+ '</li>'
+							+ '<hr>'
+					);
+				} 
 			};
-
-			
-			// 삭제 버튼 이벤트 처리
-			$(".reply_delete").click(function() {
-				console.log("삭제 클릭");
-
-				
-			var reply_seq = $(this).parent('div').find('.reply_seq').val();
-			console.log(reply_seq);
-			
-			if(confirm("삭제 하시겠습니까?") == true){
-				replyService.remove(reply_seq, function() {
-					alert("댓글 삭제 완료.");
-					showList();								
-					});						
-				} else {
-					showList();		
-				};
-
-			});
-			
-			// 수정 버튼 이벤트 처리
-			$(".reply_modify").click(function() {
-				console.log("수정 클릭");
-				
-				var reply_seq = $(this).parent('div').find('.reply_modify_seq').val();
-				console.log(reply_seq);
-			
-				var _idx = null;
-				
-				
-				// reply_seq의 번호찾기 
-				for (var i = 0; i < list.length; i++) {
-					//var reply_content = $("#reply_list").find('h5')[i].children[i].value;
-					if(list[i].reply_seq == reply_seq){
-						_idx = i;
-					 	 break;  
-					}					
-				}
- 				var con = $(".reply_content")[_idx];
-				console.log("인덱스 번호 : " + _idx);
-					
-				$('.reply_content')[_idx].readOnly = false
-				$('.reply_content')[_idx].style = false	
-				$('.reply_delete')[_idx].hidden = true
-				$('.reply_modify')[_idx].hidden = true
-				$('.reply_modify_good')[_idx].hidden = false
-				
-				// 수정 처리
-				$(".reply_modify_good").click(function() {
-					
-					console.log(list[i].reply_seq);
-					console.log(list[i].reply_content);
-
-					var reply_content = $(".reply_content")[_idx];
-					
-					var text = $(this).attr('data_text');
-
-
-					console.log(reply_content);
-
-					var data = {reply_seq: list[i].reply_seq, reply_content: reply_content_mod}; 
-					
-					
-					replyService.modify(data, function() {
-						alert("댓글을 수정 하였습니다.");
-						showList();
-
-					});
-					
-				});
-
-			});	
-			
 			
 		});		
 	};
 	
-	
-
-	
-	// 일반 유저 댓글 쓰기
+	// 댓글 쓰기 (일반)
 	$("#reply-submit-button").click(function() {
-		console.log("등록 버튼 클릭");
-		
+		console.log("등록 버튼 클릭");		
 		// input 에서 value 가져와서 변수에 저장
 		var reply_content = $("#reply_content_input").val();
 		var reply_writer = $("#reply_writer_input").val();		
 		// ajax 요청을 위한 데이터 만들기
-		var data = {reply_boardseq: seq, reply_writer: reply_writer, reply_content: reply_content};
-		
+		var data = {reply_boardseq: seq, reply_writer: reply_writer, reply_content: reply_content};		
 		
 		replyService.add(data, 
 				function() {
@@ -255,7 +196,7 @@ $(document).ready(function() {
 
 	});	
 	
-	// 관리자 댓글 쓰기
+	// 댓글 쓰기 (관리자)
 	$("#reply-submit-button_admin").click(function() {
 		console.log("등록 버튼 클릭");
 		
@@ -282,6 +223,56 @@ $(document).ready(function() {
 		$("#reply_content_input").val(""); 
 
 	});
+	
+	// 삭제 처리 (일반)
+	// reply-list seq, content 값 불러오고 삭체 처리 처리
+	$("#reply_list").on("click", ".delete", function() {		
+		// 하나의 댓글 읽어오기
+		var seq = $(this).parent('small').parent('div').parent('li').attr("data-seq");
+		var content = $(this).parent('small').parent('div').children('div').attr("value");
+ 
+ 		if(confirm("삭제 하시겠습니까?") == true){
+			replyService.remove(seq, function() {
+				alert("댓글 삭제 완료.");
+				showList();								
+				});						
+			} else {
+				showList();		
+			};
+	});
+	
+	// 삭제 처리 (관리자)
+	// reply-list seq, content 값 불러오고 삭체 처리 처리
+	$("#reply_list").on("click", ".delete_admin", function() {		
+		// 하나의 댓글 읽어오기
+		var seq = $(this).parent('small').parent('div').parent('li').attr("data-seq");
+		var content = $(this).parent('small').parent('div').children('div').attr("value");
+
+ 		if(confirm("삭제 하시겠습니까?") == true){
+			replyService.remove_admin(seq, function() {
+				alert("댓글 삭제 완료.");
+				showList();								
+				});						
+			} else {
+				showList();		
+			};
+	}); 
+	
+	
+	
+/* 	// 댓글 값 가져오기
+	// 수정 버튼 이벤트 처리
+	$("#reply_list").on("click", ".modify", function() {
+		var seq = $(this).parent('small').parent('div').parent('li').attr("data-seq");
+		var content = $(this).parent('small').parent('div').children('div').attr("value");
+		
+		
+ 		var data = {reply_seq: seq, reply_content: content};		
+		replyService.modify(data, function() {
+			alert("댓글을 수정 하였습니다.");
+			showList();
+		});		
+	}); */
 	
 	// 댓글 목록 함수 showList() 불러오기
 	showList();
@@ -390,6 +381,7 @@ $(document).ready(function() {
 					<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
 			</c:if>
 			<br><br>
+			
 <!-- 
 // 댓글 목록 AJAX
  -->
@@ -403,6 +395,7 @@ $(document).ready(function() {
 <c:if test="${empty authUser.user_nickname}">
 	로그인시 댓글 작성 가능. (로그인 마크)
 </c:if>
+
 
 
 
@@ -432,6 +425,44 @@ $(document).ready(function() {
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="modify-delete-reply-modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">
+						수정 / 삭제
+					</h5>
+					<button type="button" class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<input id="reply-rno" type="hidden"/>
+					<div class="form-group">
+						<label for="reply-modify-delete" class="col-form-label">
+							댓글
+						
+						</label>
+						<input type="text" class="form-control" id="reply-modify-delete">
+					</div>
+					<div class="form-group">
+						<label for="reply-input" class="col-form-label">
+							작성자
+						</label>
+						<input readonly type="text" class="form-control" id="replyer-modify-delete">
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="reply-modify-button">수정</button>
+					<button type="button" class="btn btn-danger" id="reply-remove-button">삭제</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+				</div>
+				
+			</div>		
+		</div>
+	</div>
 </body>
 
 </html>

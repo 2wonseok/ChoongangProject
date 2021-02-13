@@ -184,16 +184,7 @@ function checkTree(chk){
             <td>${board.qa_category} </td>  
             
             <td>
-            
-            <c:url value="/qa/get" var="boardLink">
-            	<c:param value="${board.qa_seq }" name="qa_seq" />
-            	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
-            	<c:param value="${pageMaker.cri.amount }" name="amount" />
-            	<c:param value="${pageMaker.cri.type }" name="type"	/>
-            	<c:param value="${pageMaker.cri.keyword }" name="keyword" />
-            </c:url>
-            
-            <c:url value="/qa/get_secret" var="boardLink_secret">
+            <c:url value="/qa/getTest" var="boardLink">
             	<c:param value="${board.qa_seq }" name="qa_seq" />
             	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
             	<c:param value="${pageMaker.cri.amount }" name="amount" />
@@ -206,38 +197,23 @@ function checkTree(chk){
             	<c:when test="${board.qa_secret eq '비공개'}"> <i class="fas fa-lock"></i> </c:when>
 				<c:when test="${board.qa_secret eq '공개'}"> <i class="fas fa-lock-open"></i> </c:when>
             	</c:choose>
-            	<c:if test="${board.qa_secret == '공개' }">
-            		<c:out value="${board.qa_title}" />
-            	</c:if>
+            	
+	            <c:out value="${board.qa_title}" />
+   	            <c:if test="${board.qa_replycnt gt 0 }">
+	            	<span class="badge badge-warning">유저:${board.qa_replycnt }</span>	        
+  	           	</c:if> 
+  	           	
+  	           	<c:if test="${board.qa_replycnt_admin gt 0 }">
+	            	<span class="badge badge-success">관리자:${board.qa_replycnt_admin }</span>        
+  	           	</c:if>   	           	
             </a>
-            
-            <!-- 미구현 -->
-            <a href="${boardLink_secret }">
-            <c:if test="${board.qa_secret == '비공개' }">
-            		[비밀글] 작성자와 관리자만 열람 할수 있습니다.
-            </c:if>
-            <c:if test="${authUser.user_nickname == board.qa_writer }">
-	            	<c:out value="${board.qa_title}" />
-	        </c:if>
-            </a>
-           
             
             </td>     
             <td>${board.qa_writer} </td>               
             <td><fmt:formatDate pattern="yyyy-MM-dd" 
             value="${board.qa_regdate}" /> </td>            
-            <td>${board.qa_readcnt} </td>
-            <td>
- 			<c:if test="${board.qa_replycnt == 0 && board.qa_replycnt_admin == 0}">
-            	<span class="badge badge-secondary">${board.qa_status }</span> 
- 			</c:if>
- 		 	<c:if test="${board.qa_replycnt > 0 }">
-            	<span class="badge badge-warning">유저 답변:${board.qa_replycnt }</span>  
- 			</c:if>
- 			<c:if test="${board.qa_replycnt_admin > 0 }">
-            	<span class="badge badge-success">관리자 답변:${board.qa_replycnt_admin }</span>
- 			</c:if>
- 			</td>
+            <td>${board.qa_readcnt} </td>     
+            <td>${board.qa_status} </td>  
           </tr>
           
         </c:forEach>

@@ -43,9 +43,7 @@ public class UserController {
 	private UserService service;
 	
 	@GetMapping("/userRegister") //회원 가입 페이지 로딩
-	public void register() {
-	
-	}
+	public void register() {}
 	
 	@PostMapping("/userRegister") // 회원 가입 처리
 	public String register(UserVO user, Model model, RedirectAttributes rttr) {
@@ -150,9 +148,7 @@ public class UserController {
 	}
 	
 	@RequestMapping("/jusoPopup") // 주소 api 팝업 로딩
-	public void address() {
-		
-	}
+	public void address() {}
 	
 	@GetMapping("/duplicateCheck") // 아이디 및 닉네임 중복 확인
 	public @ResponseBody int idCheck(UserVO vo, RedirectAttributes rttr) {
@@ -170,9 +166,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/login") // 로그인 페이지 로딩
-	public void login() {
-		
-	}
+	public void login() {}
 	
 	@PostMapping("/login") // 로그인 처리
 	public String login(UserVO user, RedirectAttributes rttr, HttpSession session) {
@@ -207,9 +201,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/userRemove") // 회원 탈퇴
-	public void RemoveUser() {
-		
-	}
+	public void RemoveUser() {}
 	
 	@PostMapping("/userRemove") // 회원 탈퇴 처리
 	public String UserRemove(UserVO user, HttpServletRequest req, RedirectAttributes rttr) {
@@ -286,14 +278,10 @@ public class UserController {
 	}
 	
 	@GetMapping("/findId")
-	public void findId() {
-		
-	}
+	public void findId() {}
 	
 	@GetMapping("/findPw")
-	public void findPw() {
-		
-	}
+	public void findPw() {}
 	
 	@GetMapping("/findUserId")
 	public @ResponseBody String findInfo(UserVO user) {
@@ -322,9 +310,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/modifyPw")
-	public void modPw(String user_id) {
-		
-	}
+	public void modPw(String user_id) {}
 	
 	@PostMapping("/modifyPw")
 	public @ResponseBody int modifyPw(UserVO user) {
@@ -336,5 +322,8 @@ public class UserController {
 		
 		return result;
 	}
-
+	
+	@GetMapping("/userOrderList")
+	public void orderList() {}
+	
 }

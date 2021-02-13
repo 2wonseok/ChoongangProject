@@ -133,7 +133,7 @@ $(document).ready(function() {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #1e263c;
+    background: #747474;
     padding: 0px 50px;
     margin: 0 0px;
     line-height: 45px;
@@ -276,10 +276,6 @@ $(document).ready(function() {
 							</td>
 						</tr>
 						<tr>
-							<th>성별</th>
-							<td>${read.user_gender }</td>
-						</tr>
-						<tr>
 							<th>연락처</th>
 							<td>${read.user_phone }</td>
 						</tr>
@@ -305,8 +301,8 @@ $(document).ready(function() {
 							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${read.user_regdate }"/></td>
 						</tr>		
 					</table>
-					<%-- <input type="button" value="돌아가기" onclick="location.href='memberView?id=${authUser.id }'" 
-							id="btn_list"/> --%>
+				  <input type="button" value="돌아가기" onclick="location.href='${root}/user/userRead?user_id=${authUser.user_id }'" 
+							id="btn_list"/> 
 					<input type="submit" onclick="if(!confirm('수정하시겠습니까?')){return false;}" value="수정완료" id="btn_add" />
 				</form>
 			</section>
