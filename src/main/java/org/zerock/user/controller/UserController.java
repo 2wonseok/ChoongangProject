@@ -326,4 +326,6 @@ public class UserController {
 	@GetMapping("/userOrderList")
 	public void orderList() {}
 	
+	@GetMapping("/cart")
+	public void cart() {}
 }

@@ -286,7 +286,7 @@ a {
 					<a href="#" data-log-actionid-area="header_util" data-log-actionid-label="orderdlv_inquiry" class="menu">주문</a>
 				</li>
 				<li class="cart">
-					<a href="#" class="menu" data-log-actionid-area="header_util" data-log-actionid-label="cart">장바구니</a>
+					<a href="${root }/user/cart" class="menu" data-log-actionid-area="header_util" data-log-actionid-label="cart">장바구니</a>
 				</li>
 			</ul>
 		</div>
