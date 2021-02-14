@@ -22,7 +22,7 @@ var grade = '${authUser.user_grade}';
   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js "></script>
 <script src="${root }/resources/js/qa_reply.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <style>
@@ -68,14 +68,6 @@ var grade = '${authUser.user_grade}';
 	max-width: 100%
 }
 
-/* .reply_content {
-	border:none;
-	border-right:0px; 
-	border-top:0px; 
-	boder-left:0px; 
-	boder-bottom:0px;
-}  */
-
 
 </style>
 
@@ -119,14 +111,14 @@ $(document).ready(function() {
 					replyUL.append(
 						'<li class="main" data-seq="'+ seq +'">'
 						+ '<div>'
-						+ '<div class="content" value="'+ content +'">' + content +'</div>'	
+						+ '<i class="fab fa-replyd"></i><div class="content" value="'+ content +'">' + content +'</div>'	
 						+ '<small class="float-right text-primary">'
 						+ '<div class="modify">수정</div>'
 						+ '<div class="delete">삭제</div>'
 						+ '</small>'
-						+ '</div>'
-						+ '<div>'+ writer +'</div>' 
-						+ '<small class="float-reft text-primary">'
+						+ '</div >'
+						+ '<div class="float-reft text-info"><i class="far fa-user"></i>' + writer +'</div>' 
+						+ '<small class="float-reft text-info"><i class="far fa-clock"></i>'
 						+ moment(regdate).format('YYYY.MM.DD.HH:mm') 
 						+ '</small>'
 						+ '</li>'
@@ -138,14 +130,14 @@ $(document).ready(function() {
 					replyUL.append(
 						'<li class="main" data-seq="'+ seq +'">'
 						+ '<div>'
-						+ '<div class="content" value="'+ content +'">' + content +'</div>'	
+						+ '<i class="fab fa-replyd"></i><div class="content" value="'+ content +'">' + content +'</div>'	
 						+ '<small class="float-right text-primary">'
 						+ '<div class="modify_admin">수정</div>'
 						+ '<div class="delete_admin">삭제</div>'
 						+ '</small>'
 						+ '</div>'
-						+ '<div>'+ writer +'</div>'
-						+ '<small class="float-reft text-primary">'
+						+ '<div class="float-reft text-info"><i class="far fa-user"></i>' + writer +'</div>'
+						+ '<small class="float-reft text-info"><i class="far fa-clock"></i>'
 						+ moment(regdate).format('YYYY.MM.DD.HH:mm') 
 						+ '</small>'
 						+ '</li>'
@@ -155,10 +147,10 @@ $(document).ready(function() {
 					replyUL.append(
 							'<li class="main" data-seq="'+ seq +'">'
 							+ '<div>'
-							+ '<div class="content" value="'+ content +'">' + content +'</div>'	
+							+ '<i class="fab fa-replyd"></i><div class="content" value="'+ content +'">' + content +'</div>'	
 							+ '</div>'
-							+ '<div>'+ writer +'</div>'
-							+ '<small class="float-reft text-primary">'
+							+ '<div class="float-reft text-info"><i class="far fa-user"></i>' + writer +'</div>'
+							+ '<small class="float-reft text-info"><i class="far fa-clock"></i>'
 							+ moment(regdate).format('YYYY.MM.DD.HH:mm') 
 							+ '</small>'
 							+ '</li>'
@@ -310,34 +302,35 @@ $(document).ready(function() {
 	 		<input class="form-control" readonly value="${board.qa_category }">
 	 	</div>
 	 	
-<%-- 	 	
-	 	<div class="form-group">
-	 		<label for="input3">작성 시간</label>
-	 		<input readonly class="form-control" value="<fmt:formatDate pattern="yyyy년 MM월 dd일 h시m분" value="${board.qa_regdate}" />" />
-
-	 	</div>
-	 		 	 --%>
-	 		 	 
+		 	 
 	 		 	 
 			<div class="form-group">
 		    <strong><label for="input5">제목</label></strong>
 		    <input readonly value='<c:out value="${board.qa_title }" />' type="text" class="form-control">
 		  	</div>		  	
 		  	
-		  	 <strong><label for="input6">내용</label> <br>	</strong>	  	
-		  	<div class="form-group" contentEditable="false" id="table">
-		  	<c:out value="${board.qa_content }" /> <br>
-		  	<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${board.qa_filename }" id="image"> <br>
 		  	
+		  	<div class="form-group">
+		    <strong><label for="input6">내용</label></strong>
+		    <textarea readonly class="form-control" id="textarea1" rows="3">
+		    	<c:out value="${board.qa_content }" />
+		    </textarea>
+		  	</div>	
+		  		  	
+		  	<strong><label for="input6">이미지</label> <br></strong>	  	
+		  	<div class="form-group" contentEditable="false" id="table">		 
+		  	<c:forEach items="${qafileNameList }" var="qaImg" varStatus="imgNum">
+				<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${qaImg }" width="200px" height="200px">
+			</c:forEach>
 		  	
 			</div>
 			<small class="form-text text-primary">
-	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 h시m분" value="${board.qa_regdateKST}" /> 에 작성 되었습니다.
+	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 hh시mm분" value="${board.qa_regdateKST}" /> 에 작성 되었습니다.
 	 		</small>
 			<c:if test="${!empty board.qa_updatedate}">
 	 		<div class="form-group">
 	 		<small class="form-text text-danger">
-	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 h시m분" value="${board.qa_updatedateKST}" /> 에 수정 되었습니다.
+	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 hh시mm분" value="${board.qa_updatedateKST}" /> 에 수정 되었습니다.
 	 		</small>
 	 		</div>
 	 		</c:if>

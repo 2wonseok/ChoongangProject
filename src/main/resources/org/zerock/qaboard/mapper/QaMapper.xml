@@ -30,11 +30,11 @@
 
 	<select id="getListWithPaging" resultType="org.zerock.qaboard.domain.QaVO">
    <![CDATA[
-   SELECT qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status, qa_replycnt, qa_replycnt_admin 
+   SELECT qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status, qa_replycnt, qa_replycnt_admin, qa_filename
    FROM
    (
    SELECT ROW_NUMBER() OVER (ORDER BY qa_seq DESC) rn, 
-   qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status, qa_replycnt, qa_replycnt_admin    
+   qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_regdate, qa_readcnt, qa_updatedate, qa_secret, qa_status, qa_replycnt, qa_replycnt_admin, qa_filename    
    FROM tbl_qaboard
    ]]>
    
@@ -84,7 +84,7 @@
    <update id="update">
       UPDATE tbl_qaboard SET
       qa_category = #{qa_category}, 
-      qa_title = '*'||#{qa_title}, 
+      qa_title = #{qa_title}, 
       qa_content = #{qa_content}, 
       qa_updatedate = SYSDATE,
       qa_secret = #{qa_secret},
