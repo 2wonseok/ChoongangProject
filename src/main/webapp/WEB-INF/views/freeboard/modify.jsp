@@ -73,9 +73,9 @@
 					</div>
 
 					<div class="form-group">
-						<label for="input2">작성자</label> <input readonly
-							value='<c:out value="${freeVO.free_writer }" />'
-							name="free_writer" type="text" class="form-control" id="input2"
+						<label for="input2">닉네임</label> <input readonly
+							value='<c:out value="${freeVO.free_nickname }" />'
+							name="free_nickname" type="text" class="form-control" id="input2"
 							placeholder="이름을 입력하세요">
 					</div>
 

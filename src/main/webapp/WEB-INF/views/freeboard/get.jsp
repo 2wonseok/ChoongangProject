@@ -10,6 +10,7 @@
 var appRoot = '${root}';
 var free_seq = ${freeVO.free_seq};
 var page = ${cri.pageNum};
+var user_id = "${authUser.user_id}";
 </script>
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -28,6 +29,7 @@ var page = ${cri.pageNum};
 		function dateString(date) {
 			var d = new Date(date);
 			return d.toISOString().split("T")[0];
+			
 		}
 		
 		// 댓글 목록 가져오기 함수
@@ -40,10 +42,9 @@ var page = ${cri.pageNum};
 				for (var i = 0; i < list.length; i++) {
 					var replyLI = '<li class="media" data-reply_seq="' 
 					+ list[i].reply_seq + '" ><div class="media-body"><h5>'
-					+ list[i].reply_writer + '<small class="float-right">' 
+					+ list[i].reply_nickname + '<small class="float-right">' 
 					+ dateString(list[i].reply_regdate) + "</small></h5>"
 					+ list[i].reply_content + "<hr></div></li>";
-					
 					replyUL.append(replyLI);
 				}
 			});
@@ -65,8 +66,8 @@ var page = ${cri.pageNum};
 			
 			// ajax 요청을 위한 데이터 만들기
 			var data = {
-					//reply_boardseq 는 free_seq  
 				"reply_boardseq" : free_seq,
+					//댓글이달린 게시글번호는 는 게시글번호   
 				"reply_content" : reply_content, 
 				"reply_writer" : reply_writer
 			};
@@ -99,18 +100,25 @@ var page = ${cri.pageNum};
 			replyService.get(reply_seq, function(data) {
 				$("#reply_seq-input2").val(reply_seq);
 				$("#reply_content-input2").val(data.reply_content);
-				$("#reply_writer-input2").val(data.reply_writer);
+				$("#reply_writer-input2").val(data.reply_nickname);
+				// 수정/삭제 hidden 처리
+				if (user_id != data.reply_writer) {
+					$("#reply-modify-button").hide();
+					$("#reply-delete-button").hide();
+				} else {
+					$("#reply-modify-button").show();
+					$("#reply-delete-button").show();
+				}
 				$("#modify-reply-modal").modal('show');
 			});
-			
 		});
 		
 		// 수정 버튼 이벤트 처리
 		$("#reply-modify-button").click(function() {
+			
 			var reply_seq = $("#reply_seq-input2").val();
 			var reply_content = $("#reply_content-input2").val();
 			var data = {"reply_seq":reply_seq , "reply_content": reply_content};
-			
 			replyService.update(data, function() {
 				alert("댓글을 수정하였습니다.");
 				$("#modify-reply-modal").modal('hide');
@@ -136,7 +144,7 @@ var page = ${cri.pageNum};
 <title>Insert title here</title>
 </head>
 <body>
-	<u:mainNav></u:mainNav>
+	<u:mainNav></u:mainNav> 
 	<div class="container-sm">
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
@@ -164,8 +172,8 @@ var page = ${cri.pageNum};
 				</div>
 
 				<div class="form-group">
-					<label for="input2">작성자</label> <input readonly
-						value='<c:out value="${freeVO.free_nickname }" />' type="text"
+					<label for="input2">닉네임</label> <input readonly
+						value='<c:out value="${freeVO.free_nickname}" />' type="text"
 						class="form-control" id="input2">
 				</div>
 
@@ -176,13 +184,15 @@ var page = ${cri.pageNum};
 					<c:param name="type" value="${cri.type }"></c:param>
 					<c:param name="keyword" value="${cri.keyword }"></c:param>
 				</c:url>
+				<!-- 유저의 정보가 있고 아이디가 writer와 userid값이 같을때 -->
+				<c:if test="${authUser != null && authUser.user_id == freeVO.free_writer}">
 				<form action="${root}/freeboard/remove" method="post">
 				<a href="${root}/freeboard/modify?free_seq=${freeVO.free_seq}"
 					class="btn btn-secondary"> 수정 </a>
 					<input hidden="hidden" name="free_seq" value="${freeVO.free_seq}">
 					<button class="btn btn-secondary">삭제</button>
 				</form>
-
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -191,16 +201,14 @@ var page = ${cri.pageNum};
 	<div class="container-sm mt-3">
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
-
 				<div class="card">
-					<div
-						class="card-header d-flex justify-content-between align-items-center">
+					<div class="card-header d-flex justify-content-between align-items-center">
 						<span> 댓글 목록 </span>
+						<c:if test="${authUser != null }">
 						<button class="btn btn-info" id="new-reply-button">댓글 쓰기</button>
+						</c:if>
 					</div>
-
 					<div class="card-body">
-
 						<ul class="list-unstyled" id="reply-ul">
 						</ul>
 					</div>
@@ -218,7 +226,7 @@ var page = ${cri.pageNum};
 					<button type="button" class="close" data-dismiss="modal">
 						<span>&times;</span>
 					</button>
-				</div>
+				</div>			
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="reply_content-input" class="col-form-label"> 댓글 </label> <input
@@ -226,8 +234,9 @@ var page = ${cri.pageNum};
 					</div>
 					<div class="form-group">
 						<label for="reply_writer-input" class="col-form-label"> 작성자 </label> <input
-							type="text" class="form-control" id="reply_writer-input">
+							type="text" class="form-control" value="${authUser.user_nickname}" readonly>
 					</div>
+					<input type="hidden" id="reply_writer-input" value="${authUser.user_id}" />
 				</div>
 
 				<div class="modal-footer">
@@ -241,6 +250,7 @@ var page = ${cri.pageNum};
 	</div>
 
 	<%-- modal 수정 form --%>
+	
 	<div class="modal fade" id="modify-reply-modal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -258,13 +268,18 @@ var page = ${cri.pageNum};
 					</div>
 					<div class="form-group">
 						<label for="reply_writer-input2" class="col-form-label"> 작성자 </label> <input
-							readonly type="text" class="form-control" id="reply_writer-input2">
+							readonly type="text" class="form-control" id="reply_writer-input2" >
 					</div>
 				</div>
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">닫기</button>
+					<%-- 	autyhUser <c:out value ="${authUser}"></c:out>
+						authUseruserid <c:out value="${authUser.user_id }"></c:out>
+						--%>
+							<%-- reply_writer <c:out value="${vo.reply_writer }"></c:out> --%>	
+						<%--reply_writer 값 받아와서 authUser.user_id와 비교해서 같으면 보여지게 --%>							
 					<button id="reply-modify-button" type="button"
 						class="btn btn-primary">수정</button>
 					<button id="reply-delete-button" type="button"

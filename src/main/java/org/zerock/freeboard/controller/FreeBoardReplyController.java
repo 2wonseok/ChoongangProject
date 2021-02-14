@@ -2,6 +2,8 @@ package org.zerock.freeboard.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.zerock.freeboard.domain.FreeBoardCriteria;
 import org.zerock.freeboard.domain.FreeBoardReplyVO;
 import org.zerock.freeboard.service.FreeBoardReplyService;
+import org.zerock.user.domain.UserVO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -31,12 +34,16 @@ public class FreeBoardReplyController {
 	@PostMapping(value = "/new", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> create(@RequestBody FreeBoardReplyVO vo) {
 
+		
+		
+		
 		log.info("vo: " + vo);
 
 		int insertCount = service.register(vo);
 
 		log.info("count: " + insertCount);
 
+		
 		if (insertCount == 1) {
 			return new ResponseEntity<String>("success9999", HttpStatus.OK);
 		} else {
@@ -59,6 +66,7 @@ public class FreeBoardReplyController {
 
 	@GetMapping(value = "/{reply_seq}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<FreeBoardReplyVO> get(@PathVariable("reply_seq") int reply_seq) {
+		
 		FreeBoardReplyVO vo = service.get(reply_seq);
 
 		log.info(vo);
@@ -84,14 +92,11 @@ public class FreeBoardReplyController {
 	//value값이 중복됨
 	@RequestMapping(value = "/{reply_seq}", method = { RequestMethod.PUT,
 			RequestMethod.PATCH }, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> modify(@RequestBody FreeBoardReplyVO vo, @PathVariable int reply_seq) {
-
-		vo.setReply_seq(reply_seq);
+	public ResponseEntity<String> modify(@RequestBody FreeBoardReplyVO vo, @PathVariable int reply_seq, HttpServletRequest request) {
 
 		int cnt = service.modify(vo);
-
+		
 		log.info(cnt);
-
 		if (cnt == 1) {
 			return new ResponseEntity<String>("success", HttpStatus.OK);
 		} else {

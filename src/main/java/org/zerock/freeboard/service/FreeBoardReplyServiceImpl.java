@@ -22,14 +22,14 @@ public class FreeBoardReplyServiceImpl implements FreeBoardReplyService {
 		private FreeBoardReplyMapper mapper;
 		
 		@Setter(onMethod_ = @Autowired)
-		private FreeBoardMapper boardMapper;
+		private FreeBoardMapper freeboardMapper;
 
 		@Override
 		@Transactional
 		public int register(FreeBoardReplyVO vo) {
 			
 //			조회수
-//			boardMapper.updateReplyCnt(vo.getReply_boardseq(), 1);
+			freeboardMapper.updateReplyCnt(vo.getReply_boardseq(), 1);
 			
 			return mapper.insert(vo);
 		}
@@ -48,12 +48,13 @@ public class FreeBoardReplyServiceImpl implements FreeBoardReplyService {
 		@Transactional
 		public int remove(int reply_seq) {
 			FreeBoardReplyVO vo = mapper.read(reply_seq);
-//			boardMapper.updateReplyCnt(vo.getReply_boardseq(), -1);
+			freeboardMapper.updateReplyCnt(vo.getReply_boardseq(), -1);
 			return mapper.delete(reply_seq);
 		}
 
 		@Override
 		public List<FreeBoardReplyVO> getList(FreeBoardCriteria cri, int reply_boardseq) {
+			
 			return mapper.getListWithPaging(cri, reply_boardseq);
 		}
 	
