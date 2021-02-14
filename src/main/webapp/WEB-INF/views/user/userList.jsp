@@ -27,6 +27,7 @@ $(document).ready(function(){
 		}
 	}
 	
+	// 전체 선택 스크립트
 	$('#allCheck').click(function () {
 		if ($("input:checkbox[id='allCheck']").prop("checked")) {
 			$("input[type=checkbox]").prop("checked", true);
@@ -35,6 +36,7 @@ $(document).ready(function(){
 		}
 	});
 	
+	// 선택 삭제 코드
 	$("#btn_CheckDel").click(function(e) {
 		e.preventDefault();
 		var checkVal = $("input:checkbox[name='seq']:checked").val();
@@ -53,6 +55,22 @@ $(document).ready(function(){
 			return false;
 		}
 		
+	});
+	
+	// 문자 전송
+	$("#btn_smsSubmit").click(function(e) {
+		e.preventDefault();
+		
+		var form = document.userCheckDel;
+		var checkValue = $("input:checkbox[name='seq']:checked").val();
+		
+		if (!checkValue) {
+			alert('체크 박스를 선택해주세요');
+			return false;
+		} 
+			form.method = "get";
+			$("#userCheckDel").attr("action", "${root }/user/smsSubmit");
+			$("#userCheckDel").submit();
 	});
 	
 });
@@ -139,7 +157,19 @@ function reload() {
     float: left;
     width:110px;
 }
-
+#btn_smsSubmit {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #747474;
+    padding: 0px 10px;
+    margin: 0 0px;
+    margin-bottom : 3px;
+    line-height: 45px;
+    float: left;
+    width:110px;
+    margin-left: 5px;
+}
 #zip_code_btn {
     color: #fff;
     font-size: 15px;
@@ -194,24 +224,11 @@ function reload() {
 						<input type="button" value="초기화" id="btn_reload" onclick="reload()">	
 					</div>
 				</form>
-			<!--
-				<form action="" method="get">
-					<div class="pagenation-container d-flex justify-content-center">
-						<select name="searchKeyword" class="form-control" id="searchKeyword">
-							<option value="">검색조건</option>
-							<option value="name">이름</option>
-							<option value="memberid">아이디</option>
-							<option value="gender" id="genderSelect">성별</option>
-							<option value="phone">연락처</option>
-						</select>&nbsp; 
-						<input type="text" name="searchField" id="searchField" placeholder="search" class="form-control" value="">&nbsp;
-						<input type="submit" value="검색" id="btn_search">&nbsp;
-						<input type="button" value="초기화" id="btn_reload" onclick="reload()" class="btn-sm btn-primary">	
-					</div>
-				</form> -->
 			</div>
-		<form action="${root }/user/userCheckDel" id="userCheckDel" method="post">
+
+		<form action="${root }/user/userCheckDel" id="userCheckDel" name="userCheckDel" method="post">
 			<button type="submit" id="btn_CheckDel"/>선택 삭제</button>
+			<button type="submit" id="btn_smsSubmit"/>문자 전송</button>
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -259,7 +276,7 @@ function reload() {
 					</tr>
 				</c:forEach>
 			</tbody>
-		</table>	
+		</table>
 		</form>
 		
 		<div class="pagenation-container d-flex justify-content-center">
