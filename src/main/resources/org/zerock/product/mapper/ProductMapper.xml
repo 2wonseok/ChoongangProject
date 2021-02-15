@@ -7,11 +7,11 @@
 
 	<insert id="insertOrder">
 		insert into tbl_order (order_seq, order_productseq, order_poseq,
-		order_poname, order_poprice, order_quantity, order_userseq, order_username, order_useraddress, order_userphone)
+		order_poname, order_poprice, order_quantity, order_userseq, order_username, order_useraddress, order_userphone, order_filename)
 		values 
 		(order_seq.nextval, #{order_productseq}, #{order_poseq},
 		#{order_poname}, #{order_poprice}, #{order_quantity},
-		#{order_userseq}, #{order_username}, #{order_useraddress}, #{order_userphone})
+		#{order_userseq}, #{order_username}, #{order_useraddress}, #{order_userphone}, #{order_filename})
 	</insert>
 
 	<insert id="insertProductOption" >

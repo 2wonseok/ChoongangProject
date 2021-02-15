@@ -163,6 +163,15 @@ $(document).ready(function(){
     	width : 350px;
         height : 400px;
     }
+    
+   	#container {
+	    clear: both;
+	    position: relative;
+	    margin: 50px auto 0px;
+	    padding: 0 0 50px 0;
+	    width: 1200px;
+	    z-index: 1;
+	}
 
 </style>
 
@@ -171,12 +180,11 @@ $(document).ready(function(){
 </head>
 <body>
 	
-	<u:mainNav/>
-
-	<div class="container col-8">
-
-				<hr>
-				
+<u:mainNav/>
+<div class="container">
+  <section id="container">
+  
+	<div class="container">
 					<p class="text-left">상품 카테고리 > <c:out value="${product.category_seq }"></c:out></p>
 				<table>
 					<colgroup>
@@ -277,12 +285,13 @@ $(document).ready(function(){
 						</td>
 						<td colspan="2" >
 							<form id="order_form" action="${root }/product/order" method="post">
+								<input name="product_seq" value="${product.product_seq }" hidden="hidden"/>
+								<input name="order_filename" value="${productImgList[0] }" hidden="hidden"/>
 								<input name="order_productseq" value="${product.product_seq }" hidden="hidden"/>
 								<input name="order_userseq" value="${authUser.user_seq }" hidden="hidden"/>
 								<input name="order_username" value="${authUser.user_name }" hidden="hidden"/>
 								<input name="order_useraddress" value="${authUser.user_address }" hidden="hidden"/>
 								<input name="order_userphone" value="${authUser.user_phone }" hidden="hidden"/>
-								<input class="total_price" value="0" name="order_totalprice" hidden="hidden"/>
 								<div id="optionBox">
 								</div>
 							</form>
@@ -291,7 +300,7 @@ $(document).ready(function(){
 					<tr>
 						<td colspan="3">
 							<div class="row">
-								<div class="col-6"></div>
+								<div class="col-5"></div>
 								<input class="total_price" value="0" name="order_totalprice" readonly/>
 								<button class="btn_add mx-2" type="button"> 장바구니</button>
 								<button id="order_btn" class="btn_add mx-2" type="button"> 구매</button>
@@ -299,32 +308,33 @@ $(document).ready(function(){
 						</td>
 					</tr>					
 				
-				</table>	
-		<br>
-		<hr>
-		<br>
+				</table>
 	</div>
+
+   </section>
+</div>
 
 <!--모달창시작-->
-	<div id="myModal" class="modal" tabindex="-1">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title">알림</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	        <p>처리가완료되었습니다</p>
-	      </div>
-	      <div class="modal-footer">
-	        <button id="modalClose" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<!--모달창끝-->
+<div id="myModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">알림</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>처리가완료되었습니다</p>
+      </div>
+      <div class="modal-footer">
+        <button id="modalClose" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!--모달창끝-->
+<u:footer/>
 </body>
 </html>

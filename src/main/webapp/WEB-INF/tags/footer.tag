@@ -17,7 +17,7 @@
     position:absolute;
   	bottom:0;
 }
-hr {
+#foothr {
     margin-top: 1rem;
     margin-bottom: 80px;
     border: 0;
@@ -25,7 +25,7 @@ hr {
 }
 </style>
 <body>
-<hr>
+<hr id="foothr">
 <div class="container">
 	<section id="container">
 		<footer>

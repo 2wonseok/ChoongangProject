@@ -16,7 +16,8 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+<!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
 
 <title>Insert title here</title>
 
@@ -58,8 +59,8 @@
 	}
 	
 	.img_box {
-	    width: 14.0rem;
-	    height:16.0rem;
+	    width: 14.1rem;
+	    height:19.0rem;
 	    position: relative;
 	}
 		
@@ -83,16 +84,25 @@
 	    
 	}
 	
-	
+	#container {
+	    clear: both;
+	    position: relative;
+	    margin: 50px auto 0px;
+	    padding: 0 0 50px 0;
+	    width: 1200px;
+	    z-index: 1;
+	}
 
 </style>
 
 </head>
 <body>
   
-  <u:mainNav/>
+<u:mainNav/>
+<div class="container">
+  <section id="container">
   
-	<div class="container col-8 d-flex justify-content-center mt-5">
+	<!-- <div class="container col-8 d-flex justify-content-center mt-5"> -->
 			<div class="row">
 				<div class="col-md-6, col-md-offset-3">
 			
@@ -137,7 +147,6 @@
 						            <fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
 									<div class="cardLine1">총 ${quantity }개 남음</div>
 										<hr>
-						
 								    <p class="card-text">판매자 : <c:out value="${ product.user_nickname}"></c:out></p>
 								</div>
 						</div>
@@ -146,83 +155,85 @@
 			
 				<!--상품 bootstrap card 끝  -->			
 			</div>
-		</div>
+		<!-- </div> -->
 	</div>
-
-		<hr>
 		
- <div class="container col-8">
-	<div class="row d-flex justify-content-end">
-		<div class="col-md-6, col-md-offset-3">
-			<c:if test="${not empty authUser.user_id}">
-				<div class="row">
-					<div class=col-10>
+	 <div class="container col-8">
+	 	
+	 	<!-- 등록버튼 -->
+		<div class="row d-flex justify-content-end">
+			<div class="col-md-6, col-md-offset-3">
+				<c:if test="${not empty authUser.user_id}">
+					<div class="row">
+						<div class=col-10>
+						</div>
+						<div>
+							<button onclick = "location.href = '${root}/product/register'" class="btn_add">상품 등록</button>
+						</div>
 					</div>
-					<div>
-						<button onclick = "location.href = '${root}/product/register'" class="btn_add">상품 등록</button>
-					</div>
-				</div>
-			</c:if>
+				</c:if>
+			</div>
 		</div>
-	</div>
-	
-	<div class="row d-flex justify-content-center">
-		<div class="col-md-6, col-md-offset-3">
-
-			<!--페이징 시작  -->
-				<div class="row justify-content-center">
-					<nav aria-label="Page navigation example">
-						<ul class="pagination">
-							<!--이전 버튼  -->
-							<c:if test="${pageDTO.prev }">
-								<c:url value="/product/list" var="prevLink">
-									<!--c:url은 contextRoot를 안넣어도 자동으로 만들어진다!  -->
-									<c:param value="${pageDTO.startPage-1 }" name="PageNum"></c:param>
-									<c:param value="${pageDTO.cri.amount }" name="amount"></c:param>
-								</c:url>
-								<li class="page-item"><a class="page-link" href="${prevLink }">Previous</a>
-								</li>
-							</c:if>
-			
-							<c:forEach var="num" begin="${pageDTO.startPage }"
-								end="${pageDTO.endPage }">
-			
-								<c:url value="/product/list" var="pageLink">
-									<c:param name="pageNum" value="${num }" />
-									<c:param name="amount" value="${pageDTO.cri.amount }" />
-									<c:param name="type" value="${pageDTO.cri.type }"></c:param>
-									<c:param name="keyword" value="${pageDTO.cri.keyword }"></c:param>
-								</c:url>
-								<li
-									class="page-item ${pageDTO.cri.pageNum eq num ? 'active' : '' }">
-									<a class="page-link" href="${pageLink }">${num }</a> <%-- <a class="page-link" href="${num }">${num }</a> --%>
-								</li>
-			
-							</c:forEach>
-			
-							<!--페이징다음버튼  -->
-							<c:if test="${pageDTO.next }">
-								<c:url value="/product/list" var="nextLink">
-									<c:param value="${pageDTO.endPage+1 }" name="PageNum"></c:param>
-									<c:param value="${pageDTO.cri.amount }" name="amount"></c:param>
-								</c:url>
-								<li class="page-item"><a class="page-link" href="${nextLink }">Next</a>
-								</li>
-							</c:if>
-						</ul>
-					</nav>
-				</div>
-			<!-- 페이징 끝 -->
-	
-		</div>
-	</div>
-	
-</div>	
-	
-
-
 		
-	<!--모달창시작-->
+		<!-- 페이징용row -->
+		<div class="row d-flex justify-content-center">
+			<div class="col-md-6, col-md-offset-3">
+	
+				<!--페이징 시작  -->
+					<div class="row justify-content-center">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination">
+								<!--이전 버튼  -->
+								<c:if test="${pageDTO.prev }">
+									<c:url value="/product/list" var="prevLink">
+										<!--c:url은 contextRoot를 안넣어도 자동으로 만들어진다!  -->
+										<c:param value="${pageDTO.startPage-1 }" name="PageNum"></c:param>
+										<c:param value="${pageDTO.cri.amount }" name="amount"></c:param>
+									</c:url>
+									<li class="page-item"><a class="page-link" href="${prevLink }">Previous</a>
+									</li>
+								</c:if>
+				
+								<c:forEach var="num" begin="${pageDTO.startPage }"
+									end="${pageDTO.endPage }">
+				
+									<c:url value="/product/list" var="pageLink">
+										<c:param name="pageNum" value="${num }" />
+										<c:param name="amount" value="${pageDTO.cri.amount }" />
+										<c:param name="type" value="${pageDTO.cri.type }"></c:param>
+										<c:param name="keyword" value="${pageDTO.cri.keyword }"></c:param>
+									</c:url>
+									<li
+										class="page-item ${pageDTO.cri.pageNum eq num ? 'active' : '' }">
+										<a class="page-link" href="${pageLink }">${num }</a> <%-- <a class="page-link" href="${num }">${num }</a> --%>
+									</li>
+				
+								</c:forEach>
+				
+								<!--페이징다음버튼  -->
+								<c:if test="${pageDTO.next }">
+									<c:url value="/product/list" var="nextLink">
+										<c:param value="${pageDTO.endPage+1 }" name="PageNum"></c:param>
+										<c:param value="${pageDTO.cri.amount }" name="amount"></c:param>
+									</c:url>
+									<li class="page-item"><a class="page-link" href="${nextLink }">Next</a>
+									</li>
+								</c:if>
+							</ul>
+						</nav>
+					</div>
+				<!-- 페이징 끝 -->
+		
+			</div>
+		</div>
+		
+	</div>	
+	
+
+  </section>
+</div>
+
+<!--모달창시작-->
 	<div id="myModal" class="modal" tabindex="-1">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
@@ -241,7 +252,7 @@
 	    </div>
 	  </div>
 	</div>
-	<!--모달창끝-->
-
+<!--모달창끝-->
+<u:footer/>
 </body>
 </html>

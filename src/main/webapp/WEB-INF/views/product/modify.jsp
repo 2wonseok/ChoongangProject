@@ -99,13 +99,24 @@ table.type05 td {
 }
 
 
+#container {
+    clear: both;
+    position: relative;
+    margin: 50px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1200px;
+    z-index: 1;
+}
+
 </style>
 
 <title>Insert title here</title>
 </head>
 <body>
 
-	<u:mainNav/>
+<u:mainNav/>
+<div class="container">
+  <section id="container">
 
 	<div class="container">
 		<div class="row d-flex justify-content-center">
@@ -221,6 +232,11 @@ table.type05 td {
 		</div>
 	</div>
 
+
+
+   </section>
+</div>
+
 	<!--모달창시작-->
 	<div id="myModal" class="modal" tabindex="-1">
 	  <div class="modal-dialog">
@@ -242,5 +258,6 @@ table.type05 td {
 	</div>
 	<!--모달창끝-->
 
+<u:footer/>
 </body>
 </html>

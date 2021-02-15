@@ -64,11 +64,11 @@
 				
 				'<tr>'+
 				'<th>종류</th>'+
-				'<td><input class="input2" type="text" name="po_name"/></td>'+
+				'<td><input class="input1" type="text" name="po_name"/></td>'+
 				'<th>수량</th>'+
 				'<td><input class="input2" type="number" min="1" name="po_quantity"/></td>'+
-				'<th>가격</th>'+
-				'<td><input class="input2" type="number" min="1" name="po_price"/></td>'+
+				'<th>개당 가격</th>'+
+				'<td><input class="input3" type="number" min="1" name="po_price"/></td>'+
 				'<th></th>'+
 				'</tr>'
 			);
@@ -122,18 +122,32 @@ table.type05 td {
   border-bottom: 1px solid #ccc;
 }
 
-.input1 {
-  width: 370px;
-}
-
-
 .type06 {
  margin-left: 10px;
  margin-bottom: 10px;
 }
 
-.input2 {
+.input1 {
   width: 160px;
+}
+.input2 {
+  width: 80px;
+}
+.input3 {
+  width: 120px;
+}
+.inputTop {
+  width: 370px;
+}
+
+
+#container {
+    clear: both;
+    position: relative;
+    margin: 50px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1200px;
+    z-index: 1;
 }
 
 </style>
@@ -142,7 +156,12 @@ table.type05 td {
 </head>
 <body>
 
-	<u:mainNav/>
+<u:mainNav/>
+<div class="container">
+
+	<section id="container">
+
+
 	<div class="container col-8 d-flex justify-content-center">
 		<div class="row">
 			
@@ -158,44 +177,45 @@ table.type05 td {
 								</tr>
 								<tr>
 									<th scope="row">상품 이름 *</th>
-									<td><input class="input1" id="product_name" name="product_name" type="text" value="${product.product_name }"></td>
+									<td><input class="inputTop" id="product_name" name="product_name" type="text" value="${product.product_name }"></td>
 								</tr>
 								<%-- <tr>
 									<th scope="row">상품 단위 가격 * </th>
-									<td><input class="input1" id="product_price" name="product_price" type="number" value="${product.product_price }"></td>
+									<td><input class="inputTop" id="product_price" name="product_price" type="number" value="${product.product_price }"></td>
 								</tr>
 								<tr>
 									<th scope="row">상품 수량 * </th>
-									<td><input class="input1" id="product_quantity" name="product_quantity" type="number" value="${product.product_quantity }"></td>
+									<td><input class="inputTop" id="product_quantity" name="product_quantity" type="number" value="${product.product_quantity }"></td>
 								</tr> --%>
 								<tr>
 									<th scope="row">상품 판매자(Nickname)</th><!--value=authUser로 넣을 예정  -->
-									<td><input class="input1" id="user_nickname" name="user_nickname" type="text" value="${authUser.user_nickname }" style="background-color:silver;"readonly>
+									<td><input class="inputTop" id="user_nickname" name="user_nickname" type="text" value="${authUser.user_nickname }" style="background-color:silver;"readonly>
 										<input id="product_seller" name="product_seller" type="text" value="${authUser.user_seq }" hidden="hidden">
 									</td>
 								</tr>
 								<tr>
 									<th scope="row">상품 카테고리 번호(카테고리테이블에서 가져와서 넣어질 예정)</th>
-									<td> <input class="input1" name="category_seq" type="number" value="${product.category_seq }"></td>
+									<td> <input class="inputTop" name="category_seq" type="number" value="${product.category_seq }"></td>
 								</tr>
 								<tr>
 									<th scope="row">상품 설명 *</th>
-									<td><textarea class="input1" style="resize: none;" id="product_info" name="product_info" rows="15" cols="50">${product.product_info }</textarea></td>
+									<td><textarea class="inputTop" style="resize: none;" id="product_info" name="product_info" rows="15" cols="50">${product.product_info }</textarea></td>
 								</tr>
 							</tbody>
 						</table>
 						
 						
 						<h3 class="ml-2">상품 옵션 (첫번째 입력항목이 메인에 띄워집니다.)</h3>
+						
 						<table class="type06">
 							<tbody id="tbody">
 								<tr>
 									<th>종류</th>
-									<td><input class="input2" type="text" name="po_name"/></td>
+									<td><input class="input1" type="text" name="po_name"/></td>
 									<th>수량</th>
 									<td><input class="input2" type="number" min="1" name="po_quantity"/></td>
 									<th>개당 가격</th>
-									<td><input class="input2" type="number" min="1" name="po_price"/></td>
+									<td><input class="input3" type="number" min="1" name="po_price"/></td>
 									<th></th>
 									<td><button id="addOption_btn" type="button">옵션 추가</button></td>
 									<td><button id="removeOption_btn" type="button">옵션 제거</button></td>
@@ -282,7 +302,8 @@ table.type05 td {
 		</div>
 	</div>
 	
-	
+  </section>
+</div>
 	<!--모달창시작-->
 	<div id="myModal" class="modal" tabindex="-1">
 	  <div class="modal-dialog">
@@ -303,7 +324,6 @@ table.type05 td {
 	  </div>
 	</div>
 	<!--모달창끝-->
-	
-
+<u:footer/>
 </body>
 </html>

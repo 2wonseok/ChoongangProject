@@ -13,6 +13,7 @@ public class OrderVO {
 	private Date order_date;
 	
 	private int order_productseq;
+	private String order_filename;
 	/* 구매시 리스트로 들어오는것(참조용) */
 	private int order_poseq;
 	private String order_poname;

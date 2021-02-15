@@ -369,12 +369,8 @@ public class ProductController {
 	
 	
 	@PostMapping("/order")
-	public String order (String[] order_poseq, String[] order_poname, String[] order_poprice, String[] order_quantity, OrderVO orderVO, Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
-		/* 로그인 해야지만 order 할 수 있게끔 */
-		if (request.getSession().getAttribute("authUser") == null) {
-			rttr.addFlashAttribute("message","로그인 되어있지 않습니다.");
-			return "redirect:/user/login";
-		}
+	public String order (int product_seq, String[] order_poseq, String[] order_poname, String[] order_poprice, String[] order_quantity, OrderVO orderVO, Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
+		
 		/*상품옵션이 비었을때 돌려보냄*/
 			String emp = "";
 			/* 숫자배열 내 최소값이 0보다 커야함을표시 */
@@ -395,6 +391,7 @@ public class ProductController {
 				cnt !=0
 				) {
 				rttr.addFlashAttribute("message", "상품옵션항목이 올바르지 않습니다");
+				rttr.addAttribute("product_seq", product_seq);
 				return "redirect:/product/get";
 			}
 		/* 올바르면 리스트 만들어서 보내주기*/
@@ -410,6 +407,8 @@ public class ProductController {
 			orderVOn.setOrder_username(orderVO.getOrder_username());
 			orderVOn.setOrder_useraddress(orderVO.getOrder_useraddress());
 			orderVOn.setOrder_userphone(orderVO.getOrder_userphone());
+			orderVOn.setOrder_filename(orderVO.getOrder_filename());
+			
 			list.add(orderVOn);
 		}
 		service.makeOrder(list);
