@@ -19,6 +19,14 @@
 <title>임시 메인 페이지</title>
 </head>
 <style>
+#container {
+    clear: both;
+    position: relative;
+    margin: 50px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1200px;
+    z-index: 1;
+}
 #footdiv {
     width: 100%;
     margin: 0 auto;
@@ -26,7 +34,7 @@
     text-align: center;
     color: gray;
     white-space: pre-line;
-    position:absolute;
+    position:fixed;
   	bottom:0;
 }
 #map {
@@ -39,6 +47,8 @@
 </style>
 <body>
 <u:mainNav/>
+<div class="container">
+	<section id="container">
 접속 아이디 : ${authUser.user_id} <br>
 등급 : <c:choose>
 					<c:when test="${authUser.user_grade < 1}">관리자</c:when>
@@ -47,41 +57,43 @@
 			</c:choose>
 
 
-<!-- 푸터 -->
-<footer>
-	<div id="footdiv">
-		<div class="container">
-			<div id="map"></div>
-		</div>
-		
-            사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
-            주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
-		
-	</div>
-		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=80e0462cf0816d5f855221ad79425d44"></script>
-		<script>				
-			$(document).ready(function() {
-				var container = document.getElementById('map');
-				var options = {
-					center: new kakao.maps.LatLng(37.55644880228536, 126.94519155495574),
-					level: 3
-				};
-		
-				var map = new kakao.maps.Map(container, options);
-				
-				// 마커가 표시될 위치입니다 
-				var markerPosition  = new kakao.maps.LatLng(37.55644880228536, 126.94519155495574); 
-	
-				// 마커를 생성합니다
-				var marker = new kakao.maps.Marker({
-				    position: markerPosition
-				});
 
-				// 마커가 지도 위에 표시되도록 설정합니다
-				marker.setMap(map)
+<!-- 푸터 -->
+		<footer>
+			<div id="footdiv">
+				<div id="map"></div>
+				<div class="container" style="margin-left:-12px;">
+								
+					사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
+					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
+				</div>
+			</div>
+				<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=80e0462cf0816d5f855221ad79425d44"></script>
+				<script>				
+					$(document).ready(function() {
+						var container = document.getElementById('map');
+						var options = {
+							center: new kakao.maps.LatLng(37.55644880228536, 126.94519155495574),
+							level: 3
+						};
 				
-			});
-		</script>
-</footer>
+						var map = new kakao.maps.Map(container, options);
+						
+						// 마커가 표시될 위치입니다 
+						var markerPosition  = new kakao.maps.LatLng(37.55644880228536, 126.94519155495574); 
+			
+						// 마커를 생성합니다
+						var marker = new kakao.maps.Marker({
+						    position: markerPosition
+						});
+		
+						// 마커가 지도 위에 표시되도록 설정합니다
+						marker.setMap(map)
+						
+					});
+				</script>
+		</footer>
+	</section>
+</div>
 </body>
 </html>

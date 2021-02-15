@@ -283,7 +283,7 @@ a {
 					</div>
 				</li>
 				<li class="order">
-					<a href="#" data-log-actionid-area="header_util" data-log-actionid-label="orderdlv_inquiry" class="menu">주문</a>
+					<a href="${root }/user/userOrderList" data-log-actionid-area="header_util" data-log-actionid-label="orderdlv_inquiry" class="menu">주문</a>
 				</li>
 				<li class="cart">
 					<a href="${root }/user/cart" class="menu" data-log-actionid-area="header_util" data-log-actionid-label="cart">장바구니</a>

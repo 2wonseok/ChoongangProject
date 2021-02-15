@@ -192,7 +192,6 @@ function reload() {
     line-height: 45px;
     float: right;
 }
-
 </style>
 <body>
 <u:mainNav/>
@@ -230,7 +229,7 @@ function reload() {
 			<button type="submit" id="btn_CheckDel"/>선택 삭제</button>
 			<button type="submit" id="btn_smsSubmit"/>문자 전송</button>
 		<table class="table table-hover">
-			<thead>
+			<thead style="background: #f8f8f8;">
 				<tr>
 					<th><input type="checkbox" id="allCheck"  value="${user.user_seq }"/></th>
 					<th>번호</th>
@@ -349,5 +348,6 @@ function reload() {
 		</script>
 	</c:otherwise>
 </c:choose>
+<u:footer/>
 </body>
 </html>
