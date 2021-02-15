@@ -2,6 +2,9 @@ package org.zerock.user.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.zerock.product.domain.OrderVO;
 import org.zerock.user.domain.Criteria;
 import org.zerock.user.domain.UserVO;
 
@@ -38,4 +41,8 @@ public interface UserService {
 	public void userRemove(String user_id);
 	
 	public int modifyPw(UserVO user);
+	
+	public List<OrderVO> orderList(@Param("order_userseq") int order_userseq, @Param("cri") Criteria cri);
+	
+	public List<OrderVO> cartList(@Param("order_userseq") int order_userseq, @Param("cri") Criteria cri);
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.zerock.product.domain.OrderVO;
 import org.zerock.user.domain.Criteria;
 import org.zerock.user.domain.UserVO;
 import org.zerock.user.mapper.UserMapper;
@@ -138,6 +139,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int modifyPw(UserVO user) {
 		return mapper.modifyPw(user);
+	}
+
+	@Override
+	public List<OrderVO> orderList(int order_userseq, Criteria cri) {
+		return mapper.orderList(order_userseq, cri);
+	}
+
+	@Override
+	public List<OrderVO> cartList(int order_userseq, Criteria cri) {
+		return mapper.cartList(order_userseq, cri);
 	}
 
 }

@@ -1,7 +1,7 @@
 package org.zerock.user.controller;
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.RevBoard.service.RevBoardService;
+import org.zerock.product.domain.OrderVO;
+import org.zerock.product.domain.ProductVO;
+import org.zerock.product.service.ProductService;
 import org.zerock.user.domain.Criteria;
 import org.zerock.user.domain.PageDTO;
 import org.zerock.user.domain.UserVO;
@@ -37,6 +40,8 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 @Log4j
 @RequestMapping("/user/*")
 public class UserController {
+	
+	private ProductService pdService;
 	
 	private BCryptPasswordEncoder pwdEncoder;
 	
@@ -323,11 +328,29 @@ public class UserController {
 		return result;
 	}
 	
-	@GetMapping("/userOrderList")
-	public void orderList() {}
+	@GetMapping("/userOrderList") // 주문목록
+	public void orderList(HttpSession session, Criteria cri, Model model) {
+		UserVO vo = (UserVO) session.getAttribute("authUser");
+		
+		int order_userseq = vo.getUser_seq();
+		
+		System.out.println("유저의seq"+order_userseq);
+		
+		List<OrderVO> order = service.orderList(order_userseq, cri);
+		
+		model.addAttribute("order", order);
+	}
 	
 	@GetMapping("/cart")
-	public void cart() {}
+	public void cart(HttpSession session, Criteria cri, Model model) {
+		UserVO vo = (UserVO) session.getAttribute("authUser");
+		
+		int order_userseq = vo.getUser_seq();
+		
+		List<OrderVO> cart = service.cartList(order_userseq, cri);
+		
+		model.addAttribute("cartList", cart);
+	}
 	
 	@GetMapping("/smsSubmit")
 	public void smsSubmit(@RequestParam("seq") ArrayList<Integer> seq, Model model) {
@@ -352,4 +375,5 @@ public class UserController {
 		
 		return "redirect:/user/userList";
 	}
+	
 }

@@ -66,17 +66,19 @@ p {
 						</tr>
 					</thead>
 					<tbody>
+					<c:forEach items="${cartList }" var="cart">
 						<tr>
 							<td><p><input type="checkbox" id="seq" name="seq" value="" /></p></td>
 							<td>
-								<img alt="상품사진" src="${root }/resources/logo/BCDLogo3.png">
+								<img alt="상품사진" src="${root }/resources/upload/${cart.order_filename}">
 								<a href="#" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
-									<c:out value="에어팟 케이스"></c:out>
+									<c:out value="${cart.order_poname }"></c:out>
 								</a>
 							</td>
-							<td><p><c:out value="2,000,000원"></c:out></p></td>
-							<td><p><c:out value="1,000,000원"></c:out></p></td>
+							<td><p><c:out value="${cart.order_poprice }"></c:out></p></td>
+							<td><p><c:out value="500,000원"></c:out></p></td>
 						</tr>
+					</c:forEach>
 					</tbody>
 				</table>
 			</section>

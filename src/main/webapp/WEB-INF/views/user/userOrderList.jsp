@@ -490,11 +490,12 @@ tbody {
 		<div class="container">
 			<section id ="container">
 			<h3><a href="#" id="orderList">주문 목록</a></h3><br>
+ 			<c:forEach items="${order}" var="orders">
 				<div class="DesktopOrderList__Wrapper-qxzqk9-0 kWqHSE" id="orderListDiv"> <!--  주문 목록 시작 -->
 					<div class="DesktopOrderBoxRoot__Wrapper-fimazj-0 bTiPIu">
 						<div class="DesktopOrderBoxHeader__Wrapper-abukv2-0 iUvJqV">
 							<div class="DesktopOrderBoxHeader__OrderDate-abukv2-1 janngp">
-								2021.02.13 주문
+								${orders.order_date } 주문  
 							</div>
 							<div class="DesktopOrderBoxHeader__OrderDetailLink-abukv2-2 eNaUsP">
 								<span class="DesktopOrderBoxHeader__OrderDetailLinkText-abukv2-3 jmCVTz">
@@ -529,17 +530,17 @@ tbody {
 																	<div class="DesktopOrderBoxStyle__DesktopOrderBoxProductTextWrapper-gnmni8-9 cbBmbp"></div>
 																	<div class="DesktopOrderBoxStyle__DesktopOrderBoxProductTextWrapper-gnmni8-9 DesktopOrderBoxGoodsBodyText__Paragraph-sc-8q24ha-0 cbBmbp jBDGcA">
 																		<span color="#111111" class="BodyText__BodyTextM-sc-755zt3-1 DesktopOrderBoxGoodsBodyText__ProductText-sc-8q24ha-1 jgZoAn wEFvN">
-																			애플 에어팟 프로 실리콘 케이스, 네이비
+																		  ${orders.order_poname } 
 																		</span>
 																	</div>
 																	<div class="DesktopOrderBoxStyle__DesktopOrderBoxProductTextWrapper-gnmni8-9 DesktopOrderBoxGoodsBodyText__PriceAndCartWrapper-sc-8q24ha-4 cbBmbp bEFRXv">
 																		<div class="DesktopOrderBoxGoodsBodyText__PriceTextWrapper-sc-8q24ha-2 hgNRNX">
 																			<div class="DesktopOrderBoxGoodsItemPriceAndQuantity__Wrapper-uaa4l4-0 jrOJCy">
-																				<span font-weight="normal" class="BodyText__BodyTextL-sc-755zt3-0 jbEZNk">5,000원</span>
+																				<span font-weight="normal" class="BodyText__BodyTextL-sc-755zt3-0 jbEZNk">${orders.order_poprice }원</span>
 																				<span class="TextDot__DotContainer-sc-13xhsmd-0 AbwgC">
 																					<span class="TextDot__Dot-sc-13xhsmd-1 fYxTqY"></span>
 																				</span>
-																				<span class="BodyText__BodyTextL-sc-755zt3-0 bqCRgI">1개</span>
+																				<span class="BodyText__BodyTextL-sc-755zt3-0 bqCRgI">${orders.order_quantity }개</span>
 																			</div>
 																		</div>
 																		<div class="DesktopOrderBoxGoodsBodyText__AddCartButtonWrapper-sc-8q24ha-3 dhufUh">
@@ -582,6 +583,8 @@ tbody {
 						</div>
 					</div>
 				</div> <!-- 주문 목록 종료 -->
+				</c:forEach> 
+				
 				<div class="my-area-contents" id="ShippingCheckDiv"> <!-- 배송 조회 시작 -->
 					<div id="my__container" class="my-ship-track my-font--base" data-reference="{&quot;module&quot;: &quot;pcweb&quot;, &quot;controller&quot;: &quot;shiptrack&quot;}" data-accessedring="false" data-tracking="deliveryStatus=DELIVERY_DONE&amp;isCoupang=false&amp;isCoupangGlobal=false&amp;hasExternalLink=true&amp;vendorId=A00154520&amp;vendorItemIds=70061377622">
       

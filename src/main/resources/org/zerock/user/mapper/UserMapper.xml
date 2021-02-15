@@ -53,7 +53,7 @@
 	<![CDATA[
 			)
 			WHERE
-				rn BETWEEN (${pageNum} - 1) * ${amount} + 1 AND ${pageNum} * ${amount}
+				rn BETWEEN (#{pageNum} - 1) * #{amount} + 1 AND #{pageNum} * #{amount}
 	]]>	
 	</select>
 	
@@ -80,6 +80,42 @@
 	
 	<select id="nickCheck" resultType="int">
 		select COUNT(*) from tbl_user where user_nickname = #{user_nickname}
+	</select>
+	
+	<select id="orderList" resultType="org.zerock.product.domain.OrderVO">
+		select order_seq, order_productseq, order_date, order_poseq, order_poname, order_poprice,
+			order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone
+		FROM
+			(
+			SELECT
+				ROW_NUMBER() OVER (ORDER BY order_date DESC) rn,
+		 		order_seq, order_productseq, order_date, order_poseq, order_poname, order_poprice,
+		 		order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone 
+			FROM tbl_order
+			)	
+			WHERE
+				order_userseq = #{order_userseq}
+ 			AND
+				rn BETWEEN (#{cri.pageNum} - 1) * #{cri.amount} + 1 AND #{cri.pageNum} * #{cri.amount}
+	</select>
+	
+	<select id="cartList" resultType="org.zerock.product.domain.OrderVO">
+		select order_seq, order_productseq, order_date, order_poseq, order_poname, order_poprice,
+			order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone
+		FROM
+			(
+			SELECT
+				ROW_NUMBER() OVER (ORDER BY order_date DESC) rn,
+		 		order_seq, order_productseq, order_date, order_poseq, order_poname, order_poprice,
+		 		order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone 
+			FROM tbl_order
+			)	
+			WHERE
+				order_userseq = #{order_userseq}
+			AND
+				order_status = 0
+ 			AND
+				rn BETWEEN (#{cri.pageNum} - 1) * #{cri.amount} + 1 AND #{cri.pageNum} * #{cri.amount}
 	</select>
 	
 	<update id="gradeUpdate">
