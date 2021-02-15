@@ -23,7 +23,6 @@ $(document).ready(function(){
 		}
 	});	
 	
-	
 });
 </script>
 <title>장바구니</title>
@@ -71,7 +70,7 @@ p {
 							<td><p><input type="checkbox" id="seq" name="seq" value="" /></p></td>
 							<td>
 								<img alt="상품사진" src="${root }/resources/upload/${cart.order_filename}">
-								<a href="#" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
+								<a href="${root}/product/get?product_seq=${cart.order_productseq}" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
 									<c:out value="${cart.order_poname }"></c:out>
 								</a>
 							</td>

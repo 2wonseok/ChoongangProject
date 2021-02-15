@@ -331,25 +331,34 @@ public class UserController {
 	@GetMapping("/userOrderList") // 주문목록
 	public void orderList(HttpSession session, Criteria cri, Model model) {
 		UserVO vo = (UserVO) session.getAttribute("authUser");
+		int order_userseq = 0;
 		
-		int order_userseq = vo.getUser_seq();
-		
-		System.out.println("유저의seq"+order_userseq);
+		if (vo != null) {
+			order_userseq = vo.getUser_seq();
+		}
 		
 		List<OrderVO> order = service.orderList(order_userseq, cri);
 		
 		model.addAttribute("order", order);
 	}
 	
-	@GetMapping("/cart")
+	@GetMapping("/cart") // 장바구니
 	public void cart(HttpSession session, Criteria cri, Model model) {
 		UserVO vo = (UserVO) session.getAttribute("authUser");
+		int order_userseq = 0;
 		
-		int order_userseq = vo.getUser_seq();
+		if (vo != null) {
+			order_userseq = vo.getUser_seq();
+		}
 		
 		List<OrderVO> cart = service.cartList(order_userseq, cri);
 		
 		model.addAttribute("cartList", cart);
+	}
+	
+	@GetMapping("/shippingCheck") //배송조회
+	public void ShippingCheckBtn(int order_seq) {
+		
 	}
 	
 	@GetMapping("/smsSubmit")

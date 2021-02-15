@@ -85,12 +85,14 @@
 	<select id="orderList" resultType="org.zerock.product.domain.OrderVO">
 		select order_seq, order_productseq, order_date, order_poseq, order_poname, order_poprice,
 			order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone
+			, order_filename
 		FROM
 			(
 			SELECT
 				ROW_NUMBER() OVER (ORDER BY order_date DESC) rn,
 		 		order_seq, order_productseq, order_date, order_poseq, order_poname, order_poprice,
-		 		order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone 
+		 		order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone
+		 		, order_filename 
 			FROM tbl_order
 			)	
 			WHERE
@@ -102,12 +104,14 @@
 	<select id="cartList" resultType="org.zerock.product.domain.OrderVO">
 		select order_seq, order_productseq, order_date, order_poseq, order_poname, order_poprice,
 			order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone
+			, order_filename
 		FROM
 			(
 			SELECT
 				ROW_NUMBER() OVER (ORDER BY order_date DESC) rn,
 		 		order_seq, order_productseq, order_date, order_poseq, order_poname, order_poprice,
-		 		order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone 
+		 		order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone
+		 		, order_filename 
 			FROM tbl_order
 			)	
 			WHERE
