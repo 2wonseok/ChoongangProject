@@ -3,6 +3,7 @@ package org.zerock.product.mapper;
 import java.util.List;
 
 import org.zerock.product.domain.Criteria;
+import org.zerock.product.domain.OrderVO;
 import org.zerock.product.domain.ProductOptionVO;
 import org.zerock.product.domain.ProductVO;
 
@@ -30,7 +31,9 @@ public interface ProductMapper {
 
 	public List<ProductOptionVO> getProductOptionList(int product_seq);
 	
-	public void insertProductOption(ProductOptionVO productOption);	
+	public void insertProductOption(ProductOptionVO productOption);
+
+	public void insertOrder(OrderVO orderVO);
 	
 
 

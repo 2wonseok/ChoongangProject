@@ -20,6 +20,9 @@
 
 
 <script>
+
+var root = '${root }'
+
 $(document).ready(function(){
 	
 	/*밑의 이미지를 호버하면 main이미지가 바뀌는 js */
@@ -66,13 +69,12 @@ $(document).ready(function(){
 		if (exist == 0) {
 			$("#optionBox").append(
 				'<div id="optionContainer"'+poSeq+'>' +
-					'<input style="width:150px;" class="border-0" type="text" name="po_name" value="'+po_name+'" readonly/>' +
-					'<input style="width:60px; text-align:right;" class="border-0 po_price" type="number" name="po_price" value="'+po_price+'" readonly/>'+"원"+
-					'<input class="border-0" type="number" name="product_seq" value="'+${product.product_seq}+'"hidden/>' +
-					'<input class="border-0" type="number" name="productOption_seq" value="'+poSeq+'"hidden/>' +
+					'<input style="width:150px;" class="border-0" type="text" name="order_poname" value="'+po_name+'" readonly/>' +
+					'<input style="width:60px; text-align:right;" class="border-0 po_price" type="number" name="order_poprice" value="'+po_price+'" readonly/>'+"원"+
+					'<input type="number" name="order_poseq" value="'+poSeq+'"hidden/>' +
 					'<span class="mx-3"></span>' +
 					'<button class="minus_btn" type="button">감소</button>'+
-					'<input style="width:40px;" class="amount" type="number" min="1" value="1" name="po_quantity" />'+
+					'<input style="width:40px;" class="amount" type="number" min="1" value="1" name="order_quantity" />'+
 					'<button class="plus_btn" type="button">증가</button>'+
 					'<button class="removeOption_btn" type="button">제거</button>'+
 					'<input style="width:60px; text-align:right;" class="border-0 po_groupprice" type="number" name="" value="'+po_price+'" readonly/>'+"원" +
@@ -88,19 +90,17 @@ $(document).ready(function(){
 		$(this).parent().remove();
 		totalp();
 	});
+
 	/* 클릭시 수량증감(+가격도변경) */
 	$(document).on('click',".plus_btn", function(){
 		var amou = $(this).siblings(".amount").val();
 		var amouc = parseInt(amou)+1;
 		$(this).siblings(".amount").val(amouc);
-		
 		/* 가격도 수정 */
 		var poPrice = $(this).siblings(".po_price").val();
 		var pri = amouc * poPrice;
 		$(this).siblings(".po_groupprice").val(pri);
-		
 		totalp();
-		
 	});
 	$(document).on('click',".minus_btn", function(){
 		var amou = $(this).siblings(".amount").val();
@@ -112,9 +112,17 @@ $(document).ready(function(){
 			var pri = amouc * poPrice;
 			$(this).siblings(".po_groupprice").val(pri);
 		}
-		
 		totalp();
+	});
+	
+	$("#order_btn").click(function(){
+		if ("${authUser}" == ""){
+			$("#myModal .modal-body p").html("로그인 해야합니다.");
+			$("#myModal").modal("show");
+			return;
+		}
 		
+		$("#order_form").submit();
 	});
 
 });
@@ -268,7 +276,13 @@ $(document).ready(function(){
 							</select>
 						</td>
 						<td colspan="2" >
-							<form action="" method="get">
+							<form id="order_form" action="${root }/product/order" method="post">
+								<input name="order_productseq" value="${product.product_seq }" hidden="hidden"/>
+								<input name="order_userseq" value="${authUser.user_seq }" hidden="hidden"/>
+								<input name="order_username" value="${authUser.user_name }" hidden="hidden"/>
+								<input name="order_useraddress" value="${authUser.user_address }" hidden="hidden"/>
+								<input name="order_userphone" value="${authUser.user_phone }" hidden="hidden"/>
+								<input class="total_price" value="0" name="order_totalprice" hidden="hidden"/>
 								<div id="optionBox">
 								</div>
 							</form>
@@ -278,9 +292,9 @@ $(document).ready(function(){
 						<td colspan="3">
 							<div class="row">
 								<div class="col-6"></div>
-								<input class="total_price" value="0" readonly/>
+								<input class="total_price" value="0" name="order_totalprice" readonly/>
 								<button class="btn_add mx-2" type="button"> 장바구니</button>
-								<button class="btn_add mx-2" type="button"> 구매</button>
+								<button id="order_btn" class="btn_add mx-2" type="button"> 구매</button>
 							</div>
 						</td>
 					</tr>					
@@ -305,7 +319,7 @@ $(document).ready(function(){
 	        <p>처리가완료되었습니다</p>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button id="modalClose" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 	      </div>
 	    </div>
 	  </div>

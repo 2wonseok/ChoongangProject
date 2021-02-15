@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.product.domain.Criteria;
+import org.zerock.product.domain.OrderVO;
 import org.zerock.product.domain.PageDTO;
 import org.zerock.product.domain.ProductOptionVO;
 import org.zerock.product.domain.ProductVO;
@@ -41,7 +42,6 @@ import lombok.extern.log4j.Log4j;
 public class ProductController {
 
 	private ProductService service;
-	private UserService userService;
 	
 	@GetMapping("/register")
 	public String register(@ModelAttribute("cri") Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
@@ -367,6 +367,58 @@ public class ProductController {
 	}
 	
 	
+	
+	@PostMapping("/order")
+	public String order (String[] order_poseq, String[] order_poname, String[] order_poprice, String[] order_quantity, OrderVO orderVO, Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
+		/* 로그인 해야지만 order 할 수 있게끔 */
+		if (request.getSession().getAttribute("authUser") == null) {
+			rttr.addFlashAttribute("message","로그인 되어있지 않습니다.");
+			return "redirect:/user/login";
+		}
+		/*상품옵션이 비었을때 돌려보냄*/
+			String emp = "";
+			/* 숫자배열 내 최소값이 0보다 커야함을표시 */
+			int cnt = 0;
+			if(order_quantity !=null) {				
+				for(int i = 0; i < order_quantity.length; i++) {
+					if(!order_quantity[i].equals(emp) && Integer.parseInt(order_quantity[i]) <= 0 ) {
+						cnt++;
+					}
+				}
+			}
+			if(/* 옵션하나도안넣으면안됨 */
+				order_quantity == null ||
+				Arrays.asList(order_quantity).size() == 0 ||
+				/* 빈값이 있으면 안됨 */
+				Arrays.asList(order_quantity).contains(emp) ||
+				/* 숫자들은 무조건 0보다 커야함 */
+				cnt !=0
+				) {
+				rttr.addFlashAttribute("message", "상품옵션항목이 올바르지 않습니다");
+				return "redirect:/product/get";
+			}
+		/* 올바르면 리스트 만들어서 보내주기*/
+		List<OrderVO> list = new ArrayList<OrderVO>();
+		for (int i=0; i<order_quantity.length; i++) {
+			OrderVO orderVOn = new OrderVO();
+			orderVOn.setOrder_poseq(Integer.parseInt(order_poseq[i]));
+			orderVOn.setOrder_quantity(Integer.parseInt(order_quantity[i]));
+			orderVOn.setOrder_poname(order_poname[i]);
+			orderVOn.setOrder_poprice(Integer.parseInt(order_poprice[i]));
+			orderVOn.setOrder_productseq(orderVO.getOrder_productseq());
+			orderVOn.setOrder_userseq(orderVO.getOrder_userseq());
+			orderVOn.setOrder_username(orderVO.getOrder_username());
+			orderVOn.setOrder_useraddress(orderVO.getOrder_useraddress());
+			orderVOn.setOrder_userphone(orderVO.getOrder_userphone());
+			list.add(orderVOn);
+		}
+		service.makeOrder(list);
+		return "redirect:/product/list";
+	}
+	
+	
+	
+	/* 삭제참고용-구현만해둠 */
 	@PostMapping("/remove")
 	public String remove(@RequestParam("product_seq") int product_seq, Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
 		

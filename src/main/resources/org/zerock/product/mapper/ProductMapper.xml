@@ -5,12 +5,13 @@
 
 <mapper namespace="org.zerock.product.mapper.ProductMapper">
 
-	<insert id="insert">
-		insert into tbl_product (product_seq, product_name, product_price,
-		product_quantity, product_seller, product_filename, product_info, category_seq, user_nickname)
-		values (product_seq.nextval, #{product_name}, #{product_price},
-		#{product_quantity}, #{product_seller}, #{product_filename},
-		#{product_info}, #{category_seq}, #{user_nickname})
+	<insert id="insertOrder">
+		insert into tbl_order (order_seq, order_productseq, order_poseq,
+		order_poname, order_poprice, order_quantity, order_userseq, order_username, order_useraddress, order_userphone)
+		values 
+		(order_seq.nextval, #{order_productseq}, #{order_poseq},
+		#{order_poname}, #{order_poprice}, #{order_quantity},
+		#{order_userseq}, #{order_username}, #{order_useraddress}, #{order_userphone})
 	</insert>
 
 	<insert id="insertProductOption" >
@@ -21,6 +22,14 @@
 		 ,#{po_name}
 		 ,#{po_quantity}
 		 ,#{po_price})
+	</insert>
+	
+	<insert id="insert">
+		insert into tbl_product (product_seq, product_name, product_price,
+		product_quantity, product_seller, product_filename, product_info, category_seq, user_nickname)
+		values (product_seq.nextval, #{product_name}, #{product_price},
+		#{product_quantity}, #{product_seller}, #{product_filename},
+		#{product_info}, #{category_seq}, #{user_nickname})
 	</insert>
 	
 	<select id="getProductOptionList" resultType="org.zerock.product.domain.ProductOptionVO">
