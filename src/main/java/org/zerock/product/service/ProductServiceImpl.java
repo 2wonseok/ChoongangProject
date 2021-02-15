@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
 	public void registerReturn(ProductVO product, String[] po_name, String[] po_quantity, String[] po_price) {
 		mapper.insertReturnSeq(product);
 		
-		/* 상품옵션등록-서비스로트랜잭션 */
+		/* 상품옵션등록-서비스로 트랜잭션 */
 		//List<ProductOptionVO> optionList= new ArrayList<ProductOptionVO>(); 
 		for (int i = 0; i<po_name.length ;i++ ) {
 			ProductOptionVO poVO = new ProductOptionVO();
@@ -47,22 +47,46 @@ public class ProductServiceImpl implements ProductService {
 		
 	}
 	
-	@Override
-	public List<ProductVO> getList(Criteria cri) {
-		return mapper.getListWithPaging(cri);
+	//상품대표가격받아와서 수정+총재고량 업데이트하는 함수
+	public void updateProductVOOnPriceQuantity (ProductVO pVO) {
+		List<ProductOptionVO> poVOList = mapper.getProductOptionList(pVO.getProduct_seq());
+		pVO.setProduct_price(poVOList.get(0).getPo_price());
+		
+		int total = 0;
+		for(ProductOptionVO poVO : poVOList) {
+			total +=poVO.getPo_quantity();
+		}
+		pVO.setProduct_quantity(total);
 	}
 	
 	@Override
+	@Transactional
+	public List<ProductVO> getList(Criteria cri) {
+		List<ProductVO> list  = mapper.getListWithPaging(cri);
+		//상품대표가격받아와서 수정+총재고량 업데이트
+		for(ProductVO pVO : list) {
+			updateProductVOOnPriceQuantity(pVO);
+		}
+		return list;
+	}
+	
+	
+	@Override
 	public ProductVO get(int product_seq) {
-		return mapper.read(product_seq);
+		ProductVO pVO= mapper.read(product_seq);
+		updateProductVOOnPriceQuantity(pVO);
+		
+		return pVO;
 	}
 	
 	@Override
 	@Transactional
 	public ProductVO getCountUp(int product_seq) {
-		ProductVO vo = mapper.read(product_seq);
+		ProductVO pVO = mapper.read(product_seq);
 		mapper.readCountUp(product_seq);
-		return vo;
+		updateProductVOOnPriceQuantity(pVO);
+
+		return pVO;
 	}
 	
 	

@@ -39,12 +39,12 @@
 				if ($("#product_name").val() == ""){
 					message = "상품이름 항목이 비어있음";
 				} else
-				if ($("#product_price").val() == ""){
+				/* if ($("#product_price").val() == ""){
 					message = "상품가격 항목이 비어있음";
-				} else
-				if ($("#product_quantity").val() == ""){
+				} else */
+				/* if ($("#product_quantity").val() == ""){
 					message = "상품수량 항목이 비어있음";
-				} else
+				} else */
 				if ($("#product_info").val() == ""){
 					message = "상품정보 항목이 비어있음";
 				} else {
@@ -143,14 +143,11 @@ table.type05 td {
 <body>
 
 	<u:mainNav/>
-
-	<div class="container">
-		<div class="row d-flex justify-content-center">
-			<hr>
-		
+	<div class="container col-8 d-flex justify-content-center">
+		<div class="row">
+			
 			<div class="col-md-6, col-md-offset-3">
-				<div class="row">
-					
+				
 					<form id="form_id" action="/product/register" method="post" enctype="multipart/form-data">
 						<table class="type05">
 							<tbody>
@@ -163,14 +160,14 @@ table.type05 td {
 									<th scope="row">상품 이름 *</th>
 									<td><input class="input1" id="product_name" name="product_name" type="text" value="${product.product_name }"></td>
 								</tr>
-								<tr>
+								<%-- <tr>
 									<th scope="row">상품 단위 가격 * </th>
 									<td><input class="input1" id="product_price" name="product_price" type="number" value="${product.product_price }"></td>
 								</tr>
 								<tr>
 									<th scope="row">상품 수량 * </th>
 									<td><input class="input1" id="product_quantity" name="product_quantity" type="number" value="${product.product_quantity }"></td>
-								</tr>
+								</tr> --%>
 								<tr>
 									<th scope="row">상품 판매자(Nickname)</th><!--value=authUser로 넣을 예정  -->
 									<td><input class="input1" id="user_nickname" name="user_nickname" type="text" value="${authUser.user_nickname }" style="background-color:silver;"readonly>
@@ -189,19 +186,15 @@ table.type05 td {
 						</table>
 						
 						
+						<h3 class="ml-2">상품 옵션 (첫번째 입력항목이 메인에 띄워집니다.)</h3>
 						<table class="type06">
-							<thead>
-								<tr>
-									<td>상품 옵션</td>
-								</tr>
-							</thead>
 							<tbody id="tbody">
 								<tr>
 									<th>종류</th>
 									<td><input class="input2" type="text" name="po_name"/></td>
 									<th>수량</th>
 									<td><input class="input2" type="number" min="1" name="po_quantity"/></td>
-									<th>가격</th>
+									<th>개당 가격</th>
 									<td><input class="input2" type="number" min="1" name="po_price"/></td>
 									<th></th>
 									<td><button id="addOption_btn" type="button">옵션 추가</button></td>
@@ -284,9 +277,7 @@ table.type05 td {
 						<button id="btn_submit" class="btn_add">상품 등록하기</button>
 					</form>
 				</div>
-				
-			</div>
-			
+							
 			<hr>
 		</div>
 	</div>

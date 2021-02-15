@@ -58,9 +58,9 @@ public class ProductController {
 	public String register(String[] po_name, String[] po_quantity, String[] po_price, ProductVO product, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request) {
 
 		/*상품옵션이 비었을때 돌려보냄*/
-			for(String po_p : po_price) {
+			/*for(String po_p : po_price) {
 				System.out.println(po_p);				
-			}
+			}*/
 			String emp = "";
 			/* 숫자배열2개 내 최소값이 0보다 커야함을표시 */
 			int cnt = 0;	
@@ -85,6 +85,14 @@ public class ProductController {
 				rttr.addFlashAttribute("message", "상품옵션항목이 올바르지 않습니다");
 				return "redirect:/product/register";
 			}
+			
+		//옵션입력확인했으니 맨 처음 옵션의 가격과 옵션 총 수량을 넣어줌
+		product.setProduct_price(Integer.parseInt(po_price[0]));
+		int total = 0;
+		for(String po_q : po_quantity) {
+			total += Integer.parseInt(po_q);
+		}
+		product.setProduct_quantity(total);
 		
 		
 		//파일 올리는 방법 복사
@@ -179,7 +187,6 @@ public class ProductController {
 			productVO.setProduct_filename(fileNameFirst);
 		}
 		
-		
 		int total = service.getTotal(cri);
 		//페이징을 위한 total개수를 가져옴
 		//cri가 들어가서 검색시에도 적용
@@ -195,10 +202,14 @@ public class ProductController {
 
 	@GetMapping("/get")
 	public void get(@RequestParam("product_seq") int product_seq, @ModelAttribute("cri") Criteria cri, Model model) {
+		
 		ProductVO vo = service.getCountUp(product_seq);
+		model.addAttribute("product", vo);
+
+		//옵션리스트넣어줌
 		List<ProductOptionVO> poVOList = service.getProductOption(product_seq);
 		model.addAttribute("poList", poVOList);
-		model.addAttribute("product", vo);
+		
 		model.addAttribute("cri", cri);
 		
 		//여러 상품파일이름을 list로 변환하고 넘겨줌
@@ -223,11 +234,15 @@ public class ProductController {
 		model.addAttribute("cri", cri);
 		
 		String preFileNames = vo.getProduct_filename();
-		//상품파일이름을 list로 보내줌
+		//상품파일이름을 list로 변환해서 보내줌
 		List<String> fileNamesList = Arrays.asList(preFileNames.split(","));
 		System.out.println(fileNamesList);
 		model.addAttribute("fileNamesList", fileNamesList);
 		model.addAttribute("preFileNames", preFileNames);
+		
+		//옵션리스트넣어줌
+		List<ProductOptionVO> poVOList = service.getProductOption(product_seq);
+		model.addAttribute("poList", poVOList);
 		
 		return "/product/modify";
 	}

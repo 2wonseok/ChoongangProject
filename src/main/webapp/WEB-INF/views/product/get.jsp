@@ -44,11 +44,79 @@ $(document).ready(function(){
 		}
 	}
 	
-	/* 옵션클릭시 아래에 추가 */
-	 $(".optionClicked").click(function(){
-	     
-	 });
+	/*토탈가격 구하는 함수*/
+	function totalp() {
+		var sum = 0;
+		$(".po_groupprice").each(function(){
+			sum += Number($(this).val());
+		});
+		$(".total_price").val(sum);
+	}
 	
+	 /* 옵션 클릭시 추가하기 */
+	$("#optionSelectBox").on('change',function(){
+		/* 선택된 옵션 val을 가져옴=productOption_seq */
+		var poSeq = $(this).val();
+		var po_name = $(this).find("option:selected").data("name");
+		var po_price = $(this).find("option:selected").data("price");
+		
+		/* 이전 optionContainerNumber가 있는가 선택 */
+		var exist = $('input[name="productOption_seq"][value='+poSeq+']').length;
+		
+		if (exist == 0) {
+			$("#optionBox").append(
+				'<div id="optionContainer"'+poSeq+'>' +
+					'<input style="width:150px;" class="border-0" type="text" name="po_name" value="'+po_name+'" readonly/>' +
+					'<input style="width:60px; text-align:right;" class="border-0 po_price" type="number" name="po_price" value="'+po_price+'" readonly/>'+"원"+
+					'<input class="border-0" type="number" name="product_seq" value="'+${product.product_seq}+'"hidden/>' +
+					'<input class="border-0" type="number" name="productOption_seq" value="'+poSeq+'"hidden/>' +
+					'<span class="mx-3"></span>' +
+					'<button class="minus_btn" type="button">감소</button>'+
+					'<input style="width:40px;" class="amount" type="number" min="1" value="1" name="po_quantity" />'+
+					'<button class="plus_btn" type="button">증가</button>'+
+					'<button class="removeOption_btn" type="button">제거</button>'+
+					'<input style="width:60px; text-align:right;" class="border-0 po_groupprice" type="number" name="" value="'+po_price+'" readonly/>'+"원" +
+				'</div>'
+			);
+			
+			totalp();
+		}
+	});
+			
+	/* 클릭시 옵션제거=동적태그를 가져오려면 아래처럼생성해야함 */
+	$(document).on('click',".removeOption_btn", function(){
+		$(this).parent().remove();
+		totalp();
+	});
+	/* 클릭시 수량증감(+가격도변경) */
+	$(document).on('click',".plus_btn", function(){
+		var amou = $(this).siblings(".amount").val();
+		var amouc = parseInt(amou)+1;
+		$(this).siblings(".amount").val(amouc);
+		
+		/* 가격도 수정 */
+		var poPrice = $(this).siblings(".po_price").val();
+		var pri = amouc * poPrice;
+		$(this).siblings(".po_groupprice").val(pri);
+		
+		totalp();
+		
+	});
+	$(document).on('click',".minus_btn", function(){
+		var amou = $(this).siblings(".amount").val();
+		if (amou > 1) {
+			var amouc = parseInt(amou)-1;
+			$(this).siblings(".amount").val(amouc);
+			/* 가격도 수정 */
+			var poPrice = $(this).siblings(".po_price").val();
+			var pri = amouc * poPrice;
+			$(this).siblings(".po_groupprice").val(pri);
+		}
+		
+		totalp();
+		
+	});
+
 });
 </script>
 
@@ -103,6 +171,11 @@ $(document).ready(function(){
 				
 					<p class="text-left">상품 카테고리 > <c:out value="${product.category_seq }"></c:out></p>
 				<table>
+					<colgroup>
+					    <col width="20%"/>
+					    <col width="30%"/>
+					    <col width="50%"/>
+				  	</colgroup>
 					
 					<tr>
 						<!-- 상품정보 왼쪽위 이미지  -->
@@ -110,7 +183,7 @@ $(document).ready(function(){
 						<c:if test="${product.product_status == 1 }">
 							<c:set var="visibility" value="30%"></c:set>
 						</c:if>
-						<td class="tableLeftUp">
+						<td colspan="2" class="tableLeftUp">
 							<div style="position : relative;">
 								<img style="opacity : ${visibility}"  id="productMainImage" class="card-img-top" src="${root }/resources/upload/${productImgList[0] }" alt="제품이미지">
 								<div style="position:absolute;top:45%;left:40%">
@@ -128,7 +201,7 @@ $(document).ready(function(){
 								<fmt:formatNumber value="${product.product_price }" type="number" var="price"></fmt:formatNumber>
 								<h5 class="text-right"><c:out value="${price }"></c:out>원</h5>					
 								<fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
-								<p class="text-right"><c:out value="${quantity }"></c:out>개 남음</p>
+								<p class="text-right">총 <c:out value="${quantity }"></c:out>개 남음</p>
 								<p class="text-right">판매자 : <c:out value="${ product.user_nickname }"></c:out></p>
 								<p class="text-left">상품설명 </p>
 								
@@ -173,7 +246,7 @@ $(document).ready(function(){
 					<!--상품 왼쪽아래 부가정보  -->
 					<tr>
 						<!--이미지리스트썸네일  -->
-						<td valign=top>
+						<td colspan="2"  valign=top>
 							<c:forEach items="${productImgList }" var="productImg" varStatus="imgNum">
 								<img style="opacity : ${visibility}" class="hoveredImage"alt="" src="${root }/resources/upload/${productImg}" height="80px" width="70px">
 							</c:forEach>
@@ -186,25 +259,31 @@ $(document).ready(function(){
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">
-							<div class="d-flex justify-content-center mt-2 align-middle">
-								<form action="" method="get">
-									
-									<select>
-										<c:forEach items="${ poList}" var="poLi" >
-											<option class="optionClicked"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
-										</c:forEach>
-									</select>
-											
-									<!--이전에 쓰던거 박제(지울거) 
-									<span>구매 수량</span>
-									<input style="width:80px" min="1" name="order_quantity" type="number" />
-									 -->
-									<button class="btn_add mx-2">구매</button>
-								</form>
-							</div>
+						<td>
+							<select id="optionSelectBox" class="mx-3">
+									<option>===목록을 선택하세요===</option>
+								<c:forEach items="${ poList}" var="poLi" >
+									<option value="${poLi.productOption_seq }" data-name="${poLi.po_name}" data-price="${poLi.po_price}"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
+								</c:forEach>
+							</select>
+						</td>
+						<td colspan="2" >
+							<form action="" method="get">
+								<div id="optionBox">
+								</div>
+							</form>
 						</td>
 					</tr>
+					<tr>
+						<td colspan="3">
+							<div class="row">
+								<div class="col-6"></div>
+								<input class="total_price" value="0" readonly/>
+								<button class="btn_add mx-2" type="button"> 장바구니</button>
+								<button class="btn_add mx-2" type="button"> 구매</button>
+							</div>
+						</td>
+					</tr>					
 				
 				</table>	
 		<br>

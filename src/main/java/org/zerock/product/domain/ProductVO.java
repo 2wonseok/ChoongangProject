@@ -23,5 +23,5 @@ public class ProductVO {
 	private int product_status;
 	private Date product_regdate;
 	private Date product_updatedate;
-	
+
 }

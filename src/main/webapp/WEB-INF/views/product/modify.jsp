@@ -39,12 +39,12 @@
 				if ($("#product_name").val() == ""){
 					message = "상품이름 항목이 비어있음";
 				} else
-				if ($("#product_price").val() == ""){
+				/* if ($("#product_price").val() == ""){
 					message = "상품가격 항목이 비어있음";
 				} else
 				if ($("#product_quantity").val() == ""){
 					message = "상품수량 항목이 비어있음";
-				} else
+				} else */
 				if ($("#product_info").val() == ""){
 					message = "상품정보 항목이 비어있음";
 				} else {
@@ -125,14 +125,14 @@ table.type05 td {
 									<th scope="row">상품 이름</th>
 									<td><input id="product_name" name="product_name" type="text" value="${product.product_name }" ></td>
 								</tr>
-								<tr>
+								<%-- <tr>
 									<th scope="row">상품 단위 가격</th>
-									<td><input id="product_price" name="product_price" type="number" value="${product.product_price }" style="background-color:silver;" readonly></td>
+									<td>--%><input id="product_price" name="product_price" type="number" value="${product.product_price }" style="background-color:silver;" readonly hidden><%--</td>
 								</tr>
 								<tr>
 									<th scope="row">상품 수량</th>
-									<td><input id="product_quantity" name="product_quantity" type="number" value="${product.product_quantity }" style="background-color:silver;" readonly></td>
-								</tr>
+									<td>--%><input id="product_quantity" name="product_quantity" type="number" value="${product.product_quantity }" style="background-color:silver;" readonly hidden><%--</td>
+								</tr> --%>
 								<tr>
 									<th scope="row">상품 판매자(Nickname)</th><!--value=authUser로 넣을 예정  -->
 									<td><input id="user_nickname" name="user_nickname" type="text" value="${authUser.user_nickname }" style="background-color:silver;"readonly>
@@ -148,7 +148,15 @@ table.type05 td {
 									<td><textarea id="product_info" name="product_info" rows="10" cols="23">${product.product_info }</textarea></td>
 								</tr>
 							</tbody>
-						</table>	
+						</table>
+						
+						<h5>옵션수정아직미구현</h5>
+						<select>
+							<c:forEach items="${ poList}" var="poLi" >
+								<option class="optionClicked"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
+							</c:forEach>
+						</select>
+						<br/>
 						
 						<!--이미지첨부시작  -->
 							<input type="text" value="${preFileNames }" name ="preFileNames" hidden="hidden">							

@@ -12,8 +12,6 @@ public interface ProductMapper {
 	
 	public int insertReturnSeq(ProductVO product);
 
-	public void insertProductOption(ProductOptionVO optionList);
-
 	public List<ProductVO> getListWithPaging(Criteria cri);
 	
 	public ProductVO read(int productSeq);
@@ -31,6 +29,10 @@ public interface ProductMapper {
 	public int getTotalCount(Criteria cri);
 
 	public List<ProductOptionVO> getProductOptionList(int product_seq);
+	
+	public void insertProductOption(ProductOptionVO productOption);	
+	
+
 
 	
 	
