@@ -35,14 +35,14 @@
 <![CDATA[   
    SELECT
     free_seq, free_title, free_content,free_nickname,
-    free_writer, free_regdate, free_updatedate,free_readCnt
+    free_writer, free_regdate, free_updatedate,free_readCnt,free_replyCnt
    FROM
     (
      SELECT 
       ROW_NUMBER() OVER (ORDER BY free_seq DESC) rn,
       free_seq, free_title, free_content, free_writer,
       free_nickname,
-      free_regdate, free_updatedate,free_readCnt
+      free_regdate, free_updatedate,free_readCnt,free_replyCnt
      FROM
       tbl_freeboard
 ]]>
@@ -83,7 +83,7 @@
    UPDATE	tbl_freeboard
    SET		free_title = #{free_title},
      		free_content = #{free_content},
-     		free_writer = #{free_writer},
+     		free_nickname = #{free_nickname},
      		free_updatedate = sysdate
    WHERE 	free_seq = #{free_seq}
    </update>
@@ -93,10 +93,13 @@
    <include refid="freeboardcriteria"></include>
    </select> 
    
- <!--    <update id="updateReplyCnt">
-   UPDATE tbl_freeboard SET readcnt = readcnt + #{amount}
-   WHERE free_seq = #{free_seq}
-   </update> -->
+   <update id="updateReplyCnt">
+   UPDATE tbl_freeboard 
+   SET 
+   		  free_replyCnt = free_replyCnt + #{amount}
+   WHERE 
+   		  free_seq = #{free_seq}
+   </update> 
    
    <select id="readCnt" resultType="int">
    		SELECT free_readCnt FROM tbl_freeboard

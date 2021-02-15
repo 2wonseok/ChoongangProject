@@ -17,6 +17,15 @@
     line-height: 45px;
     float: right;
 }
+#container {
+    clear: both;
+    position: relative;
+    margin: 50px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1200px;
+    z-index: 1;
+}
+
 </style>
 
 <style>
@@ -67,8 +76,47 @@
 [type=checkbox]:checked + label {
   outline: 3px solid #1e263c;
   margin: 8px;
-
 }
+#menu {
+  text-align: center;
+}
+#menu_no {
+  text-align: center;
+}
+#menu_category {
+  text-align: center;
+}
+#menu_title {
+  text-align: center;
+}
+#menu_nickname {
+  text-align: center;
+}
+#menu_regdate {
+  text-align: center;
+}
+#menu_readcnt {
+  text-align: center;
+}
+#menu_status {
+  text-align: center;
+}
+#regdate {
+  text-align: center;
+}
+#writer {
+  text-align: center;
+}
+#readcnt {
+  text-align: center;
+}
+#status {
+  text-align: center;
+}
+#image {
+  text-align: center;
+}
+
 </style>
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -79,7 +127,7 @@
   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 
 <script>
 function checkTree(chk){
@@ -103,6 +151,7 @@ function checkTree(chk){
 	
 	
 <div class="container">
+	<section id ="container">
 
              
     
@@ -158,30 +207,33 @@ function checkTree(chk){
 	  </select>
 	   --%>
 	</form>
+	</section>
 </div>
 
 <div class="container-sm">
+	<section id ="container">
   <div class="row">
 
     <!-- .table.table-striped.table-hover>thread+today -->
     <table class="table table-striped table-hover">
       <thead>
         <tr>
-          <th>NO</th>
-          <th>종류</th>
-          <th>제목</th>
-          <th>닉네임</th>
-          <th><i class="far fa-calendar-alt"> 작성일</i></th>
-          <th><i class="fas fa-eye"></i></th>
-          <th>답변 상태</th>
+          <th id="menu_no">NO</th>
+          <th id="menu_category">종류</th>
+          <th id="menu_title">제목</th>
+          <th id="menu_nickname"><i class="far fa-user"></i></th>
+<!--           <th id="menu_regdate"><i class="far fa-calendar-check"></i></th> -->
+          <th id="menu_readcnt"><i class="fas fa-eye"></i></th>
+          <th id="menu_status">답변 상태</th>
+          <th id="menu_image">미리보기</th>
         </tr>
       </thead>
       <tbody>
       
         <c:forEach items="${list }" var="board">
           <tr>
-            <td>${board.qa_seq} </td>
-            <td>${board.qa_category} </td>  
+            <td id="menu">${board.qa_seq} </td>
+            <td id="menu">${board.qa_category} </td>  
             
             <td>
             
@@ -200,13 +252,56 @@ function checkTree(chk){
             	<c:param value="${pageMaker.cri.type }" name="type"	/>
             	<c:param value="${pageMaker.cri.keyword }" name="keyword" />
             </c:url>
-            
+			<div>
+			
+			<c:choose>			
+            	<c:when test="${board.qa_secret eq '비공개'}">
+            	
+            	<span class="badge badge-secondary"> 
+            	<i class="fas fa-lock"></i> 작성자만 열람가능
+            	</span>
+            	
+            	<c:if test="${not empty board.qa_updatedate}">
+            	<span class="badge badge-secondary"> 
+            		<i class="fas fa-edit"></i> 수정됨
+            	</span>
+            	</c:if>
+            	
+            	<c:if test="${board.qa_readcnt > 100}">
+            	<span class="badge badge-secondary"> 
+            		<i class="far fa-star"></i> 인기글
+            	</span>
+            	</c:if>            	
+            	</c:when>
+            	
+				<c:when test="${board.qa_secret eq '공개'}"> 
+				<span class="badge badge-secondary"> 
+				<i class="fas fa-lock-open"></i> 누구나 열람가능
+				</span>
+				
+				<c:if test="${not empty board.qa_updatedate}">
+            		<span class="badge badge-secondary"> 
+            		<i class="fas fa-edit"></i> 수정됨
+            		</span>
+            	</c:if>
+            	
+            	<c:if test="${board.qa_readcnt > 100}">
+            		<span class="badge badge-secondary"> 
+            		<i class="far fa-star"></i> 인기글
+            		</span>
+            	</c:if>
+            	
+				</c:when>
+            </c:choose>
+			
+			</div>
+			
             <a href="${boardLink }">
-            	<c:choose>
-            	<c:when test="${board.qa_secret eq '비공개'}"> <i class="fas fa-lock"></i> </c:when>
-				<c:when test="${board.qa_secret eq '공개'}"> <i class="fas fa-lock-open"></i> </c:when>
-            	</c:choose>
-            	<c:if test="${board.qa_secret == '공개' }">
+            	<%-- <c:choose>
+            	<c:when test="${board.qa_secret eq '비공개'}"> <i class="fas fa-lock" style="color:#1e263c"></i> </c:when>
+				<c:when test="${board.qa_secret eq '공개'}"> <i class="fas fa-lock-open" style="color:#1e263c"></i> </c:when>
+            	</c:choose> --%>
+            	<c:if test="${board.qa_secret == '공개'}">
             		<c:out value="${board.qa_title}" />
             	</c:if>
             </a>
@@ -216,28 +311,36 @@ function checkTree(chk){
             <c:if test="${board.qa_secret == '비공개' }">
             		[비밀글] 작성자와 관리자만 열람 할수 있습니다.
             </c:if>
-            <c:if test="${authUser.user_nickname == board.qa_writer }">
-	            	<c:out value="${board.qa_title}" />
-	        </c:if>
             </a>
            
             
-            </td>     
-            <td>${board.qa_writer} </td>               
-            <td><fmt:formatDate pattern="yyyy-MM-dd" 
-            value="${board.qa_regdate}" /> </td>            
-            <td>${board.qa_readcnt} </td>
+            </td>   
+            
             <td>
+            <small id="writer" class="form-text text-dark"><i class="far fa-user"></i>${board.qa_writer} </small>                        
+ 			<small id="regdate" class="form-text text-dark"><fmt:formatDate pattern="yyyy-MM-dd" value="${board.qa_regdate}" /> </small>
+            </td>
+                  
+            <td>
+            <small id="readcnt" class="form-text text-dark">
+            ${board.qa_readcnt} 
+            </small>
+            </td>
+            <td id="status">
  			<c:if test="${board.qa_replycnt == 0 && board.qa_replycnt_admin == 0}">
             	<span class="badge badge-secondary">${board.qa_status }</span> 
  			</c:if>
  		 	<c:if test="${board.qa_replycnt > 0 }">
             	<span class="badge badge-warning">유저 답변:${board.qa_replycnt }</span>  
  			</c:if>
+ 			<br>
  			<c:if test="${board.qa_replycnt_admin > 0 }">
             	<span class="badge badge-success">관리자 답변:${board.qa_replycnt_admin }</span>
  			</c:if>
  			</td>
+ 			<td>			
+ 				<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${board.qa_filename }" width="60px" height="60px"> <br>
+ 			</td>																	
           </tr>
           
         </c:forEach>
@@ -250,6 +353,7 @@ function checkTree(chk){
    	</c:if>
    	
   </div>
+  </section>
 </div>
 
 <div class="container-sm mt-3">

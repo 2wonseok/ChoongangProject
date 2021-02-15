@@ -38,16 +38,12 @@ public class FreeBoardController {
 		// DB에서 list를 받아온다
 		
 		List<FreeBoardVO> list = service.getList(cri);
-//		UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
-//		System.out.println(user.getUser_nickname());
 		int total = service.getTotal(cri);
 
 		FreeBoardPageDTO dto = new FreeBoardPageDTO(cri, total);
-		
 		// jsp에서 받을 이름
 		model.addAttribute("list", list);
 		model.addAttribute("pageMaker", dto);
-		log.info(dto);
 	}
 
 	@GetMapping("/register")
@@ -80,8 +76,7 @@ public class FreeBoardController {
 			freeVO.setFree_nickname("익명");
 		}
 		
-		freeVO.setFree_writer(user.getUser_nickname());
-		freeVO.setFree_writer(user.getUser_name());
+		freeVO.setFree_writer(user.getUser_id());
 		System.out.println("freeVO : "+freeVO.toString());
 		service.register(freeVO);
 
@@ -98,11 +93,10 @@ public class FreeBoardController {
 		log.info("get method - free_seq: " + free_seq);
 		log.info(cri);
 		FreeBoardVO freeVO = service.get(free_seq);
+		// 댓글에 대한 조회
 		service.addCnt(free_seq);
-
 		model.addAttribute("freeVO", freeVO);
 		System.out.println(freeVO.getFree_readCnt());
-//		model.addAttribute("cri", cri);
 	}
 
 	@PostMapping("/modify")

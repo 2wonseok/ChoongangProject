@@ -16,6 +16,6 @@ public interface FreeBoardReplyMapper {
 	public int update(FreeBoardReplyVO vo);
 
 	public List<FreeBoardReplyVO> getListWithPaging(@Param("cri") FreeBoardCriteria cri,
-			@Param("free_seq") int free_seq);
+			@Param("free_seq") int reply_board_seq);
 
 }

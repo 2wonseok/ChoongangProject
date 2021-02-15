@@ -97,7 +97,29 @@ public class UserServiceImpl implements UserService {
       System.out.println(e.getCode());
     }
 	}
+	
+	@Override
+	public void smsSubmit(String user_phone, String smsContent) {
+		String api_key = "NCSKI3A4IVCQ0M1E";
+    String api_secret = "9FBKZ8X5QO6MLPBYMA21D0HZIR1Q4XCF";
+    Message coolsms = new Message(api_key, api_secret);
+		
+    HashMap<String, String> params = new HashMap<String, String>();
+    params.put("to", user_phone);    // 수신전화번호
+    params.put("from", "010-2369-3793");    // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
+    params.put("type", "LMS");
+    params.put("text", smsContent);
+    params.put("app_version", "test app 1.2"); // application name and version
 
+    try {
+      JSONObject obj = (JSONObject) coolsms.send(params);
+      System.out.println(obj.toString());
+    } catch (CoolsmsException e) {
+      System.out.println(e.getMessage());
+      System.out.println(e.getCode());
+    }
+	}
+	
 	@Override
 	public UserVO findUser(String user_phone) {
 		return mapper.findUser(user_phone);

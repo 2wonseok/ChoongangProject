@@ -24,5 +24,9 @@ public class FreeBoardVO {
 	private Date free_regdate;
 	//수정일
 	private Date free_updatedate;
+	//댓글 갯수
+	private int free_replyCnt;
+	
+
 	
 }

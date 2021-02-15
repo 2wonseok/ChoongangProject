@@ -242,16 +242,17 @@
 						<c:param name="pageNum" value="${cri.pageNum }"></c:param>
 						<c:param name="amount" value="${cri.amount }"></c:param>
 					</c:url>
-					<input type="button" value="수정" onclick="location.href='${modLink}'" id="btn_remove">
+						
 					<c:choose>
 						<c:when test="${authUser.user_grade == 0 }">
-							<input type="button" value="목록" onclick="location.href='${listLink}'" id="btn_list">
+							<input type="button" value="목록" onclick="location.href='${listLink}'" id="btn_remove">
 						</c:when>
 						<c:otherwise>
-							<input type="button" value="돌아가기" onclick="location.href='${root}/main/index'" id="btn_list">
+							<input type="button" value="돌아가기" onclick="location.href='${root}/main/index'" id="btn_remove">
 						</c:otherwise>
 					</c:choose>
 					<c:if test="${authUser.user_id eq read.user_id }">
+						<input type="button" value="수정" onclick="location.href='${modLink}'" id="btn_list">
 						<input type="button" value="탈퇴" onclick="location.href='${root}/user/userRemove'" id="btn_remove">
 					</c:if>
 				</div>

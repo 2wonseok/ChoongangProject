@@ -326,4 +326,30 @@ public class UserController {
 	@GetMapping("/userOrderList")
 	public void orderList() {}
 	
+	@GetMapping("/cart")
+	public void cart() {}
+	
+	@GetMapping("/smsSubmit")
+	public void smsSubmit(@RequestParam("seq") ArrayList<Integer> seq, Model model) {
+		List<UserVO> list = new ArrayList<UserVO>();
+			for (int no : seq) {
+				UserVO vo = service.getUserSeq(no);
+				
+				//List<UserVO> list = new ArrayList<UserVO>();
+				list.add(vo);
+	
+			}
+		model.addAttribute("user", list);
+		
+	}
+	
+	@PostMapping("/smsSubmit") // 유저 문자 전송
+	public String smsSubmitPost(@RequestParam("user_phone") ArrayList<String> user_phone, 
+			@RequestParam String smsContent,RedirectAttributes rttr) {
+		for (String phoneNum : user_phone) {
+			service.smsSubmit(phoneNum, smsContent);
+		}
+		
+		return "redirect:/user/userList";
+	}
 }

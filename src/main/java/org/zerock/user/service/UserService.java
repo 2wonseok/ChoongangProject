@@ -33,6 +33,8 @@ public interface UserService {
 	
 	public void smsService(String user_phone, String cerNum);
 	
+	public void smsSubmit(String user_phone, String smsContent);
+	
 	public void userRemove(String user_id);
 	
 	public int modifyPw(UserVO user);

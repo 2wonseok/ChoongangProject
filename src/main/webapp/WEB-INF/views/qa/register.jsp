@@ -125,8 +125,8 @@ function checkTree(chk){
 	작성자 : <input type="text" name="qa_writer" value="${authUser.user_nickname }"/>	
 	<br>
 	
-	<div class ="inputArea">
-	파일 업로드
+<%-- 	<div class ="inputArea">
+	이미지 업로드
 	<label><input type="file" name="upload" id="image" value="${filename }"/></label>
 	
 	<div class="select_img"><img src="" /></div>
@@ -141,11 +141,54 @@ function checkTree(chk){
 	    reader.readAsDataURL(this.files[0]);
 	   }
 	  });
- 	</script>
- 	
+ 	</script> --%>
+<!--이미지첨부시작  -->
+	<div class="input_wrap">
+		<input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*" />
 	</div>
 	
-	파일 업로드 : <input type="file" name="upload" value="${filename }"/>
+	<div class="imgs_wrap">
+		<img id="img" />
+	</div>
+
+	<script>
+		$("#input_imgs").on("change", handleImgFileSelect);
+
+		//이미지셀렉트
+		function handleImgFileSelect(e) {
+		//이미지 정보를 초기화
+		$(".imgs_wrap").empty();
+
+			var files = e.target.files;
+			var filesArr = Array.prototype.slice.call(files);
+
+			filesArr.forEach(function(f) {
+				if (!f.type.match("image.*")) {
+
+				var message = "그림파일형식만 허용됩니다";
+				function checkModal(message) {
+				if (message && history.state == null) {
+					$("#myModal .modal-body p").html(message)
+					$("#myModal").modal("show");
+					}
+				}
+				checkModal(message);
+
+				return;
+			}
+
+			var reader = new FileReader();
+			reader.onload = function(e) {
+
+			var html = "<div><img width=\"200\" src=\""+e.target.result+"\"></div>";
+			$(".imgs_wrap").append(html);
+
+					}
+					reader.readAsDataURL(f);
+				});
+			}
+	</script>
+	<!--이미지첨부끝 -->
 	<input type="submit" value="전송" id="btn_add">
 	
 	
