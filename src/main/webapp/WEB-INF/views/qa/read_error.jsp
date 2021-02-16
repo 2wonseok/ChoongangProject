@@ -9,30 +9,28 @@
 <meta charset="UTF-8">
 <link rel="stylesheet"
   href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 <script
   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
-<title>Insert title here</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+<script src="${root }/resources/js/qa_reply.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script>
+	alert("작성자와 관리자만 열람 가능합니다.");
+	window.location = '/qa/list';
+</script>
+<title>비밀글</title>
 </head>
 <body>
-<u:mainNav/>
-<div class="row">
 
-	<div class="col-12 col-lg-6 offset-lg-3">
-		<div class="form-group">
-		<br>
-		<form class="login-form" action="${root }/qa/password" method="post">
-			<input type="text" class="form-control" name="qa_seq" value="${board.qa_seq}">
-			<input type="password" class="form-control" name="qa_password" value="${qa_password}" placeholder="게시글의 비밀번호를 입력 하세요.">
-			<input type="submit" value="입력">
-		</form>
-		</div>
-	</div>
-</div>
+<u:mainNav/>
+
+
+
 </body>
+
 </html>

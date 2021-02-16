@@ -75,10 +75,7 @@ function checkTree(chk){
 
 	<input id="close" name="qa_secret" value="비공개" type="checkbox" onclick="checkTree(this);" style='zoom:1.5;'/>
 	<label for="close">비공개</label> 
-	
-	<div class="form-group">
-	<input type="password" name="qa_password">
-	</div>
+
 	
 	<c:if test="${errors.noSecret }">
 	<small class="form-text text-danger">

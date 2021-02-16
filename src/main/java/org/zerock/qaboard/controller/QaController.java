@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import org.zerock.product.domain.ProductVO;
 import org.zerock.qaboard.domain.Criteria;
 import org.zerock.qaboard.domain.PageDTO;
@@ -46,7 +47,7 @@ public class QaController {
 	
 	private QaService service;	
 	private BCryptPasswordEncoder pwdEncoder;
-	private UserService user_service;
+
 	
 	HttpSession session;
 	
@@ -180,7 +181,7 @@ public class QaController {
 	}
 	
 	//
-	@GetMapping({"/get", "/modify"})
+	@GetMapping({"/get"})
 	public String get(@RequestParam("qa_seq") int qa_seq, UserVO user,
 			@ModelAttribute("criteria") Criteria cri, Model model,
 			HttpSession session, RedirectAttributes rttr) {
@@ -204,15 +205,15 @@ public class QaController {
 		} else {
 			if(session.getAttribute("authUser") == null) {
 				System.out.println("세션이 없음");
-				rttr.addFlashAttribute("noRead", "작성자, 관리자만 열람 가능합니다.");
-				return "redirect:/qa/list";
+				
+				return "redirect:/qa/read_error";
 			} else {
 				UserVO userVO = (UserVO) session.getAttribute("authUser");
 				System.out.println(userVO.toString());				
 				String userNickname = userVO.getUser_nickname();				
 				int userGrade = userVO.getUser_grade();				
 				System.out.println(vo.toString());
-				rttr.addFlashAttribute("noMatch", "작성자, 관리자만 열람 가능합니다.");
+
 				if(userNickname.equals(vo.getQa_writer()) || userGrade == 0) {										
 					//	작성자와 세션에서 가져온 userNickname이 같은 경우
 					//	get 페이지로 이동
@@ -227,48 +228,23 @@ public class QaController {
 		}
 			return null;
 		}
-		
 	
-	@GetMapping({"/get_secret"})
-	public String get_secret(@RequestParam("qa_seq") int qa_seq,
-			@ModelAttribute("criteria") Criteria cri, Model model) {
-		// 게시물 가져오기
-		// 쿼리문으로 붙어서 감
-		
-		QaVO vo = service.get(qa_seq);
-		if(session.getAttribute("user_nickname") != null) {
-
-			service.addCnt(qa_seq);
-			model.addAttribute("board", vo);
-		} else {
-			model.addAttribute("no", "작성한 사용자만 열람 가능합니다.");
-		}
-
-	
-		// 여러 상품파일이름을 list로 변환하고 넘겨줌
-		if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
-			@SuppressWarnings("unchecked")
-			List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
-			model.addAttribute("qafileNameList", fileNamesList);
-		}		
-		return "redirect:/qa/get";
-	}
-	
-	@RequestMapping({"/secret"})
-	public void password(@RequestParam("qa_seq") int qa_seq,
-			@ModelAttribute("criteria") Criteria cri, 
-			Model model) {
-		QaVO vo = service.get(qa_seq);
+	@GetMapping({"/modify"})
+	public void get(@RequestParam("qa_seq") int qa_seq,
+			@ModelAttribute("criteria") Criteria cri, Model model,
+			HttpSession session, RedirectAttributes rttr) {
+				
+		QaVO vo = service.get(qa_seq);		
 		service.addCnt(qa_seq);
-		model.addAttribute("board", vo);
-		
-		if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
-			@SuppressWarnings("unchecked")
-			List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
-			model.addAttribute("qafileNameList", fileNamesList);
-		}		
+		model.addAttribute("board", vo);	
 	}
-
+	
+	@GetMapping({"/read_error"})
+	public void read_error() {
+		
+	}
+		
+	
 
 	@RequestMapping("/remove")
 	public String remove(@RequestParam("qa_seq") int qa_seq) {
