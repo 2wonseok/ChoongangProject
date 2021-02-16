@@ -245,7 +245,7 @@ a {
 	<div class="b_header_gnb">
 		<div class="inner" id="lws">
 			<h1 class="c_gnb_logo">
-				<a href="${root }/main/index">BCD</a>
+				<a href="${root }/main/mainPage">BCD</a>
 			</h1>
 			<div class="c_gnb_search" id="tSearch">
 				<h2 class="skip">통합검색</h2>
@@ -297,7 +297,7 @@ a {
 					<h2 class="skip">주요서비스 바로가기</h2>
 					<ul>
 						<li>
-							<a href="#" class="" >베스트</a>
+							<a href="${root }/main/mainPage" class="" >베스트</a>
 						</li>
 						<li>
 							<a href="${root }/freeboard/list" class="">자유게시판</a>

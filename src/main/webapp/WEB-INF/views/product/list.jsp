@@ -114,6 +114,35 @@ $(document).ready(function(){
 	    z-index: 1;
 	}
 
+/* 페이지 네이션 css */
+.pagerWrap {
+    position: relative;
+    text-align: center;
+    margin: 0px 0;
+}
+.pagerWrap a {
+    width: 34px;
+    height: 34px;
+    color: #333;
+    border: 1px solid #dedede;
+    text-align: center;
+    line-height: 34px;
+    background: #fff;
+    display: inline-block;
+}
+.pagerWrap a.on {
+    border-color: #222222;
+    background: #4a4a4a;
+    color: #fff;
+}
+.pagerWrap a:hover {
+    border-color: #4a4a4a;
+    color: #4a4a4a;
+}
+.pagerWrap a.on:hover {
+    border-color: #4a4a4a;
+    color: #fff;
+}
 </style>
 
 </head>
@@ -241,9 +270,8 @@ $(document).ready(function(){
 			<div class="col-md-6, col-md-offset-3">
 	
 				<!--페이징 시작  -->
-					<div class="row justify-content-center">
-						<nav aria-label="Page navigation example">
-							<ul class="pagination">
+					<div class="container d-flex justify-content-center">
+						<div class="pagerWrap">
 								<!--이전 버튼  -->
 								<c:if test="${pageDTO.prev }">
 									<c:url value="/product/list" var="prevLink">
@@ -251,8 +279,7 @@ $(document).ready(function(){
 										<c:param value="${pageDTO.startPage-1 }" name="PageNum"></c:param>
 										<c:param value="${pageDTO.cri.amount }" name="amount"></c:param>
 									</c:url>
-									<li class="page-item"><a class="page-link" href="${prevLink }">Previous</a>
-									</li>
+									<a style="width:80px;" href="${prevLink }">Previous</a>
 								</c:if>
 				
 								<c:forEach var="num" begin="${pageDTO.startPage }"
@@ -265,11 +292,7 @@ $(document).ready(function(){
 										<c:param name="keyword" value="${pageDTO.cri.keyword }" />
 										<c:param name="array" value="${pageDTO.cri.array }" /> 
 									</c:url>
-									<li
-										class="page-item ${pageDTO.cri.pageNum eq num ? 'active' : '' }">
-										<a class="page-link" href="${pageLink }">${num }</a> <%-- <a class="page-link" href="${num }">${num }</a> --%>
-									</li>
-				
+										<a class="${pageDTO.cri.pageNum eq num ? 'on' : '' }" href="${pageLink }">${num }</a> <%-- <a class="page-link" href="${num }">${num }</a> --%>
 								</c:forEach>
 				
 								<!--페이징다음버튼  -->
@@ -278,11 +301,9 @@ $(document).ready(function(){
 										<c:param value="${pageDTO.endPage+1 }" name="PageNum"></c:param>
 										<c:param value="${pageDTO.cri.amount }" name="amount"></c:param>
 									</c:url>
-									<li class="page-item"><a class="page-link" href="${nextLink }">Next</a>
-									</li>
+									<a style="width:80px;" href="${nextLink }">Next</a>
 								</c:if>
-							</ul>
-						</nav>
+						</div>
 					</div>
 				<!-- 페이징 끝 -->
 		

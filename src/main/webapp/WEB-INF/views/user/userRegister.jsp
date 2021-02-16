@@ -501,5 +501,6 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
+<u:footer/>
 </body>
 </html>

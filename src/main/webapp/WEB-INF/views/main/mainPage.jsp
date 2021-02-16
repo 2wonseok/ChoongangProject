@@ -16,6 +16,15 @@
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#btn_plus").click(function() {
+		location.href="${root}/product/list";
+	})
+
+
+});
+</script>
 <title>임시 메인 페이지</title>
 </head>
 <style>
@@ -29,13 +38,12 @@
 }
 #footdiv {
     width: 100%;
-    margin: 0 auto;
     padding: 0 30px 30px 30px;
     text-align: center;
     color: gray;
     white-space: pre-line;
-    position:fixed;
   	bottom:0;
+  	margin-bottom: -100px;
 }
 #map {
     width: 600px;
@@ -44,22 +52,97 @@
     margin-top: -240px;
     margin-left: 255px;
 }
+#foothr {
+		margin-bottom: 15rem;
+    border: 0;
+    border-top: 1px solid rgba(0,0,0,.1);
+}
+.card {
+    width:14.1rem;
+    height:30rem;
+}
+.img_box {
+    width: 14.1rem;
+    height:19.0rem;
+    position: relative;
+}
+.card img {
+    width: 14.0rem;
+    height:16.0rem;
+}
+.card p{
+    text-overflow:ellipsis;
+    height:40px;
+    line-height:20px;	
+    overflow:hidden;
+}
+.cardLine1{
+    text-overflow:ellipsis;
+    height:20px;
+    line-height:20px;	
+    overflow:hidden;
+}
+#btn_plus {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #747474;
+    padding: 0px 30px;
+    line-height: 45px;
+    border-radius: 3px;
+    margin-left: 520px;
+		margin-top: 20px;
+		margin-bottom: -100px;
+}
 </style>
 <body>
 <u:mainNav/>
 <div class="container">
 	<section id="container">
-접속 아이디 : ${authUser.user_id} <br>
-등급 : <c:choose>
-					<c:when test="${authUser.user_grade < 1}">관리자</c:when>
-					<c:when test="${authUser.user_grade > 0}">일반</c:when>
-					<c:otherwise></c:otherwise>
-			</c:choose>
-
-
-
+		<div class="row d-flex justify-content-center">
+	<!--상품 bootstrap card 시작  -->
+	<c:forEach items="${list }" var="product">  
+		<c:set var="visibility" value="100%"></c:set>
+		<c:if test="${product.product_status == 1 }">
+			<c:set var="visibility" value="30%"></c:set>
+		</c:if>   
+		<div class="card m-2">
+			<div class="img_box">
+				<a href="${productLink }" >
+					<img style="opacity : ${visibility}" src="${root }/resources/upload/${product.product_filename }" alt="Card image cap">
+				</a>
+				<div style="position:absolute;top:45%;left:30%">
+					<c:if test="${product.product_status == 1 }">
+						<h5>판매 종료</h5>
+					</c:if>
+				</div>
+			</div>
+			<div class="card-body" >
+				<a href="${productLink }" >
+	            <fmt:formatNumber value="${product.product_price }" type="number" var="price"></fmt:formatNumber>
+				<h5 class="card-title"><c:out value="${price }"></c:out>원</h5>
+				<p><c:out value="${product.product_name }"></c:out></p>
+				</a>
+				<div>
+					<span><i class="fas fa-eye"></i> ${product.product_readcnt }</span>	
+					<span><i class="fas fa-heart"></i> ${product.product_readcnt }</span>										
+				</div>
+	            <fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
+				<div class="cardLine1">총 ${quantity }개 남음</div>
+					<hr>
+			    <p class="card-text">판매자 : <c:out value="${ product.user_nickname}"></c:out></p>
+			</div>
+		</div>
+	</c:forEach>
+		</div>
+	<button id="btn_plus" >더보기 +</button>
+	</section>
+</div>
 <!-- 푸터 -->
-		<footer>
+<hr id="foothr">
+<div class="container">
+	<section id="container">
+		<footer id="indexFooter">
 			<div id="footdiv">
 				<div id="map"></div>
 				<div class="container" style="margin-left:-12px;">

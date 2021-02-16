@@ -248,7 +248,7 @@
 							<input type="button" value="목록" onclick="location.href='${listLink}'" id="btn_remove">
 						</c:when>
 						<c:otherwise>
-							<input type="button" value="돌아가기" onclick="location.href='${root}/main/index'" id="btn_remove">
+							<input type="button" value="돌아가기" onclick="location.href='${root}/main/mainPage'" id="btn_remove">
 						</c:otherwise>
 					</c:choose>
 					<c:if test="${authUser.user_id eq read.user_id }">
@@ -263,9 +263,10 @@
 	<c:otherwise>
 		<script>
 			alert('본인만 접근 가능합니다.');
-			location.href='${root}/main/index';
+			location.href='${root}/main/mainPage';
 		</script>
 	</c:otherwise>
 </c:choose>
+<u:footer/>
 </body>
 </html>

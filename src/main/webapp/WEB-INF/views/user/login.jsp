@@ -138,5 +138,6 @@ html, body {
     </div>  
   </div>
 </div>  
+<u:footer/>
 </body>
 </html>

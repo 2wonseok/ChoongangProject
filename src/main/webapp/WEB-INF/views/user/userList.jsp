@@ -416,7 +416,7 @@ function reload() {
 	<c:otherwise>
 		<script>
 			alert('관리자만 접근 가능합니다.');
-			location.href='${root}/main/index';
+			location.href='${root}/main/mainPage';
 		</script>
 	</c:otherwise>
 </c:choose>

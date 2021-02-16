@@ -86,9 +86,10 @@ p {
 	<c:otherwise>
 		<script>
 			alert('로그인 사용자만 이용 가능합니다.');
-			location.href="${root}/main/index";
+			location.href="${root}/main/mainPage";
 		</script>
 	</c:otherwise>
 </c:choose>	
+<u:footer/>
 </body>
 </html>

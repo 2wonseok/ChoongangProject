@@ -58,7 +58,7 @@ public class UserController {
 		
 		service.register(user);
 
-		return "redirect:/main/index";
+		return "redirect:/main/mainPage";
 	}
 	
 	@GetMapping("/userList") // 회원 목록 로딩
@@ -123,7 +123,7 @@ public class UserController {
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
 		
-		return "redirect:/main/index";
+		return "redirect:/main/mainPage";
 	}
 	
 	@PostMapping("/userDelete") // 회원 삭제
@@ -186,7 +186,7 @@ public class UserController {
 		
 		if (vo != null && pwdMatch == true) {
 			session.setAttribute("authUser", vo);
-			return "redirect:/main/index";
+			return "redirect:/main/mainPage";
 		} else {
 			rttr.addFlashAttribute("noUser", "일치하는 정보가 없습니다.");
 			return "redirect:/user/login";
@@ -202,7 +202,7 @@ public class UserController {
 			session.invalidate();
 		}
 		
-		return "redirect:/main/index";
+		return "redirect:/main/mainPage";
 	}
 	
 	@GetMapping("/userRemove") // 회원 탈퇴
@@ -227,7 +227,7 @@ public class UserController {
 			session.invalidate();
 		}
 		
-		return "redirect:/main/index";
+		return "redirect:/main/mainPage";
 	}
 	
 	@GetMapping("/sendSMS") // 휴대폰 인증 

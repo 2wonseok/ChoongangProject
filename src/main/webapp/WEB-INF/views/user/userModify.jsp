@@ -331,9 +331,10 @@ $(document).ready(function() {
 	<c:otherwise>
 		<script>
 			alert('본인만 접근 가능합니다.');
-			location.href='${root}/main/index';
+			location.href='${root}/main/mainPage';
 		</script>
 	</c:otherwise>
 </c:choose>
+<u:footer/>
 </body>
 </html>
