@@ -15,7 +15,7 @@
   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#btn_plus").click(function() {
@@ -31,7 +31,7 @@ $(document).ready(function() {
 #container {
     clear: both;
     position: relative;
-    margin: 50px auto 0px;
+    margin: 35px auto 0px;
     padding: 0 0 50px 0;
     width: 1200px;
     z-index: 1;
@@ -102,6 +102,14 @@ $(document).ready(function() {
 		<div class="row d-flex justify-content-center">
 	<!--상품 bootstrap card 시작  -->
 	<c:forEach items="${list }" var="product">  
+		<c:url value="/product/get" var="productLink">
+			<c:param name="product_seq" value="${product.product_seq }"/>
+			<c:param name="pageNum" value="${pageDTO.cri.pageNum }"/>
+			<c:param name="amount" value="${pageDTO.cri.amount }"/>
+			<c:param name="type" value="${pageDTO.cri.type }"/>
+			<c:param name="keyword" value="${pageDTO.cri.keyword }"/>            	
+			<c:param name="array" value="${pageDTO.cri.array }"/>            	
+	  </c:url>
 		<c:set var="visibility" value="100%"></c:set>
 		<c:if test="${product.product_status == 1 }">
 			<c:set var="visibility" value="30%"></c:set>

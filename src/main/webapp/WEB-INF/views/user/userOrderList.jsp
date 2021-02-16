@@ -11,7 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
 $(document).ready(function() {
 	
@@ -307,7 +307,7 @@ $(document).ready(function() {
 							</div>
 							<div class="DesktopOrderBoxHeader__OrderDetailLink-abukv2-2 eNaUsP">
 								<span class="DesktopOrderBoxHeader__OrderDetailLinkText-abukv2-3 jmCVTz">
-									<a id="detail" href="#">주문 상세 보기 ></a>
+									<a id="detail" href="${root}/product/get?product_seq=${orders.order_productseq }">주문 상세 보기 ></a>
 								</span>
 							</div>
 						</div>	

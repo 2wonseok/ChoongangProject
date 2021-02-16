@@ -11,6 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
  <!-- Compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -286,6 +287,14 @@ $(document).ready(function() {
 <title>Insert title here</title>
 </head>
 <style>
+#container {
+    clear: both;
+    position: relative;
+    margin: 50px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1200px;
+    z-index: 1;
+}
 .row .col.s2 {
     width: 16.66666%;
     margin-left: 356px;
@@ -369,6 +378,7 @@ $(document).ready(function() {
 <body>
 <u:mainNav/>
 <div class="container">
+<section id="container">
 	<div id="login-page" class="row">
 		<div class="z-depth-1 card-panel" style="margin-left: 350px;">
 	    <form class="login-form" action="${root }/user/userRegister" method="post" id="joinForm">
@@ -494,12 +504,13 @@ $(document).ready(function() {
 	        </div>
 	        
 	        <div class="input-field col s12">
-	          <p class="margin center medium-small sign-up">Already have an account? <a href="${root }/user/login">Login</a></p>
+	          <p class="margin center medium-small sign-up">Already have an account? <a style="color: #666;" href="${root }/user/login">Login</a></p>
 	        </div>
 	      </div>
 	    </form>
     </div>
   </div>
+</section>
 </div>
 <u:footer/>
 </body>

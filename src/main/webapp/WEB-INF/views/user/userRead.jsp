@@ -11,6 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
 	$(document).ready(function() {
 		
@@ -114,6 +115,7 @@
     padding: 0px 50px;
     margin: 0 0px;
     line-height: 45px;
+    border-radius: 3px;
 }
 #btn_list {
     color: #fff;
@@ -123,6 +125,7 @@
     padding: 0px 50px;
     margin: 0 0px;
     line-height: 45px;
+    border-radius: 3px;
 }
 #btn_manager {
     color: #fff;
@@ -133,6 +136,7 @@
     line-height: 45px;
     margin-top: -5px;
     margin-right: -17px;
+    border-radius: 3px;
 }
 #userInfo, #userOrderList {
 	color: #000; 
