@@ -15,6 +15,11 @@
 <script>
 $(document).ready(function() {
 	
+	function dateString(date) {
+		var d = new Date(date);
+		return d.toISOString().split("T")[0];
+	}
+	
 	$("#review").click(function() {
 		location.href="${root }/rev/list";
 	});
@@ -298,7 +303,7 @@ $(document).ready(function() {
 					<div class="DesktopOrderBoxRoot__Wrapper-fimazj-0 bTiPIu">
 						<div class="DesktopOrderBoxHeader__Wrapper-abukv2-0 iUvJqV">
 							<div class="DesktopOrderBoxHeader__OrderDate-abukv2-1 janngp">
-								${orders.order_date } 주문  
+								<fmt:formatDate pattern="yyyy-MM-dd" value="${orders.order_date }"/> 주문  
 							</div>
 							<div class="DesktopOrderBoxHeader__OrderDetailLink-abukv2-2 eNaUsP">
 								<span class="DesktopOrderBoxHeader__OrderDetailLinkText-abukv2-3 jmCVTz">

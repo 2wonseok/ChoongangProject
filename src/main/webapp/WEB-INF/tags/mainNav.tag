@@ -122,12 +122,12 @@ dl, ul, ol, menu, li {
     padding: 0 0 15px 0;
 }
 .c_gnb_usermenu > ul > li.my .menu {
-    background-image: url(${root }/resources/logo/my.png);
-    background-position: -106px -144px;
-    width: 53px;
-    height: 36px;
+    background-image: url(${root }/resources/logo/user.png);
+    background-position: -190px -45px;
+    width: 47px;
+    height: 45px;
     background-size: 100% 100%;
-    margin-top: 8px;
+    margin-top: 0px;
 }
 .c_gnb_usermenu > ul > li .menu {
     overflow: hidden;
@@ -172,18 +172,18 @@ a {
     font-size: 15px;
 }
 .c_gnb_usermenu > ul > li.order .menu {
-    background-image: url(${root }/resources/logo/Parcel.png);
-    background-position: -106px -144px;
+    background-image: url(${root }/resources/logo/truck.png);
+    background-position: -106px -72px;
     width: 53px;
-    height: 48px;
+    height: 45px;
     background-size: 100% 140%;
 }
 .c_gnb_usermenu > ul > li.cart .menu {
     background-image: url(${root }/resources/logo/cart.png);
-    background-position: -106px -144px;
-    width: 86px;
-    height: 48px;
-    background-size: 100% 101%;
+    background-position: -90px -141px;
+    width: 45px;
+    height: 47px;
+    background-size: 100% 99%;
 }
 .b_header_util {
     position: relative;
