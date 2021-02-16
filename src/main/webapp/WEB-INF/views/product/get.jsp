@@ -16,12 +16,15 @@
   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+<!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
 
 
 <script>
 
-var root = '${root }'
+var root = '${root }';
+var productSeq = '${product.product_seq}';
+var userSeq = '${authUser.user_seq}';
 
 $(document).ready(function(){
 	
@@ -123,12 +126,38 @@ $(document).ready(function(){
 		
 		$("#order_form").submit();
 	});
+	
+	
+	/* 하트 누르면 */
+	$("#like").click(function(){
+		if (userSeq =='') {
+			$("#myModal .modal-body p").html("좋아요를 누르려면 로그인해야합니다")
+			$("#myModal").modal("show");
+			return
+		}
+		$.ajax({
+			type: "post",
+			url: root + "/product/like",
+			contentType: "application/json",
+			dataType: "JSON",
+			data: '{"product_seq":'+productSeq+',"user_seq":'+userSeq+'}',
+			success: function(data, status, xhr) {
+				$("#totalLike").text(data);
+			},
+			error: function(){
+			}
+		});
+	});
 
 });
 </script>
 
 <style>
-
+	#like {
+		cursor:pointer;
+	}
+	
+	
 	.btn_add {
 	    color: #fff;
 	    font-size: 15px;
@@ -218,8 +247,14 @@ $(document).ready(function(){
 								<fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
 								<p class="text-right">총 <c:out value="${quantity }"></c:out>개 남음</p>
 								<p class="text-right">판매자 : <c:out value="${ product.user_nickname }"></c:out></p>
-								<p class="text-left">상품설명 </p>
-								
+								<div class="d-flex">
+									<p class="text-left">상품설명 </p>
+									<div class="col-6"></div>
+									<span id="like" style="font-size: 24px;"><i class="fas fa-heart"></i> <span id="totalLike">${product.product_like }</span></span>										
+									<div class="mx-1"></div>
+									<span style="font-size: 24px;"><i class="fas fa-eye"></i> ${product.product_readcnt }</span>
+								</div>
+									
 								<textarea style="resize: none;" rows="15" cols="50" readonly><c:out value="${product.product_info }"></c:out></textarea>
 	
 							<c:if test="${product.product_status != 1 }">
@@ -270,13 +305,12 @@ $(document).ready(function(){
 						<fmt:setTimeZone value = "GMT+18" />
 								<p>상품 등록일 : <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" value="${product.product_regdate }"/> </p>
 								<p>상품 정보 수정일 : <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" value="${product.product_updatedate }"/> </p>
-				
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<select id="optionSelectBox" class="mx-3">
-									<option>===목록을 선택하세요===</option>
+									<option>===옵션을 선택하세요===</option>
 								<c:forEach items="${ poList}" var="poLi" >
 									<option value="${poLi.productOption_seq }" data-name="${poLi.po_name}" data-price="${poLi.po_price}"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
 								</c:forEach>

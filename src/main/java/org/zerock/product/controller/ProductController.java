@@ -11,12 +11,16 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.map.HashedMap;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.OrderVO;
 import org.zerock.product.domain.PageDTO;
+import org.zerock.product.domain.ProductLikeVO;
 import org.zerock.product.domain.ProductOptionVO;
 import org.zerock.product.domain.ProductVO;
 import org.zerock.product.service.ProductService;
@@ -42,6 +47,21 @@ import lombok.extern.log4j.Log4j;
 public class ProductController {
 
 	private ProductService service;
+	
+	/*
+	@PostMapping(value="/like", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody int productLikeUp (ProductLikeVO productLikeVO) {
+		int total = service.changeProductLike(productLikeVO);
+		return total;
+	}
+	*/
+	@ResponseBody
+	@PostMapping(value="/like", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<Integer> productLikeUp (@RequestBody ProductLikeVO productLikeVO) {
+		Integer total = service.changeProductLike(productLikeVO);
+		return new ResponseEntity<Integer>(total,HttpStatus.OK) ;
+	}
+	
 	
 	@GetMapping("/register")
 	public String register(@ModelAttribute("cri") Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {

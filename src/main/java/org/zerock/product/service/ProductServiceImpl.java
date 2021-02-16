@@ -1,12 +1,15 @@
 package org.zerock.product.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.OrderVO;
+import org.zerock.product.domain.ProductLikeVO;
 import org.zerock.product.domain.ProductOptionVO;
 import org.zerock.product.domain.ProductVO;
 import org.zerock.product.mapper.ProductMapper;
@@ -21,12 +24,26 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	@Transactional
+	public int changeProductLike(ProductLikeVO productLikeVO) {
+		int check = mapper.checkProductLike(productLikeVO);
+		
+		if(check > 0) {
+			mapper.deleteProductLike(productLikeVO);
+		} else {
+			mapper.insertProductLike(productLikeVO);
+		}
+		int product_like = mapper.countUserSeqByProductSeq(productLikeVO.getProduct_seq());
+		int result = mapper.updateProductLike(productLikeVO.getProduct_seq(), product_like);
+		return product_like;
+	}
+
+	@Override
+	@Transactional
 	public void makeOrder(List<OrderVO> list) {
 		for(OrderVO vo : list) {
 			mapper.insertOrder(vo);
 		}
 	}
-	
 	
 	@Override
 	public List<ProductOptionVO> getProductOption(int product_seq) {

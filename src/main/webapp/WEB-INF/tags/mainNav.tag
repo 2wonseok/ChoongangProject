@@ -249,10 +249,11 @@ a {
 			</h1>
 			<div class="c_gnb_search" id="tSearch">
 				<h2 class="skip">통합검색</h2>
-				<form action="${root }/product/search" method="get">
+				<form action="${root }/product/list" method="get">
 					<fieldset>
 						<legend>통합검색</legend>
-						<input type="text" class="search_text search_text_ad" name="serachKeyword" placeholder="통합검색" title="통합검색">
+						<input name="type" value="TC" hidden="hidden"/>
+						<input type="text" class="search_text search_text_ad" name="keyword" placeholder="통합검색" title="통합검색">
 						<button type="submit" class="search_button">검색</button>
 					</fieldset>
 				</form>		

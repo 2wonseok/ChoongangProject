@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.OrderVO;
+import org.zerock.product.domain.ProductLikeVO;
 import org.zerock.product.domain.ProductOptionVO;
 import org.zerock.product.domain.ProductVO;
 
@@ -31,5 +32,7 @@ public interface ProductService {
 	public List<ProductOptionVO> getProductOption(int product_seq);
 
 	public void makeOrder(List<OrderVO> list);
+	
+	public int changeProductLike(ProductLikeVO productLikeVO);
 	
 }

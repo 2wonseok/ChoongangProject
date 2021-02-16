@@ -5,6 +5,29 @@
 
 <mapper namespace="org.zerock.product.mapper.ProductMapper">
 
+	<update id="updateProductLike">
+		UPDATE tbl_product SET product_like = #{product_like} WHERE product_seq = #{product_seq}
+	</update>
+
+	<insert id="insertProductLike">
+		insert into tbl_productlike (product_seq, user_seq) 
+		VALUES
+		(#{product_seq}, #{user_seq})
+	</insert>
+	
+	<select id="countUserSeqByProductSeq" resultType="int">
+		SELECT count(user_seq) FROM tbl_productlike WHERE product_seq = #{product_seq}
+	</select>
+	
+	<select id="checkProductLike" resultType="int">
+		SELECT count(*) FROM tbl_productlike WHERE product_seq = #{product_seq} AND user_seq = #{user_seq}
+	</select>
+	
+	<delete id="deleteProductLike">
+		delete from tbl_productlike where product_seq = #{product_seq} AND user_seq = #{user_seq}
+	</delete>
+	
+
 	<insert id="insertOrder">
 		insert into tbl_order (order_seq, order_productseq, order_poseq,
 		order_poname, order_poprice, order_quantity, order_userseq, order_username, order_useraddress, order_userphone, order_filename)
@@ -73,8 +96,9 @@
 		resultType="org.zerock.product.domain.ProductVO">
 <![CDATA[   
    SELECT
-    product_seq, product_name, product_price, product_quantity,
-    product_seller, product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate, user_nickname 
+    product_seq, product_name, product_price, product_quantity, product_seller, product_filename, 
+    product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate, 
+    user_nickname, product_like 
    FROM
     (
      SELECT 
@@ -85,7 +109,7 @@
 					product_seq DESC
 				</when>
 				<when test="array == 'like'">
-					product_regdate DESC
+					product_like DESC
 				</when>
 				<when test="array == 'priceHign'">
 					product_price DESC
@@ -101,8 +125,9 @@
 				</otherwise>
 			</choose>
  <![CDATA[
-      ) rn, product_seq, product_name, product_price, product_quantity,
-    product_seller, product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate, user_nickname 
+      ) rn, product_seq, product_name, product_price, product_quantity, product_seller, 
+      product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, 
+      product_updatedate, user_nickname, product_like
    FROM
       tbl_product
 ]]>
