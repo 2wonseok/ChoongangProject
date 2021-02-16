@@ -85,7 +85,7 @@ function reload() {
 #container {
     clear: both;
     position: relative;
-    margin: 50px auto 0px;
+    margin: 35px auto 0px;
     padding: 0 0 50px 0;
     width: 1200px;
     z-index: 1;
@@ -94,7 +94,8 @@ function reload() {
     clear: both;
     width: 1200px;
     margin: 50px auto 30px;
-    background: #f2f5fa;
+    /* background: #f2f5fa; */
+    background: #f8f8f8;
     padding: 10px 30px;
     border: 1px solid #e7e9ee;
     text-align: center;
@@ -113,18 +114,20 @@ function reload() {
     font-size: 15px;
     border: none;
     background: #1e263c;
-    padding: 0px 50px;
+    padding: 0px 40px;
     margin: 0 0px;
     line-height: 45px;
+    border-radius: 3px;
 }
 .membersearchbox #btn_reload {
     color: #fff;
     font-size: 15px;
     border: none;
     background: #747474;
-    padding: 0px 50px;
+    padding: 0px 42px;
     margin: 0 0px;
     line-height: 45px;
+    border-radius: 3px;
 }
 .page-item:last-child .page-link {
     border-top-right-radius: .25rem;
@@ -152,10 +155,11 @@ function reload() {
     background: #1e263c;
     padding: 0px 10px;
     margin: 0 0px;
-    margin-bottom : 3px;
+    margin-bottom : 5px;
     line-height: 45px;
     float: left;
     width:110px;
+    border-radius: 3px;
 }
 #btn_smsSubmit {
     color: #fff;
@@ -164,11 +168,12 @@ function reload() {
     background: #747474;
     padding: 0px 10px;
     margin: 0 0px;
-    margin-bottom : 3px;
+    margin-bottom : 5px;
     line-height: 45px;
     float: left;
     width:110px;
     margin-left: 5px;
+    border-radius: 3px;
 }
 #zip_code_btn {
     color: #fff;
@@ -201,6 +206,7 @@ function reload() {
 .pagerWrap a {
     width: 34px;
     height: 34px;
+    color: #333;
     border: 1px solid #dedede;
     text-align: center;
     line-height: 34px;
@@ -211,6 +217,10 @@ function reload() {
     border-color: #222222;
     background: #4a4a4a;
     color: #fff;
+}
+.pagerWrap a:hover {
+    border-color: #4a4a4a;
+    color: #4a4a4a;
 }
 </style>
 <body>
@@ -274,7 +284,7 @@ function reload() {
 		<div class="membersearchbox">
 				<form id="searchForm" action="${root }/user/userList" method="get" >
 					<div class="pagenation-container d-flex justify-content-center">
-						<select name="type" required class="form-control" id="searchType">
+						<select name="type" required style="margin-top: 4px;" class="form-control" id="searchType">
 							<option value=""
 								<c:out value="${cri.type == null ? 'selected' : '' }"/>>==선택==</option>
 							<option value="N"
@@ -288,7 +298,7 @@ function reload() {
 							<option value="NI"
 								<c:out value="${cri.type eq 'NI' ? 'selected' : '' }"/>>이름 or 아이디</option>
 						</select>&nbsp;
-						<input type="text" required name="keyword" value="${cri.keyword }" id="searchKeyword" class="form-control"  placeholder="Search" aria-label="Search"/>&nbsp;
+						<input type="text" required name="keyword" value="${cri.keyword }" style="margin-top: 4px;" id="searchKeyword" class="form-control"  placeholder="Search" aria-label="Search"/>&nbsp;
 						<input type="hidden" name="pageNum" value="1"/>
 						<input type="hidden" name="amount" value="${cri.amount }"/>
 						<input type="submit" value="검색" id="btn_search">&nbsp;
