@@ -148,4 +148,28 @@ public class RevBoardServiceImpl implements RevBoardService{
 	public int hateCheckremove(int rev_seq) {
 		return mapper.hateCheckremove(rev_seq);
 	}
+	// 좋아요 취소시 행삭제 
+	@Override
+	public void goodCheck_cancel(int user_seq, int rev_seq) {
+		mapper.goodCheck_cancel(user_seq, rev_seq);
+		
+	}
+	// 좋아요 취소시 reviewboard 에 good - 1
+	@Override
+	public int goodCancel(int rev_seq) {
+		
+		return mapper.goodCancel(rev_seq);
+	}
+	
+	// 싫어요 취소시 reviceboard 에 hate - 1
+	@Override
+	public int hateCancel(int rev_seq) {
+		return mapper.hateCancel(rev_seq);
+	}
+	
+	// 싫어요 취소시 행삭제
+	@Override
+	public void hateCheck_cancel(int user_seq, int rev_seq) {
+		mapper.hateCheck_cancel(user_seq, rev_seq);
+	}
 }

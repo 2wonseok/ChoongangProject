@@ -17,6 +17,17 @@
     line-height: 45px;
     float: right;
 }
+#container {
+    clear: both;
+    position: relative;
+    margin: 50px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1200px;
+    z-index: 1;
+}
+thead {
+	background: #f8f8f8;
+}
 </style>
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -56,6 +67,7 @@
 <body>
 <u:mainNav></u:mainNav>
 <div class="container-sm">
+<section id="container">
 <c:url value="${root }/rev/list" var="searchLink">
 					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
 					<c:param name="pageNum" value="${cri.pageNum }" />
@@ -82,9 +94,11 @@
 				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 			</form>
 			</div>
-	<div class="container-sm">
+	<div class="container">
+		
+	
 		<div class="row">
-			<table class="table table-striped table-hover">
+			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th>#번호</th>
@@ -115,6 +129,7 @@
 										value="${rev.rev_title}" />
 								<c:if test="${rev.rev_replyCnt gt 0 }"> <!-- gt는 > 이거랑같음 -->
 								<span class="badge badge-info">${rev.rev_replyCnt }</span>
+								
 								</c:if>
 							</a></td>
 							<td><c:out value="${rev.rev_writer}" /></td>
@@ -124,6 +139,7 @@
 									<td>${rev.rev_hate }</td>
 									<td>${rev.rev_readCnt }</td>
 									
+		
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -132,6 +148,7 @@
 					<a id="btn_add" class="btn btn-info" href="${root }/rev/register">후기 쓰기</a>
 					</c:if>
 		</div>
+		</section>
 	</div>
 	<div id="myModal" class="modal" tabindex="-1">
 		<div class="modal-dialog">
@@ -202,6 +219,7 @@
 				</ul>
 			</nav>
 		</div>
+		
 	</div>
 	
 

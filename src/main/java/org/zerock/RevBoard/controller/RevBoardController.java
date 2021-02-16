@@ -347,7 +347,12 @@ public class RevBoardController {
 			}
 
 		}
-
+		
+		rttr.addAttribute("pageNum", cri.getPageNum()); // request가 아니라 redirect해줬기때문에
+		rttr.addAttribute("amount", cri.getAmount());	// RedirectAttributes에 넣어줘야함
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
 		if (service.moidfy(revVo)) {
 			rttr.addFlashAttribute("result", "success");
 			rttr.addFlashAttribute("message", revVo.getRev_seq() + "번 글이 수정 됐습니다.");
@@ -380,37 +385,52 @@ public class RevBoardController {
 //		
 //	}
 
-	@GetMapping(value = "/like", produces = MediaType.TEXT_PLAIN_VALUE)
+	@GetMapping("/like")
 	public @ResponseBody int goodAdd(GoodCheck check, HttpServletRequest req, HttpServletResponse res,
 			RedirectAttributes rttr) {
+		int cnt = 1;
 		System.out.println(check.getRev_seq());
 		System.out.println(check.getUser_seq());
-		int cnt = service.checkread(check.getUser_seq(), check.getRev_seq());
+		cnt = service.checkread(check.getUser_seq(), check.getRev_seq());
 		System.out.println(cnt);
 		if (cnt == 0) {
 			service.insertCheck(check); // 인서트로 행을만듬.
 			service.addGood(check.getRev_seq()); // 좋아요를 1눌러줌
 			service.goodCheck(check.getUser_seq(), check.getRev_seq()); // 좋아요를 눌러서 체크 + 1 ( 하기전엔 체크 0 )
-			return 0;
-		}  if (cnt > 1) {
-			
+			System.out.println("395:" + cnt);
+			return cnt;
 		}
-		return 1;
+		if (cnt == 1){
+			service.goodCheck_cancel(check.getUser_seq(), check.getRev_seq());
+			service.goodCancel(check.getRev_seq());
+			return cnt;
+		}
+		return cnt;
 	}
 
 	
 
-	@GetMapping(value = "/hate", produces = MediaType.TEXT_PLAIN_VALUE)
+	@GetMapping("/hate")
 	public @ResponseBody int addHate(HateCheck hateCheck) {
-		int cnt = service.hatecheckread(hateCheck.getUser_seq(), hateCheck.getRev_seq());
-		
+		int cnt = 1;
+		System.out.println(hateCheck.getRev_seq());
+		System.out.println(hateCheck.getUser_seq());
+		cnt = service.hatecheckread(hateCheck.getUser_seq(), hateCheck.getRev_seq());
+		System.out.println("414:" + cnt);
 		if (cnt == 0) {
+			System.out.println("415:" + cnt);
 			service.hateinsertCheck(hateCheck);
 			service.addHate(hateCheck.getRev_seq());
 			service.hateCheck(hateCheck.getUser_seq(), hateCheck.getRev_seq());
-			return 0;
+			return cnt;
 		}
-		return 1;
+		
+		if (cnt == 1) {
+			service.hateCheck_cancel(hateCheck.getUser_seq(), hateCheck.getRev_seq());
+			service.hateCancel(hateCheck.getRev_seq());
+			return cnt;
+		}
+		return cnt;
 	}
 
 }
