@@ -110,9 +110,10 @@ function showList() {
 			replyService.getList(rev_seq, function(list) {
 				// console.log(list);	
 				
-				var replyUL = $("#reply-ul")
+				/* var replyUL = $("#reply-ul") */
+				var replyUL = $("#bo_vc");
 				replyUL.empty(); // append로 계속 있어도 리스트를 넣어주니까 한번비워주는 코드
-				for (var i = 0; i < list.length; i++) {
+				/* for (var i = 0; i < list.length; i++) {
 					var replyLI = '<li class="media" data-reply_seq="'
 						+ list[i].reply_seq + '"><div class="media-body"><h5>'
 						+ list[i].reply_writer + '<small class= "float-right">'
@@ -122,16 +123,22 @@ function showList() {
 						
 						replyUL.append(replyLI); 
 						
-					} 
-					 /* for (var i = 0; i < list.length; i++) {
-						var replyLI = '<article id="c_32"><header style="z-index:2"><h2>'
-						+ list[i].reply_writer + '</h2><span class="guest">'
-						+ list[i].reply_seq + '</span><span class="bo_vc_hdinfo">'
-						+ dateString(list[i].reply_regdate) + '</span></header><div class="cmt_contents"><pre>'
-						+ list[i].reply_content + '</pre><hr class="dashHr"></div></article>'
+					}  */
+					  for (var i = 0; i < list.length; i++) {
+						var replyLI = '<article id="'+ list[i].reply_seq + '"><header style="z-index:5">'
+						+  '<span class="guest">'
+						+ list[i].reply_writer
+						+  '</span><span class="bo_vc_hdinfo"><i class="far fa-clock" aria-hidden="true"></i>'
+						+ dateString(list[i].reply_regdate) + '</span></header><div class="cmt_contents">'
+						+ list[i].reply_content
+						+ '<textarea style="display:none">' 
+						+  list[i].reply_content  
+						+ '</textarea></div><hr class="dashHr"></article>'
+						 
 						
 						replyUL.append(replyLI);
-					}  */
+					  }
+						
 				}),
 			function(err) {
 			};
@@ -185,7 +192,7 @@ $("#reply-submit-button").click(function() {
 //reply-ul 클릭 이벤트 처리
 
 
-$("#reply-ul").on("click", "li",  function() { // on메소드를 이용해서 reply-ul 안에있는 <li> 를 눌렀을때
+$("#reply-ul").on("click", "#guest",  function() { // on메소드를 이용해서 reply-ul 안에있는 <li> 를 눌렀을때
 	//console.log("reply ul clicked.....");	   // 일이 일어나도록함.
 	console.log($(this).attr("data-reply_seq"));		// 여기서의 this는 click이벤트를 당한 li를 뜻함.
 
@@ -586,6 +593,34 @@ showList();
 		
 	</div> --%>
 	<div class="container-sm mt-3">
+	<hr class="dashHr">
+<button type="button" class="cmt_btn"><i class="fa fa-commenting-o" aria-hidden="true"></i> 댓글목록 <i class="fa fa-chevron-up" aria-hidden="true"></i><i class="fa fa-chevron-down" aria-hidden="true"></i> </button>
+	<section id="bo_vc">
+    <h2>댓글목록</h2>
+    
+    <!-- <article id="c_32" >
+        <header style="z-index:2">
+            <h2>ㅛㅛ님의  댓글</h2>
+            <span class="guest">ㅛㅛ</span>                        <span class="sound_only">작성일</span>
+            <span class="bo_vc_hdinfo"><i class="fa fa-clock-o" aria-hidden="true"></i> <time datetime="2018-04-18T09:54:00+09:00">18-04-18 09:54</time></span>
+                    </header>
+
+        댓글 출력
+        <div class="cmt_contents">
+            <p>
+                                222            </p>
+                    </div>
+        <span id="edit_32" class="bo_vc_w"></span>수정
+        <span id="reply_32" class="bo_vc_w"></span>답변
+
+        input type="hidden" value="" id="secret_comment_32">
+        <textarea id="save_comment_32" style="display:none">222</textarea> -->
+
+    </article>
+        
+</section>
+</div>
+	<%-- <div class="container-sm mt-3">
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
 				
@@ -627,7 +662,7 @@ showList();
 				
 			</div>
 		</div>
-	</div>
+	</div> --%>
 	
 	<%-- modal 새 댓글 form --%>
 	<div class="modal fade" id="new-reply-modal">
