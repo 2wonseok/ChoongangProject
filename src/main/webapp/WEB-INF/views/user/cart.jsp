@@ -74,7 +74,7 @@ p {
 									<c:out value="${cart.order_poname }"></c:out>
 								</a>
 							</td>
-							<td><p><c:out value="${cart.order_poprice }"></c:out></p></td>
+							<td><p><fmt:formatNumber value='${cart.order_poprice }' type="number"></fmt:formatNumber>원</p></td>
 							<td><p><c:out value="500,000원"></c:out></p></td>
 						</tr>
 					</c:forEach>

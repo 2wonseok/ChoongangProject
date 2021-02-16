@@ -344,11 +344,11 @@ $(document).ready(function() {
 																	<div class="DesktopOrderBoxStyle__DesktopOrderBoxProductTextWrapper-gnmni8-9 DesktopOrderBoxGoodsBodyText__PriceAndCartWrapper-sc-8q24ha-4 cbBmbp bEFRXv">
 																		<div class="DesktopOrderBoxGoodsBodyText__PriceTextWrapper-sc-8q24ha-2 hgNRNX">
 																			<div class="DesktopOrderBoxGoodsItemPriceAndQuantity__Wrapper-uaa4l4-0 jrOJCy">
-																				<span font-weight="normal" class="BodyText__BodyTextL-sc-755zt3-0 jbEZNk">${orders.order_poprice }원</span>
+																				<span font-weight="normal" class="BodyText__BodyTextL-sc-755zt3-0 jbEZNk"><fmt:formatNumber value='${orders.order_poprice }' type="number"></fmt:formatNumber>원</span>
 																				<span class="TextDot__DotContainer-sc-13xhsmd-0 AbwgC">
 																					<span class="TextDot__Dot-sc-13xhsmd-1 fYxTqY"></span>
 																				</span>
-																				<span class="BodyText__BodyTextL-sc-755zt3-0 bqCRgI">${orders.order_quantity }개</span>
+																				<span class="BodyText__BodyTextL-sc-755zt3-0 bqCRgI"><fmt:formatNumber value='${orders.order_quantity }' type="number"></fmt:formatNumber>개</span>
 																			</div>
 																		</div>
 																		<div class="DesktopOrderBoxGoodsBodyText__AddCartButtonWrapper-sc-8q24ha-3 dhufUh">

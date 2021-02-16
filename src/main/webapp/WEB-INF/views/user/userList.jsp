@@ -192,6 +192,26 @@ function reload() {
     line-height: 45px;
     float: right;
 }
+/* 페이지 네이션 css */
+.pagerWrap {
+    position: relative;
+    text-align: center;
+    margin: 0px 0;
+}
+.pagerWrap a {
+    width: 34px;
+    height: 34px;
+    border: 1px solid #dedede;
+    text-align: center;
+    line-height: 34px;
+    background: #fff;
+    display: inline-block;
+}
+.pagerWrap a.on {
+    border-color: #222222;
+    background: #4a4a4a;
+    color: #fff;
+}
 </style>
 <body>
 <u:mainNav/>
@@ -199,32 +219,6 @@ function reload() {
 	<c:when test="${authUser.user_grade == 0}">
 		<div class="container">
 		<section id="container">
-			<div class="membersearchbox">
-				<form id="searchForm" action="${root }/user/userList" method="get" >
-					<div class="pagenation-container d-flex justify-content-center">
-						<select name="type" required class="form-control" id="searchType">
-							<option value=""
-								<c:out value="${cri.type == null ? 'selected' : '' }"/>>==선택==</option>
-							<option value="N"
-								<c:out value="${cri.type eq 'N' ? 'selected' : '' }"/>>이름</option>
-							<option value="I"
-								<c:out value="${cri.type eq 'I' ? 'selected' : '' }"/>>아이디</option>
-							<option value="G"
-								<c:out value="${cri.type eq 'G' ? 'selected' : '' }"/>>성별</option>
-							<option value="P"
-								<c:out value="${cri.type eq 'P' ? 'selected' : '' }"/>>휴대폰</option>
-							<option value="NI"
-								<c:out value="${cri.type eq 'NI' ? 'selected' : '' }"/>>이름 or 아이디</option>
-						</select>&nbsp;
-						<input type="text" required name="keyword" value="${cri.keyword }" id="searchKeyword" class="form-control"  placeholder="Search" aria-label="Search"/>&nbsp;
-						<input type="hidden" name="pageNum" value="1"/>
-						<input type="hidden" name="amount" value="${cri.amount }"/>
-						<input type="submit" value="검색" id="btn_search">&nbsp;
-						<input type="button" value="초기화" id="btn_reload" onclick="reload()">	
-					</div>
-				</form>
-			</div>
-
 		<form action="${root }/user/userCheckDel" id="userCheckDel" name="userCheckDel" method="post">
 			<button type="submit" id="btn_CheckDel"/>선택 삭제</button>
 			<button type="submit" id="btn_smsSubmit"/>문자 전송</button>
@@ -277,8 +271,72 @@ function reload() {
 			</tbody>
 		</table>
 		</form>
-		
-		<div class="pagenation-container d-flex justify-content-center">
+		<div class="membersearchbox">
+				<form id="searchForm" action="${root }/user/userList" method="get" >
+					<div class="pagenation-container d-flex justify-content-center">
+						<select name="type" required class="form-control" id="searchType">
+							<option value=""
+								<c:out value="${cri.type == null ? 'selected' : '' }"/>>==선택==</option>
+							<option value="N"
+								<c:out value="${cri.type eq 'N' ? 'selected' : '' }"/>>이름</option>
+							<option value="I"
+								<c:out value="${cri.type eq 'I' ? 'selected' : '' }"/>>아이디</option>
+							<option value="G"
+								<c:out value="${cri.type eq 'G' ? 'selected' : '' }"/>>성별</option>
+							<option value="P"
+								<c:out value="${cri.type eq 'P' ? 'selected' : '' }"/>>휴대폰</option>
+							<option value="NI"
+								<c:out value="${cri.type eq 'NI' ? 'selected' : '' }"/>>이름 or 아이디</option>
+						</select>&nbsp;
+						<input type="text" required name="keyword" value="${cri.keyword }" id="searchKeyword" class="form-control"  placeholder="Search" aria-label="Search"/>&nbsp;
+						<input type="hidden" name="pageNum" value="1"/>
+						<input type="hidden" name="amount" value="${cri.amount }"/>
+						<input type="submit" value="검색" id="btn_search">&nbsp;
+						<input type="button" value="초기화" id="btn_reload" onclick="reload()">	
+					</div>
+				</form>
+			</div>
+			<!--페이징 -->
+			<div class="container d-flex justify-content-center">
+				<div class="pagerWrap">
+						<c:if test="${pageMaker.prev}">
+							<c:url value="/user/userList" var="preLink">
+								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
+									<c:param name="type" value="${pageMaker.cri.type }"></c:param>
+									<c:param name="keyword" value="${pageMaker.cri.keyword }"></c:param>
+								</c:if>
+								<c:param name="pageNum" value="${pageMaker.startPage - 1 }"></c:param>
+								<c:param name="amount" value="${pageMaker.cri.amount}"></c:param>
+							</c:url>
+								<a href="${preLink}">Previous</a>
+						</c:if>
+						
+						<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+							<c:url value="/user/userList" var="pageLink">
+								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
+									<c:param name="type" value="${param.type }"></c:param>
+									<c:param name="keyword" value="${param.keyword }"></c:param>
+								</c:if>	
+								<c:param name="pageNum" value="${num }"></c:param>
+								<c:param name="amount" value="${pageMaker.cri.amount }"></c:param>
+							</c:url>
+								<a class="${pageMaker.cri.pageNum == num ? 'on' : ''}" href="${pageLink}">${num }</a>
+						</c:forEach>
+						
+						<c:if test="${pageMaker.next }">
+							<c:url value="/user/userList" var="nextLink">
+								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
+									<c:param name="type" value="${pageMaker.cri.type }"></c:param>
+									<c:param name="keyword" value="${pageMaker.cri.keyword }"></c:param>
+								</c:if>
+								<c:param name="pageNum" value="${pageMaker.endPage + 1 }"></c:param>
+								<c:param name="amount" value="${pageMaker.cri.amount}"></c:param>
+							</c:url>
+							<a href="${nextLink }">Next</a>
+						</c:if>
+				</div>
+		</div>
+		<%-- <div class="pagenation-container d-flex justify-content-center">
 				<nav aria-label="Page navigation example">
 					<ul class="pagination">
 						<c:if test="${pageMaker.prev}">
@@ -318,7 +376,7 @@ function reload() {
 						</c:if>
 					</ul>
 				</nav>
-		</div>
+		</div> --%>
 		</section>
 		</div>
 		<div class="modal" id="myModal" tabindex="-1">
