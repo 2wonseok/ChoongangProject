@@ -21,5 +21,4 @@ public interface QaReplyService {
 	public int update(QaReplyVO reply);
 	
 	public QaReplyVO get(int reply_seq);	
-	
 }

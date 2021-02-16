@@ -10,7 +10,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,8 @@ import org.zerock.qaboard.domain.PageDTO;
 import org.zerock.qaboard.domain.QaVO;
 import org.zerock.qaboard.domain.QaReplyVO;
 import org.zerock.qaboard.service.QaService;
+import org.zerock.user.domain.UserVO;
+import org.zerock.user.service.UserService;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
@@ -41,7 +45,10 @@ import lombok.extern.log4j.Log4j;
 public class QaController {
 	
 	private QaService service;	
-
+	private BCryptPasswordEncoder pwdEncoder;
+	private UserService user_service;
+	
+	HttpSession session;
 	
 //	@RequestMapping(value="/list", method = RequestMethod.GET)
 //	@GetMapping("/list") 
@@ -90,6 +97,11 @@ public class QaController {
 	@PostMapping("/register")
 	public String register(QaVO board, RedirectAttributes rttr, 
 			MultipartFile[] upload, HttpServletRequest request) {
+		
+		// 게시글에 비밀번호 입력시 암호화 처리
+		String pass = board.getQa_password();
+		String password = pwdEncoder.encode(pass); 
+		board.setQa_password(password);
 		
 		Map<String, Boolean> errors = new HashMap<String, Boolean>();
 		
@@ -169,24 +181,95 @@ public class QaController {
 	
 	//
 	@GetMapping({"/get", "/modify"})
-	public void get(@RequestParam("qa_seq") int qa_seq,  
-			@ModelAttribute("criteria") Criteria cri, Model model) {
-		
+	public String get(@RequestParam("qa_seq") int qa_seq, UserVO user,
+			@ModelAttribute("criteria") Criteria cri, Model model,
+			HttpSession session, RedirectAttributes rttr) {
 		// 게시물 가져오기
 		// 쿼리문으로 붙어서 감
-		QaVO vo = service.get(qa_seq);
-		service.addCnt(qa_seq);
-		model.addAttribute("board", vo);
+		//UserVO user_vo = user_service.getUser(user.getUser_id());
+		//System.out.println(user_vo.getUser_address());
 		
+		QaVO vo = service.get(qa_seq);
+		
+		if("공개".equals(vo.getQa_secret())) {
+			service.addCnt(qa_seq);
+			model.addAttribute("board", vo);
+			if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
+				@SuppressWarnings("unchecked")
+				List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
+				model.addAttribute("qafileNameList", fileNamesList);
+				
+				return "/qa/get";
+			}
+		} else {
+			if(session.getAttribute("authUser") == null) {
+				System.out.println("세션이 없음");
+				rttr.addFlashAttribute("noRead", "작성자, 관리자만 열람 가능합니다.");
+				return "redirect:/qa/list";
+			} else {
+				UserVO userVO = (UserVO) session.getAttribute("authUser");
+				System.out.println(userVO.toString());				
+				String userNickname = userVO.getUser_nickname();				
+				int userGrade = userVO.getUser_grade();				
+				System.out.println(vo.toString());
+				rttr.addFlashAttribute("noMatch", "작성자, 관리자만 열람 가능합니다.");
+				if(userNickname.equals(vo.getQa_writer()) || userGrade == 0) {										
+					//	작성자와 세션에서 가져온 userNickname이 같은 경우
+					//	get 페이지로 이동
+					service.addCnt(qa_seq);
+					model.addAttribute("board", vo);
+					return "/qa/get";
+
+				} else {
+					return "redirect:/qa/list";
+				}
+			}
+		}
+			return null;
+		}
+		
+	
+	@GetMapping({"/get_secret"})
+	public String get_secret(@RequestParam("qa_seq") int qa_seq,
+			@ModelAttribute("criteria") Criteria cri, Model model) {
+		// 게시물 가져오기
+		// 쿼리문으로 붙어서 감
+		
+		QaVO vo = service.get(qa_seq);
+		if(session.getAttribute("user_nickname") != null) {
+
+			service.addCnt(qa_seq);
+			model.addAttribute("board", vo);
+		} else {
+			model.addAttribute("no", "작성한 사용자만 열람 가능합니다.");
+		}
+
+	
 		// 여러 상품파일이름을 list로 변환하고 넘겨줌
 		if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
 			@SuppressWarnings("unchecked")
 			List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
 			model.addAttribute("qafileNameList", fileNamesList);
-		}
-
+		}		
+		return "redirect:/qa/get";
 	}
 	
+	@RequestMapping({"/secret"})
+	public void password(@RequestParam("qa_seq") int qa_seq,
+			@ModelAttribute("criteria") Criteria cri, 
+			Model model) {
+		QaVO vo = service.get(qa_seq);
+		service.addCnt(qa_seq);
+		model.addAttribute("board", vo);
+		
+		if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
+			@SuppressWarnings("unchecked")
+			List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
+			model.addAttribute("qafileNameList", fileNamesList);
+		}		
+	}
+
+
 	@RequestMapping("/remove")
 	public String remove(@RequestParam("qa_seq") int qa_seq) {
 		service.remove(qa_seq);
@@ -276,33 +359,7 @@ public class QaController {
 		return "redirect:/qa/list";
 	}
 	
-	
 
-	// test 추가본/////////////////////////////////////////
-	@GetMapping("/listTest")
-    public void list_test(@ModelAttribute("criteria") Criteria cri,
-            Model model) {
-
-        // 게시물 리스트 가져오기
-        List<QaVO> list = service.getList(cri);
-        int total = service.getTotal(cri);
-        PageDTO dto = new PageDTO(cri, total);
-        model.addAttribute("list", list);
-        model.addAttribute("pageMaker", dto);
-
-
-    }
-	
-	@GetMapping("/getTest")
-	public void get_test(@RequestParam("qa_seq") int qa_seq,
-			@ModelAttribute("criteria") Criteria cri, 
-		            Model model) {
-
-		QaVO vo = service.get(qa_seq);
-		service.addCnt(qa_seq);
-		model.addAttribute("board", vo);
-
-	}
 	
 
 }

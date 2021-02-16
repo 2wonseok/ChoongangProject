@@ -65,4 +65,5 @@ public class QaReplyServiceImpl implements QaReplyService{
 
 		return mapper.get(reply_seq);
 	}
+
 }

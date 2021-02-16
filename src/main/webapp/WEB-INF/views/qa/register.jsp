@@ -62,16 +62,23 @@ function checkTree(chk){
 
 <u:mainNav/>
 <h2> Q&A 글쓰기</h2>
-<div class="container"> 
+<div class="container-sm">
+	<div class="row">
+		<div class="col-12 col-lg-6 offset-lg-3">
+
 	<form action="${root }/qa/register" method="post" enctype="multipart/form-data">
 	
 	<!-- type="checkbox" 로딩시 기본으로 체크 되어있도록 설정  -->
 	<!-- label 태그로 글씨가 클릭 되어도 체크 되도록 설정, label for="" 와 input id 동일해야 함 -->
 	<input id="open" name="qa_secret" value="공개" type="checkbox" onclick="checkTree(this);" checked style='zoom:1.5;'/> 
 	<label for="open">공개</label> 
-	
+
 	<input id="close" name="qa_secret" value="비공개" type="checkbox" onclick="checkTree(this);" style='zoom:1.5;'/>
 	<label for="close">비공개</label> 
+	
+	<div class="form-group">
+	<input type="password" name="qa_password">
+	</div>
 	
 	<c:if test="${errors.noSecret }">
 	<small class="form-text text-danger">
@@ -80,7 +87,7 @@ function checkTree(chk){
 	</c:if>	
 	
 	<br>	
-	
+	<div class="form-group">
 	질문 종류 :
 	<select name="qa_category" >
 	<option value="">질문 선택</option>
@@ -94,6 +101,7 @@ function checkTree(chk){
 	<option value="업체">업체</option>		    
 	<option value="기타">기타</option>    
 	</select>
+	</div>
 	
 	<c:if test="${errors.noCategory }">
 	<small class="form-text text-danger">
@@ -103,8 +111,8 @@ function checkTree(chk){
 	
 	<br>	
 	
-	제목 : <br>
-	<input type="text" name="qa_title" value="${title }"/>	
+	
+	<input class="form-control" type="text" name="qa_title" value="${title }" placeholder="제목"/>	
 	<c:if test="${errors.noTitle }">
 	<small class="form-text text-danger">
 			제목을 입력 해주세요.
@@ -112,36 +120,17 @@ function checkTree(chk){
 	</c:if>
 	
 	<br>
-	내용 : <br>
-	<textarea name="qa_content" cols="30" rows="10" >${content }</textarea>
+	<textarea class="form-control" name="qa_content" cols="30" rows="10" placeholder="내용" >${content }</textarea>
 	<c:if test="${errors.noContent }">
 	<small class="form-text text-danger">
 			내용을 입력 해주세요.
 	</small>
-	</c:if>
-	 
+	</c:if>	 
 	<br>	
 	
-	작성자 : <input type="text" name="qa_writer" value="${authUser.user_nickname }"/>	
+	<input type="hidden" type="text" name="qa_writer" value="${authUser.user_nickname }"/>	
 	<br>
 	
-<%-- 	<div class ="inputArea">
-	이미지 업로드
-	<label><input type="file" name="upload" id="image" value="${filename }"/></label>
-	
-	<div class="select_img"><img src="" /></div>
-	 
-	<script>
-	  $("#image").change(function(){
-	   if(this.files && this.files[0]) {
-	    var reader = new FileReader;
-	    reader.onload = function(data) {
-	     $(".select_img img").attr("src", data.target.result).width(200);        
-	    }
-	    reader.readAsDataURL(this.files[0]);
-	   }
-	  });
- 	</script> --%>
 <!--이미지첨부시작  -->
 	<div class="input_wrap">
 		<input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*" />
@@ -189,10 +178,10 @@ function checkTree(chk){
 			}
 	</script>
 	<!--이미지첨부끝 -->
-	<input type="submit" value="전송" id="btn_add">
-	
-	
+	<input type="submit" value="전송" id="btn_add">	
 </form> 
+</div>
+</div>
 </div>
 </body>
 </html>

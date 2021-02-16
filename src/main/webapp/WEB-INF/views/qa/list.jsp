@@ -7,6 +7,8 @@
 <html>
 <head>
 <style>
+
+
 #btn_add {
     color: #fff;
     font-size: 15px;
@@ -117,6 +119,10 @@
   text-align: center;
 }
 
+
+thead {
+	background: #f8f8f8;
+}
 </style>
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -130,14 +136,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 
 <script>
-function checkTree(chk){
-    var obj = document.getElementsByName("type");
-    for(var i=0; i < obj.length; i++){
-        if(obj[i] != chk){
-            obj[i].checked = false;
-        }
-    }
-}
+
+
+/* $(document).ready(function() {
+	$("#password").click(function() {
+		alert("비밀글 클릭");
+		$("#password_input").modal("show");
+	});
+}); */
 
 </script>
 
@@ -149,10 +155,11 @@ function checkTree(chk){
 <u:mainNav/>
 	
 	
-	
 <div class="container">
-	<section id ="container">
+<section id ="container">
 
+<div class="container">
+	
              
     
 <form action="${root }/qa/list" class="form-inline my-2 my-lg-0">
@@ -207,25 +214,23 @@ function checkTree(chk){
 	  </select>
 	   --%>
 	</form>
-	</section>
 </div>
 
+
 <div class="container-sm">
-	<section id ="container">
+
   <div class="row">
 
     <!-- .table.table-striped.table-hover>thread+today -->
-    <table class="table table-striped table-hover">
+    <table class="table table-hover ">
       <thead>
         <tr>
           <th id="menu_no">NO</th>
           <th id="menu_category">종류</th>
           <th id="menu_title">제목</th>
           <th id="menu_nickname"><i class="far fa-user"></i></th>
-<!--           <th id="menu_regdate"><i class="far fa-calendar-check"></i></th> -->
           <th id="menu_readcnt"><i class="fas fa-eye"></i></th>
           <th id="menu_status">답변 상태</th>
-          <th id="menu_image">미리보기</th>
         </tr>
       </thead>
       <tbody>
@@ -237,23 +242,18 @@ function checkTree(chk){
             
             <td>
             
-            <c:url value="/qa/get" var="boardLink">
+             <c:url value="/qa/get" var="boardLink">
             	<c:param value="${board.qa_seq }" name="qa_seq" />
             	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
             	<c:param value="${pageMaker.cri.amount }" name="amount" />
             	<c:param value="${pageMaker.cri.type }" name="type"	/>
             	<c:param value="${pageMaker.cri.keyword }" name="keyword" />
             </c:url>
-            
-            <c:url value="/qa/get_secret" var="boardLink_secret">
-            	<c:param value="${board.qa_seq }" name="qa_seq" />
-            	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
-            	<c:param value="${pageMaker.cri.amount }" name="amount" />
-            	<c:param value="${pageMaker.cri.type }" name="type"	/>
-            	<c:param value="${pageMaker.cri.keyword }" name="keyword" />
-            </c:url>
-			<div>
-			
+           
+
+
+
+			<div>			
 			<c:choose>			
             	<c:when test="${board.qa_secret eq '비공개'}">
             	
@@ -292,28 +292,30 @@ function checkTree(chk){
             	</c:if>
             	
 				</c:when>
-            </c:choose>
-			
+            </c:choose>			
 			</div>
 			
             <a href="${boardLink }">
-            	<%-- <c:choose>
-            	<c:when test="${board.qa_secret eq '비공개'}"> <i class="fas fa-lock" style="color:#1e263c"></i> </c:when>
-				<c:when test="${board.qa_secret eq '공개'}"> <i class="fas fa-lock-open" style="color:#1e263c"></i> </c:when>
-            	</c:choose> --%>
-            	<c:if test="${board.qa_secret == '공개'}">
+            	<%-- <c:if test="${board.qa_secret == '공개'}"> --%>
+           	
             		<c:out value="${board.qa_title}" />
-            	</c:if>
+            		${noRead }
+
+            	<%-- </c:if>  --%> 
+ <%--            	<c:if test="${board.qa_secret == '비공개'}">
+            		<c:if test="${authUser.user_grade == 0 || board.qa_writer == authUser.user_nickname}">
+                		<c:out value="${board.qa_title}" />
+            		</c:if>            		
+            	</c:if>       --%>
             </a>
             
-            <!-- 미구현 -->
-            <a href="${boardLink_secret }">
-            <c:if test="${board.qa_secret == '비공개' }">
-            		[비밀글] 작성자와 관리자만 열람 할수 있습니다.
-            </c:if>
-            </a>
-           
-            
+
+
+          		
+
+
+
+      	
             </td>   
             
             <td>
@@ -338,8 +340,7 @@ function checkTree(chk){
             	<span class="badge badge-success">관리자 답변:${board.qa_replycnt_admin }</span>
  			</c:if>
  			</td>
- 			<td>			
- 				<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${board.qa_filename }" width="60px" height="60px"> <br>
+ 			<td> 				
  			</td>																	
           </tr>
           
@@ -351,10 +352,13 @@ function checkTree(chk){
 	<c:if test="${!empty authUser.user_id}">
    		<a href="/qa/register/" id="btn_add">글쓰기</a>
    	</c:if>
-   	
+  </div> 	
   </div>
+
   </section>
+  
 </div>
+
 
 <div class="container-sm mt-3">
 	<div class="row justify-content-center">
@@ -402,6 +406,43 @@ function checkTree(chk){
 	
 	</div>
 </div>
+
+
+<!-- 패스워드 모달 -->
+<div class="modal fade" id="password_input">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">
+						새 댓글
+					</h5>
+					<button type="button" class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="reply-input" class="col-form-label">
+							댓글
+						</label>
+						<input type="text" class="form-control" id="reply-input">
+					</div>
+					<div class="form-group">
+						<label for="reply-input" class="col-form-label">
+							작성자
+						</label>
+						<input type="text" class="form-control" id="replyer-input">
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="reply-submit-button">등록</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+				</div>
+				
+			</div>		
+		</div>
+	</div>
 
 </body>
 </html>

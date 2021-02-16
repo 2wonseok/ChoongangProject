@@ -14,6 +14,7 @@ public interface QaService {
 	public List<QaVO> getList(Criteria cri);
 	
 	public QaVO get(int seq);
+	public QaVO get_secret(int seq);
 	
 	public boolean remove (int seq);
 	
@@ -25,5 +26,5 @@ public interface QaService {
 		
 	public int readCnt(int qa_seq);	
 	
-
+	
 }
