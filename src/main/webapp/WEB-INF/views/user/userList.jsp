@@ -222,6 +222,10 @@ function reload() {
     border-color: #4a4a4a;
     color: #4a4a4a;
 }
+.pagerWrap a.on:hover {
+    border-color: #4a4a4a;
+    color: #fff;
+}
 </style>
 <body>
 <u:mainNav/>

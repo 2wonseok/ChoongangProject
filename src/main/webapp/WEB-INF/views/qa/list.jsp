@@ -34,7 +34,7 @@
 #container {
     clear: both;
     position: relative;
-    margin: 50px auto 0px;
+    margin: 35px auto 0px;
     padding: 0 0 50px 0;
     width: 1200px;
     z-index: 1;
@@ -91,8 +91,35 @@ thead {
 #admin_color {
 	background-color:hsl(80,10%,60%);
 }
-
-
+/* 페이지네이션 */
+.pagerWrap {
+    position: relative;
+    text-align: center;
+    margin: 0px 0;
+}
+.pagerWrap a {
+    width: 34px;
+    height: 34px;
+    color: #333;
+    border: 1px solid #dedede;
+    text-align: center;
+    line-height: 34px;
+    background: #fff;
+    display: inline-block;
+}
+.pagerWrap a.on {
+    border-color: #222222;
+    background: #4a4a4a;
+    color: #fff;
+}
+.pagerWrap a:hover {
+    border-color: #4a4a4a;
+    color: #4a4a4a;
+}
+.pagerWrap a.on:hover {
+    border-color: #4a4a4a;
+    color: #fff;
+}
 </style>
 </head>
 <body>
@@ -240,11 +267,8 @@ thead {
 </div>
 
 
-<div class="container-sm mt-3">
-	<div class="row justify-content-center">
-		<nav aria-label="Page navigation example">
-		  <ul class="pagination">
-		  
+<div class="container d-flex justify-content-center">
+		<div class="pagerWrap">
 		  	<c:if test="${pageMaker.prev }" >
 		  	<c:url value="/qa/list" var="prevLink">
 		  		<c:param value="${pageMaker.startPage - 1 }" name="pageNum" />
@@ -253,7 +277,7 @@ thead {
 		  		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>	
 		  	</c:url>
 		  			  	
-		    <li class="page-item"><a class="page-link" href="${prevLink }" id="btn_add">이전</a></li>
+		   <a href="${prevLink }" id="btn_add">이전</a>
 		  	</c:if>
 		  	
 		  	<c:forEach var="num" begin="${pageMaker.startPage }" 
@@ -265,8 +289,7 @@ thead {
 		  			<c:param name="keyword" value="${pageMaker.cri.keyword }"/>		  				  			
 		  		</c:url>
 		  						
-		    <li class="${pageMaker.cri.pageNum eq num ? 'page-item active' : 'page-item' }">
-			<a class="page-link" href="${pageLink }" id="btn_add">${num }</a></li>
+			<a class="${pageMaker.cri.pageNum eq num ? 'on' : '' }" href="${pageLink }">${num }</a>
 		  	</c:forEach>
 		  	
 		  	
@@ -278,12 +301,8 @@ thead {
 		  		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>	
 		  	</c:url>
 		    
-		    <li class="page-item"><a class="page-link" href="${nextLink }" id="btn_add">다음</a></li>
+		    <a href="${nextLink }" id="btn_add">다음</a>
 		    </c:if>
-		    
-  		</ul>
-		</nav>
-	
 	</div>
 </div>
 
