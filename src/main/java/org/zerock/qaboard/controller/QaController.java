@@ -46,7 +46,7 @@ import lombok.extern.log4j.Log4j;
 public class QaController {
 	
 	private QaService service;	
-	private BCryptPasswordEncoder pwdEncoder;
+
 
 	
 	HttpSession session;
@@ -98,11 +98,6 @@ public class QaController {
 	@PostMapping("/register")
 	public String register(QaVO board, RedirectAttributes rttr, 
 			MultipartFile[] upload, HttpServletRequest request) {
-		
-		// 게시글에 비밀번호 입력시 암호화 처리
-		String pass = board.getQa_password();
-		String password = pwdEncoder.encode(pass); 
-		board.setQa_password(password);
 		
 		Map<String, Boolean> errors = new HashMap<String, Boolean>();
 		

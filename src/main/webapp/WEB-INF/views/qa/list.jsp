@@ -92,6 +92,7 @@ thead {
 	background-color:hsl(80,10%,60%);
 }
 
+
 </style>
 </head>
 <body>
@@ -145,7 +146,13 @@ thead {
 						            		<span id="star" class="badge badge-secondary"> 
 						            			<i class="far fa-star"></i> 인기글
 						            		</span>
-						            	</c:if>            	
+						            	</c:if> 
+						            	<c:if test="${not empty board.qa_filename}">
+						            		<span id="star" class="badge badge-secondary"> 
+						            			<i class="far fa-image"></i>이미지
+						            		</span>
+						            	</c:if>
+						            	           	
 					            	</c:when>
             	
 									<c:when test="${board.qa_secret eq '공개'}"> 
@@ -163,7 +170,12 @@ thead {
 						            		<span id="star" class="badge badge-secondary"> 
 						            		<i class="far fa-star"></i> 인기글
 						            		</span>
-						            	</c:if>					            	
+						            	</c:if>		
+						            	<c:if test="${not empty board.qa_filename}">
+						            		<span id="star" class="badge badge-secondary"> 
+						            			<i class="far fa-image"></i>이미지
+						            		</span>
+						            	</c:if>			            	
 									</c:when>									
 					            </c:choose>			
 							</div>
@@ -195,8 +207,9 @@ thead {
         		</c:forEach>
 			</tbody>
 		</table>
-<div>
 	</div>
+<div class="row my-3 ml-1">
+	<div class="col-10 align-left">
 		<form action="${root }/qa/list" id="searchForm" class="form-inline my-2 my-lg-0">
       		<select name="type" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">      
 				<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : ''}>제목</option>
@@ -215,13 +228,14 @@ thead {
     	</form>	
 	</div>
 	
-	<div>
+	<div class="col-2 align-right">
 		<c:if test="${!empty authUser.user_id}">
    			<a href="/qa/register/" id="btn_add">글쓰기</a>
    		</c:if>
 	</div> 	
-</div>			
+</div>
 	
+	</div>			
   </section>
 </div>
 
