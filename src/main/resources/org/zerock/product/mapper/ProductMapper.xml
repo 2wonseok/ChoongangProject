@@ -52,14 +52,14 @@
 		<where>
 			<foreach item="type" collection="typeArr" separator="OR">
 				<choose>
-					<when test="type == 'N'.toString()">
+					<when test="type == 'T'.toString()">
 						product_name LIKE '%' || #{keyword} || '%'
 					</when>
-					<when test="type == 'I'.toString()">
+					<when test="type == 'C'.toString()">
 						product_info LIKE '%' || #{keyword} || '%'
 					</when>
-					<when test="type == 'S'.toString()">
-						product_seller LIKE '%' || #{keyword} || '%'
+					<when test="type == 'W'.toString()">
+						user_nickname LIKE '%' || #{keyword} || '%'
 					</when>
 				</choose>
 			</foreach>
@@ -78,7 +78,30 @@
    FROM
     (
      SELECT 
-      ROW_NUMBER() OVER (ORDER BY product_seq DESC) rn, product_seq, product_name, product_price, product_quantity,
+      ROW_NUMBER() OVER ( ORDER BY 
+ ]]>  
+			<choose>
+				<when test="array == 'latest'">
+					product_seq DESC
+				</when>
+				<when test="array == 'like'">
+					product_regdate DESC
+				</when>
+				<when test="array == 'priceHign'">
+					product_price DESC
+				</when>
+				<when test="array == 'priceLow'">
+					product_price
+				</when>
+				<when test="array == 'readcnt'">
+					product_readcnt DESC
+				</when>
+				<otherwise>
+					product_seq DESC
+				</otherwise>
+			</choose>
+ <![CDATA[
+      ) rn, product_seq, product_name, product_price, product_quantity,
     product_seller, product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate, user_nickname 
    FROM
       tbl_product

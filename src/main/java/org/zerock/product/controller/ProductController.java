@@ -170,6 +170,7 @@ public class ProductController {
 
 	@GetMapping("/list")
 	public void list(@ModelAttribute("cri") Criteria cri, Model model) {
+		
 		//cri => 페이징과 검색
 		//cri의 필드 = pageNum, amount, type, keyword  (페이징2 검색2)
 		//			초기값 1,10
@@ -202,7 +203,6 @@ public class ProductController {
 
 	@GetMapping("/get")
 	public void get(@RequestParam("product_seq") int product_seq, @ModelAttribute("cri") Criteria cri, Model model) {
-		
 		ProductVO vo = service.getCountUp(product_seq);
 		model.addAttribute("product", vo);
 

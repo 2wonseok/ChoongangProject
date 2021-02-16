@@ -22,20 +22,41 @@
 <title>Insert title here</title>
 
 <script>
-	$(document).ready(function(){
-		
-		/*모달창-메세지넘어왔을때나오게함  */
-		var message = '${message}';
-		checkModal(message);
-		history.replaceState({}, null, null);//뒤로가기로왔을시에없앰?
-		function checkModal(message){
-			if (message && history.state == null) {
-				$("#myModal .modal-body p").html(message)
-				$("#myModal").modal("show");
-			}
+$(document).ready(function(){
+	
+	/*모달창-메세지넘어왔을때나오게함  */
+	var message = '${message}';
+	checkModal(message);
+	history.replaceState({}, null, null);//뒤로가기로왔을시에없앰?
+	function checkModal(message){
+		if (message && history.state == null) {
+			$("#myModal .modal-body p").html(message)
+			$("#myModal").modal("show");
 		}
-		
+	}
+	/* Array버튼 */
+	$("#latest_btn").click(function(){
+		$("#inputArray").val("latest");
+		$("#formArray").submit();
 	});
+	$("#like_btn").click(function(){
+		$("#inputArray").val("like");
+		$("#formArray").submit();
+	});
+	$("#priceLow_btn").click(function(){
+		$("#inputArray").val("priceLow");
+		$("#formArray").submit();
+	});
+	$("#priceHign_btn").click(function(){
+		$("#inputArray").val("priceHign");
+		$("#formArray").submit();
+	});
+	$("#readcnt_btn").click(function(){
+		$("#inputArray").val("readcnt");
+		$("#formArray").submit();
+	});
+
+});
 </script>
 		
 
@@ -101,79 +122,119 @@
 <u:mainNav/>
 <div class="container">
   <section id="container">
-  
-	<!-- <div class="container col-8 d-flex justify-content-center mt-5"> -->
-			<div class="row">
-				<div class="col-md-6, col-md-offset-3">
-			
-			
-					<div class="row d-flex justify-content-center">
+  		
+  		<div class="row col-md-6">
+  		
+  		<form id="formArray" action="${root }/product/list">
+          	<input hidden="hidden" name="product_seq" value="${product.product_seq }"/>
+          	<input hidden="hidden" name="pageNum" value="${pageDTO.cri.pageNum }"/>
+          	<input hidden="hidden" name="amount" value="${pageDTO.cri.amount }"/>
+          	<input hidden="hidden" name="type" value="${pageDTO.cri.type }"/>
+   			<input hidden="hidden" name="keyword" value="${pageDTO.cri.keyword }"/>            	
+   			<input id="inputArray" hidden="hidden" name="array" value="${pageDTO.cri.array }"/>            	
+        </form>
+  			<button id="latest_btn" class="btn" type="button">최신순</button>
+  			<button id="like_btn" class="btn" type="button">찜많은순</button>
+  			<button id="priceLow_btn" class="btn" type="button">가격낮은순</button>
+  			<button id="priceHign_btn" class="btn" type="button">가격높은순</button>
+  			<button id="readcnt_btn" class="btn" type="button">조회순</button>
+  		</div>
+  		
+		<div class="row">
+			<div class="col-md-6, col-md-offset-3">
+		
+				<div class="row d-flex justify-content-center">
 					<!--상품 bootstrap card 시작  -->
 					<c:forEach items="${list }" var="product">
 			
 						 <c:url value="/product/get" var="productLink">
-			            	<c:param name="product_seq" value="${product.product_seq }"></c:param>
-			            	<c:param name="pageNum" value="${pageDTO.cri.pageNum }"></c:param>
-			            	<c:param name="amount" value="${pageDTO.cri.amount }"></c:param>
-			            	<c:param name="type" value="${pageDTO.cri.type }"></c:param>
-				    		<c:param name="keyword" value="${pageDTO.cri.keyword }"></c:param>            	
+			            	<c:param name="product_seq" value="${product.product_seq }"/>
+			            	<c:param name="pageNum" value="${pageDTO.cri.pageNum }"/>
+			            	<c:param name="amount" value="${pageDTO.cri.amount }"/>
+			            	<c:param name="type" value="${pageDTO.cri.type }"/>
+				    		<c:param name="keyword" value="${pageDTO.cri.keyword }"/>            	
+				    		<c:param name="array" value="${pageDTO.cri.array }"/>            	
 			            </c:url>
 			            <c:set var="visibility" value="100%"></c:set>
 						<c:if test="${product.product_status == 1 }">
 							<c:set var="visibility" value="30%"></c:set>
 						</c:if>
-			            
-						<div class="card m-2">
-								<div class="img_box">
-									<a href="${productLink }" >
-										<img style="opacity : ${visibility}" src="${root }/resources/upload/${product.product_filename }" alt="Card image cap">
-									</a>
-									<div style="position:absolute;top:45%;left:30%">
-										<c:if test="${product.product_status == 1 }">
-											<h5>판매 종료</h5>
-										</c:if>
-									</div>
+		            
+					<div class="card m-2">
+							<div class="img_box">
+								<a href="${productLink }" >
+									<img style="opacity : ${visibility}" src="${root }/resources/upload/${product.product_filename }" alt="Card image cap">
+								</a>
+								<div style="position:absolute;top:45%;left:30%">
+									<c:if test="${product.product_status == 1 }">
+										<h5>판매 종료</h5>
+									</c:if>
 								</div>
-								<div class="card-body" >
-									<a href="${productLink }" >
-						            <fmt:formatNumber value="${product.product_price }" type="number" var="price"></fmt:formatNumber>
-									<h5 class="card-title"><c:out value="${price }"></c:out>원</h5>
-									<p><c:out value="${product.product_name }"></c:out></p>
-									</a>
-									<div>
-										<span><i class="fas fa-eye"></i> ${product.product_readcnt }</span>	
-										<span><i class="fas fa-heart"></i> ${product.product_readcnt }</span>										
-									</div>
-						            <fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
-									<div class="cardLine1">총 ${quantity }개 남음</div>
-										<hr>
-								    <p class="card-text">판매자 : <c:out value="${ product.user_nickname}"></c:out></p>
+							</div>
+							<div class="card-body" >
+								<a href="${productLink }" >
+					            <fmt:formatNumber value="${product.product_price }" type="number" var="price"></fmt:formatNumber>
+								<h5 class="card-title"><c:out value="${price }"></c:out>원</h5>
+								<p><c:out value="${product.product_name }"></c:out></p>
+								</a>
+								<div>
+									<span><i class="fas fa-eye"></i> ${product.product_readcnt }</span>	
+									<span><i class="fas fa-heart"></i> ${product.product_readcnt }</span>										
 								</div>
+					            <fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
+								<div class="cardLine1">총 ${quantity }개 남음</div>
+									<hr>
+							    <p class="card-text">판매자 : <c:out value="${ product.user_nickname}"></c:out></p>
+							</div>
 						</div>
 					</c:forEach>
 				</div>
-			
 				<!--상품 bootstrap card 끝  -->			
-			</div>
-		<!-- </div> -->
+		</div>
 	</div>
 		
-	 <div class="container col-8">
 	 	
-	 	<!-- 등록버튼 -->
-		<div class="row d-flex justify-content-end">
-			<div class="col-md-6, col-md-offset-3">
+	 	<!-- 등록버튼 & 서치바 row -->
+		<div class="row my-3 ml-1">
+		 
+			<!-- 서치  -->
+			<div class="col-8 align-left">
+				<c:url value="${root }/product/list" var="searchLink">
+						<c:param name="product_seq" value="${product.product_seq }" />
+						<c:param name="pageNum" value="${cri.pageNum }" />
+						<c:param name="amount" value="${cri.amount }" />
+						<c:param name="type" value="${cri.type }"/>
+						<c:param name="keyword" value="${cri.keyword }"/>
+						<c:param name="array" value="${cri.array }" /> 
+				</c:url>
+	
+				<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar">
+					<select class="custom-select my-1 mr-sm-2" name="type" 
+						id="inlineFormCustomSelectPref">
+						<option value="T" ${pageDTO.cri.type eq 'T' ? 'selected' : '' } >상품명</option>
+						<option value="C" ${pageDTO.cri.type eq 'C' ? 'selected' : '' } >상품설명</option>
+						<option value="W" ${pageDTO.cri.type eq 'W' ? 'selected' : '' } >판매자</option>
+						<option value="TC" ${pageDTO.cri.type eq 'TC' ? 'selected' : '' }>상품명 or 내용</option>
+					</select> 
+					<input class="form-control mr-sm-2" type="search" name="keyword" value="${pageDTO.cri.keyword }"
+						placeholder="Search" aria-label="Search" required>
+						<input type="hidden"  name="pageNum" value="1"/>
+						<input type="hidden"  name="amount" value="${pageDTO.cri.amount }"/>
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
+			</div>
+			
+			<!-- 등록 -->
+			<div class="col-4 align-right">
 				<c:if test="${not empty authUser.user_id}">
-					<div class="row">
-						<div class=col-10>
-						</div>
-						<div>
+ 						<div>
 							<button onclick = "location.href = '${root}/product/register'" class="btn_add">상품 등록</button>
 						</div>
-					</div>
 				</c:if>
 			</div>
+			
 		</div>
+		 
 		
 		<!-- 페이징용row -->
 		<div class="row d-flex justify-content-center">
@@ -200,8 +261,9 @@
 									<c:url value="/product/list" var="pageLink">
 										<c:param name="pageNum" value="${num }" />
 										<c:param name="amount" value="${pageDTO.cri.amount }" />
-										<c:param name="type" value="${pageDTO.cri.type }"></c:param>
-										<c:param name="keyword" value="${pageDTO.cri.keyword }"></c:param>
+										<c:param name="type" value="${pageDTO.cri.type }" />
+										<c:param name="keyword" value="${pageDTO.cri.keyword }" />
+										<c:param name="array" value="${pageDTO.cri.array }" /> 
 									</c:url>
 									<li
 										class="page-item ${pageDTO.cri.pageNum eq num ? 'active' : '' }">
@@ -226,9 +288,7 @@
 		
 			</div>
 		</div>
-		
-	</div>	
-	
+
 
   </section>
 </div>

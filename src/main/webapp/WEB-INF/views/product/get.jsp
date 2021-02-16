@@ -64,8 +64,7 @@ $(document).ready(function(){
 		var po_price = $(this).find("option:selected").data("price");
 		
 		/* 이전 optionContainerNumber가 있는가 선택 */
-		var exist = $('input[name="productOption_seq"][value='+poSeq+']').length;
-		
+		var exist = $('input[name="order_poseq"][value='+poSeq+']').length;
 		if (exist == 0) {
 			$("#optionBox").append(
 				'<div id="optionContainer"'+poSeq+'>' +
@@ -300,7 +299,16 @@ $(document).ready(function(){
 					<tr>
 						<td colspan="3">
 							<div class="row">
-								<div class="col-5"></div>
+								<div class="ml-3"></div>
+								<form action="${root }/product/list">
+					            	<input hidden="hidden" name="pageNum" value="${cri.pageNum }"/>
+					            	<input hidden="hidden" name="amount" value="${cri.amount }"/>
+					            	<input hidden="hidden" name="type" value="${cri.type }"/>
+						    		<input hidden="hidden" name="keyword" value="${cri.keyword }"/>      
+						    		<input hidden="hidden" name="array" value="${cri.array }"/>      
+									<button class="btn_add mx-4"> 목록으로</button>
+								</form>
+								<div class="col-2"></div>
 								<input class="total_price" value="0" name="order_totalprice" readonly/>
 								<button class="btn_add mx-2" type="button"> 장바구니</button>
 								<button id="order_btn" class="btn_add mx-2" type="button"> 구매</button>
