@@ -8,12 +8,19 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script>
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
 	$(document).ready(function() {
+		
+		var user_phone = $("#phoneNum").val();
+		
+		var phone = user_phone.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
+			$('#userPhone').text(phone);
 		
 		function dateString(date) {
 			var d = new Date(date);
@@ -152,6 +159,7 @@
 		<div class="container">
 			<section id="container">
 				<h3>회원 정보 보기</h3>
+				<input type="hidden" id="phoneNum" value="${read.user_phone }">
 				<table class="tableBWrite">
 					<tbody>
 						<tr>
@@ -172,7 +180,7 @@
 						</tr>
 						<tr>
 							<th>연락처</th>
-							<td>${read.user_phone }</td>
+							<td id="userPhone"></td>
 						</tr>
 						<tr>
 							<th>생년월일</th>

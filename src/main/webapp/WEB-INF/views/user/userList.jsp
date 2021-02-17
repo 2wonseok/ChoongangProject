@@ -8,12 +8,34 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script>
+	//var erer = ${list};
+	var arrNumber = new Array(); //배열선언
+	
+	arrNumber = ${list};
+	
+	for(var i = 0; i < arrNumber.length; i++){
+		alert(arrNumber.user_phone);
+	}
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
 $(document).ready(function(){
+	
+	var abcd = $("#userList").find("#phoneNum").text();
+	var efgh = abcd.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
+	
+	//alert(efgh);
+	$('#phoneNum').text(efgh);
+/* 	var sss = $("#userPhone").val();
+	
+	var ssss = sss.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
+		
+	$('#phoneNum').text(ssss); */
+	
 	var message = '${message}';
 	
 	checkModal(message);
@@ -248,7 +270,7 @@ function reload() {
 					<th>가입일</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="userList">
 				<c:forEach items="${list }" var="user">
 					<c:url value="/user/userRead" var="readLink">
 						<c:if test="${cri.type != null && cri.keyword != null }">
@@ -268,7 +290,7 @@ function reload() {
 							</a>
 						</td>
 						<td><c:out value="${user.user_name}"></c:out></td>
-						<td><c:out value="${user.user_phone}"></c:out></td>
+						<td id="phoneNum">${user.user_phone}</td><%-- <c:out value="${user.user_phone}"></c:out> --%>
 						<td>
 							<c:choose>
 								<c:when test="${user.user_grade == 0}">

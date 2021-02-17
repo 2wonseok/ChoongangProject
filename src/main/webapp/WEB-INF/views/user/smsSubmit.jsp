@@ -68,6 +68,13 @@ $(document).ready(function() {
     float: left;
     width:110px;
 }
+#top {
+	border: 1px solid #4a4a4a;
+	width:310px; 
+	margin-top:5px; 
+	border-radius:0.2em 
+}
+
 </style>
 <body>
 <u:mainNav/>
@@ -78,16 +85,16 @@ $(document).ready(function() {
 	<h3>문자 전송</h3>
 		받는 사람: 
 		<form action="${root }/user/smsSubmit" id="Submit" method="post">
-			<div style="border: 1px solid; width:310px; margin-top:5px; border-radius:0.2em">
+			<div id="top">
 				<c:forEach items="${user }" var="users">
 					<div>
-						<input type="text" name="user_name" value="${users.user_name }" readonly style="width:50px; border:0;"> :&nbsp;
+						<input type="text" name="user_name" value="${users.user_name }" readonly style="width:50px; border:0"> :&nbsp;
 						<input type="text" id="user_phone" name="user_phone" value="${users.user_phone }" readonly style="width:100px; border:0;">
 		 			</div>
 				</c:forEach>
 			</div>
-			<textarea style="border: 1px solid; width:310px; margin-top:5px; border-radius:0.2em;" id="smsContent" name="smsContent" rows="10" cols="40" placeholder="메세지를 입력하세요."></textarea><br>
-			<div id="test_cnt">(0 / 45)</div>
+			<textarea style="border: 1px solid; width:310px; margin-top:5px; border-radius:0.2em;" class="form-control" id="smsContent" name="smsContent" rows="10" cols="40" placeholder="메세지를 입력하세요."></textarea>
+			<div id="test_cnt">(0 / 1000)</div>
 			<button type="submit" id="smsSubmit">보내기</button>
 		</form>
 	</section>

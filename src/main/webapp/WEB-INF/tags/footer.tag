@@ -10,16 +10,16 @@
 #footdiv {
     width: 100%;
     margin: 0 auto;
-    padding: 0 30px 30px 30px;
+    padding: 0 30px 0 30px;
     text-align: center;
     color: gray;
     white-space: pre-line;
-    position:absolute;
+    /* position:absolute; */
   	bottom:0;
 }
 #foothr {
-    margin-top: 1rem;
-    margin-bottom: 80px;
+    margin-top: 0rem;
+    margin-bottom: -60px;
     border: 0;
     border-top: 1px solid rgba(0,0,0,.1);
 }

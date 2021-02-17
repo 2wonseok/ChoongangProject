@@ -28,6 +28,12 @@ var goPopup = function(){
 	}
 	
 $(document).ready(function() {
+	
+	var user_phone = $("#phoneNum").val();
+	
+	var phone = user_phone.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
+		$('#userPhone').text(phone);
+	
 	$("#remove_btn").click(function(e) {
 		e.preventDefault();
 		$("#myModal .modal-body p").html("삭제하시겠습니까?");
@@ -213,6 +219,7 @@ $(document).ready(function() {
 		<div class="container">
 			<section id="container">
 				<h3>회원 정보 수정</h3>
+				<input type="text" id="phoneNum" value="${read.user_phone }">
 				<form id="modify-form" action="${root}/user/userModify" method="post">
 				<input type="hidden" name="pageNum" value=${cri.pageNum }>
 				<input type="hidden" name="amount" value=${cri.amount }>
@@ -282,7 +289,7 @@ $(document).ready(function() {
 						</tr>
 						<tr>
 							<th>연락처</th>
-							<td>${read.user_phone }</td>
+							<td id="userPhone"></td>
 						</tr>
 						<tr>
 							<th>등급</th>
