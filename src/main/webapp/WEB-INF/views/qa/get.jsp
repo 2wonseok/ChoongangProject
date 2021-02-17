@@ -300,8 +300,7 @@ $(document).ready(function() {
 	 	<div class="form-group">
 	 		<strong><label for="input2">질문 종류</label></strong>
 	 		<input class="form-control" readonly value="${board.qa_category }">
-	 	</div>
-	 	
+	 	</div>	 	
 		 	 
 	 		 	 
 			<div class="form-group">

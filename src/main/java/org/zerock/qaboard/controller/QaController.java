@@ -224,16 +224,6 @@ public class QaController {
 			return null;
 		}
 	
-	@GetMapping({"/modify"})
-	public void get(@RequestParam("qa_seq") int qa_seq,
-			@ModelAttribute("criteria") Criteria cri, Model model,
-			HttpSession session, RedirectAttributes rttr) {
-				
-		QaVO vo = service.get(qa_seq);		
-		service.addCnt(qa_seq);
-		model.addAttribute("board", vo);	
-	}
-	
 	@GetMapping({"/read_error"})
 	public void read_error() {
 		
@@ -246,6 +236,19 @@ public class QaController {
 		service.remove(qa_seq);
 		
 		return "redirect:/qa/list";
+	}
+	
+	@GetMapping({"/modify"})
+	public void get(@RequestParam("qa_seq") int qa_seq,
+			@ModelAttribute("criteria") Criteria cri, Model model) {
+				
+		QaVO vo = service.get(qa_seq);		
+		model.addAttribute("board", vo);	
+		if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
+			@SuppressWarnings("unchecked")
+			List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
+			model.addAttribute("qafileNameList", fileNamesList);
+		}
 	}
 	
 	@PostMapping("/modify")
@@ -267,28 +270,16 @@ public class QaController {
 			errors.put("noContent", Boolean.TRUE);
 		}
 		
-		if(!errors.isEmpty()) {
-			rttr.addFlashAttribute("errors", errors);
-			rttr.addFlashAttribute("category", board.getQa_category());
-			rttr.addFlashAttribute("secret", board.getQa_secret());
-			rttr.addFlashAttribute("title",board.getQa_title());
-			rttr.addFlashAttribute("content", board.getQa_content());
-			rttr.addFlashAttribute("filename", board.getQa_filename());
-			
-			return "redirect:/qa/modify?qa_seq=" + board.getQa_seq(); 
-		}
-		
-		
 		// 파일이 업로드 될 경로 설정
-		String saveDir = request.getSession().getServletContext().getRealPath("/resources/modify/upload");
-
+		String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload");
 		// 위에서 설정한 경로의 폴더가 없을 경우 생성
 		System.out.println(saveDir);
 		File dir = new File(saveDir);
+
 		if (!dir.exists()) {
 			dir.mkdirs();
-		}
-		// 파일 업로드
+		} // 파일 업로드
+
 		List<String> reNames = new ArrayList<String>();
 		for (MultipartFile f : upload) {
 			if (!f.isEmpty()) {
@@ -316,21 +307,48 @@ public class QaController {
 			board.setQa_filename("");
 		}
 
-				
-		if(service.modify(board)) {
-			rttr.addFlashAttribute("resultModify", board.getQa_seq());		
-		}		
-		
-		log.info(cri);
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
+		if (!errors.isEmpty()) {
+			rttr.addFlashAttribute("errors", errors);
+			rttr.addFlashAttribute("board", board);
+
+			return "redirect:/qa/modify?rev_seq=" + board.getQa_seq();
+		}
+
+		// list를 string 쉼표구분으로 만들기
+		String filenames = String.join(",", reNames);
+		board.setQa_filename(filenames);
+		System.out.println(filenames);
+
+		if (reNames.size() == 0) { //
+			board.setQa_filename(request.getParameter("preFileNames"));
+		} else {
+			/* 변동있다면 이전그림지우기 */
+			String oldFileNames = request.getParameter("preFileNames");
+			@SuppressWarnings("unchecked")
+			List<String> fileNamesList = Arrays.asList(oldFileNames.split(","));
+			System.out.println(fileNamesList);
+
+			String saveDir2 = request.getSession().getServletContext().getRealPath("/resources/upload");
+
+			/* 그림파일삭제 */
+			for (String f : fileNamesList) {
+				if (!f.isEmpty()) {
+					File file = new File(saveDir2 + "/" + f);
+					file.delete();
+				}
+			}
+
+		}
+		rttr.addAttribute("pageNum", cri.getPageNum()); // request가 아니라 redirect해줬기때문에
+		rttr.addAttribute("amount", cri.getAmount());	// RedirectAttributes에 넣어줘야함
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
-		
+				
+		if (service.modify(board)) {
+			rttr.addFlashAttribute("result", "success");
+			rttr.addFlashAttribute("message", board.getQa_seq() + "번 글이 수정 됐습니다.");
+		}
+
 		return "redirect:/qa/list";
 	}
-	
-
-	
-
 }

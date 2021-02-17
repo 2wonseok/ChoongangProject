@@ -277,7 +277,7 @@ thead {
 		  		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>	
 		  	</c:url>
 		  			  	
-		   <a href="${prevLink }" id="btn_add">이전</a>
+		   <a href="${prevLink }" style="width:80px;">Prev</a>
 		  	</c:if>
 		  	
 		  	<c:forEach var="num" begin="${pageMaker.startPage }" 
@@ -301,7 +301,7 @@ thead {
 		  		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>	
 		  	</c:url>
 		    
-		    <a href="${nextLink }" id="btn_add">다음</a>
+		    <a href="${nextLink }" style="width:80px;">Next</a>
 		    </c:if>
 	</div>
 </div>
