@@ -21,7 +21,7 @@
 				<when test="type == 'S'.toString()">
 					UPPER(qa_category) LIKE UPPER('%'||#{keyword}||'%')
 				</when>
-
+			
 			</choose>
 		</foreach>
 	</where>

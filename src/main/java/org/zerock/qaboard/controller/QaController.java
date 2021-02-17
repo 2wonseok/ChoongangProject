@@ -208,7 +208,7 @@ public class QaController {
 				String userNickname = userVO.getUser_nickname();				
 				int userGrade = userVO.getUser_grade();				
 				System.out.println(vo.toString());
-
+				System.out.println("세션 곧 로그인은 되어있음");
 				if(userNickname.equals(vo.getQa_writer()) || userGrade == 0) {										
 					//	작성자와 세션에서 가져온 userNickname이 같은 경우
 					//	get 페이지로 이동
@@ -218,11 +218,12 @@ public class QaController {
 						@SuppressWarnings("unchecked")
 						List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
 						model.addAttribute("getQafileNameList", fileNamesList);
-					}
+					} 
 					return "/qa/get";
 
 				} else {
-					return "redirect:/qa/list";
+					//세션 곧 로그인은 되어있지만 일반 유저인경우 (자신의 글이 아닌경우 포함)
+					return "redirect:/qa/read_error";
 				}
 			}
 		}
