@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -385,4 +388,20 @@ public class UserController {
 		return "redirect:/user/userList";
 	}
 	
+	@GetMapping("/productList")
+	public void proList() {
+		
+	}
+	
+	@GetMapping(value = "/productList2", produces = MediaType.APPLICATION_JSON_UTF8_VALUE) 
+	public @ResponseBody List<ProductVO> pdList(HttpSession session, Criteria cri) {
+		List<ProductVO> list = new ArrayList<ProductVO>();
+		UserVO vo = (UserVO) session.getAttribute("authUser");
+		
+		if (vo != null) {
+			list = service.productList(vo.getUser_nickname(), cri);
+		}
+		
+		return list;
+	}
 }

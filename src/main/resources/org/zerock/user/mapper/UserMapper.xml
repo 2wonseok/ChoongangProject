@@ -122,6 +122,27 @@
 				rn BETWEEN (#{cri.pageNum} - 1) * #{cri.amount} + 1 AND #{cri.pageNum} * #{cri.amount}
 	</select>
 	
+	<select id="productList" resultType="org.zerock.product.domain.ProductVO">
+		SELECT
+    product_seq, product_name, product_price, product_quantity, product_seller, product_filename, 
+    product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate, 
+    user_nickname, product_like 
+   FROM
+    (
+     SELECT 
+      ROW_NUMBER() OVER (ORDER BY product_regdate DESC) rn, product_seq, product_name, product_price, product_quantity, product_seller, 
+      product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, 
+      product_updatedate, user_nickname, product_like
+   FROM
+      tbl_product
+      )
+   WHERE
+   		user_nickname = #{user_nickname}
+   AND	
+    	rn BETWEEN (#{cri.pageNum} - 1) * #{cri.amount} + 1 AND #{cri.pageNum} * #{cri.amount} 
+	
+	</select>
+	
 	<update id="gradeUpdate">
 		UPDATE tbl_user
 		SET

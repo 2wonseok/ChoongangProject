@@ -269,6 +269,9 @@ a {
 								<a href="#" data-log-actionid-area="header_util" data-log-actionid-label="coupon">나의 쿠폰</a>
 							</li>
 							<li>
+								<a href="${root }/user/productList" >판매 목록</a>
+							</li>
+							<li>
 								<a href="${root }/user/userOrderList" >주문/배송조회</a>
 							</li>
 							<li>
