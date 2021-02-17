@@ -32,36 +32,37 @@
    </select>
    
     <select id="getListWithPaging" resultType="org.zerock.freeboard.domain.FreeBoardVO">
-<![CDATA[   
    SELECT
     free_seq, free_title, free_content,free_nickname,
     free_writer, free_regdate, free_updatedate,free_readCnt,free_replyCnt
    FROM
     (
-     SELECT 
-      ROW_NUMBER() OVER (ORDER BY free_seq DESC) rn,
-      free_seq, free_title, free_content, free_writer,
-      free_nickname,
-      free_regdate, free_updatedate,free_readCnt,free_replyCnt
-     FROM
-      tbl_freeboard
-     WHERE FREE_NOTICE = 1
-]]>
-   
-   <include refid="freeboardcriteria"></include>
- 
-<![CDATA[
-    )
+	     SELECT 
+		      ROW_NUMBER() OVER (ORDER BY free_seq DESC) rn,
+		      free_seq, free_title, free_content, free_writer,
+		      free_nickname,
+		      free_regdate, free_updatedate,free_readCnt,free_replyCnt
+		     FROM tbl_freeboard
+		WHERE free_notice = 1
+		AND	#{type:VARCHAR} IS NULL 
+		OR (
+				(#{type:VARCHAR} = 'T' AND free_title LIKE '%' || #{keyword:VARCHAR} || '%') 
+			 OR (#{type:VARCHAR} = 'C' AND free_content LIKE '%' || #{keyword:VARCHAR} || '%') 
+			 OR (#{type:VARCHAR} = 'W' AND free_nickname LIKE '%' || #{keyword:VARCHAR} || '%')
+			 OR (#{type:VARCHAR} = 'TC' AND (free_title LIKE '%' || #{keyword:VARCHAR} || '%' OR free_content LIKE '%' || #{keyword:VARCHAR} || '%'))
+			 OR (#{type:VARCHAR} = 'TW' AND (free_title LIKE '%' || #{keyword:VARCHAR} || '%' OR free_nickname LIKE '%' || #{keyword:VARCHAR} || '%'))
+			 OR (#{type:VARCHAR} = 'TWC' AND (free_title LIKE '%' || #{keyword:VARCHAR} || '%' OR free_content LIKE '%' || #{keyword:VARCHAR} || '%' OR free_nickname LIKE '%' || #{keyword:VARCHAR} || '%'))			 			 
+		)
+	)
    WHERE
-    rn BETWEEN (#{pageNum} - 1) * #{amount} + 1 AND #{pageNum} * #{amount}
-]]>      
+    rn BETWEEN (#{pageNum} - 1) * #{amount} + 1 AND #{pageNum} * #{amount}    
    </select>
     
    
-   <!-- <insert id="insert">
+    <insert id="insert">
       INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer, free_nickname)
       VALUES (free_seq.nextval, #{free_title}, #{free_content}, #{free_writer}, #{free_nickname})
-   </insert> -->
+   </insert> 
    
    <insert id="insertSelectKey">
       <selectKey keyProperty="free_seq" order="BEFORE" resultType="int">
@@ -92,8 +93,16 @@
 	<select id="getTotalCount" resultType="int">
 		SELECT count(*) 
 		FROM tbl_freeboard
-		WHERE FREE_NOTICE = 1
-	<include refid="freeboardcriteria"></include>
+		WHERE free_notice = 1
+		AND	#{type:VARCHAR} IS NULL 
+		OR (
+				(#{type:VARCHAR} = 'T' AND free_title LIKE '%' || #{keyword:VARCHAR} || '%') 
+			 OR (#{type:VARCHAR} = 'C' AND free_content LIKE '%' || #{keyword:VARCHAR} || '%') 
+			 OR (#{type:VARCHAR} = 'W' AND free_nickname LIKE '%' || #{keyword:VARCHAR} || '%')
+			 OR (#{type:VARCHAR} = 'TC' AND (free_title LIKE '%' || #{keyword:VARCHAR} || '%' OR free_content LIKE '%' || #{keyword:VARCHAR} || '%'))
+			 OR (#{type:VARCHAR} = 'TW' AND (free_title LIKE '%' || #{keyword:VARCHAR} || '%' OR free_nickname LIKE '%' || #{keyword:VARCHAR} || '%'))
+			 OR (#{type:VARCHAR} = 'TWC' AND (free_title LIKE '%' || #{keyword:VARCHAR} || '%' OR free_content LIKE '%' || #{keyword:VARCHAR} || '%' OR free_nickname LIKE '%' || #{keyword:VARCHAR} || '%'))			 			 
+		)
 	</select> 
 	
    <!--댓글 조회수  -->
@@ -122,7 +131,10 @@
 				free_seq,
 				free_title,
 				free_content,
-				free_writer,
+				free_nickname,
+				free_regdate,
+				free_updatedate,
+				free_readCnt,
 				free_notice
 		FROM    
 				tbl_freeboard 

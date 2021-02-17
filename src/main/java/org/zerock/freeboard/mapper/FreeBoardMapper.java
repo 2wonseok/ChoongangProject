@@ -12,7 +12,7 @@ public interface FreeBoardMapper {
 	
 	public List<FreeBoardVO> getListWithPaging(FreeBoardCriteria cri);
 
-//	public void insert(FreeBoardVO freeboard);
+	public void insert(FreeBoardVO freeboard);
 	
 	public void insertSelectKey(FreeBoardVO freeboard);
 

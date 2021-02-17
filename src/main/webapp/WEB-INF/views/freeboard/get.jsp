@@ -119,6 +119,7 @@ var user_id = "${authUser.user_id}";
 			var reply_seq = $("#reply_seq-input2").val();
 			var reply_content = $("#reply_content-input2").val();
 			var data = {"reply_seq":reply_seq , "reply_content": reply_content};
+				//null처리 
 			replyService.update(data, function() {
 				alert("댓글을 수정하였습니다.");
 				$("#modify-reply-modal").modal('hide');
@@ -140,7 +141,6 @@ var user_id = "${authUser.user_id}";
 		showList();
 	});
 </script>
-
 <title>Insert title here</title>
 </head>
 <body>
@@ -216,7 +216,6 @@ var user_id = "${authUser.user_id}";
 			</div>
 		</div>
 	</div>
-
 	<%-- modal 새 댓글 form --%>
 	<div class="modal fade" id="new-reply-modal">
 		<div class="modal-dialog">
@@ -228,10 +227,10 @@ var user_id = "${authUser.user_id}";
 					</button>
 				</div>			
 				<div class="modal-body">
-					<div class="form-group">
+					 <div class="form-group">
 						<label for="reply_content-input" class="col-form-label"> 댓글 </label> <input
-							type="text" class="form-control" id="reply_content-input">
-					</div>
+								type="text" class="form-control" id="reply_content-input" maxlength="100">
+								</div>	
 					<div class="form-group">
 						<label for="reply_writer-input" class="col-form-label"> 작성자 </label> <input
 							type="text" class="form-control" value="${authUser.user_nickname}" readonly>
@@ -255,7 +254,7 @@ var user_id = "${authUser.user_id}";
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">수정 / 삭제</h5>
+					<h5 class="modal-title"></h5>
 					<button type="button" class="close" data-dismiss="modal">
 						<span>&times;</span>
 					</button>
@@ -263,8 +262,15 @@ var user_id = "${authUser.user_id}";
 				<div class="modal-body">
 					<input id="reply_seq-input2" type="hidden" />
 					<div class="form-group">
-						<label for="reply_content-input2" class="col-form-label"> 댓글 </label> <input
-							type="text" class="form-control" id="reply_content-input2">
+						<label for="reply_content-input2" class="col-form-label"> 댓글 </label>
+							<c:choose>
+								<c:when test="${authUser != null && authUser.user_id == freeVO.free_writer}">
+						 <input type="text" class="form-control" id="reply_content-input2">
+								</c:when>
+								<c:otherwise>
+						<input type="text" class="form-control" id="reply_content-input2" readonly>		
+								</c:otherwise>
+							</c:choose>
 					</div>
 					<div class="form-group">
 						<label for="reply_writer-input2" class="col-form-label"> 작성자 </label> <input
@@ -275,11 +281,6 @@ var user_id = "${authUser.user_id}";
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">닫기</button>
-					<%-- 	autyhUser <c:out value ="${authUser}"></c:out>
-						authUseruserid <c:out value="${authUser.user_id }"></c:out>
-						--%>
-							<%-- reply_writer <c:out value="${vo.reply_writer }"></c:out> --%>	
-						<%--reply_writer 값 받아와서 authUser.user_id와 비교해서 같으면 보여지게 --%>							
 					<button id="reply-modify-button" type="button"
 						class="btn btn-primary">수정</button>
 					<button id="reply-delete-button" type="button"
@@ -288,6 +289,7 @@ var user_id = "${authUser.user_id}";
 			</div>
 		</div>
 	</div>
+	 <%-- <u:footer/>  --%>
 </body>
 </html>
 
