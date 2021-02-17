@@ -130,8 +130,8 @@ thead {
 								<c:param name="keyword" value="${pageMaker.cri.keyword }" />
 								<c:param name="rev_title" value="${rev.rev_title }" />
 							</c:url>
-							<td><c:if test="${rev.rev_category eq 1}">모자</c:if><c:if test="${rev.rev_category eq 2}">신발</c:if><c:if test="${rev.rev_category eq 3}">상의</c:if><c:if test="${rev.rev_category eq 4}">하의</c:if></td>
-							<td><a href="${revLink }"> <c:out
+							<td><c:if test="${rev.rev_category eq 1}">모자</c:if><c:if test="${rev.rev_category eq 2}">신발</c:if><c:if test="${rev.rev_category eq 3}">상의</c:if><c:if test="${rev.rev_category eq 4}">하의</c:if><c:if test="${rev.rev_category eq 5}">전자 기기</c:if><c:if test="${rev.rev_category eq 6}">식품</c:if></td>
+							<td><a href="${revLink }" style="color: black;"> <c:out
 										value="${rev.rev_title}" />
 								<c:if test="${rev.rev_replyCnt gt 0 }"> <!-- gt는 > 이거랑같음 -->
 								<span class="badge bg-secondar"><i class="fas fa-comment-dots"></i>${rev.rev_replyCnt }</span>
@@ -150,7 +150,7 @@ thead {
 					</c:forEach>
 				</tbody>
 			</table>
-	<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar">
+	<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar ">
 				<select class="custom-select my-1 mr-sm-2" name="type" 
 					id="inlineFormCustomSelectPref">
 					<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' } >제목</option>
@@ -167,7 +167,7 @@ thead {
 					<input type="hidden"  name="amount" value="${pageMaker.cri.amount }"/>
 				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 			</form>
-			<div style="float: left;width: 46%;"></div>
+			<div style="float: left;width: 46%;" ></div>
 			<c:if test="${ sessionScope.authUser.user_id != null }">
 					<a id="btn_add" class="btn btn-info" href="${root }/rev/register">후기 쓰기</a>
 					</c:if>
@@ -180,29 +180,10 @@ thead {
 				</c:url>
 		</div>
 		
-		</section>
-	</div>
-	<div id="myModal" class="modal" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">알림</h5>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<p>성공적으로 처리 됐습니다!</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
-		<div class="container d-flex justify-content-center">
+		
+	
+	
+		<div class="container d-flex justify-content-center mt-5">
 			<div class="pagerWrap">
 					<c:if test="${pageMaker.prev }">
 						<c:url value="/rev/list" var="prevLink">
@@ -245,7 +226,28 @@ thead {
 					</c:if>
 		</div>
 	</div>
-	
+	</section>
+	</div>
 <u:footer/>
+<div id="myModal" class="modal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">알림</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>성공적으로 처리 됐습니다!</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

@@ -140,7 +140,7 @@ function showList() {
 						var replyLI = '<article data-reply_seq="' + list[i].reply_seq + '"><header style="z-index:5;line-height: 40px;">'
 						+  '<span class="guest">'
 						+ list[i].reply_writer
-						+  '</span><span class="bo_vc_hdinfo"><i class="far fa-clock" aria-hidden="true"></i><small class="text-secondary">'
+						+  '</span><span class="bo_vc_hdinfo"><i class="far fa-clock" aria-hidden="true"></i>&nbsp<small class="text-secondary">'
 						+ dateString(list[i].reply_regdateKST) + '</span></small></header><div class="cmt_contents" >'
 						+ list[i].reply_content
 						+ '<textarea style="display:none">' 
@@ -396,6 +396,14 @@ showList();
 			 //alert("로그인시 이용가능 합니다.");	 
 			}
 		 });
+		 $('#login_add2').click(function(){
+			var a = confirm("로그인시 이용가능합니다. 로그인 하시겠습니까?");
+			if (a == true) {
+				location = '${root}/user/login';
+			} else if (a == false) {
+			 //alert("로그인시 이용가능 합니다.");	 
+			}
+		 });
 	 });
 	 $(document).ready(function() {
 		 
@@ -430,19 +438,19 @@ showList();
         <h2>페이지 정보</h2>
         <span class="sound_only" >작성자</span><strong><span class="sv_member">${RevBoard.rev_writer }</span></strong>
         <span>&nbsp&nbsp&nbsp</span>
-        <span class="sound_only" >카테고리</span><strong><i class="fas fa-info-circle" aria-hidden="false"></i><c:if test="${RevBoard.rev_category eq 1}">모자</c:if><c:if test="${RevBoard.rev_category eq 2}">신발</c:if><c:if test="${RevBoard.rev_category eq 3}">상의</c:if><c:if test="${RevBoard.rev_category eq 4}">하의</c:if></strong>
+        <span class="sound_only" >카테고리</span><strong><i class="fas fa-info-circle" aria-hidden="false"></i>&nbsp&nbsp<c:if test="${RevBoard.rev_category eq 1}">모자</c:if><c:if test="${RevBoard.rev_category eq 2}">신발</c:if><c:if test="${RevBoard.rev_category eq 3}">상의</c:if><c:if test="${RevBoard.rev_category eq 4}">하의</c:if><c:if test="${RevBoard.rev_category eq 5}">전자 기기</c:if><c:if test="${RevBoard.rev_category eq 6}">식품</c:if></strong>
         <span>&nbsp&nbsp&nbsp</span>
-        <span class="sound_only">댓글</span><strong><i class="fas fa-comment-alt" aria-hidden="false"></i>${RevBoard.rev_replyCnt }</strong>
+        <span class="sound_only">댓글</span><strong><i class="fas fa-comment-alt" aria-hidden="false"></i>&nbsp&nbsp${RevBoard.rev_replyCnt }</strong>
         <span>&nbsp&nbsp&nbsp</span>
-        <span class="sound_only">조회</span><strong><i class="fa fa-eye" aria-hidden="true"></i>${RevBoard.rev_readCnt}</strong>
+        <span class="sound_only">조회</span><strong><i class="fa fa-eye" aria-hidden="true"></i>&nbsp&nbsp${RevBoard.rev_readCnt}</strong>
         <span>&nbsp&nbsp&nbsp</span>
         <c:if test="${RevBoard.rev_updatedate == null }">
         <!-- <strong class="if_date"><span class="sound_only">작성일</span> -->
-        <i class="far fa-calendar-alt"></i><small class="text-secondary"><fmt:formatDate value='${RevBoard.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/></small>
+        <i class="far fa-calendar-alt"></i>&nbsp&nbsp<small class="text-secondary"><fmt:formatDate value='${RevBoard.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/></small>
         <!-- </strong> -->
         </c:if>
         <c:if test="${RevBoard.rev_updatedate != null }">
-        <i class="far fa-calendar-alt"></i><small class="text-secondary"><fmt:formatDate value='${RevBoard.rev_updatedate}' pattern='yyyy년 MM월 dd일 h시 m분'/></small>
+        <i class="far fa-calendar-alt"></i>&nbsp&nbsp<small class="text-secondary"><fmt:formatDate value='${RevBoard.rev_updatedate}' pattern='yyyy년 MM월 dd일 h시 m분'/></small>
         </c:if>
     </section>
 
@@ -482,11 +490,12 @@ showList();
 				</c:url>
 		<div id="bo_v_share" >
 		<c:if test="${authUser != null }">
-		<button id="goodbtn" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-up" aria-hidden="false"></i>${RevBoard.rev_good }</button>
-		<button id="hatebtn" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-down" aria-hidden="false"></i>${RevBoard.rev_hate }</button>
+		<button id="goodbtn" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-up" aria-hidden="false"></i>&nbsp&nbsp${RevBoard.rev_good }</button>
+		<button id="hatebtn" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-down" aria-hidden="false"></i>&nbsp&nbsp${RevBoard.rev_hate }</button>
 		</c:if>
 		<c:if test="${authUser == null }">
-		<a id="login_add" class="btn btn_b03" style="border: 0;outline: 0;">좋아요,싫어요</a>
+		<a id="login_add" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-up" aria-hidden="false"></i></a>
+		<a id="login_add2" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-down" aria-hidden="false"></i></a>
 		</c:if>
 		<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
 		<a id="btn_add" class="btn btn_b03" style="border: 0;outline: 0;" href="${modifyLink }">글수정</a>

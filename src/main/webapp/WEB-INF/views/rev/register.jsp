@@ -58,11 +58,20 @@
   	bottom:0;
   	margin-bottom: -143px;
 }
+#container1 {
+	clear: both;
+	posistion: relative;
+	margin: 35px auto 0px;
+	padding: 0 0 50px 0;
+	width: 1200px;
+	z-index: 1;
+}
 </style>
 </head>
 <body>
 <u:mainNav></u:mainNav>
-	<div class="container mt-5">
+	<div class="container">
+	<section id="container1">
 	
 	<form action="${root }/rev/register" method="POST" enctype="multipart/form-data"style="width:100%">
     
@@ -83,6 +92,8 @@
 				<option value="2">신발</option>
 				<option value="3">상의</option>
 				<option value="4">하의</option>
+				<option value="5">전자 기기</option>
+				<option value="6">식품</option>
 			</select>
          </div>
         
@@ -179,7 +190,7 @@
 
     <div class="btn_confirm write_div">
         <input type="submit" value="작성완료" id="btn_submit" accesskey="s" class="btn_submit btn-secondary" style="border: thin;">
-        <footer>
+         <footer>
 			<div id="footdiv">
 			
 				<div class="container" style="margin-left:100px;">
@@ -187,9 +198,10 @@
 					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
 				</div>
 			</div>
-		</footer>
+		</footer> 
     </div>
     </form>
+</section>
 </div>
 
 </body>

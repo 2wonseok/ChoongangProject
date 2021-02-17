@@ -35,7 +35,7 @@
     text-align: center;
     color: gray;
     white-space: pre-line;
-    position: absolute; 
+   
   	bottom:0;
 }
 }
@@ -66,7 +66,6 @@
 			// #modify-form 의 action attr 값을 바꿔야함.
 	 		
 			$("#modify-form").attr("action", '${root }/rev/remove');
-			alert("삭제하라고");
 			$("#modify-form").submit();
 		});
 	}); 
@@ -77,8 +76,6 @@
 </head>
 <body>
 <u:mainNav></u:mainNav>
-				
-	
 	<div class="container mt-5">
 	<c:url value="${root }/rev/modify" var="modifyLink">
 					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
@@ -106,6 +103,8 @@
 				<option value="2">신발</option>
 				<option value="3">상의</option>
 				<option value="4">하의</option>
+				<option value="5">전자 기기</option>
+				<option value="6">식품</option>
 			</select>
          </div>
         
@@ -217,19 +216,19 @@
 					</c:if>
    					
 					
- 		<footer>
+ 		<!-- <footer>
 			<div id="footdiv">
 				<div class="container" style="margin-left:100px;">
 					사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
 					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
 				</div>
 			</div>
-		</footer>
+		</footer> -->
 		
    		
     </div>
     </form>
-    				
 </div>
+    <u:footer></u:footer>			
 </body>
 </html>
