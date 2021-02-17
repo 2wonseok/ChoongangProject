@@ -11,18 +11,19 @@
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #1e263c;
-    padding: 0px 50px;
-    margin: 0 0px;
-    line-height: 45px;
-    float: center;
+    background: #4a4a4a;
+    padding: 0px 30px;
+    margin: 0px;
+    line-height: 40px;
+    float: right;
+    width: 120px;
+	height : 40px;
+	border-radius: 3px;
+	text-align: center;
 }
-select {
-width: 170px;
-height : 30px;
-border: 1px solid #D3D3D3;
-border-radius: 0px;
-}
+
+
+
 </style>
 
 <meta charset="UTF-8">
@@ -45,10 +46,10 @@ border-radius: 0px;
 	<div class="row">
 		<div class="col-12 col-lg-6 offset-lg-3">
 			<form action="${root }/qa/register" method="post" enctype="multipart/form-data">
-				<input id="open" name="qa_secret" value="공개" type="radio" checked/> 
-					<label for="open">공개 (누구나 열람 가능)</label> <br>
-				<input id="close" name="qa_secret" value="비공개" type="radio"/>
-					<label for="close">비공개 (본인과 관리자만 열람 가능)</label>
+				<input class="btn-check" id="open" name="qa_secret" value="공개" type="radio" checked/> 
+					<label class="btn btn-secondary" for="open">공개</label>
+				<input class="btn-check" id="close" name="qa_secret" value="비공개" type="radio"/>
+					<label class="btn btn-secondary" for="close">비공개</label>
 	
 				<c:if test="${errors.noSecret }">
 					<small class="form-text text-danger">
@@ -56,9 +57,10 @@ border-radius: 0px;
 					</small>
 				</c:if>	
 	
-				<div class="form-group">
-					<select name="qa_category">
-						<option value="">질문 선택</option>
+				<div class="input-group mb-3">
+				<label class="input-group-text" for="select_category">질문 선택</label>
+					<select id="select_category" class="form-select" name="qa_category">
+						<option value="">질문 분류 선택</option>
 					    <option value="회원 ">회원</option>
 						<option value="게시판">게시판</option>
 						<option value="결제">결제</option>
@@ -73,12 +75,12 @@ border-radius: 0px;
 	
 				<c:if test="${errors.noCategory }">
 					<small class="form-text text-danger">
-						질문 종류를 선택 해주세요.
+						질문 분류를 선택 해주세요.
 					</small>
 				</c:if>	
 
 	
-				<input class="form-control" type="text" name="qa_title" value="${title }" placeholder="제목"/>	
+				<input maxlength="25" class="form-control" type="text" name="qa_title" value="${title }" placeholder="제목"/>	
 					<c:if test="${errors.noTitle }">
 						<small class="form-text text-danger">
 						제목을 입력 해주세요.
@@ -92,13 +94,14 @@ border-radius: 0px;
 							내용을 입력 해주세요.
 						</small>
 					</c:if>	 
-					<br>	
-	
+					<br>
+
 				<input type="hidden" type="text" name="qa_writer" value="${authUser.user_nickname }"/>	
 	
 				<!--이미지첨부시작  -->
-				<div class="input_wrap">
-					<input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*" value="${filename }"/>
+				<div class="input-group mb-3">
+					<label class="input-group-text" for="input_imgs">이미지</label>
+					<input class="form-control" type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*" value="${filename }"/>
 				</div>
 				
 				<!-- 파일 선택시 미리 보여짐 -->
@@ -106,48 +109,49 @@ border-radius: 0px;
 					<img id="img"/>
 				</div>
 
-				<script>
-					$("#input_imgs").on("change", handleImgFileSelect);
-			
-					//이미지셀렉트
-					function handleImgFileSelect(e) {
-					//이미지 정보를 초기화
-					$(".imgs_wrap").empty();
-			
-						var files = e.target.files;
-						var filesArr = Array.prototype.slice.call(files);
-			
-						filesArr.forEach(function(f) {
-							if (!f.type.match("image.*")) {
-			
-							var message = "그림파일형식만 허용됩니다";
-							function checkModal(message) {
-							if (message && history.state == null) {
-								$("#myModal .modal-body p").html(message)
-								$("#myModal").modal("show");
+					<script>
+						$("#input_imgs").on("change", handleImgFileSelect);
+				
+						//이미지셀렉트
+						function handleImgFileSelect(e) {
+						//이미지 정보를 초기화
+						$(".imgs_wrap").empty();
+				
+							var files = e.target.files;
+							var filesArr = Array.prototype.slice.call(files);
+				
+							filesArr.forEach(function(f) {
+								if (!f.type.match("image.*")) {
+				
+								var message = "그림파일형식만 허용됩니다";
+								function checkModal(message) {
+								if (message && history.state == null) {
+									$("#myModal .modal-body p").html(message)
+									$("#myModal").modal("show");
+									}
 								}
+								checkModal(message);
+				
+								return;
 							}
-							checkModal(message);
+				
+							var reader = new FileReader();
+							reader.onload = function(e) {
+				
+							var html = "<div><img width=\"200\" src=\""+e.target.result+"\"></div>";
+							$(".imgs_wrap").append(html);
+				
+									}
+									reader.readAsDataURL(f);
+								});
+							}
+					</script>
 			
-							return;
-						}
-			
-						var reader = new FileReader();
-						reader.onload = function(e) {
-			
-						var html = "<div><img width=\"200\" src=\""+e.target.result+"\"></div>";
-						$(".imgs_wrap").append(html);
-			
-								}
-								reader.readAsDataURL(f);
-							});
-						}
-				</script>
-		
-				<input type="submit" value="전송" id="btn_add">	
+				<input type="submit" value="글 등록" id="btn_add">	
 			</form> 
 		</div>
 	</div>
 </div>
+<u:footer/>
 </body>
 </html>

@@ -6,6 +6,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+#btn_add {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #4a4a4a;
+    padding: 0px 30px;
+    margin: 0px;
+    line-height: 40px;
+    float: right;
+    width: 120px;
+	height : 40px;
+	border-radius: 3px;
+	text-align: center;
+}
+</style>
 
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -18,12 +34,7 @@
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <style>
-select {
-width: 170px;
-height : 30px;
-border: 1px solid #D3D3D3;
-border-radius: 0px;
-}
+
 </style>
 
 <title>게시물 수정</title>
@@ -44,17 +55,17 @@ border-radius: 0px;
 				</div>
 				
 				<c:if test="${board.qa_secret == '공개' }">
-					<input id="open" name="qa_secret" value="공개" type="radio" checked/>
-						<label for="open">공개 (누구나 열람 가능)</label> <br>
-					<input id="close" name="qa_secret" value="비공개" type="radio"/>
-						<label for="close">비공개 (본인과 관리자만 열람 가능)</label>
+					<input class="btn-check" id="open" name="qa_secret" value="공개" type="radio" checked/>
+						<label class="btn btn-secondary" for="open">공개</label>
+					<input class="btn-check" id="close" name="qa_secret" value="비공개" type="radio"/>
+						<label class="btn btn-secondary" for="close">비공개</label>
 				</c:if>
 				
 				<c:if test="${board.qa_secret == '비공개' }">
 					<input id="open" name="qa_secret" value="공개" type="radio"/>
-						<label for="open">공개 (누구나 열람 가능)</label> <br>
+						<label class="btn btn-secondary" for="open">공개</label>
 					<input id="close" name="qa_secret" value="비공개" type="radio" checked/>
-						<label for="close">비공개 (본인과 관리자만 열람 가능)</label>
+						<label class="btn btn-secondary" for="close">비공개</label>
 				</c:if>
 				
 				<c:if test="${errors.noSecret }">
@@ -63,8 +74,9 @@ border-radius: 0px;
 					</small>
 				</c:if>	
 				
-				<div class="form-group">
-					<select name="qa_category">
+				<div class="input-group mb-3">
+				<label class="input-group-text" for="select_category">질문 선택</label>
+					<select id="select_category" class="form-select" name="qa_category">
 						<option value='<c:out value="${board.qa_category }" />'>${board.qa_category }</option>
 					    <option value="회원 ">회원</option>
 					    <option value="게시판">게시판</option>
@@ -83,15 +95,14 @@ border-radius: 0px;
 						질문 종류를 선택 해주세요.
 					</small>
 				</c:if>
-			
-			<br>
+
 					
 		    <label for="input1">제목</label>
 		    <input class="form-control" value='<c:out value="${board.qa_title }" />' name="qa_title" type="text" id="input1" placeholder="제목을 입력 하세요.">
 			
 			<c:if test="${errors.noTitle }">
 			<small class="form-text text-danger">
-			제목을 작성 해주세요.
+			제목이 비어있습니다. (기존 제목을 불러옵니다)
 			</small>
 			</c:if>
 		  	<br>
@@ -101,27 +112,22 @@ border-radius: 0px;
 		    
 		    <c:if test="${errors.noContent }">
 			<small class="form-text text-danger">
-			내용을 작성 해주세요.
+			내용이 비어있습니다. (기존 내용을 불러옵니다)
 			</small>
 			</c:if>
 		  	<br>		  	
 		  	
-		    <input readonly value='<c:out value="${board.qa_writer }" />' name="qa_writer" type="text" id="input2" placeholder="이름을 입력하세요">
-		    
-		    
-		    <br>		  
-		  	파일 이름 :
-		  	<!-- 게시글 등록시 저장된 파일네임 값 가져오기 -->
-		  	<input type="text" value="${board.qa_filename }" name ="preFileNames" > 
-		  	
-		  	
-		  	<div class="input_wrap">
-			<input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*" />
-			</div>
-	
-			<div class="imgs_wrap">
-				<img id="img" />
-			</div>
+		    <input type="text" value="${preFileNames }" name ="preFileNames" hidden="hidden">							
+							<div class = "input_wrap">
+								 <input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*"/>
+							</div>
+							<div class="imgs_wrap">
+								<c:forEach items="${qafileNameList }" var="qa_img">	
+									<div>
+										<img width="200" height="200" src="${root }/resources/qaboard/upload/${qa_img }"/>
+									</div>
+								</c:forEach>
+							</div>
 
 	<script>
 		$("#input_imgs").on("change", handleImgFileSelect);
@@ -152,7 +158,7 @@ border-radius: 0px;
 			var reader = new FileReader();
 			reader.onload = function(e) {
 
-			var html = "<div><img width=\"200\" src=\""+e.target.result+"\"></div>";
+			var html = "<div><img width=\"100\" src=\""+e.target.result+"\"></div>";
 			$(".imgs_wrap").append(html);
 
 					}
@@ -166,12 +172,13 @@ border-radius: 0px;
 	<input type="hidden" value="${criteria.type }" name="type">
 	<input type="hidden" value="${criteria.keyword }" name="keyword">
 			
-	<button type="submit">게시물 수정</button>
+	<button type="submit" id="btn_add">글 수정</button>
 		  	
 		  	
 		</form>
 	</div>
 	</div>
 </div>
+<u:footer/>
 </body>
 </html>
