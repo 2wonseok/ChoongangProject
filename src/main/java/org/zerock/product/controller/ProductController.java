@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.catalina.mapper.Mapper;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -222,7 +223,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/get")
-	public void get(@RequestParam("product_seq") int product_seq, @ModelAttribute("cri") Criteria cri, Model model) {
+	public void get(@RequestParam("product_seq") int product_seq, @ModelAttribute("cri") Criteria cri, Model model, HttpServletRequest request) {
 		ProductVO vo = service.getCountUp(product_seq);
 		model.addAttribute("product", vo);
 
@@ -236,6 +237,16 @@ public class ProductController {
 		List<String> fileNamesList = Arrays.asList(vo.getProduct_filename().split(","));
 		model.addAttribute("productImgList", fileNamesList);
 		
+		/* 하트 처음 상태를 위해 좋아요를 눌렀는지 확인=리턴이 1이상이면 이미 눌른놈임 */
+		int check = 0;
+		if (request.getSession().getAttribute("authUser") != null) {
+			UserVO userVO = (UserVO) request.getSession().getAttribute("authUser");
+			ProductLikeVO productLikeVO = new ProductLikeVO();
+			productLikeVO.setProduct_seq(product_seq);
+			productLikeVO.setUser_seq(userVO.getUser_seq());     
+			check = service.checkProductLike(productLikeVO);
+		}
+		model.addAttribute("produckLikeCheck", check);
 	}
 	
 	@GetMapping("/modify")
