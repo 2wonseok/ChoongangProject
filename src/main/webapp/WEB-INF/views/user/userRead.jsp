@@ -35,6 +35,10 @@
 			  return false;
 			}
 			
+			if(!confirm('변경하시겠습니까?'))	{
+				return false;
+			}
+			
 			$("#gradeUpdateFrom").attr("action", "${root }/user/gradeUpdate");
 			$("#gradeUpdateFrom").submit();
 			
@@ -217,7 +221,7 @@
 														<input type="checkbox" class="form-control" style="width:30px; height:20px; margin-top:5px;" id="user_grade" name="user_grade" value="0"/>
 													</c:otherwise>
 												</c:choose>
-												<input type="submit" onclick="if(!confirm('변경하시겠습니까?')){return false;}" value="적용" id="btn_manager">
+												<input type="submit" value="적용" id="btn_manager">
 											</c:if>
 										</div>
 									</form>
