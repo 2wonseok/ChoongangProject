@@ -9,6 +9,13 @@
 <meta charset="UTF-8">
 <link rel="stylesheet"
   href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/default.css?ver=1155">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/skin/board/qna/style.css?v2">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/board.common.css?ver=1155">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/js/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/mobile.css?ver=1155">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/contents.css?ver=1155">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/plugin/featherlight/featherlight.min.css?ver=1155">
 <script
   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -40,69 +47,80 @@
 			});
 </script>
 <title>구매후기 글등록</title>
+<style type="text/css">
+#footdiv {
+    width: 1000px;
+    padding: 0 30px 30px 30px;
+    text-align: center;
+    color: gray;
+    white-space: pre-line;
+    
+  	bottom:0;
+  	margin-bottom: -143px;
+}
+</style>
 </head>
 <body>
 <u:mainNav></u:mainNav>
-	<div class="container">
-	<form action="${root }/rev/register" method="POST" enctype="multipart/form-data">
+	<div class="container mt-5">
 	
-	<c:if test="${errors.noCategory }">
+	<form action="${root }/rev/register" method="POST" enctype="multipart/form-data"style="width:100%">
+    
+    <c:if test="${errors.noCategory }">
 	<small class="form-text text-muted">
 			카테고리를 입력하세요
 	</small>
 	</c:if>
-	카테고리 <%-- <input type="text" name="rev_category" class="form-group" value="${category }"/> --%> 
-	<select name="rev_category" >
-		<option value="">카테고리 선택</option>
-		<option value="1">모자</option>
-		<option value="2">신발</option>
-		<option value="3">상의</option>
-		<option value="4">하의</option>
-	</select>
+	<%-- <input type="text" name="rev_category" class="form-group" value="${category }"/> --%> 
 	
-	<br>
-	
-	<c:if test="${errors.noTitle }">
-	<small class="form-text text-muted">
-			제목을 입력하세요
-	</small>
-	</c:if>
-	제목 <input type="text" name="rev_title"  class="form-group" value="${title }"/> <br>
-	
-	<c:if test="${errors.noContent }">
-	<small class="form-text text-muted">
-			내용을 입력하세요
-	</small>
-	</c:if>
-	내용 <input type="text" name="rev_content" class="form-group" value="${content }" /> <br>
-	
-	
-	<input type="text" name="rev_writer" class="form-group" value="${authUser.user_id }" hidden/> <br>
-	<%-- 파일 <input type="file" name="rev_filename" class="form-group" value="${param.rev_filename }"/> <br> --%>
-	<!-- 파일 <input type="file" name="rev_filename" class="form-control" /> --> <br>
-	<%--  <form action="${$root }/file/fileUploadTest" method="post" enctype="multipart/form-data"> 
-	<label><input type="file" name="upload" /></label> 
-	
-	<input type="submit" value="업로드" /> 
-	</form>  --%>
-	 <%-- 파일 <input type="file" name="upload" class="form-group" value="${filename }"/>
-	<br> --%>
-	 <div class = "inputArea">
+	<div class="bo_w_tit write_div">
+        <label for="wr_subject" class="sound_only">카테고리<strong>필수</strong></label>
+        
+        <div id="autosave_wrapper write_div ">
+            <select name="rev_category" class="form-control frm_input full_input required">
+				<option value="">카테고리 선택</option>
+				<option value="1">모자</option>
+				<option value="2">신발</option>
+				<option value="3">상의</option>
+				<option value="4">하의</option>
+			</select>
+         </div>
+        
+    </div>
+    <div class="bo_w_tit write_div">
+        <label for="wr_subject" class="sound_only">제목<strong>필수</strong></label>
+        
+        <div id="autosave_wrapper write_div">
+            <input type="text" name="rev_title" value="${title }" maxlength="15" id="wr_subject" required="" class="frm_input full_input required" size="50"  placeholder="제목">
+                    </div>
+        
+    </div>
+
+    <div class="write_div" >
+        <label for="wr_content" class="sound_only">내용<strong>필수</strong></label>
+        <div class="wr_content ">
+                        <span class="sound_only">웹에디터 시작</span>
+<textarea id="wr_content" name="rev_content" class="frm_input full_input required" value="" maxlength="65536" style="width:100%;height:300px" placeholder="내용을 입력해 주세요."></textarea>
+<span class="sound_only">웹 에디터 끝</span>                    </div>
+        <input type="text" name="rev_writer" class="form-group" value="${authUser.user_id }" hidden/>
+    </div>
+
+	<div class="bo_w_info"><b>관련 파일</b></div>
+     <div class = "inputArea">
 	<label for="revImg"></label>
-	 <%-- <label><input type="file" id="revImg" name="upload" value="${RevVO.rev_filename }"/></label>  --%> 
 	 <div class="select_img"><img src="" /></div>
 	 
-	<script>
+	<!-- <script>
 	  $("#revImg").change(function(){
 	   if(this.files && this.files[0]) {
 	    var reader = new FileReader;
 	    reader.onload = function(data) {
-	     $(".select_img img").attr("src", data.target.result).width(500);        
+	     $(".select_img img").attr("src", data.target.result).width(50);        
 	    }
 	    reader.readAsDataURL(this.files[0]);
 	   }
 	  });
- </script>
+ </script> -->
  	<!--이미지첨부시작  -->
 							<div class = "input_wrap">
 								 <input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*"/>
@@ -142,7 +160,7 @@
 										var reader = new FileReader();
 										reader.onload = function(e){
 											
-											 var html = "<div><img width=\"500\" src=\""+e.target.result+"\"></div>";
+											 var html = "<div><img width=\"150\" src=\""+e.target.result+"\"></div>";
 											$(".imgs_wrap").append(html);
 										
 										}
@@ -152,9 +170,27 @@
 						 	</script>
 						<!--이미지첨부끝 -->
 	</div>
-	<input type="submit"  value="글 등록">
-	</form>
-	
+        
+                
+   
+
+        
+    
+
+    <div class="btn_confirm write_div">
+        <input type="submit" value="작성완료" id="btn_submit" accesskey="s" class="btn_submit btn-secondary" style="border: thin;">
+        <footer>
+			<div id="footdiv">
+			
+				<div class="container" style="margin-left:100px;">
+					사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
+					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
+				</div>
+			</div>
+		</footer>
+    </div>
+    </form>
 </div>
+
 </body>
 </html>

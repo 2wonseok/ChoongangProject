@@ -7,7 +7,7 @@
 <html>
 <head>
 <style type="text/css">
-	/* #btn_add {
+ #btn {
     color: #fff;
     font-size: 15px;
     border: none;
@@ -17,6 +17,7 @@
     line-height: 45px;
     float: right;
 }
+/*
 #goodbtn {
     color: #fff;
     font-size: 15px;
@@ -60,6 +61,17 @@ pre {
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
 	font-weight: bolder;
 	font-size: large;
+}
+
+#footdiv {
+    width: 1000px;
+    padding: 0 30px 30px 30px;
+    text-align: center;
+    color: gray;
+    white-space: pre-line;
+    position:absolute;
+  	bottom:0;
+  	margin-bottom: -143px;
 }
 
 </style>
@@ -122,18 +134,18 @@ function showList() {
 						
 						
 						replyUL.append(replyLI); 
-						
+						style="l"
 					}  */
 					  for (var i = 0; i < list.length; i++) {
-						var replyLI = '<article id="'+ list[i].reply_seq + '"><header style="z-index:5">'
+						var replyLI = '<article data-reply_seq="' + list[i].reply_seq + '"><header style="z-index:5;line-height: 40px;">'
 						+  '<span class="guest">'
 						+ list[i].reply_writer
-						+  '</span><span class="bo_vc_hdinfo"><i class="far fa-clock" aria-hidden="true"></i>'
-						+ dateString(list[i].reply_regdate) + '</span></header><div class="cmt_contents">'
+						+  '</span><span class="bo_vc_hdinfo"><i class="far fa-clock" aria-hidden="true"></i><small class="text-secondary">'
+						+ dateString(list[i].reply_regdateKST) + '</span></small></header><div class="cmt_contents" >'
 						+ list[i].reply_content
 						+ '<textarea style="display:none">' 
 						+  list[i].reply_content  
-						+ '</textarea></div><hr class="dashHr"></article>'
+						+ '</textarea></div></article>'
 						 
 						
 						replyUL.append(replyLI);
@@ -171,6 +183,7 @@ $("#reply-submit-button").click(function() {
 				 showList(); 
 				// location.reload(); 새로고침하는 자바스크립트 코드
 				alert("댓글 등록에 성공하였습니다.");
+				location.reload();
 	},
 			function() {
 				alert("댓글 등록에 실패하였습니다.");
@@ -192,7 +205,7 @@ $("#reply-submit-button").click(function() {
 //reply-ul 클릭 이벤트 처리
 
 
-$("#reply-ul").on("click", "#guest",  function() { // on메소드를 이용해서 reply-ul 안에있는 <li> 를 눌렀을때
+$("#bo_vc").on("click", "article",  function() { // on메소드를 이용해서 reply-ul 안에있는 <li> 를 눌렀을때
 	//console.log("reply ul clicked.....");	   // 일이 일어나도록함.
 	console.log($(this).attr("data-reply_seq"));		// 여기서의 this는 click이벤트를 당한 li를 뜻함.
 
@@ -415,15 +428,21 @@ showList();
 
     <section id="bo_v_info">
         <h2>페이지 정보</h2>
-        <span class="sound_only">작성자</span><strong><span class="sv_member">${RevBoard.rev_writer }</span></strong>
-        <span class="sound_only">카테고리</span><strong><i class="fas fa-info-circle" aria-hidden="false"></i><c:if test="${RevBoard.rev_category eq 1}">모자</c:if><c:if test="${RevBoard.rev_category eq 2}">신발</c:if><c:if test="${RevBoard.rev_category eq 3}">상의</c:if><c:if test="${RevBoard.rev_category eq 4}">하의</c:if></strong>
+        <span class="sound_only" >작성자</span><strong><span class="sv_member">${RevBoard.rev_writer }</span></strong>
+        <span>&nbsp&nbsp&nbsp</span>
+        <span class="sound_only" >카테고리</span><strong><i class="fas fa-info-circle" aria-hidden="false"></i><c:if test="${RevBoard.rev_category eq 1}">모자</c:if><c:if test="${RevBoard.rev_category eq 2}">신발</c:if><c:if test="${RevBoard.rev_category eq 3}">상의</c:if><c:if test="${RevBoard.rev_category eq 4}">하의</c:if></strong>
+        <span>&nbsp&nbsp&nbsp</span>
         <span class="sound_only">댓글</span><strong><i class="fas fa-comment-alt" aria-hidden="false"></i>${RevBoard.rev_replyCnt }</strong>
+        <span>&nbsp&nbsp&nbsp</span>
         <span class="sound_only">조회</span><strong><i class="fa fa-eye" aria-hidden="true"></i>${RevBoard.rev_readCnt}</strong>
+        <span>&nbsp&nbsp&nbsp</span>
         <c:if test="${RevBoard.rev_updatedate == null }">
-        <strong class="if_date"><span class="sound_only">작성일</span><i class="far fa-calendar-alt"></i><fmt:formatDate value='${RevBoard.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/></strong>
+        <!-- <strong class="if_date"><span class="sound_only">작성일</span> -->
+        <i class="far fa-calendar-alt"></i><small class="text-secondary"><fmt:formatDate value='${RevBoard.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/></small>
+        <!-- </strong> -->
         </c:if>
         <c:if test="${RevBoard.rev_updatedate != null }">
-        <strong class="if_date"><span class="sound_only">수정일</span><i class="far fa-calendar-alt"></i><fmt:formatDate value='${RevBoard.rev_updatedate}' pattern='yyyy년 MM월 dd일 h시 m분'/></strong>
+        <i class="far fa-calendar-alt"></i><small class="text-secondary"><fmt:formatDate value='${RevBoard.rev_updatedate}' pattern='yyyy년 MM월 dd일 h시 m분'/></small>
         </c:if>
     </section>
 
@@ -443,10 +462,10 @@ showList();
 						
 		</div>
         </c:if>
-        <hr class="dashHr">
+        <hr class="dashHr" style="border:none;">
         <pre>${RevBoard.rev_content }</pre>
         
-        <hr class="dashHr">
+        <hr class="one">
         <c:url value="${root }/rev/modify" var="modifyLink">
 					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
 					<c:param name="pageNum" value="${cri.pageNum }" />
@@ -463,16 +482,16 @@ showList();
 				</c:url>
 		<div id="bo_v_share" >
 		<c:if test="${authUser != null }">
-		<button id="goodbtn" class="btn btn_b03"><i class="fas fa-thumbs-up" aria-hidden="false"></i>${RevBoard.rev_good }</button>
-		<button id="hatebtn" class="btn btn_b03"><i class="fas fa-thumbs-down" aria-hidden="false"></i>${RevBoard.rev_hate }</button>
+		<button id="goodbtn" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-up" aria-hidden="false"></i>${RevBoard.rev_good }</button>
+		<button id="hatebtn" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-down" aria-hidden="false"></i>${RevBoard.rev_hate }</button>
 		</c:if>
 		<c:if test="${authUser == null }">
-		<a id="login_add" class="btn btn_b03">좋아요,싫어요</a>
+		<a id="login_add" class="btn btn_b03" style="border: 0;outline: 0;">좋아요,싫어요</a>
 		</c:if>
 		<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
-		<a id="btn_add" class="btn btn_b03"  href="${modifyLink }">글수정</a>
+		<a id="btn_add" class="btn btn_b03" style="border: 0;outline: 0;" href="${modifyLink }">글수정</a>
 		</c:if>
-		<a id="btn_add" class="btn btn_b03"  href="${listLink }">목록으로</a>
+		<a id="btn_add" class="btn btn_b03" style="border: 0;outline: 0;" href="${listLink }">목록으로</a>
        </div>
        </div>
                 <!-- } 본문 내용 끝 -->
@@ -593,33 +612,39 @@ showList();
 		
 	</div> --%>
 	<div class="container-sm mt-3">
+	<div class="row">
+			<div class="col-12 col-lg-8 offset-lg-3">
+			
 	<hr class="dashHr">
-<button type="button" class="cmt_btn"><i class="fa fa-commenting-o" aria-hidden="true"></i> 댓글목록 <i class="fa fa-chevron-up" aria-hidden="true"></i><i class="fa fa-chevron-down" aria-hidden="true"></i> </button>
+	<div style="float: left;width: 87%;" class="cmt_btn"><i class="fas fa-comment-alt" aria-hidden="false"></i> 댓글목록 <i class="fa fa-chevron-up" aria-hidden="true"></i><i class="fa fa-chevron-down" aria-hidden="true"></i> </div>
+	<div style="float: left;width: 13%;"><c:if test="${authUser != null }">
+						<button class="btn btn-secondary" id="new-reply-button">댓글 쓰기</button>
+						</c:if>
+						<c:if test="${authUser == null }">
+						<button class="btn btn-secondary" id="new-reply-button1">댓글 쓰기</button>
+						</c:if></div>
+	
+	<hr class="dashHr" style="border: none;">
 	<section id="bo_vc">
     <h2>댓글목록</h2>
     
-    <!-- <article id="c_32" >
-        <header style="z-index:2">
-            <h2>ㅛㅛ님의  댓글</h2>
-            <span class="guest">ㅛㅛ</span>                        <span class="sound_only">작성일</span>
-            <span class="bo_vc_hdinfo"><i class="fa fa-clock-o" aria-hidden="true"></i> <time datetime="2018-04-18T09:54:00+09:00">18-04-18 09:54</time></span>
-                    </header>
+    
 
-        댓글 출력
-        <div class="cmt_contents">
-            <p>
-                                222            </p>
-                    </div>
-        <span id="edit_32" class="bo_vc_w"></span>수정
-        <span id="reply_32" class="bo_vc_w"></span>답변
-
-        input type="hidden" value="" id="secret_comment_32">
-        <textarea id="save_comment_32" style="display:none">222</textarea> -->
-
-    </article>
+    
         
 </section>
+<footer>
+			<div id="footdiv">
+				<div class="container" style="margin-left:-141px;">
+					사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
+					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
+				</div>
+			</div>
+		</footer>
 </div>
+</div>
+</div>
+
 	<%-- <div class="container-sm mt-3">
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
