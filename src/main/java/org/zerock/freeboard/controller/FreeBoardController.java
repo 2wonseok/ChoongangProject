@@ -1,6 +1,7 @@
 package org.zerock.freeboard.controller;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ public class FreeBoardController {
 	@GetMapping("/list")
 	public void list(@ModelAttribute("cri") FreeBoardCriteria cri, Model model,HttpServletRequest request) {
 		// DB에서 list를 받아온다
-		List<FreeBoardVO> totalList = new ArrayList<>();
+		List<FreeBoardVO> totalList = new ArrayList<FreeBoardVO>();
 		totalList.addAll(service.getNoticeList(cri));
 		totalList.addAll(service.getList(cri));
 		int total = service.getTotal(cri);
