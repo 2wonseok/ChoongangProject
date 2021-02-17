@@ -10,11 +10,9 @@ public interface FreeBoardMapper {
 
 	public int getTotalCount(FreeBoardCriteria cri);
 	
-//	public List<FreeBoardVO> getList();
-
 	public List<FreeBoardVO> getListWithPaging(FreeBoardCriteria cri);
 
-	public void insert(FreeBoardVO freeboard);
+//	public void insert(FreeBoardVO freeboard);
 	
 	public void insertSelectKey(FreeBoardVO freeboard);
 
@@ -29,5 +27,8 @@ public interface FreeBoardMapper {
 	public int readCnt(int free_seq);
 	
 	public void addCnt(int free_seq);
+	
+	public void noticeRegister(FreeBoardVO freeboard);
 
+	public List<FreeBoardVO> readNotice(FreeBoardCriteria cri);
 }

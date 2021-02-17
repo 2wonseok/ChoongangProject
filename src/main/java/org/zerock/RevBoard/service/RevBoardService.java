@@ -40,8 +40,14 @@ public interface RevBoardService {
 	// 좋아요 증가
 	public int addGood(int rev_seq);
 	
+	// 좋아요 취소
+	public int goodCancel(int rev_seq);
+	
 	// 싫어요 증가
 	public int addHate(int rev_seq);
+	
+	// 싫어요 취소
+	public int hateCancel(int rev_seq);
 	
 	// 이용자가 후기게시판에 글을 몇개썻는지 
 	public int boardSelect(String rev_writer);
@@ -50,19 +56,19 @@ public interface RevBoardService {
 	public void pointUpdate(String user_id);
 	
 	// 좋아요시 like_check 컬럼에 +1 을 해서 이미 좋아요를 했다고 표시
-	public void goodCheck(int user_seq, int rev_seq );
+	public void goodCheck(@Param("user_seq")int user_seq, @Param("rev_seq")int rev_seq );
 	
 	// 좋아요 체크행을 읽어옴 ( 중복 방지 )
-	public int checkread(int user_seq, int rev_seq);
+	public int checkread(@Param("user_seq")int user_seq, @Param("rev_seq")int rev_seq);
 	
 	// 좋아요 체크 행 생성 (중복 체크 )
 	public void insertCheck(GoodCheck goodCheck);
 	
 	// 싫어요 시 그 글의 hate_check행에 +1 을해서 이미 싫어요를 했다고 체크
-	public void hateCheck(int user_seq,@Param("rev_seq") int rev_seq );
+	public void hateCheck(@Param("user_seq")int user_seq,@Param("rev_seq") int rev_seq );
 	
 	// 싫어요 체크 행 읽어옴 ( 중복 방지 )
-	public int hatecheckread (int user_seq,@Param("rev_seq") int rev_seq);
+	public int hatecheckread (@Param("user_seq")int user_seq,@Param("rev_seq") int rev_seq);
 	
 	// 싫어요 체크 행 생성 (싫어요 중복 체크 )
 	public void hateinsertCheck(HateCheck hateCheck);
@@ -72,4 +78,10 @@ public interface RevBoardService {
 	
 	// 글 삭제시 함께 삭제하기위함 ( 글만 삭제시에 부모 컬럼이 걸림)
 	public int hateCheckremove(int rev_seq);
+	
+	// 좋아요 취소시 행삭제 
+	public void goodCheck_cancel(@Param("user_seq")int user_seq,@Param("rev_seq") int rev_seq ); 
+	
+	// 싫어요 취소시 행삭제 
+	public void hateCheck_cancel(@Param("user_seq")int user_seq,@Param("rev_seq") int rev_seq );
 }

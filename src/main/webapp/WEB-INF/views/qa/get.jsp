@@ -22,7 +22,7 @@ var grade = '${authUser.user_grade}';
   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js "></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script src="${root }/resources/js/qa_reply.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <style>
@@ -300,8 +300,7 @@ $(document).ready(function() {
 	 	<div class="form-group">
 	 		<strong><label for="input2">질문 종류</label></strong>
 	 		<input class="form-control" readonly value="${board.qa_category }">
-	 	</div>
-	 	
+	 	</div>	 	
 		 	 
 	 		 	 
 			<div class="form-group">
@@ -312,9 +311,7 @@ $(document).ready(function() {
 		  	
 		  	<div class="form-group">
 		    <strong><label for="input6">내용</label></strong>
-		    <textarea readonly class="form-control" id="textarea1" rows="3">
-		    	<c:out value="${board.qa_content }" />
-		    </textarea>
+		    <textarea readonly class="form-control" id="textarea1" rows="3"><c:out value="${board.qa_content }" /></textarea>
 		  	</div>	
 		  		  	
 		  	<strong><label for="input6">이미지</label> <br></strong>	  	
@@ -348,18 +345,9 @@ $(document).ready(function() {
 		    <input readonly value='<c:out value="${board.qa_readcnt }" />' type="text" class="form-control" id="input7">
 		  	</div>
 		  	
-	  	
 
-		  <%-- 	
-		  	<c:url value="/board/modify" var="modifyLink">
-		  		<c:param name="qa_seq" value="${board.qa_seq }" />
-		  		<c:param name="pageNum" value="${criteria.pageNum }" />
-		  		<c:param name="amount" value="${criteria.amount }" />
-		  		<c:param name="type" value="${criteria.type }" />
-		  		<c:param name="keyword" value="${criteria.keyword }" />
-		  	</c:url>
-		  	<a href="${modifyLink }" class="btn btn-secondary">수정 , 삭제</a>
- --%>
+ 
+ 			<a href="${root }/qa/list" id="btn_add">목록 보기</a> 
  			<!-- 보드 작성자 이름과 로그인 아이디가 같고, 등급이 1인 경우(일반)에만 활성화  -->
 			<c:if test="${board.qa_writer == authUser.user_nickname && authUser.user_grade == 1 }">
 				<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
@@ -367,11 +355,11 @@ $(document).ready(function() {
 			</c:if>
 			<!-- 등급이 0 , 곧 관리자 일경우만 모든 게시물 삭제 가능 하도록 활성화 -->
 			<c:if test="${authUser.user_grade == 0 }">
-					<a href="${root }/qa/remove?qa_seq=${board.qa_seq }" id="btn_add">삭제</a>
+				<a href="${root }/qa/remove?qa_seq=${board.qa_seq }" id="btn_add">삭제</a>
 			</c:if>		
 		  	<!-- 관리자이면서 자신의 글일 경우  -->
 		  	<c:if test="${authUser.user_grade == 0 && board.qa_writer == authUser.user_nickname }">
-					<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
+				<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
 			</c:if>
 			<br><br>
 			
@@ -388,10 +376,6 @@ $(document).ready(function() {
 <c:if test="${empty authUser.user_nickname}">
 	로그인시 댓글 작성 가능. (로그인 마크)
 </c:if>
-
-
-
-
 
 <c:if test="${not empty authUser.user_nickname}">
 <label for="reply-input">댓글</label>

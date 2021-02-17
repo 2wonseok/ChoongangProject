@@ -39,6 +39,10 @@ public class QaServiceImpl implements QaService {
 	public QaVO get(int seq) {
 		return mapper.read(seq);
 	}
+	@Override
+	public QaVO get_secret(int seq) {
+		return mapper.read_secret(seq);
+	}
 	
 	@Override
 	public boolean remove(int seq) {
@@ -66,4 +70,5 @@ public class QaServiceImpl implements QaService {
 	public int readCnt(int qa_seq) {
 		return mapper.readCnt(qa_seq);
 	}
+	
 }

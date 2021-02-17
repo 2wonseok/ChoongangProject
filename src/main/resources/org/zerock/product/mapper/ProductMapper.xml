@@ -5,12 +5,36 @@
 
 <mapper namespace="org.zerock.product.mapper.ProductMapper">
 
-	<insert id="insert">
-		insert into tbl_product (product_seq, product_name, product_price,
-		product_quantity, product_seller, product_filename, product_info, category_seq, user_nickname)
-		values (product_seq.nextval, #{product_name}, #{product_price},
-		#{product_quantity}, #{product_seller}, #{product_filename},
-		#{product_info}, #{category_seq}, #{user_nickname})
+	<update id="updateProductLike">
+		UPDATE tbl_product SET product_like = #{product_like} WHERE product_seq = #{product_seq}
+	</update>
+
+	<insert id="insertProductLike">
+		insert into tbl_productlike (product_seq, user_seq) 
+		VALUES
+		(#{product_seq}, #{user_seq})
+	</insert>
+	
+	<select id="countUserSeqByProductSeq" resultType="int">
+		SELECT count(user_seq) FROM tbl_productlike WHERE product_seq = #{product_seq}
+	</select>
+	
+	<select id="checkProductLike" resultType="int">
+		SELECT count(*) FROM tbl_productlike WHERE product_seq = #{product_seq} AND user_seq = #{user_seq}
+	</select>
+	
+	<delete id="deleteProductLike">
+		delete from tbl_productlike where product_seq = #{product_seq} AND user_seq = #{user_seq}
+	</delete>
+	
+
+	<insert id="insertOrder">
+		insert into tbl_order (order_seq, order_productseq, order_poseq,
+		order_poname, order_poprice, order_quantity, order_userseq, order_username, order_useraddress, order_userphone, order_filename)
+		values 
+		(order_seq.nextval, #{order_productseq}, #{order_poseq},
+		#{order_poname}, #{order_poprice}, #{order_quantity},
+		#{order_userseq}, #{order_username}, #{order_useraddress}, #{order_userphone}, #{order_filename})
 	</insert>
 
 	<insert id="insertProductOption" >
@@ -21,6 +45,14 @@
 		 ,#{po_name}
 		 ,#{po_quantity}
 		 ,#{po_price})
+	</insert>
+	
+	<insert id="insert">
+		insert into tbl_product (product_seq, product_name, product_price,
+		product_quantity, product_seller, product_filename, product_info, category_seq, user_nickname)
+		values (product_seq.nextval, #{product_name}, #{product_price},
+		#{product_quantity}, #{product_seller}, #{product_filename},
+		#{product_info}, #{category_seq}, #{user_nickname})
 	</insert>
 	
 	<select id="getProductOptionList" resultType="org.zerock.product.domain.ProductOptionVO">
@@ -43,14 +75,14 @@
 		<where>
 			<foreach item="type" collection="typeArr" separator="OR">
 				<choose>
-					<when test="type == 'N'.toString()">
+					<when test="type == 'T'.toString()">
 						product_name LIKE '%' || #{keyword} || '%'
 					</when>
-					<when test="type == 'I'.toString()">
+					<when test="type == 'C'.toString()">
 						product_info LIKE '%' || #{keyword} || '%'
 					</when>
-					<when test="type == 'S'.toString()">
-						product_seller LIKE '%' || #{keyword} || '%'
+					<when test="type == 'W'.toString()">
+						user_nickname LIKE '%' || #{keyword} || '%'
 					</when>
 				</choose>
 			</foreach>
@@ -64,13 +96,38 @@
 		resultType="org.zerock.product.domain.ProductVO">
 <![CDATA[   
    SELECT
-    product_seq, product_name, product_price, product_quantity,
-    product_seller, product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate, user_nickname 
+    product_seq, product_name, product_price, product_quantity, product_seller, product_filename, 
+    product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate, 
+    user_nickname, product_like 
    FROM
     (
      SELECT 
-      ROW_NUMBER() OVER (ORDER BY product_seq DESC) rn, product_seq, product_name, product_price, product_quantity,
-    product_seller, product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, product_updatedate, user_nickname 
+      ROW_NUMBER() OVER ( ORDER BY 
+ ]]>  
+			<choose>
+				<when test="array == 'latest'">
+					product_seq DESC
+				</when>
+				<when test="array == 'like'">
+					product_like DESC
+				</when>
+				<when test="array == 'priceHign'">
+					product_price DESC
+				</when>
+				<when test="array == 'priceLow'">
+					product_price
+				</when>
+				<when test="array == 'readcnt'">
+					product_readcnt DESC
+				</when>
+				<otherwise>
+					product_seq DESC
+				</otherwise>
+			</choose>
+ <![CDATA[
+      ) rn, product_seq, product_name, product_price, product_quantity, product_seller, 
+      product_filename, product_info, category_seq, product_readcnt, product_status, product_regdate, 
+      product_updatedate, user_nickname, product_like
    FROM
       tbl_product
 ]]>

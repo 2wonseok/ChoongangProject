@@ -11,7 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
 $(document).ready(function(){
 	
@@ -22,7 +22,6 @@ $(document).ready(function(){
 			$("input[type=checkbox]").prop("checked", false);
 		}
 	});	
-	
 	
 });
 </script>
@@ -66,17 +65,19 @@ p {
 						</tr>
 					</thead>
 					<tbody>
+					<c:forEach items="${cartList }" var="cart">
 						<tr>
 							<td><p><input type="checkbox" id="seq" name="seq" value="" /></p></td>
 							<td>
-								<img alt="상품사진" src="${root }/resources/logo/BCDLogo3.png">
-								<a href="#" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
-									<c:out value="에어팟 케이스"></c:out>
+								<img alt="상품사진" src="${root }/resources/upload/${cart.order_filename}">
+								<a href="${root}/product/get?product_seq=${cart.order_productseq}" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
+									<c:out value="${cart.order_poname }"></c:out>
 								</a>
 							</td>
-							<td><p><c:out value="2,000,000원"></c:out></p></td>
-							<td><p><c:out value="1,000,000원"></c:out></p></td>
+							<td><p><fmt:formatNumber value='${cart.order_poprice }' type="number"></fmt:formatNumber>원</p></td>
+							<td><p><c:out value="500,000원"></c:out></p></td>
 						</tr>
+					</c:forEach>
 					</tbody>
 				</table>
 			</section>
@@ -85,9 +86,10 @@ p {
 	<c:otherwise>
 		<script>
 			alert('로그인 사용자만 이용 가능합니다.');
-			location.href="${root}/main/index";
+			location.href="${root}/main/mainPage";
 		</script>
 	</c:otherwise>
 </c:choose>	
+<u:footer/>
 </body>
 </html>

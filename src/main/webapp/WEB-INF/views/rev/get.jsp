@@ -7,12 +7,12 @@
 <html>
 <head>
 <style type="text/css">
-	#btn_add {
+	/* #btn_add {
     color: #fff;
     font-size: 15px;
     border: none;
     background: #1e263c;
-    padding: 0px 50px;
+    padding: 0px 40px;
     margin: 0 0px;
     line-height: 45px;
     float: right;
@@ -22,7 +22,7 @@
     font-size: 15px;
     border: none;
     background: #1e263c;
-    padding: 0px 50px;
+    padding: 0px 40px;
     margin: 0 0px;
     line-height: 45px;
     float: right;
@@ -32,7 +32,7 @@
     font-size: 15px;
     border: none;
     background: #1e263c;
-    padding: 0px 50px;
+    padding: 0px 40px;
     margin: 0 0px;
     line-height: 45px;
     float: right;
@@ -46,7 +46,22 @@
     margin: 0 0px;
     line-height: 45px;
     float: right;
+} */
+pre {
+    width:100%;
+    overflow:hidden;
+    word-break:break-all;
+    word-break:break-word;
+    line-height:30px;
+    white-space: pre-wrap;       /* CSS 3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	font-weight: bolder;
+	font-size: large;
 }
+
 </style>
 <script>
 	var appRoot = '${root}'; // 자바스크립트 코드에서 contextPath를 쓰기위해 선언.
@@ -55,6 +70,10 @@
 	var user_seq = '${authUser.user_seq}';
 </script>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes">
+<meta name="HandheldFriendly" content="true">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="format-detection" content="telephone=no">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script
@@ -63,10 +82,19 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
 
 <script src="${root }/resources/rev_js/rev.js"></script>
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/default.css?ver=1432">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/skin/board/basic/style.css?v2">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/board.common.css?ver=1432">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/js/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/mobile.css?ver=1432">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/contents.css?ver=1432">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/plugin/featherlight/featherlight.min.css?ver=1432">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
+
 
 //새 댓글 버튼 클릭 이벤트 처리
 $(document).ready(function() {
@@ -82,20 +110,35 @@ function showList() {
 			replyService.getList(rev_seq, function(list) {
 				// console.log(list);	
 				
-				var replyUL = $("#reply-ul")
+				/* var replyUL = $("#reply-ul") */
+				var replyUL = $("#bo_vc");
 				replyUL.empty(); // append로 계속 있어도 리스트를 넣어주니까 한번비워주는 코드
-				for (var i = 0; i < list.length; i++) {
+				/* for (var i = 0; i < list.length; i++) {
 					var replyLI = '<li class="media" data-reply_seq="'
 						+ list[i].reply_seq + '"><div class="media-body"><h5>'
 						+ list[i].reply_writer + '<small class= "float-right">'
 						+ dateString(list[i].reply_regdate) + "</small></h5>"
-						+ list[i].reply_content + "<hr></div></li>";
+						+ list[i].reply_content + "<hr class='dashHr'></div></li>";
 						
-						console.log('******' + list[i].reply_seq);
+						
+						replyUL.append(replyLI); 
+						
+					}  */
+					  for (var i = 0; i < list.length; i++) {
+						var replyLI = '<article id="'+ list[i].reply_seq + '"><header style="z-index:5">'
+						+  '<span class="guest">'
+						+ list[i].reply_writer
+						+  '</span><span class="bo_vc_hdinfo"><i class="far fa-clock" aria-hidden="true"></i>'
+						+ dateString(list[i].reply_regdate) + '</span></header><div class="cmt_contents">'
+						+ list[i].reply_content
+						+ '<textarea style="display:none">' 
+						+  list[i].reply_content  
+						+ '</textarea></div><hr class="dashHr"></article>'
+						 
 						
 						replyUL.append(replyLI);
+					  }
 						
-					}
 				}),
 			function(err) {
 			};
@@ -149,7 +192,7 @@ $("#reply-submit-button").click(function() {
 //reply-ul 클릭 이벤트 처리
 
 
-$("#reply-ul").on("click", "li",  function() { // on메소드를 이용해서 reply-ul 안에있는 <li> 를 눌렀을때
+$("#reply-ul").on("click", "#guest",  function() { // on메소드를 이용해서 reply-ul 안에있는 <li> 를 눌렀을때
 	//console.log("reply ul clicked.....");	   // 일이 일어나도록함.
 	console.log($(this).attr("data-reply_seq"));		// 여기서의 this는 click이벤트를 당한 li를 뜻함.
 
@@ -268,19 +311,40 @@ showList();
 			  method: "get",
 		      url: "/rev/like", 
 		      dataType: "json",
-		      data: {rev_seq: rev_seq, user_seq: user_seq}, 
-		      success: function(data){		    	  
-		          alert(data);
-		          if (data == 0) {
-		        	  alert("좋아요를 누르셨습니다!"); 
-		          }
-		      }, error:function(error){
-		    	  alert("좋아요를 이미 누르셨습니다!");
-			     }
+		      data: {rev_seq: rev_seq, user_seq: user_seq},
+		 	  success: function(res) {
+		 		 console.log(res);
+		 		  if (res == 0) {
+		 			  /* alert("좋아요를 누르셨습니다."); */
+			 		  alert("좋아요를 누르셨습니다.");
+			 		  location.reload(); 
+		 		  } else if (res == 1) {
+		 			 alert("좋아요를 취소하셨습니다.");
+		 			location.reload();
+		 			
+		 		  }
+		 	  }, error: function(error) {
+		 		  alert("실패");
+		 		  /* alert("좋아요를 이미 누르셨습니다."); */
+		 	  }
 		  });
-		  
-		});		
+		    /* .done(function(data) {	
+		    	  alert("성공");
+		          
+		          	if (data == 0) {
+		        	  alert("좋아요를 누르셨습니다!");
+		          	} else if (data == 1) {
+		          		alert("좋아요를 취소하셨습니다.");
+		          	} 
+		          })
+		       .fail(function(xhr, status, er){
+		    	  alert(rev_seq);
+		    	  alert(user_seq);
+		    	  console.log(xhr);
+		    	  alert("좋아요를 이미 누르셨습니다!");
+			     }) */
 	}); 
+	 });
 
 	 $(document).ready(function() {
 			
@@ -291,16 +355,20 @@ showList();
 				      url: "/rev/hate",
 				      dataType: "json",
 				      data: {rev_seq: rev_seq, user_seq: user_seq}, 
-				      success: function(data){	
-				    	  alert(rev_seq);
-				    	  alert(user_seq);
-				          if (data == 0) {
+				      success: function(res){	
+				    	  
+				          if (res == 0) {
 				        	  alert("싫어요를 누르셨습니다");
+				        	  location.reload();
+				          } else if (res == 1) {
+				        	  alert("싫어요를 취소하셨습니다");
+				        	  location.reload();
 				          }
 				      },
 				      error:function(error){
-				    	  alert("이미 싫어요를 누르셨습니다.");
+				    	  alert("실패");
 				      }
+				      
 				  });
 				});		
 			});
@@ -332,8 +400,100 @@ showList();
 </head>
 <body>
 <u:mainNav></u:mainNav>
+	
+	<div class="container-md">
+		<div class="row">
+			<div class="col-12 col-lg-8 offset-lg-3">
+	
+	<article id="bo_v" style="width:100%">
+    <header>
+        <h4 id="bo_v_title">
+                        <span class="bo_v_tit">
+            ${RevBoard.rev_title }</span>
+        </h4>
+    </header>
 
-	<div class="container-sm">
+    <section id="bo_v_info">
+        <h2>페이지 정보</h2>
+        <span class="sound_only">작성자</span><strong><span class="sv_member">${RevBoard.rev_writer }</span></strong>
+        <span class="sound_only">카테고리</span><strong><i class="fas fa-info-circle" aria-hidden="false"></i><c:if test="${RevBoard.rev_category eq 1}">모자</c:if><c:if test="${RevBoard.rev_category eq 2}">신발</c:if><c:if test="${RevBoard.rev_category eq 3}">상의</c:if><c:if test="${RevBoard.rev_category eq 4}">하의</c:if></strong>
+        <span class="sound_only">댓글</span><strong><i class="fas fa-comment-alt" aria-hidden="false"></i>${RevBoard.rev_replyCnt }</strong>
+        <span class="sound_only">조회</span><strong><i class="fa fa-eye" aria-hidden="true"></i>${RevBoard.rev_readCnt}</strong>
+        <c:if test="${RevBoard.rev_updatedate == null }">
+        <strong class="if_date"><span class="sound_only">작성일</span><i class="far fa-calendar-alt"></i><fmt:formatDate value='${RevBoard.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/></strong>
+        </c:if>
+        <c:if test="${RevBoard.rev_updatedate != null }">
+        <strong class="if_date"><span class="sound_only">수정일</span><i class="far fa-calendar-alt"></i><fmt:formatDate value='${RevBoard.rev_updatedate}' pattern='yyyy년 MM월 dd일 h시 m분'/></strong>
+        </c:if>
+    </section>
+
+    <section id="bo_v_atc">
+        <h2 id="bo_v_atc_title">본문</h2>
+       
+
+        <!-- 본문 내용 시작 { -->
+        <div id="bo_v_con">
+        <c:if test="${RevBoard.rev_filename != null}">
+         <div class="form-group" >
+					 <input readonly hidden
+						value="${RevBoard.rev_filename }" type="text" class="form-control" id="input3" />						
+						<c:forEach items="${RevfileNameList }" var="revImg" varStatus="imgNum">
+						<img class="hoveredImage" onerror="this.src='${root }/resources/noimage.jpg'" alt="" src="${root }/resources/upload/${revImg}" height="280px" width="260px">
+						</c:forEach>
+						
+		</div>
+        </c:if>
+        <hr class="dashHr">
+        <pre>${RevBoard.rev_content }</pre>
+        
+        <hr class="dashHr">
+        <c:url value="${root }/rev/modify" var="modifyLink">
+					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+					<c:param name="pageNum" value="${cri.pageNum }" />
+					<c:param name="amount" value="${cri.amount }" />
+					<c:param name="type" value="${cri.type }"/>
+					<c:param name="keyword" value="${cri.keyword }"/>
+				</c:url>
+				<c:url value="${root }/rev/list" var="listLink">
+					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+					<c:param name="pageNum" value="${cri.pageNum }" />
+					<c:param name="amount" value="${cri.amount }" />
+					<c:param name="type" value="${cri.type }"/>
+					<c:param name="keyword" value="${cri.keyword }"/>
+				</c:url>
+		<div id="bo_v_share" >
+		<c:if test="${authUser != null }">
+		<button id="goodbtn" class="btn btn_b03"><i class="fas fa-thumbs-up" aria-hidden="false"></i>${RevBoard.rev_good }</button>
+		<button id="hatebtn" class="btn btn_b03"><i class="fas fa-thumbs-down" aria-hidden="false"></i>${RevBoard.rev_hate }</button>
+		</c:if>
+		<c:if test="${authUser == null }">
+		<a id="login_add" class="btn btn_b03">좋아요,싫어요</a>
+		</c:if>
+		<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
+		<a id="btn_add" class="btn btn_b03"  href="${modifyLink }">글수정</a>
+		</c:if>
+		<a id="btn_add" class="btn btn_b03"  href="${listLink }">목록으로</a>
+       </div>
+       </div>
+                <!-- } 본문 내용 끝 -->
+    </section>
+
+    
+		
+        <!--  추천 비추천 시작 { -->
+                <!-- }  추천 비추천 끝 -->
+		
+		
+                
+<div class="bo_v_snswr">
+
+	</div>
+	
+	</article>
+	</div>
+	</div>
+	</div>
+	<%-- <div class="container-sm">
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
 				<h1>게시물 보기</h1>
@@ -401,10 +561,7 @@ showList();
 							id="input9"  readonly/>
 						
 					</div>
-			</div>
-			
-		</div>
-		<c:url value="${root }/rev/modify" var="modifyLink">
+					<c:url value="${root }/rev/modify" var="modifyLink">
 					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
 					<c:param name="pageNum" value="${cri.pageNum }" />
 					<c:param name="amount" value="${cri.amount }" />
@@ -419,8 +576,8 @@ showList();
 					<c:param name="keyword" value="${cri.keyword }"/>
 				</c:url>
 		<c:if test="${authUser != null }">
-		<a id="hatebtn" class="btn btn-secondary"  href="">싫어요!</a>
-		<a id="goodbtn" class="btn btn-secondary"  href="">좋아요!</a>
+		<button id="hatebtn" class="btn btn-secondary">싫어요!</button>
+		<button id="goodbtn" class="btn btn-secondary">좋아요!</button>
 		</c:if>
 		<c:if test="${authUser == null }">
 		<a id="login_add" class="btn btn-secondary">좋아요,싫어요</a>
@@ -429,8 +586,41 @@ showList();
 		<a id="btn_add" class="btn btn-secondary"  href="${modifyLink }">글수정</a>
 		</c:if>
 		<a id="btn_add" class="btn btn-secondary"  href="${listLink }">목록으로</a>
-	</div>
+			</div>
+			
+		</div>
+		
+		
+	</div> --%>
 	<div class="container-sm mt-3">
+	<hr class="dashHr">
+<button type="button" class="cmt_btn"><i class="fa fa-commenting-o" aria-hidden="true"></i> 댓글목록 <i class="fa fa-chevron-up" aria-hidden="true"></i><i class="fa fa-chevron-down" aria-hidden="true"></i> </button>
+	<section id="bo_vc">
+    <h2>댓글목록</h2>
+    
+    <!-- <article id="c_32" >
+        <header style="z-index:2">
+            <h2>ㅛㅛ님의  댓글</h2>
+            <span class="guest">ㅛㅛ</span>                        <span class="sound_only">작성일</span>
+            <span class="bo_vc_hdinfo"><i class="fa fa-clock-o" aria-hidden="true"></i> <time datetime="2018-04-18T09:54:00+09:00">18-04-18 09:54</time></span>
+                    </header>
+
+        댓글 출력
+        <div class="cmt_contents">
+            <p>
+                                222            </p>
+                    </div>
+        <span id="edit_32" class="bo_vc_w"></span>수정
+        <span id="reply_32" class="bo_vc_w"></span>답변
+
+        input type="hidden" value="" id="secret_comment_32">
+        <textarea id="save_comment_32" style="display:none">222</textarea> -->
+
+    </article>
+        
+</section>
+</div>
+	<%-- <div class="container-sm mt-3">
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
 				
@@ -472,7 +662,7 @@ showList();
 				
 			</div>
 		</div>
-	</div>
+	</div> --%>
 	
 	<%-- modal 새 댓글 form --%>
 	<div class="modal fade" id="new-reply-modal">

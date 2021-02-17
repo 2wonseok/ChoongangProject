@@ -11,6 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <title>회원 탈퇴</title>
 </head>
 <style>
@@ -92,9 +93,10 @@
 <c:otherwise>
 	<script>
 		alert('본인만 접근 가능합니다.');
-		location.href='${root}/main/index';
+		location.href='${root}/main/mainPage';
 	</script>
 </c:otherwise>
 </c:choose>
+<u:footer/>
 </body>
 </html>

@@ -11,7 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
 var goPopup = function(){ 
 	var pop = window.open("${root}/user/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes");
@@ -138,6 +138,7 @@ $(document).ready(function() {
     margin: 0 0px;
     line-height: 45px;
     float: right;
+    border-radius: 3px;
 	}
 	#btn_add {
     color: #fff;
@@ -148,6 +149,7 @@ $(document).ready(function() {
     margin-right: 7px;
     line-height: 45px;
     float: right;
+    border-radius: 3px;
 	}
 	.btn_check {
     color: #fff;
@@ -159,6 +161,7 @@ $(document).ready(function() {
     margin-top: -41px;
     line-height: 45px;
     float: right;
+    border-radius: 3px;
 	}
 	.tableBWrite {
     clear: both;
@@ -168,6 +171,7 @@ $(document).ready(function() {
     border-spacing: 0;
     border-top: 3px solid #4a4a4a;
     margin-bottom: 20px;
+    
 	}
 	.tableBWrite tbody th {
     background: #f5f5f5;
@@ -199,6 +203,7 @@ $(document).ready(function() {
     margin-top: -41px;
     line-height: 45px;
     float: right;
+    border-radius: 3px;
 }
 </style>
 <body>
@@ -331,9 +336,10 @@ $(document).ready(function() {
 	<c:otherwise>
 		<script>
 			alert('본인만 접근 가능합니다.');
-			location.href='${root}/main/index';
+			location.href='${root}/main/mainPage';
 		</script>
 	</c:otherwise>
 </c:choose>
+<u:footer/>
 </body>
 </html>

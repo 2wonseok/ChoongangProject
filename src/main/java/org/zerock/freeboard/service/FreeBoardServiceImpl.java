@@ -24,13 +24,6 @@ private FreeBoardMapper mapper;
 		mapper.insertSelectKey(freeVO);
 	}
 	
-	
-//	@Override
-//	public List<FreeBoardVO> getList() {
-//		return mapper.getList();
-//	}
-
-	
 	@Override
 	public List<FreeBoardVO> getList(FreeBoardCriteria cri) {
 		return mapper.getListWithPaging(cri);
@@ -64,5 +57,8 @@ private FreeBoardMapper mapper;
 	public int readCnt(int free_seq) {
 		return mapper.readCnt(free_seq);
 		}
-	
+	@Override
+	public List<FreeBoardVO> getNoticeList(FreeBoardCriteria cri) {
+	return mapper.readNotice(cri);
+		}
 }

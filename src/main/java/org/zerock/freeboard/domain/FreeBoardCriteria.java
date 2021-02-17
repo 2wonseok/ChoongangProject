@@ -8,16 +8,16 @@ import lombok.ToString;
 @Setter
 @ToString
 public class FreeBoardCriteria {
-
+	
+	//페이지넘버
 	private int pageNum;
+	//페이지당 갯수
 	private int amount;
-
 	private String type;
 	private String keyword;
 
 	public FreeBoardCriteria() {
 		this(1, 10);		
-		//한 페이지에 보여질 게시글 수
 	}
 
 	public FreeBoardCriteria(int pageNum, int amount) {

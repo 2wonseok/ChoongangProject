@@ -147,12 +147,33 @@
     WHERE user_seq = #{user_seq} AND rev_seq = #{rev_seq}
   </update>
   
-  	<!-- 좋아요 취소 -1 -->
-  <update id="goodCheck_cancel">
-    UPDATE tbl_goodCheck
-    SET like_check = 0
+  
+  
+  	<!-- 좋아요 취소시 행삭제 -->
+  <delete id="goodCheck_cancel">
+    delete tbl_goodCheck
     WHERE user_seq = #{user_seq} AND rev_seq = #{rev_seq}
-  </update>
+  </delete>
+  
+  <!-- 싫어요 취소시 행삭제 -->
+  <delete id="hateCheck_cancel">
+    delete tbl_hateCheck
+    WHERE user_seq = #{user_seq} AND rev_seq = #{rev_seq}
+  </delete>
+  
+   <!-- 좋아요 -1 addGood과 반대. -->
+  <update id="goodCancel">
+		UPDATE tbl_reviewboard
+		SET rev_good = rev_good - 1 
+		WHERE rev_seq = #{rev_seq}
+	</update>
+	
+	<!-- 싫어요 -1 addHate와 반대. -->
+  <update id="hateCancel">
+		UPDATE tbl_reviewboard
+		SET rev_hate = rev_hate - 1 
+		WHERE rev_seq = #{rev_seq}
+	</update>
   
 	<!-- 좋아요 체크 -->
   <select id="checkread" resultType="int">
@@ -182,7 +203,7 @@
     SET hate_check = hate_check + 1 
     WHERE user_seq = #{user_seq} AND rev_seq = #{rev_seq}
   </update>
-	
+	<!-- 글 삭제시에 관련 좋아요행 삭제  -->
 	<delete id="goodCheckremove">
 		DELETE FROM tbl_goodCheck WHERE rev_seq = #{rev_seq}
 	</delete>

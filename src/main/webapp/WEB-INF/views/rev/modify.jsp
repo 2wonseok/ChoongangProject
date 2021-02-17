@@ -48,7 +48,7 @@ $(document).ready(function() {
  
 		// #modify-form 의 action attr 값을 바꿔야함.
 
-		$("#modify-form").attr("action", "${root}/rev/remove")
+		$("#modify-form").attr("action", "${removeLink}");
 
 		$("#modify-form").submit();
 	});
@@ -74,7 +74,14 @@ $(document).ready(function() {
 					<c:param name="type" value="${cri.type }"/>
 					<c:param name="keyword" value="${cri.keyword }"/>
 				</c:url>
-
+			
+			<c:url value="${root }/rev/remove" var="removeLink">
+					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+					<c:param name="pageNum" value="${cri.pageNum }" />
+					<c:param name="amount" value="${cri.amount }" />
+					<c:param name="type" value="${cri.type }"/>
+					<c:param name="keyword" value="${cri.keyword }"/>
+				</c:url>
 
 				<form id="modify-form" action="${modifyLink }" method="post"
 				enctype="multipart/form-data">
@@ -86,15 +93,23 @@ $(document).ready(function() {
 					</div>
 					<div class="form-group">
 						
-						<label for="input2">카테고리</label> <input  name="rev_category"
+						<label for="input2">카테고리</label> <%-- <input  name="rev_category"
 							value="${RevBoard.rev_category }" type="text" class="form-control"
-							id="input2" />
+							id="input2" /> --%>
+							<select name="rev_category" >
+								<option value="${RevBoard.rev_category }">카테고리 선택</option>
+								<option value="1">모자</option>
+								<option value="2">신발</option>
+								<option value="3">상의</option>
+								<option value="4">하의</option>
+							</select>
 							<c:if test="${errors.noCategory }">
 							<small class="form-text text-muted">
 								카테고리를 입력하세요
 							</small>
 						</c:if>
 					</div>
+	
 					
 					<div class="form-group">
 						<%--<label for="input3">파일이름</label> <input  name="upload"
@@ -205,9 +220,9 @@ $(document).ready(function() {
 					<input type="hidden" value="${cri.type }" name="type" /> 
 					<input type="hidden" value="${cri.keyword }" name="keyword" /> 
 					<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
-					<button id="btn_add" type="submit" class="btn btn-primary">글 수정</button>
 					<button id="remove-btn" type="submit" class="btnbtn-danger">글
 						삭제</button>
+					<button id="btn_add" type="submit" class="btn btn-primary">글 수정</button>
 					</c:if>
 				</form>
 			</div>

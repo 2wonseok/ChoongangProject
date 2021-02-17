@@ -10,7 +10,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +22,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import org.zerock.product.domain.ProductVO;
 import org.zerock.qaboard.domain.Criteria;
 import org.zerock.qaboard.domain.PageDTO;
 import org.zerock.qaboard.domain.QaVO;
 import org.zerock.qaboard.domain.QaReplyVO;
 import org.zerock.qaboard.service.QaService;
+import org.zerock.user.domain.UserVO;
+import org.zerock.user.service.UserService;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
@@ -42,6 +47,9 @@ public class QaController {
 	
 	private QaService service;	
 
+
+	
+	HttpSession session;
 	
 //	@RequestMapping(value="/list", method = RequestMethod.GET)
 //	@GetMapping("/list") 
@@ -168,30 +176,79 @@ public class QaController {
 	}
 	
 	//
-	@GetMapping({"/get", "/modify"})
-	public void get(@RequestParam("qa_seq") int qa_seq,  
-			@ModelAttribute("criteria") Criteria cri, Model model) {
-		
+	@GetMapping({"/get"})
+	public String get(@RequestParam("qa_seq") int qa_seq, UserVO user,
+			@ModelAttribute("criteria") Criteria cri, Model model,
+			HttpSession session, RedirectAttributes rttr) {
 		// 게시물 가져오기
 		// 쿼리문으로 붙어서 감
-		QaVO vo = service.get(qa_seq);
-		service.addCnt(qa_seq);
-		model.addAttribute("board", vo);
+		//UserVO user_vo = user_service.getUser(user.getUser_id());
+		//System.out.println(user_vo.getUser_address());
 		
-		// 여러 상품파일이름을 list로 변환하고 넘겨줌
-		if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
-			@SuppressWarnings("unchecked")
-			List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
-			model.addAttribute("qafileNameList", fileNamesList);
-		}
+		QaVO vo = service.get(qa_seq);
+		
+		if("공개".equals(vo.getQa_secret())) {
+			service.addCnt(qa_seq);
+			model.addAttribute("board", vo);
+			if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
+				@SuppressWarnings("unchecked")
+				List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
+				model.addAttribute("qafileNameList", fileNamesList);
+				
+				return "/qa/get";
+			}
+		} else {
+			if(session.getAttribute("authUser") == null) {
+				System.out.println("세션이 없음");
+				
+				return "redirect:/qa/read_error";
+			} else {
+				UserVO userVO = (UserVO) session.getAttribute("authUser");
+				System.out.println(userVO.toString());				
+				String userNickname = userVO.getUser_nickname();				
+				int userGrade = userVO.getUser_grade();				
+				System.out.println(vo.toString());
 
-	}
+				if(userNickname.equals(vo.getQa_writer()) || userGrade == 0) {										
+					//	작성자와 세션에서 가져온 userNickname이 같은 경우
+					//	get 페이지로 이동
+					service.addCnt(qa_seq);
+					model.addAttribute("board", vo);
+					return "/qa/get";
+
+				} else {
+					return "redirect:/qa/list";
+				}
+			}
+		}
+			return null;
+		}
 	
+	@GetMapping({"/read_error"})
+	public void read_error() {
+		
+	}
+		
+	
+
 	@RequestMapping("/remove")
 	public String remove(@RequestParam("qa_seq") int qa_seq) {
 		service.remove(qa_seq);
 		
 		return "redirect:/qa/list";
+	}
+	
+	@GetMapping({"/modify"})
+	public void get(@RequestParam("qa_seq") int qa_seq,
+			@ModelAttribute("criteria") Criteria cri, Model model) {
+				
+		QaVO vo = service.get(qa_seq);		
+		model.addAttribute("board", vo);	
+		if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
+			@SuppressWarnings("unchecked")
+			List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
+			model.addAttribute("qafileNameList", fileNamesList);
+		}
 	}
 	
 	@PostMapping("/modify")
@@ -213,28 +270,16 @@ public class QaController {
 			errors.put("noContent", Boolean.TRUE);
 		}
 		
-		if(!errors.isEmpty()) {
-			rttr.addFlashAttribute("errors", errors);
-			rttr.addFlashAttribute("category", board.getQa_category());
-			rttr.addFlashAttribute("secret", board.getQa_secret());
-			rttr.addFlashAttribute("title",board.getQa_title());
-			rttr.addFlashAttribute("content", board.getQa_content());
-			rttr.addFlashAttribute("filename", board.getQa_filename());
-			
-			return "redirect:/qa/modify?qa_seq=" + board.getQa_seq(); 
-		}
-		
-		
 		// 파일이 업로드 될 경로 설정
-		String saveDir = request.getSession().getServletContext().getRealPath("/resources/modify/upload");
-
+		String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload");
 		// 위에서 설정한 경로의 폴더가 없을 경우 생성
 		System.out.println(saveDir);
 		File dir = new File(saveDir);
+
 		if (!dir.exists()) {
 			dir.mkdirs();
-		}
-		// 파일 업로드
+		} // 파일 업로드
+
 		List<String> reNames = new ArrayList<String>();
 		for (MultipartFile f : upload) {
 			if (!f.isEmpty()) {
@@ -262,47 +307,48 @@ public class QaController {
 			board.setQa_filename("");
 		}
 
-				
-		if(service.modify(board)) {
-			rttr.addFlashAttribute("resultModify", board.getQa_seq());		
-		}		
-		
-		log.info(cri);
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
+		if (!errors.isEmpty()) {
+			rttr.addFlashAttribute("errors", errors);
+			rttr.addFlashAttribute("board", board);
+
+			return "redirect:/qa/modify?rev_seq=" + board.getQa_seq();
+		}
+
+		// list를 string 쉼표구분으로 만들기
+		String filenames = String.join(",", reNames);
+		board.setQa_filename(filenames);
+		System.out.println(filenames);
+
+		if (reNames.size() == 0) { //
+			board.setQa_filename(request.getParameter("preFileNames"));
+		} else {
+			/* 변동있다면 이전그림지우기 */
+			String oldFileNames = request.getParameter("preFileNames");
+			@SuppressWarnings("unchecked")
+			List<String> fileNamesList = Arrays.asList(oldFileNames.split(","));
+			System.out.println(fileNamesList);
+
+			String saveDir2 = request.getSession().getServletContext().getRealPath("/resources/upload");
+
+			/* 그림파일삭제 */
+			for (String f : fileNamesList) {
+				if (!f.isEmpty()) {
+					File file = new File(saveDir2 + "/" + f);
+					file.delete();
+				}
+			}
+
+		}
+		rttr.addAttribute("pageNum", cri.getPageNum()); // request가 아니라 redirect해줬기때문에
+		rttr.addAttribute("amount", cri.getAmount());	// RedirectAttributes에 넣어줘야함
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
-		
+				
+		if (service.modify(board)) {
+			rttr.addFlashAttribute("result", "success");
+			rttr.addFlashAttribute("message", board.getQa_seq() + "번 글이 수정 됐습니다.");
+		}
+
 		return "redirect:/qa/list";
 	}
-	
-	
-
-	// test 추가본/////////////////////////////////////////
-	@GetMapping("/listTest")
-    public void list_test(@ModelAttribute("criteria") Criteria cri,
-            Model model) {
-
-        // 게시물 리스트 가져오기
-        List<QaVO> list = service.getList(cri);
-        int total = service.getTotal(cri);
-        PageDTO dto = new PageDTO(cri, total);
-        model.addAttribute("list", list);
-        model.addAttribute("pageMaker", dto);
-
-
-    }
-	
-	@GetMapping("/getTest")
-	public void get_test(@RequestParam("qa_seq") int qa_seq,
-			@ModelAttribute("criteria") Criteria cri, 
-		            Model model) {
-
-		QaVO vo = service.get(qa_seq);
-		service.addCnt(qa_seq);
-		model.addAttribute("board", vo);
-
-	}
-	
-
 }

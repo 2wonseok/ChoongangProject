@@ -11,6 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
 	$(document).ready(function() {
 		
@@ -114,6 +115,7 @@
     padding: 0px 50px;
     margin: 0 0px;
     line-height: 45px;
+    border-radius: 3px;
 }
 #btn_list {
     color: #fff;
@@ -123,6 +125,7 @@
     padding: 0px 50px;
     margin: 0 0px;
     line-height: 45px;
+    border-radius: 3px;
 }
 #btn_manager {
     color: #fff;
@@ -133,6 +136,7 @@
     line-height: 45px;
     margin-top: -5px;
     margin-right: -17px;
+    border-radius: 3px;
 }
 #userInfo, #userOrderList {
 	color: #000; 
@@ -248,7 +252,7 @@
 							<input type="button" value="목록" onclick="location.href='${listLink}'" id="btn_remove">
 						</c:when>
 						<c:otherwise>
-							<input type="button" value="돌아가기" onclick="location.href='${root}/main/index'" id="btn_remove">
+							<input type="button" value="돌아가기" onclick="location.href='${root}/main/mainPage'" id="btn_remove">
 						</c:otherwise>
 					</c:choose>
 					<c:if test="${authUser.user_id eq read.user_id }">
@@ -263,9 +267,10 @@
 	<c:otherwise>
 		<script>
 			alert('본인만 접근 가능합니다.');
-			location.href='${root}/main/index';
+			location.href='${root}/main/mainPage';
 		</script>
 	</c:otherwise>
 </c:choose>
+<u:footer/>
 </body>
 </html>

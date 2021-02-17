@@ -122,12 +122,12 @@ dl, ul, ol, menu, li {
     padding: 0 0 15px 0;
 }
 .c_gnb_usermenu > ul > li.my .menu {
-    background-image: url(${root }/resources/logo/my.png);
-    background-position: -106px -144px;
-    width: 53px;
-    height: 36px;
+    background-image: url(${root }/resources/logo/user.png);
+    background-position: -190px -45px;
+    width: 47px;
+    height: 45px;
     background-size: 100% 100%;
-    margin-top: 8px;
+    margin-top: 0px;
 }
 .c_gnb_usermenu > ul > li .menu {
     overflow: hidden;
@@ -172,18 +172,18 @@ a {
     font-size: 15px;
 }
 .c_gnb_usermenu > ul > li.order .menu {
-    background-image: url(${root }/resources/logo/Parcel.png);
-    background-position: -106px -144px;
+    background-image: url(${root }/resources/logo/truck.png);
+    background-position: -106px -72px;
     width: 53px;
-    height: 48px;
+    height: 45px;
     background-size: 100% 140%;
 }
 .c_gnb_usermenu > ul > li.cart .menu {
     background-image: url(${root }/resources/logo/cart.png);
-    background-position: -106px -144px;
-    width: 86px;
-    height: 48px;
-    background-size: 100% 101%;
+    background-position: -90px -141px;
+    width: 45px;
+    height: 47px;
+    background-size: 100% 99%;
 }
 .b_header_util {
     position: relative;
@@ -245,14 +245,15 @@ a {
 	<div class="b_header_gnb">
 		<div class="inner" id="lws">
 			<h1 class="c_gnb_logo">
-				<a href="${root }/main/index">BCD</a>
+				<a href="${root }/main/mainPage">BCD</a>
 			</h1>
 			<div class="c_gnb_search" id="tSearch">
 				<h2 class="skip">통합검색</h2>
-				<form action="${root }/product/search" method="get">
+				<form action="${root }/product/list" method="get">
 					<fieldset>
 						<legend>통합검색</legend>
-						<input type="text" class="search_text search_text_ad" name="serachKeyword" placeholder="통합검색" title="통합검색">
+						<input name="type" value="TC" hidden="hidden"/>
+						<input type="text" class="search_text search_text_ad" name="keyword" placeholder="통합검색" title="통합검색">
 						<button type="submit" class="search_button">검색</button>
 					</fieldset>
 				</form>		
@@ -283,7 +284,7 @@ a {
 					</div>
 				</li>
 				<li class="order">
-					<a href="#" data-log-actionid-area="header_util" data-log-actionid-label="orderdlv_inquiry" class="menu">주문</a>
+					<a href="${root }/user/userOrderList" data-log-actionid-area="header_util" data-log-actionid-label="orderdlv_inquiry" class="menu">주문</a>
 				</li>
 				<li class="cart">
 					<a href="${root }/user/cart" class="menu" data-log-actionid-area="header_util" data-log-actionid-label="cart">장바구니</a>
@@ -297,7 +298,7 @@ a {
 					<h2 class="skip">주요서비스 바로가기</h2>
 					<ul>
 						<li>
-							<a href="#" class="" >베스트</a>
+							<a href="${root }/main/mainPage" class="" >베스트</a>
 						</li>
 						<li>
 							<a href="${root }/freeboard/list" class="">자유게시판</a>
@@ -322,11 +323,11 @@ a {
 					<div class="group login_status">
 						<c:choose>
 							<c:when test="${authUser == null}">
-								<a href="${root }/user/login">로그인</a>&nbsp; &nbsp; 
-								<a href="${root }/user/userRegister">회원가입</a>
+								<a style="color: #666;" href="${root }/user/login">로그인</a>&nbsp; &nbsp; 
+								<a style="color: #666;" href="${root }/user/userRegister">회원가입</a>
 							</c:when>
 							<c:otherwise>
-								<a href="${root }/user/logout">로그아웃</a>
+								<a style="color: #666;" href="${root }/user/logout">로그아웃</a>
 							</c:otherwise>
 						</c:choose>
 					</div>

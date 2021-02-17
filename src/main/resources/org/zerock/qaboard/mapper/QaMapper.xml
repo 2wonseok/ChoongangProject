@@ -62,6 +62,10 @@
       SELECT * FROM tbl_qaboard WHERE qa_seq = #{qa_seq}
    </select>
    
+   <select id="read_secret" resultType="org.zerock.qaboard.domain.QaVO">
+      SELECT * FROM tbl_qaboard WHERE qa_seq = #{qa_seq}
+   </select>
+   
    <insert id="insert">
       INSERT INTO tbl_qaboard (qa_seq, qa_category, qa_title, qa_content, qa_writer, qa_secret, qa_regdate, qa_filename) 
       VALUES (qa_seq.nextval, #{qa_category}, #{qa_title}, #{qa_content}, #{qa_writer}, #{qa_secret}, SYSDATE, #{qa_filename})

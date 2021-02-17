@@ -9,6 +9,7 @@ import org.zerock.qaboard.domain.QaVO;
 public interface QaMapper {
 	
 	public QaVO read(int seq);
+	public QaVO read_secret(int seq);
 	
 	public int getTotalCount(Criteria cri);
 	//	SELECT conut(*) FROM tbl_board

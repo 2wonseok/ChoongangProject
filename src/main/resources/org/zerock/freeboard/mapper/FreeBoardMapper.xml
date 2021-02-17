@@ -10,13 +10,13 @@
    <foreach item="type" collection="typeArr" separator="OR">
       <choose>
          <when test="type == 'T'.toString()">
-            title LIKE '%' || #{keyword} || '%'
+            free_title LIKE '%' || #{keyword} || '%'
          </when>
          <when test="type == 'C'.toString()">
-            content LIKE '%' || #{keyword} || '%'
+            free_content LIKE '%' || #{keyword} || '%'
          </when>
          <when test="type == 'W'.toString()">
-            writer LIKE '%' || #{keyword} || '%'
+            free_nickname LIKE '%' || #{keyword} || '%'
          </when>
       </choose>
    </foreach>
@@ -45,6 +45,7 @@
       free_regdate, free_updatedate,free_readCnt,free_replyCnt
      FROM
       tbl_freeboard
+     WHERE FREE_NOTICE = 1
 ]]>
    
    <include refid="freeboardcriteria"></include>
@@ -57,18 +58,18 @@
    </select>
     
    
-   <insert id="insert">
+   <!-- <insert id="insert">
       INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer, free_nickname)
       VALUES (free_seq.nextval, #{free_title}, #{free_content}, #{free_writer}, #{free_nickname})
-   </insert>
+   </insert> -->
    
    <insert id="insertSelectKey">
       <selectKey keyProperty="free_seq" order="BEFORE" resultType="int">
       SELECT free_seq.nextval FROM dual
       </selectKey>
    
-      INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer,free_nickname,free_regdate,free_updatedate)
-      VALUES (#{free_seq }, #{free_title}, #{free_content}, #{free_writer}, #{free_nickname},sysdate,sysdate)
+      INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer,free_nickname,free_notice,free_regdate,free_updatedate)
+      VALUES (#{free_seq }, #{free_title}, #{free_content}, #{free_writer}, #{free_nickname},#{free_notice},sysdate,sysdate)
    </insert>
  
    <select id="read" resultType="org.zerock.freeboard.domain.FreeBoardVO">
@@ -88,11 +89,14 @@
    WHERE 	free_seq = #{free_seq}
    </update>
    
-    <select id="getTotalCount" resultType="int">
-   SELECT count(*) FROM tbl_freeboard   
-   <include refid="freeboardcriteria"></include>
-   </select> 
-   
+	<select id="getTotalCount" resultType="int">
+		SELECT count(*) 
+		FROM tbl_freeboard
+		WHERE FREE_NOTICE = 1
+	<include refid="freeboardcriteria"></include>
+	</select> 
+	
+   <!--댓글 조회수  -->
    <update id="updateReplyCnt">
    UPDATE tbl_freeboard 
    SET 
@@ -100,16 +104,29 @@
    WHERE 
    		  free_seq = #{free_seq}
    </update> 
-   
+   <!-- 게시글조회수 -->
    <select id="readCnt" resultType="int">
    		SELECT free_readCnt FROM tbl_freeboard
 		WHERE free_seq = #{free_seq}
    </select>
-   
+   <!--조회수 증가 -->
    <update id="addCnt">
    		UPDATE tbl_freeboard
    		SET free_readCnt = free_readCnt + 1
 		WHERE free_seq = #{free_seq}
    </update>
-     
+   
+     <!--공지사항 쿼리  -->
+     <select id="readNotice" resultType="org.zerock.freeboard.domain.FreeBoardVO">
+		SELECT 
+				free_seq,
+				free_title,
+				free_content,
+				free_writer,
+				free_notice
+		FROM    
+				tbl_freeboard 
+		WHERE   free_notice = 2
+		ORDER   BY free_seq DESC
+     </select>
 </mapper>

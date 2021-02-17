@@ -17,6 +17,46 @@
     line-height: 45px;
     float: right;
 }
+#container {
+    clear: both;
+    position: relative;
+    margin: 35px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1200px;
+    z-index: 1;
+}
+thead {
+	background: #f8f8f8;
+}
+/* 페이징 css */
+.pagerWrap {
+    position: relative;
+    text-align: center;
+    margin: 0px 0;
+}
+.pagerWrap a {
+    width: 34px;
+    height: 34px;
+    color: #333;
+    border: 1px solid #dedede;
+    text-align: center;
+    line-height: 34px;
+    background: #fff;
+    display: inline-block;
+}
+.pagerWrap a.on {
+    border-color: #222222;
+    background: #4a4a4a;
+    color: #fff;
+}
+.pagerWrap a:hover {
+    border-color: #4a4a4a;
+    color: #4a4a4a;
+}
+.pagerWrap a.on:hover {
+    border-color: #4a4a4a;
+    color: #fff;
+}
 </style>
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -56,6 +96,7 @@
 <body>
 <u:mainNav></u:mainNav>
 <div class="container-sm">
+<section id="container">
 <c:url value="${root }/rev/list" var="searchLink">
 					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
 					<c:param name="pageNum" value="${cri.pageNum }" />
@@ -82,9 +123,11 @@
 				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 			</form>
 			</div>
-	<div class="container-sm">
+	<div class="container">
+		
+	
 		<div class="row">
-			<table class="table table-striped table-hover">
+			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th>#번호</th>
@@ -115,6 +158,7 @@
 										value="${rev.rev_title}" />
 								<c:if test="${rev.rev_replyCnt gt 0 }"> <!-- gt는 > 이거랑같음 -->
 								<span class="badge badge-info">${rev.rev_replyCnt }</span>
+								
 								</c:if>
 							</a></td>
 							<td><c:out value="${rev.rev_writer}" /></td>
@@ -124,6 +168,7 @@
 									<td>${rev.rev_hate }</td>
 									<td>${rev.rev_readCnt }</td>
 									
+		
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -132,6 +177,7 @@
 					<a id="btn_add" class="btn btn-info" href="${root }/rev/register">후기 쓰기</a>
 					</c:if>
 		</div>
+		</section>
 	</div>
 	<div id="myModal" class="modal" tabindex="-1">
 		<div class="modal-dialog">
@@ -153,11 +199,8 @@
 			</div>
 		</div>
 	</div>
-		<div class="container-sm mt-3">
-		<div class="row justify-content-center">
-			<nav aria-label="Page navigation example">
-				<ul class="pagination">
-
+		<div class="container d-flex justify-content-center">
+			<div class="pagerWrap">
 					<c:if test="${pageMaker.prev }">
 						<c:url value="/rev/list" var="prevLink">
 							<!-- 앞에 contextPath를 붙여줌 -->
@@ -166,9 +209,9 @@
 							<c:param name="type" value="${pageMaker.cri.type }" />
 							<c:param name="keyword" value="${pageMaker.cri.keyword }" />
 						</c:url>
-						<li class="page-item"><a class="page-link" href="${prevLink}">Previous</a>
+						<a style="width:80px" href="${prevLink}">Previous</a>
 							<%-- <a class="page-link" href="${pageMaker.startPage -1 }">Previous</a> --%>
-						</li>
+						
 					</c:if>
 
 					<c:forEach var="num" begin="${pageMaker.startPage }"
@@ -179,10 +222,8 @@
 							<c:param name="type" value="${pageMaker.cri.type }" />
 							<c:param name="keyword" value="${pageMaker.cri.keyword }" />
 						</c:url>
-						<li
-							class="page-item ${pageMaker.cri.pageNum eq num ? 'active' : ''}">
-							<a class="page-link" href="${pageLink }">${num}</a> <%-- <a class="page-link" href="${num }">${num }</a> --%>
-						</li>
+							<a class="${pageMaker.cri.pageNum eq num ? 'on' : ''}" href="${pageLink }">${num}</a> <%-- <a class="page-link" href="${num }">${num }</a> --%>
+						
 						<!-- href = "${root }/board/list?pageNum=${num}&amount=${pageMaker.cri.amount }" -->
 					</c:forEach>
 
@@ -193,14 +234,12 @@
 							<c:param name="type" value="${pageMaker.cri.type }" />
 							<c:param name="keyword" value="${pageMaker.cri.keyword }" />
 						</c:url>
-						<li class="page-item"><a class="page-link" href="${nextLink}">Next</a>
+						<a style="width:80px" href="${nextLink}">Next</a>
 							<%-- <a class="page-link" href="${pageMaker.endPage +1 }">Next</a> --%>
-						</li>
+					
 						<!-- href="${root}/board/list?pageNum=${pageMaker.endPage +1}&amount=${pageMaker.cri.amount}
 						 와 같음 -->
 					</c:if>
-				</ul>
-			</nav>
 		</div>
 	</div>
 	

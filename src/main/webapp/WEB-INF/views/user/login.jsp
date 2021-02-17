@@ -11,7 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
  <!-- Compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <!-- Compiled and minified JavaScript -->
@@ -26,7 +26,14 @@ $(document).ready(function() {
 <title>Insert title here</title>
 </head>
 <style>
-
+#container {
+    clear: both;
+    position: relative;
+    margin: 50px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1200px;
+    z-index: 1;
+}
 html, body {
     height: 100%;
 }
@@ -87,6 +94,7 @@ html, body {
 <body>
 <u:mainNav/>
 <div class="container">
+<section id="container">
 	<div id="login-page" class="row">
 		<div class="z-depth-1 card-panel" style="margin-left: 350px;">
       <form class="login-form" action="${root }/user/login" method="post">
@@ -125,18 +133,20 @@ html, body {
         
         <div class="row">
           <div class="input-field col s6 m6 l6">
-            <p class="margin medium-small"><a href="${root }/user/userRegister">Register Now!</a></p>
+            <p class="margin medium-small"><a style="color: #666;" href="${root }/user/userRegister">Register Now!</a></p>
           </div>
           <div class="input-field col s6 m6 l6">
          		  <p class="margin right-align medium-small">
-              	<a href="#" onclick="window.open('${root}/user/findId','아이디찾기','width=500px;,height=300px;,location=no,status=no,scrollbars=no');">Forgot id ?</a>&nbsp;&nbsp;&nbsp;
-             		<a href="#" onclick="window.open('${root}/user/findPw','비밀번호','width=550px;,height=420px;,location=no,status=no,scrollbars=no');">Forgot password ?</a>
+              	<a href="#" style="color: #666;;" onclick="window.open('${root}/user/findId','아이디찾기','width=500px;,height=300px;,location=no,status=no,scrollbars=no');">Forgot id ?</a>&nbsp;&nbsp;&nbsp;
+             		<a href="#" style="color: #666;" onclick="window.open('${root}/user/findPw','비밀번호','width=550px;,height=420px;,location=no,status=no,scrollbars=no');">Forgot password ?</a>
               </p>
           </div>          
         </div>
       </form>
     </div>  
   </div>
+</section>  
 </div>  
+<u:footer/>
 </body>
 </html>

@@ -25,4 +25,6 @@ public interface FreeBoardService {
 	
 	public void addCnt(int free_seq);
 
+	public List<FreeBoardVO> getNoticeList(FreeBoardCriteria cri);
+	
 }

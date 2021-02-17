@@ -1,7 +1,7 @@
 package org.zerock.user.controller;
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.RevBoard.service.RevBoardService;
+import org.zerock.product.domain.OrderVO;
+import org.zerock.product.domain.ProductVO;
+import org.zerock.product.service.ProductService;
 import org.zerock.user.domain.Criteria;
 import org.zerock.user.domain.PageDTO;
 import org.zerock.user.domain.UserVO;
@@ -38,6 +41,8 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 @RequestMapping("/user/*")
 public class UserController {
 	
+	private ProductService pdService;
+	
 	private BCryptPasswordEncoder pwdEncoder;
 	
 	private UserService service;
@@ -53,7 +58,7 @@ public class UserController {
 		
 		service.register(user);
 
-		return "redirect:/main/index";
+		return "redirect:/main/mainPage";
 	}
 	
 	@GetMapping("/userList") // 회원 목록 로딩
@@ -118,7 +123,7 @@ public class UserController {
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
 		
-		return "redirect:/main/index";
+		return "redirect:/main/mainPage";
 	}
 	
 	@PostMapping("/userDelete") // 회원 삭제
@@ -181,7 +186,7 @@ public class UserController {
 		
 		if (vo != null && pwdMatch == true) {
 			session.setAttribute("authUser", vo);
-			return "redirect:/main/index";
+			return "redirect:/main/mainPage";
 		} else {
 			rttr.addFlashAttribute("noUser", "일치하는 정보가 없습니다.");
 			return "redirect:/user/login";
@@ -197,7 +202,7 @@ public class UserController {
 			session.invalidate();
 		}
 		
-		return "redirect:/main/index";
+		return "redirect:/main/mainPage";
 	}
 	
 	@GetMapping("/userRemove") // 회원 탈퇴
@@ -222,7 +227,7 @@ public class UserController {
 			session.invalidate();
 		}
 		
-		return "redirect:/main/index";
+		return "redirect:/main/mainPage";
 	}
 	
 	@GetMapping("/sendSMS") // 휴대폰 인증 
@@ -323,11 +328,38 @@ public class UserController {
 		return result;
 	}
 	
-	@GetMapping("/userOrderList")
-	public void orderList() {}
+	@GetMapping("/userOrderList") // 주문목록
+	public void orderList(HttpSession session, Criteria cri, Model model) {
+		UserVO vo = (UserVO) session.getAttribute("authUser");
+		int order_userseq = 0;
+		
+		if (vo != null) {
+			order_userseq = vo.getUser_seq();
+		}
+		
+		List<OrderVO> order = service.orderList(order_userseq, cri);
+		
+		model.addAttribute("order", order);
+	}
 	
-	@GetMapping("/cart")
-	public void cart() {}
+	@GetMapping("/cart") // 장바구니
+	public void cart(HttpSession session, Criteria cri, Model model) {
+		UserVO vo = (UserVO) session.getAttribute("authUser");
+		int order_userseq = 0;
+		
+		if (vo != null) {
+			order_userseq = vo.getUser_seq();
+		}
+		
+		List<OrderVO> cart = service.cartList(order_userseq, cri);
+		
+		model.addAttribute("cartList", cart);
+	}
+	
+	@GetMapping("/shippingCheck") //배송조회
+	public void ShippingCheckBtn(int order_seq) {
+		
+	}
 	
 	@GetMapping("/smsSubmit")
 	public void smsSubmit(@RequestParam("seq") ArrayList<Integer> seq, Model model) {
@@ -352,4 +384,5 @@ public class UserController {
 		
 		return "redirect:/user/userList";
 	}
+	
 }

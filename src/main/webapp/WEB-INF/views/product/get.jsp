@@ -16,10 +16,16 @@
   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+<!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
 
 
 <script>
+
+var root = '${root }';
+var productSeq = '${product.product_seq}';
+var userSeq = '${authUser.user_seq}';
+
 $(document).ready(function(){
 	
 	/*밑의 이미지를 호버하면 main이미지가 바뀌는 js */
@@ -61,18 +67,16 @@ $(document).ready(function(){
 		var po_price = $(this).find("option:selected").data("price");
 		
 		/* 이전 optionContainerNumber가 있는가 선택 */
-		var exist = $('input[name="productOption_seq"][value='+poSeq+']').length;
-		
+		var exist = $('input[name="order_poseq"][value='+poSeq+']').length;
 		if (exist == 0) {
 			$("#optionBox").append(
 				'<div id="optionContainer"'+poSeq+'>' +
-					'<input style="width:150px;" class="border-0" type="text" name="po_name" value="'+po_name+'" readonly/>' +
-					'<input style="width:60px; text-align:right;" class="border-0 po_price" type="number" name="po_price" value="'+po_price+'" readonly/>'+"원"+
-					'<input class="border-0" type="number" name="product_seq" value="'+${product.product_seq}+'"hidden/>' +
-					'<input class="border-0" type="number" name="productOption_seq" value="'+poSeq+'"hidden/>' +
+					'<input style="width:150px;" class="border-0" type="text" name="order_poname" value="'+po_name+'" readonly/>' +
+					'<input style="width:60px; text-align:right;" class="border-0 po_price" type="number" name="order_poprice" value="'+po_price+'" readonly/>'+"원"+
+					'<input type="number" name="order_poseq" value="'+poSeq+'"hidden/>' +
 					'<span class="mx-3"></span>' +
 					'<button class="minus_btn" type="button">감소</button>'+
-					'<input style="width:40px;" class="amount" type="number" min="1" value="1" name="po_quantity" />'+
+					'<input style="width:40px;" class="amount" type="number" min="1" value="1" name="order_quantity" />'+
 					'<button class="plus_btn" type="button">증가</button>'+
 					'<button class="removeOption_btn" type="button">제거</button>'+
 					'<input style="width:60px; text-align:right;" class="border-0 po_groupprice" type="number" name="" value="'+po_price+'" readonly/>'+"원" +
@@ -88,19 +92,17 @@ $(document).ready(function(){
 		$(this).parent().remove();
 		totalp();
 	});
+
 	/* 클릭시 수량증감(+가격도변경) */
 	$(document).on('click',".plus_btn", function(){
 		var amou = $(this).siblings(".amount").val();
 		var amouc = parseInt(amou)+1;
 		$(this).siblings(".amount").val(amouc);
-		
 		/* 가격도 수정 */
 		var poPrice = $(this).siblings(".po_price").val();
 		var pri = amouc * poPrice;
 		$(this).siblings(".po_groupprice").val(pri);
-		
 		totalp();
-		
 	});
 	$(document).on('click',".minus_btn", function(){
 		var amou = $(this).siblings(".amount").val();
@@ -112,16 +114,50 @@ $(document).ready(function(){
 			var pri = amouc * poPrice;
 			$(this).siblings(".po_groupprice").val(pri);
 		}
-		
 		totalp();
+	});
+	
+	$("#order_btn").click(function(){
+		if ("${authUser}" == ""){
+			$("#myModal .modal-body p").html("로그인 해야합니다.");
+			$("#myModal").modal("show");
+			return;
+		}
 		
+		$("#order_form").submit();
+	});
+	
+	
+	/* 하트 누르면 */
+	$("#like").click(function(){
+		if (userSeq =='') {
+			$("#myModal .modal-body p").html("좋아요를 누르려면 로그인해야합니다")
+			$("#myModal").modal("show");
+			return
+		}
+		$.ajax({
+			type: "post",
+			url: root + "/product/like",
+			contentType: "application/json",
+			dataType: "JSON",
+			data: '{"product_seq":'+productSeq+',"user_seq":'+userSeq+'}',
+			success: function(data, status, xhr) {
+				$("#totalLike").text(data);
+			},
+			error: function(){
+			}
+		});
 	});
 
 });
 </script>
 
 <style>
-
+	#like {
+		cursor:pointer;
+	}
+	
+	
 	.btn_add {
 	    color: #fff;
 	    font-size: 15px;
@@ -155,6 +191,15 @@ $(document).ready(function(){
     	width : 350px;
         height : 400px;
     }
+    
+   	#container {
+	    clear: both;
+	    position: relative;
+	    margin: 50px auto 0px;
+	    padding: 0 0 50px 0;
+	    width: 1200px;
+	    z-index: 1;
+	}
 
 </style>
 
@@ -163,12 +208,11 @@ $(document).ready(function(){
 </head>
 <body>
 	
-	<u:mainNav/>
-
-	<div class="container col-8">
-
-				<hr>
-				
+<u:mainNav/>
+<div class="container">
+  <section id="container">
+  
+	<div class="container">
 					<p class="text-left">상품 카테고리 > <c:out value="${product.category_seq }"></c:out></p>
 				<table>
 					<colgroup>
@@ -203,8 +247,14 @@ $(document).ready(function(){
 								<fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
 								<p class="text-right">총 <c:out value="${quantity }"></c:out>개 남음</p>
 								<p class="text-right">판매자 : <c:out value="${ product.user_nickname }"></c:out></p>
-								<p class="text-left">상품설명 </p>
-								
+								<div class="d-flex">
+									<p class="text-left">상품설명 </p>
+									<div class="col-6"></div>
+									<span id="like" style="font-size: 24px;"><i class="fas fa-heart"></i> <span id="totalLike">${product.product_like }</span></span>										
+									<div class="mx-1"></div>
+									<span style="font-size: 24px;"><i class="fas fa-eye"></i> ${product.product_readcnt }</span>
+								</div>
+									
 								<textarea style="resize: none;" rows="15" cols="50" readonly><c:out value="${product.product_info }"></c:out></textarea>
 	
 							<c:if test="${product.product_status != 1 }">
@@ -255,20 +305,26 @@ $(document).ready(function(){
 						<fmt:setTimeZone value = "GMT+18" />
 								<p>상품 등록일 : <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" value="${product.product_regdate }"/> </p>
 								<p>상품 정보 수정일 : <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" value="${product.product_updatedate }"/> </p>
-				
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<select id="optionSelectBox" class="mx-3">
-									<option>===목록을 선택하세요===</option>
+									<option>===옵션을 선택하세요===</option>
 								<c:forEach items="${ poList}" var="poLi" >
 									<option value="${poLi.productOption_seq }" data-name="${poLi.po_name}" data-price="${poLi.po_price}"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
 								</c:forEach>
 							</select>
 						</td>
 						<td colspan="2" >
-							<form action="" method="get">
+							<form id="order_form" action="${root }/product/order" method="post">
+								<input name="product_seq" value="${product.product_seq }" hidden="hidden"/>
+								<input name="order_filename" value="${productImgList[0] }" hidden="hidden"/>
+								<input name="order_productseq" value="${product.product_seq }" hidden="hidden"/>
+								<input name="order_userseq" value="${authUser.user_seq }" hidden="hidden"/>
+								<input name="order_username" value="${authUser.user_name }" hidden="hidden"/>
+								<input name="order_useraddress" value="${authUser.user_address }" hidden="hidden"/>
+								<input name="order_userphone" value="${authUser.user_phone }" hidden="hidden"/>
 								<div id="optionBox">
 								</div>
 							</form>
@@ -277,40 +333,50 @@ $(document).ready(function(){
 					<tr>
 						<td colspan="3">
 							<div class="row">
-								<div class="col-6"></div>
-								<input class="total_price" value="0" readonly/>
+								<div class="ml-3"></div>
+								<form action="${root }/product/list">
+					            	<input hidden="hidden" name="pageNum" value="${cri.pageNum }"/>
+					            	<input hidden="hidden" name="amount" value="${cri.amount }"/>
+					            	<input hidden="hidden" name="type" value="${cri.type }"/>
+						    		<input hidden="hidden" name="keyword" value="${cri.keyword }"/>      
+						    		<input hidden="hidden" name="array" value="${cri.array }"/>      
+									<button class="btn_add mx-4"> 목록으로</button>
+								</form>
+								<div class="col-2"></div>
+								<input class="total_price" value="0" name="order_totalprice" readonly/>
 								<button class="btn_add mx-2" type="button"> 장바구니</button>
-								<button class="btn_add mx-2" type="button"> 구매</button>
+								<button id="order_btn" class="btn_add mx-2" type="button"> 구매</button>
 							</div>
 						</td>
 					</tr>					
 				
-				</table>	
-		<br>
-		<hr>
-		<br>
+				</table>
 	</div>
+
+   </section>
+</div>
 
 <!--모달창시작-->
-	<div id="myModal" class="modal" tabindex="-1">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title">알림</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	        <p>처리가완료되었습니다</p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<!--모달창끝-->
+<div id="myModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">알림</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>처리가완료되었습니다</p>
+      </div>
+      <div class="modal-footer">
+        <button id="modalClose" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!--모달창끝-->
+<u:footer/>
 </body>
 </html>

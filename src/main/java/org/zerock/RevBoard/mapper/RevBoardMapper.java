@@ -34,6 +34,9 @@ public interface RevBoardMapper {
 	// 좋아요 증가 
 	public int addGood(int rev_seq);
 	
+	// 좋아요 취소
+	public int goodCancel(int rev_seq);
+	
 	// 조회수 총 수 
 	public int countReadCnt(int rev_seq);
 	
@@ -42,6 +45,9 @@ public interface RevBoardMapper {
 	
 	// 싫어요 증가
 	public int addHate(int rev_seq);
+	
+	// 싫어요 취소
+	public int hateCancel(int rev_seq);
 	
 	// 이용자가 후기게시판에 글을 몇개썻는지 확인.
 	public int boardSelect(String rev_writer);
@@ -75,4 +81,10 @@ public interface RevBoardMapper {
 	
 	// 싫어요 체크 행 삭제 ( 글 삭제시 함께 삭제 )
 	public int hateCheckremove(int rev_seq);
+	
+	// 좋아요 취소시 행삭제 
+	public void goodCheck_cancel(@Param("user_seq")int user_seq,@Param("rev_seq") int rev_seq );
+	
+	// 싫어요 취소시 행삭제 
+	public void hateCheck_cancel(@Param("user_seq")int user_seq,@Param("rev_seq") int rev_seq );
 }
