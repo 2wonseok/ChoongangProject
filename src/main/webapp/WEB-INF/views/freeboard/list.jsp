@@ -30,6 +30,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
+	var userId = "${authUser.user_id}";
 	var nickname = "${authUser.user_nickname}";
 </script>
 <script>
@@ -66,12 +67,9 @@
 </script>
 <script>
 	$(document).ready(function() {
-
 		$("#register").click(function() {
-
-			if (nickname == "") {
+			if (userId == "") {
 				alert("로그인후 이용하세요");
-
 				location.href = "${root}/user/login";
 			} else {
 				location.href = "${root}/freeboard/register";
@@ -86,17 +84,12 @@
 </head>
 <body>
 	<u:mainNav></u:mainNav>
-
-
-
-
-
 	<div class="container-sm">
 		<div class="container">
 			<div class="row">
 
 				<section id="container">
-					<table class="table table-striped table-hover">
+					<table class="table table table-hover">
 						<thead>
 							<tr>
 								<th>#번호</th>
@@ -110,7 +103,16 @@
 						<tbody>
 							<c:forEach items="${list}" var="freeVO">
 								<tr>
-									<td>${freeVO.free_seq}</td>
+									<td>
+										<c:choose>
+											<c:when test="${freeVO.free_notice == 2}">
+												공지
+											</c:when>
+											<c:otherwise>
+												${freeVO.free_seq}
+											</c:otherwise>
+										</c:choose>
+									</td>
 									<td><c:url value="/freeboard/get" var="freeboardLink">
 
 											<c:param value="${freeVO.free_seq }" name="free_seq" />
@@ -138,18 +140,23 @@
 						</tbody>
 					</table>
 				</section>
-				<%--<c:if test="${authUser.user_nickname != null }">
-		<a href="${root}/freeboard/register">글쓰기</a>
-		</c:if>
-
-		<c:if test="${authUser.user_nickname == null }">
-			<script>
-			alert("로그인후 이용 하세요");
-			</script>
-		<a href="${root}/user/login">글쓰기</a>
-		</c:if>
-		 --%>
 				<button id="register">글쓰기</button>
+				
+				  <form action="${root }/freeboard/list" id="searchForm" class="form-inline my-2 my-lg-0">
+		      <select name="type" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+			    <option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' }>제목</option>
+			    <option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : '' }>내용</option>
+			    <option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : '' }>작성자</option>
+			   									 <!--여기서의 작성자는 유저의 닉네임  -->
+			    <option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : '' }>제목 or 내용</option>
+			    <option value="TW" ${pageMaker.cri.type eq 'TW' ? 'selected' : '' }>제목 or 작성자</option>
+			    <option value="TWC" ${pageMaker.cri.type eq 'TWC' ? 'selected' : '' }>제목 or 내용 or 작성자</option>
+			  </select>
+		      <input name="keyword" required value="${pageMaker.cri.keyword }" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+		      <input type="hidden" name="pageNum" value="1" />
+		      <input type="hidden" name="amount" value="${pageMaker.cri.amount }" />
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		    </form>
 			</div>
 		</div>
 	</div>
@@ -173,12 +180,10 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="container-sm mt-3">
 		<div class="row justify-content-center">
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
-
 					<c:if test="${pageMaker.prev }">
 						<c:url value="/freeboard/list" var="prevLink">
 							<c:param value="${pageMaker.startPage -1 }" name="pageNum" />
@@ -189,7 +194,6 @@
 						<li class="page-item"><a class="page-link"
 							href="${prevLink }">Previous</a></li>
 					</c:if>
-
 					<c:forEach var="num" begin="${pageMaker.startPage }"
 						end="${pageMaker.endPage }">
 						<c:url value="/freeboard/list" var="pageLink">
@@ -203,7 +207,6 @@
 							<a class="page-link" href="${pageLink }">${num }</a>
 						</li>
 					</c:forEach>
-
 					<c:if test="${pageMaker.next }">
 						<c:url value="/freeboard/list" var="nextLink">
 							<c:param name="pageNum" value="${pageMaker.endPage +1 }" />
@@ -218,21 +221,8 @@
 			</nav>
 		</div>
 	</div>
-
-</body>
-</html>
-<%-- 자바스크립트 처리 
-  <div class="d-none">
-	<form id="actionForm" action="${root }/freeboard/list" >
-		<input name="pageNum" value="${pageMaker.cri.pageNum }" />
-		<input name="amount" value="${pageMaker.cri.amount }"/>
-		<input name="type" value="${pageMaker.cri.type }" />
-		<input name="keyword" value="${pageMaker.cri.keyword }" />
-		<input type="submit" />
-	</form>
-</div>    --%>
-<!--     채팅창 -->
-<%-- <c:if test=${로그인한 경우 }>
+<!-- 채팅창 -->
+<c:if test="${authUser != null}">
 <div id="_chatbox" style="display: none">
 	<fieldset>
 		<div id="messageWindow"></div>
@@ -242,13 +232,11 @@
 </div>
 <img class="chat" src="/resources/chat.png" />
 </c:if>
-</body>
-</html>
-<!-- 말풍선아이콘 클릭시 채팅창 열고 닫기 -->
- <script>
+<script>
 	$(".chat").on({
 		"click" : function() {
 			if ($(this).attr("src") == "/resources/chat.png") {
+				//채팅끌때 클릭할 이미지 
 				$(".chat").attr("src", "/resources/chathide.png");
 				$("#_chatbox").css("display", "block");
 			} else if ($(this).attr("src") == "/resources/chathide.png") {
@@ -277,39 +265,8 @@
 		var sender = message[0];
 		var content = message[1];
 		if (content == "") {
-
 		} else {
-			if (content.match("/")) {
-				if (content.match(("/" + $("#chat_id").val()))) {
-					var temp = content.replace("/" + $("#chat_id").val(),
-							"(귓속말) :").split(":");
-					if (temp[1].trim() == "") {
-					} else {
-						$("#messageWindow").html(
-								$("#messageWindow").html()
-										+ "<p class='whisper'>"
-										+ sender
-										+ content.replace("/"
-												+ $("#chat_id").val(),
-												"(귓속말) :") + "</p>");
-					}
-				} else {
-				}
-			} else {
-				if (content.match("!")) {
-					$("#messageWindow")
-							.html(
-									$("#messageWindow").html()
-											+ "<p class='chat_content'><b class='impress'>"
-											+ sender + " : " + content
-											+ "</b></p>");
-				} else {
-					$("#messageWindow").html(
-							$("#messageWindow").html()
-									+ "<p class='chat_content'>" + sender
-									+ " : " + content + "</p>");
-				}
-			}
+			$("#messageWindow").html($("#messageWindow").html() + "<p class='chat_content'>" + sender + " : " + content + "</p>");
 		}
 	}
 	function onOpen(event) {
@@ -321,22 +278,23 @@
 	function send() {
 		if (inputMessage.value == "") {
 		} else {
-			$("#messageWindow").html(
-					$("#messageWindow").html() + "<p class='chat_content'>나 : "
-							+ inputMessage.value + "</p>");
+			$("#messageWindow").html($("#messageWindow").html() + "<p class='chat_content'>나 : " + inputMessage.value + "</p>");
 		}
-		webSocket.send($("#chat_id").val() + "|" + inputMessage.value);
+		webSocket.send(nickname + "(" + userId + ") | " + inputMessage.value);
 		inputMessage.value = "";
 	}
-	//     엔터키를 통해 send함
+	// 엔터키를 통해 send함
 	function enterkey() {
 		if (window.event.keyCode == 13) {
 			send();
 		}
 	}
-	//     채팅이 많아져 스크롤바가 넘어가더라도 자동적으로 스크롤바가 내려가게함
+	// 채팅이 많아져 스크롤바가 넘어가더라도 자동적으로 스크롤바가 내려가게함
 	window.setInterval(function() {
 		var elem = document.getElementById('messageWindow');
 		elem.scrollTop = elem.scrollHeight;
 	}, 0);
-</script>  --%>
+</script>
+</body>
+</html>
+ 

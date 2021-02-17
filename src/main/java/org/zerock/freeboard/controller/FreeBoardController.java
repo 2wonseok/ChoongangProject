@@ -1,5 +1,6 @@
 package org.zerock.freeboard.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,13 +37,14 @@ public class FreeBoardController {
 	@GetMapping("/list")
 	public void list(@ModelAttribute("cri") FreeBoardCriteria cri, Model model,HttpServletRequest request) {
 		// DB에서 list를 받아온다
-		
-		List<FreeBoardVO> list = service.getList(cri);
+		List<FreeBoardVO> totalList = new ArrayList<>();
+		totalList.addAll(service.getNoticeList(cri));
+		totalList.addAll(service.getList(cri));
 		int total = service.getTotal(cri);
-
+		//notice list
 		FreeBoardPageDTO dto = new FreeBoardPageDTO(cri, total);
 		// jsp에서 받을 이름
-		model.addAttribute("list", list);
+		model.addAttribute("list", totalList);
 		model.addAttribute("pageMaker", dto);
 	}
 
@@ -70,12 +72,16 @@ public class FreeBoardController {
 		UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
 		
 		String anonmyous = request.getParameter("anonmyous");
+		String notice = request.getParameter("notice");
 		System.out.println("POST anonmyous : "+anonmyous);
-		
+		// 익명일 때
 		if("y".equals(anonmyous)) {
 			freeVO.setFree_nickname("익명");
 		}
-		
+		// 공지일 때
+		if("n".equals(notice)) {
+			freeVO.setFree_notice(2);
+		}
 		freeVO.setFree_writer(user.getUser_id());
 		System.out.println("freeVO : "+freeVO.toString());
 		service.register(freeVO);

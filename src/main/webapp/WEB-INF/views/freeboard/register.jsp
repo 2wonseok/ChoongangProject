@@ -44,12 +44,16 @@
 					</div>
 
 					<div class="form-group">
-						<label for="input2">닉네임</label> <input type="checkbox" name="anonmyous" value="y">익명
-						<input name="free_nickname" type="text" class="form-control" id="input2" value="${authUser.user_nickname }">
+						<label for="input2">닉네임</label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="anonmyous" value="y" id="anonmyous_check"><label for="anonmyous_check">&nbsp;익명</label>
+						&nbsp;
+						<!--유저의 grade가  관리자일때만 보여지게  -->
+						<c:if test="${authUser.user_grade == 0}">
+							<input type="checkbox" name="notice" value="n" id="notice_check"><label for="notice_check">&nbsp;공지사항</label> 
+						</c:if>
+						<input name="free_nickname" type="text" class="form-control" id="input2" value="${authUser.user_nickname }" readonly>
 					</div>
-
 					<button type="submit" class="btn btn-primary">등록</button>
-					
 				</form>
 			</div>
 		</div>
