@@ -118,7 +118,6 @@
    
      <!--공지사항 쿼리  -->
      <select id="readNotice" resultType="org.zerock.freeboard.domain.FreeBoardVO">
-		ORDER BY FREE_SEQ DESC
 		SELECT 
 				free_seq,
 				free_title,
@@ -128,5 +127,6 @@
 		FROM    
 				tbl_freeboard 
 		WHERE   free_notice = 2
+		ORDER   BY free_seq DESC
      </select>
 </mapper>
