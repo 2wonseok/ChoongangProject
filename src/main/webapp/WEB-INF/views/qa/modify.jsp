@@ -49,31 +49,29 @@
 	<div class="row">
 		<div class="col-12 col-lg-6 offset-lg-3">
 			<form id="modify-form" action="${root }/qa/modify" enctype="multipart/form-data" method="post">
-				
-				<div class="form-group">
-						<input type="hidden" name="qa_seq" value="${board.qa_seq }" type="text" class="form-control"	/>
-				</div>
-				
+				<!-- 게시물 번호 히든 처리 -->
+				<input type="hidden" name="qa_seq" value="${board.qa_seq }" type="text" class="form-control"/>
+				<!-- 게시물 수정시 기존의 값이 공개 일경우 라디오버튼이 공개에 체크 되어있도록(라디오) -->
 				<c:if test="${board.qa_secret == '공개' }">
 					<input class="btn-check" id="open" name="qa_secret" value="공개" type="radio" checked/>
 						<label class="btn btn-secondary" for="open">공개</label>
 					<input class="btn-check" id="close" name="qa_secret" value="비공개" type="radio"/>
 						<label class="btn btn-secondary" for="close">비공개</label>
 				</c:if>
-				
+				<!-- 게시물 수정시 기존의 값이 비공개 일경우 라디오버튼이 비공개에 체크 되어있도록(라디오) -->				
 				<c:if test="${board.qa_secret == '비공개' }">
 					<input id="open" name="qa_secret" value="공개" type="radio"/>
 						<label class="btn btn-secondary" for="open">공개</label>
 					<input id="close" name="qa_secret" value="비공개" type="radio" checked/>
 						<label class="btn btn-secondary" for="close">비공개</label>
 				</c:if>
-				
+				<!-- 라디오 버튼이라 비어있을 경우는 없지만 -->
 				<c:if test="${errors.noSecret }">
 					<small class="form-text text-danger">
 						공개 여부를 선택해주세요.
 					</small>
 				</c:if>	
-				
+				<!-- 기존 질문 분류의 값을 가져옴. 질문 선택(셀렉트) -->
 				<div class="input-group mb-3">
 				<label class="input-group-text" for="select_category">질문 선택</label>
 					<select id="select_category" class="form-select" name="qa_category">
@@ -89,45 +87,40 @@
 					    <option value="기타">기타</option>    
 					</select>
 				</div>
-			
+				<!-- 값이 비어있는 경우 -->
 				<c:if test="${errors.noCategory }">
 					<small class="form-text text-danger">
 						질문 종류를 선택 해주세요.
 					</small>
 				</c:if>
-
-					
+			<!-- 기존 제목을 불러옴 -->		
 		    <label for="input1">제목</label>
-		    <input class="form-control" value='<c:out value="${board.qa_title }" />' name="qa_title" type="text" id="input1" placeholder="제목을 입력 하세요.">
-			
-			<c:if test="${errors.noTitle }">
-			<small class="form-text text-danger">
-			제목이 비어있습니다. (기존 제목을 불러옵니다)
-			</small>
-			</c:if>
-		  	<br>
-		  	
+		    	<input class="form-control" value='<c:out value="${board.qa_title }" />' name="qa_title" type="text" id="input1" placeholder="제목을 입력 하세요.">
+					<c:if test="${errors.noTitle }">
+						<small class="form-text text-danger">
+							제목이 비어있습니다. (기존 제목을 불러옵니다)
+						</small>
+					</c:if><br>		
+			<!-- 기존 내용을 불러옴 -->  	
 		    <label for="textarea1">내용</label>
-		    <textarea class="form-control" name="qa_content" id="textarea1" rows="3" placeholder="내용을 입력 하세요."><c:out value="${board.qa_content }" /></textarea>
-		    
-		    <c:if test="${errors.noContent }">
-			<small class="form-text text-danger">
-			내용이 비어있습니다. (기존 내용을 불러옵니다)
-			</small>
-			</c:if>
-		  	<br>		  	
-		  	
+		    	<textarea class="form-control" name="qa_content" id="textarea1" rows="3" placeholder="내용을 입력 하세요."><c:out value="${board.qa_content }" /></textarea>
+		   		    <c:if test="${errors.noContent }">
+						<small class="form-text text-danger">
+						내용이 비어있습니다. (기존 내용을 불러옵니다)
+						</small>
+					</c:if><br>		  	
+		  	<!-- 이미지 첨부 -->
 		    <input type="text" value="${preFileNames }" name ="preFileNames" hidden="hidden">							
-							<div class = "input_wrap">
-								 <input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*"/>
-							</div>
-							<div class="imgs_wrap">
-								<c:forEach items="${qafileNameList }" var="qa_img">	
-									<div>
-										<img width="200" height="200" src="${root }/resources/qaboard/upload/${qa_img }"/>
-									</div>
-								</c:forEach>
-							</div>
+				<div class = "input_wrap">
+					<input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*"/>
+				</div>
+				<div class="imgs_wrap">
+					<c:forEach items="${qafileNameList }" var="qa_img">	
+						<div>
+							<img width="200" height="200" src="${root }/resources/qaboard/upload/${qa_img }"/>
+						</div>
+					</c:forEach>
+				</div>
 
 	<script>
 		$("#input_imgs").on("change", handleImgFileSelect);
