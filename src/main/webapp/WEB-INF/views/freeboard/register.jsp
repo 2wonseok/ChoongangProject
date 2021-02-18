@@ -16,6 +16,28 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+$(document).ready(function (){
+	$('#registerButton').click(function(){
+			var freeArr = ["free_title","free_content"];
+
+			//입력 값 널 체크
+			for(var i=0;i<freeArr.length;i++){
+				//alert(arr[i]);
+				if($.trim($('#'+freeArr[i]).val()) == ''){
+					alert('제목 또는 내용 을 모두 입력해 주세요.');
+					$('#'+freeArr[i]).focus();
+					return false;
+				}
+			}
+			//전송
+			$("#registerRoot").submit();
+			
+
+	});
+});
+</script>
+
 
 <title>Insert title here</title>
 </head>
@@ -30,17 +52,17 @@
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
 
-				<form method="post" action="${root}/freeboard/register">
+				<form method="post" id="registerRoot"  action="${root}/freeboard/register">
 		
 					<div class="form-group">
 						<label for="input1">제목</label> <input name="free_title" type="text"
-							class="form-control" id="input1" placeholder="제목을 입력하세요.">
+							class="form-control" id="free_title" placeholder="제목을 입력하세요." maxlength="100">
 					</div>
 
 					<div class="form-group">
 						<label for="textarea1">내용</label>
-						<textarea name="free_content" class="form-control" id="textarea1"
-							rows="3"></textarea>
+						<textarea name="free_content" class="form-control" id="free_content" placeholder="내용을 입력하세요."
+							rows="3" maxlength="1000"></textarea>
 					</div>
 
 					<div class="form-group">
@@ -51,14 +73,14 @@
 						<c:if test="${authUser.user_grade == 0}">
 							<input type="checkbox" name="notice" value="n" id="notice_check"><label for="notice_check">&nbsp;공지사항</label> 
 						</c:if>
-						<input name="free_nickname" type="text" class="form-control" id="input2" value="${authUser.user_nickname }" readonly>
+						<input name="free_nickname" type="text" class="form-control" id="free_nickname" value="${authUser.user_nickname }" readonly>
 					</div>
-					<button type="submit" class="btn btn-primary">등록</button>
+					<button type="submit" id="registerButton" class="btn btn-primary">등록</button>
 				</form>
 			</div>
 		</div>
 	</div>
-
+<%-- <u:footer/> --%>
 </body>
 </html>
 

@@ -316,10 +316,10 @@ $(document).ready(function() {
 		  		  	
 		  	<strong><label for="input6">이미지</label> <br></strong>	  	
 		  	<div class="form-group" contentEditable="false" id="table">		 
-		  	<c:forEach items="${qafileNameList }" var="qaImg" varStatus="imgNum">
+		  	<c:forEach items="${getQafileNameList }" var="qaImg" varStatus="imgNum">
 				<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${qaImg }" width="200px" height="200px">
 			</c:forEach>
-		  	
+
 			</div>
 			<small class="form-text text-primary">
 	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 hh시mm분" value="${board.qa_regdateKST}" /> 에 작성 되었습니다.
@@ -440,6 +440,7 @@ $(document).ready(function() {
 			</div>		
 		</div>
 	</div>
-</body>
 
+	<u:footer/>
+</body>
 </html>

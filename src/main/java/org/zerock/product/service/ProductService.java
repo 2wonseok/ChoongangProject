@@ -35,4 +35,5 @@ public interface ProductService {
 	
 	public int changeProductLike(ProductLikeVO productLikeVO);
 	
+	public int checkProductLike(ProductLikeVO productLikeVO);
 }

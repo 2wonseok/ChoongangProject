@@ -54,6 +54,8 @@ public interface RevBoardService {
 	
 	// 포인트 50만원 증정 
 	public void pointUpdate(String user_id);
+	// 포인트 50만원 중복증정x
+	public int pointCheck(String user_id);
 	
 	// 좋아요시 like_check 컬럼에 +1 을 해서 이미 좋아요를 했다고 표시
 	public void goodCheck(@Param("user_seq")int user_seq, @Param("rev_seq")int rev_seq );

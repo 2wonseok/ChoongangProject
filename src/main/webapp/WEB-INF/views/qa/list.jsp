@@ -21,16 +21,41 @@
 
 <title>질문 답변 게시판</title>
 <style>
+select {
+width: 170px;
+height : 40px;
+border: 1px solid #D3D3D3;
+border-radius: 3px;
+}
+
+#search {
+width: 100px;
+height : 40px;
+border: 1px solid #D3D3D3;
+border-radius: 3px;
+}
 #btn_add {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #1e263c;
-    padding: 0px 50px;
+    background: #4a4a4a;
+    padding: 0px 30px;
     margin: 0px;
-    line-height: 45px;
+    line-height: 40px;
     float: right;
+    width: 120px;
+	height : 40px;
+	border-radius: 3px;
+	text-align: center;
 }
+
+
+#btn_add_search{
+	color: #fff;
+	font-size: 15px;
+	background: #4a4a4a;
+}
+
 #container {
     clear: both;
     position: relative;
@@ -38,6 +63,11 @@
     padding: 0 0 50px 0;
     width: 1200px;
     z-index: 1;
+}
+#foot{
+	background: #f8f8f8;
+	border-top: 2px solid #E3E1E1;
+	border-bottom: 1px solid #E3E1E1;
 }
 #menu {
   text-align: center;
@@ -120,6 +150,7 @@ thead {
     border-color: #4a4a4a;
     color: #fff;
 }
+
 </style>
 </head>
 <body>
@@ -176,7 +207,7 @@ thead {
 						            	</c:if> 
 						            	<c:if test="${not empty board.qa_filename}">
 						            		<span id="star" class="badge badge-secondary"> 
-						            			<i class="far fa-image"></i>이미지
+						            			<i class="far fa-image"></i> 이미지
 						            		</span>
 						            	</c:if>
 						            	           	
@@ -200,19 +231,21 @@ thead {
 						            	</c:if>		
 						            	<c:if test="${not empty board.qa_filename}">
 						            		<span id="star" class="badge badge-secondary"> 
-						            			<i class="far fa-image"></i>이미지
+						            			<i class="far fa-image"></i> 이미지
 						            		</span>
 						            	</c:if>			            	
 									</c:when>									
 					            </c:choose>			
 							</div>
 			
-								<a href="${boardLink }">         	
+								<a style="color: #4a4a4a;" href="${boardLink }">         	
 									<c:out value="${board.qa_title}" />
-								</a>		 
-							</td>            
+								</a>
+										 
+							</td>
+							            
             				<td>
-					            <small id="writer" class="form-text text-dark"><i class="far fa-user"></i>${board.qa_writer} </small>                        
+					            <small id="writer" class="form-text text-dark"><i class="far fa-user"></i>${board.qa_writer}</small>                        
 					 			<small id="regdate" class="form-text text-dark"><fmt:formatDate pattern="yyyy-MM-dd" value="${board.qa_regdate}" /> </small>
             				</td>                  
             				<td>
@@ -235,36 +268,37 @@ thead {
 			</tbody>
 		</table>
 	</div>
-<div class="row my-3 ml-1">
-	<div class="col-10 align-left">
-		<form action="${root }/qa/list" id="searchForm" class="form-inline my-2 my-lg-0">
-      		<select name="type" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">      
-				<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : ''}>제목</option>
-				<option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : ''}>내용</option>
-				<option value="S" ${pageMaker.cri.type eq 'S' ? 'selected' : ''}>분류</option>
-				<option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : ''}>닉네임</option>
-				<option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : ''}>제목,분류</option>
-				<option value="TWC" ${pageMaker.cri.type eq 'TCSW' ? 'selected' : ''}>제목 or 내용 or 닉네임</option>
-				<option value="TCSW" ${pageMaker.cri.type eq 'D' ? 'selected' : ''}>전체 검색</option>
-					    	    
+	
+	<div id="foot" class="row">
+		<div class="col-7 align-left ml-0 my-lg-2">
+			<form action="${root }/qa/list" id="searchForm" class="form-inline my-0">
+			
+	      		<select name="type" id="inlineFormCustomSelectPref">      
+					<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : ''}>제목</option>
+					<option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : ''}>내용</option>
+					<option value="S" ${pageMaker.cri.type eq 'S' ? 'selected' : ''}>분류</option>
+					<option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : ''}>닉네임</option>
+					<option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : ''}>제목,분류</option>
+					<option value="TWC" ${pageMaker.cri.type eq 'TCSW' ? 'selected' : ''}>전체 검색</option>
 				</select>
-				<input name="keyword" required value="${pageMaker.cri.keyword }" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-				<input type="hidden" name="pageNum" value="1" />
-				<input type="hidden" name="amount" value="${pageMaker.cri.amount }" />
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    	</form>	
+				
+					<input class="col-md-4 ml-3" id="search" name="keyword" required value="${pageMaker.cri.keyword }" type="search" placeholder="검색어 입력" aria-label="Search">
+					<input type="hidden" name="pageNum" value="1" />
+					<input type="hidden" name="amount" value="${pageMaker.cri.amount }" />
+					<button class="btn my-2 my-sm-0 ml-3" type="submit" id="btn_add_search">검색</button>
+	    	</form>	
+		</div>
+		
+		<div class="col-5 align-right my-lg-2">
+			<c:if test="${!empty authUser.user_id}">
+	   			<a href="/qa/register/" id="btn_add">글쓰기</a>
+	   		</c:if>
+		</div> 	
 	</div>
-	
-	<div class="col-2 align-right">
-		<c:if test="${!empty authUser.user_id}">
-   			<a href="/qa/register/" id="btn_add">글쓰기</a>
-   		</c:if>
-	</div> 	
-</div>
-	
 	</div>			
   </section>
 </div>
+
 
 
 <div class="container d-flex justify-content-center">
@@ -342,6 +376,6 @@ thead {
 			</div>		
 		</div>
 	</div>
-
+<u:footer/>
 </body>
 </html>

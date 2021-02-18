@@ -149,7 +149,27 @@ $(document).ready(function(){
 		});
 	});
 
+	/* 하트애니메이션 */
+	$(function() {
+	  $(".HeartAnimation").click(function() {
+		  if (userSeq =='') {
+			  return
+		  }
+		if($(this).hasClass("animate2") === true){
+			$(this).removeClass("animate2");
+	    	$(this).toggleClass("animate");
+		}
+	    $(this).toggleClass("animate");
+	  });
+	});
+	/* 이미 눌렀으면 애니메이션 자동실행 */
+	var check = ${produckLikeCheck }
+	if (check != 0) {
+		 $(".HeartAnimation").addClass("animate2");
+	}
+
 });
+
 </script>
 
 <style>
@@ -201,6 +221,37 @@ $(document).ready(function(){
 	    z-index: 1;
 	}
 
+
+/* 하트애니메이션 <div class="HeartAnimation"></div>*/
+.HeartAnimation {
+  padding-top: 2em;
+  background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/66955/web_heart_animation.png');
+	background-repeat: no-repeat;
+	background-size: 2900%;
+  background-position: left;
+	height: 80px;
+	width:  80px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.animate {
+  animation: heart-burst .8s steps(28) forwards;
+}
+.animate2 {
+  animation: heart-burst .0s steps(28) forwards;
+}
+
+@keyframes heart-burst {
+	0% {
+		background-position: left
+	}
+	100% {
+		background-position: right
+	}
+}
+
+
+
 </style>
 
 
@@ -247,19 +298,27 @@ $(document).ready(function(){
 								<fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
 								<p class="text-right">총 <c:out value="${quantity }"></c:out>개 남음</p>
 								<p class="text-right">판매자 : <c:out value="${ product.user_nickname }"></c:out></p>
-								<div class="d-flex">
-									<p class="text-left">상품설명 </p>
-									<div class="col-6"></div>
-									<span id="like" style="font-size: 24px;"><i class="fas fa-heart"></i> <span id="totalLike">${product.product_like }</span></span>										
-									<div class="mx-1"></div>
-									<span style="font-size: 24px;"><i class="fas fa-eye"></i> ${product.product_readcnt }</span>
+								<div style="font-size: 30px;" class="container d-flex align-items-center justify-content-end">
+									<div id="like">
+										<div class="HeartAnimation"></div>
+									</div>
+									<div id="totalLike">${product.product_like }</div>
+									<div class="mr-2"></div>
+									<div class="mx-2" style="font-size: 30px;">
+										<i class="fas fa-eye"></i>
+									</div>
+									<div class="ml-2"></div>
+									<div>
+										${product.product_readcnt }
+									</div>
 								</div>
 									
+								<p class="text-left">상품설명 </p>
 								<textarea style="resize: none;" rows="15" cols="50" readonly><c:out value="${product.product_info }"></c:out></textarea>
 	
 							<c:if test="${product.product_status != 1 }">
 								<c:if test="${product.product_seller eq authUser.user_seq}">	
-									<div class="row justify-content-center">
+									<div class="row justify-content-center mt-3">
 										<!--수정버튼(작성자만보이도록)  -->
 										<c:url value="/product/modify" var="productModify">
 											<c:param name="product_seq" value="${product.product_seq }"></c:param>

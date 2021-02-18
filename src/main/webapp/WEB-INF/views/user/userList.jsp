@@ -3,17 +3,45 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="u" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script>
+/* 	var lists = new Array();
+	// 스크립트로 el 사용 방법 
+	<c:forEach items="${list}" var="item">
+		lists.push("${item.user_phone}");
+		
+	</c:forEach>
+	
+	for (var i = 0; i < lists.length; i++) {
+		var newPhone = lists[i];
+		
+		var updatePhone = newPhone.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
+		
+		alert(updatePhone);
+		var phoneTD = $("#phoneNum").empty();
+		
+		var tdPhone = '<p>'+updatePhone+'</p>';
+		
+		//$('#phoneNum').text(updatePhone);
+		phoneTD.append(tdPhone);
+		
+		// 문자열 사이에 특수문자 추가
+		var efgh = abcd.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
+	}
+ */
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
 $(document).ready(function(){
+	
 	var message = '${message}';
 	
 	checkModal(message);
@@ -248,7 +276,7 @@ function reload() {
 					<th>가입일</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="userList">
 				<c:forEach items="${list }" var="user">
 					<c:url value="/user/userRead" var="readLink">
 						<c:if test="${cri.type != null && cri.keyword != null }">
@@ -268,7 +296,8 @@ function reload() {
 							</a>
 						</td>
 						<td><c:out value="${user.user_name}"></c:out></td>
-						<td><c:out value="${user.user_phone}"></c:out></td>
+						<c:set var="phone" value="${user.user_phone }" />
+						<td>${fn:substring(phone, 0, 3)}-${fn:substring(phone, 3, 7)}-${fn:substring(phone, 7, 11)}</td>
 						<td>
 							<c:choose>
 								<c:when test="${user.user_grade == 0}">

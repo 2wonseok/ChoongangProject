@@ -20,5 +20,5 @@ public class UserVO {
 	private int user_grade;
 	private int user_point;
 	private Date user_regdate;
-	
+	private int eventCheck;
 }

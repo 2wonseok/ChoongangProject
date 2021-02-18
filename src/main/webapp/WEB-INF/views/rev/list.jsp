@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,7 +68,7 @@ thead {
   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
 	$(document).ready(
 			function() {
@@ -95,36 +96,12 @@ thead {
 </head>
 <body>
 <u:mainNav></u:mainNav>
-<div class="container-sm">
-<section id="container">
-<c:url value="${root }/rev/list" var="searchLink">
-					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
-					<c:param name="pageNum" value="${cri.pageNum }" />
-					<c:param name="amount" value="${cri.amount }" />
-					<c:param name="type" value="${cri.type }"/>
-					<c:param name="keyword" value="${cri.keyword }"/>
-				</c:url>
 
-	<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar">
-				<select class="custom-select my-1 mr-sm-2" name="type" 
-					id="inlineFormCustomSelectPref">
-					<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' } >제목</option>
-					<option value="K" ${pageMaker.cri.type eq 'K' ? 'selected' : '' } >카테고리</option>
-					<option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : '' }>내용</option>
-					<option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : '' }>작성자</option>
-					<option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : '' }>제목 or 내용</option>
-					<option value="TW" ${pageMaker.cri.type eq 'TW' ? 'selected' : '' }>제목 or 작성자</option>
-					<option value="TWC" ${pageMaker.cri.type eq 'TWC' ? 'selected' : '' }>제목 or 내용 or 작성자</option>
-				</select> 
-				<input class="form-control mr-sm-2" type="search" name="keyword" value="${pageMaker.cri.keyword }"
-					placeholder="Search" aria-label="Search" required>
-					<input type="hidden"  name="pageNum" value="1"/>
-					<input type="hidden"  name="amount" value="${pageMaker.cri.amount }"/>
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-			</form>
-			</div>
+
+
+			
 	<div class="container">
-		
+	<section id="container">	
 	
 		<div class="row">
 			<table class="table table-hover">
@@ -153,17 +130,17 @@ thead {
 								<c:param name="keyword" value="${pageMaker.cri.keyword }" />
 								<c:param name="rev_title" value="${rev.rev_title }" />
 							</c:url>
-							<td><c:if test="${rev.rev_category eq 1}">모자</c:if><c:if test="${rev.rev_category eq 2}">신발</c:if><c:if test="${rev.rev_category eq 3}">상의</c:if><c:if test="${rev.rev_category eq 4}">하의</c:if></td>
-							<td><a href="${revLink }"> <c:out
+							<td><c:if test="${rev.rev_category eq 1}">모자</c:if><c:if test="${rev.rev_category eq 2}">신발</c:if><c:if test="${rev.rev_category eq 3}">상의</c:if><c:if test="${rev.rev_category eq 4}">하의</c:if><c:if test="${rev.rev_category eq 5}">전자 기기</c:if><c:if test="${rev.rev_category eq 6}">식품</c:if></td>
+							<td><a href="${revLink }" style="color: black;"> <c:out
 										value="${rev.rev_title}" />
 								<c:if test="${rev.rev_replyCnt gt 0 }"> <!-- gt는 > 이거랑같음 -->
-								<span class="badge badge-info">${rev.rev_replyCnt }</span>
+								<span class="badge bg-secondar"><i class="fas fa-comment-dots"></i>${rev.rev_replyCnt }</span>
 								
 								</c:if>
 							</a></td>
 							<td><c:out value="${rev.rev_writer}" /></td>
 							<td><fmt:formatDate value='${rev.rev_regdate}' pattern='yyyy-MM-dd/hh:mm'/></td>
-							<td><fmt:formatDate value='${rev.rev_regdate}' pattern='yyyy-MM-dd/hh:mm'/></td>
+							<td><fmt:formatDate value='${rev.rev_updatedateKST}' pattern='yyyy-MM-dd/hh:mm'/></td>
 									<td>${rev.rev_good }</td>
 									<td>${rev.rev_hate }</td>
 									<td>${rev.rev_readCnt }</td>
@@ -173,33 +150,40 @@ thead {
 					</c:forEach>
 				</tbody>
 			</table>
-					<c:if test="${ sessionScope.authUser.user_id != null }">
+	<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar ">
+				<select class="custom-select my-1 mr-sm-2" name="type" 
+					id="inlineFormCustomSelectPref">
+					<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' } >제목</option>
+					<option value="K" ${pageMaker.cri.type eq 'K' ? 'selected' : '' } >카테고리</option>
+					<option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : '' }>내용</option>
+					<option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : '' }>작성자</option>
+					<option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : '' }>제목 or 내용</option>
+					<option value="TW" ${pageMaker.cri.type eq 'TW' ? 'selected' : '' }>제목 or 작성자</option>
+					<option value="TWC" ${pageMaker.cri.type eq 'TWC' ? 'selected' : '' }>제목 or 내용 or 작성자</option>
+				</select> 
+				<input class="form-control mr-sm-2" type="search" name="keyword" value="${pageMaker.cri.keyword }"
+					placeholder="Search" aria-label="Search" required>
+					<input type="hidden"  name="pageNum" value="1"/>
+					<input type="hidden"  name="amount" value="${pageMaker.cri.amount }"/>
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+			<div style="float: left;width: 46%;" ></div>
+			<c:if test="${ sessionScope.authUser.user_id != null }">
 					<a id="btn_add" class="btn btn-info" href="${root }/rev/register">후기 쓰기</a>
 					</c:if>
+					<c:url value="${root }/rev/list" var="searchLink">
+					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+					<c:param name="pageNum" value="${cri.pageNum }" />
+					<c:param name="amount" value="${cri.amount }" />
+					<c:param name="type" value="${cri.type }"/>
+					<c:param name="keyword" value="${cri.keyword }"/>
+				</c:url>
 		</div>
-		</section>
-	</div>
-	<div id="myModal" class="modal" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">알림</h5>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<p>성공적으로 처리 됐습니다!</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
-		<div class="container d-flex justify-content-center">
+		
+		
+	
+	
+		<div class="container d-flex justify-content-center mt-5">
 			<div class="pagerWrap">
 					<c:if test="${pageMaker.prev }">
 						<c:url value="/rev/list" var="prevLink">
@@ -242,7 +226,28 @@ thead {
 					</c:if>
 		</div>
 	</div>
-	
-
+	</section>
+	</div>
+<u:footer/>
+<div id="myModal" class="modal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">알림</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>성공적으로 처리 됐습니다!</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

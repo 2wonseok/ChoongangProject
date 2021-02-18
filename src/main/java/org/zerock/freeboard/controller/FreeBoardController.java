@@ -82,6 +82,8 @@ public class FreeBoardController {
 		// 공지일 때
 		if("n".equals(notice)) {
 			freeVO.setFree_notice(2);
+		} else {
+			freeVO.setFree_notice(1);
 		}
 		freeVO.setFree_writer(user.getUser_id());
 		System.out.println("freeVO : "+freeVO.toString());

@@ -28,12 +28,29 @@
     line-height: 45px;
     float: right;
     }
+    #footdiv {
+    width: 1000px;
+    margin: -200px auto;
+    padding: 0 30px 30px 30px;
+    text-align: center;
+    color: gray;
+    white-space: pre-line;
+   
+  	bottom:0;
+}
 }
 </style>
 
 <meta charset="UTF-8">
 <link rel="stylesheet"
   href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/default.css?ver=1155">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/skin/board/qna/style.css?v2">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/board.common.css?ver=1155">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/js/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/mobile.css?ver=1155">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/contents.css?ver=1155">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/plugin/featherlight/featherlight.min.css?ver=1155">
 <script
   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -42,32 +59,25 @@
   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
-$(document).ready(function() {
-	$("#remove-btn").click(function(e) {
-		e.preventDefault();
- 
-		// #modify-form 의 action attr 값을 바꿔야함.
-
-		$("#modify-form").attr("action", "${removeLink}");
-
-		$("#modify-form").submit();
-	});
-});
+	 $(document).ready(function() {
+		$("#remove-btn").click(function(e) {
+			e.preventDefault();
+	 
+			// #modify-form 의 action attr 값을 바꿔야함.
+	 		
+			$("#modify-form").attr("action", '${root }/rev/remove');
+			$("#modify-form").submit();
+		});
+	}); 
+	
 	
 </script>
-<title>Insert title here</title>
+<title>구매후기글 수정</title>
 </head>
 <body>
 <u:mainNav></u:mainNav>
-	<div class="container-sm">
-		<div class="row">
-			<div class="col-12 col-lg-6 offset-lg-3">
-				<h1>게시물 수정</h1>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12 col-lg-6 offset-lg-3">
-			<c:url value="${root }/rev/modify" var="modifyLink">
+	<div class="container mt-5">
+	<c:url value="${root }/rev/modify" var="modifyLink">
 					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
 					<c:param name="pageNum" value="${cri.pageNum }" />
 					<c:param name="amount" value="${cri.amount }" />
@@ -75,46 +85,69 @@ $(document).ready(function() {
 					<c:param name="keyword" value="${cri.keyword }"/>
 				</c:url>
 			
-			<c:url value="${root }/rev/remove" var="removeLink">
-					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
-					<c:param name="pageNum" value="${cri.pageNum }" />
-					<c:param name="amount" value="${cri.amount }" />
-					<c:param name="type" value="${cri.type }"/>
-					<c:param name="keyword" value="${cri.keyword }"/>
-				</c:url>
-
-				<form id="modify-form" action="${modifyLink }" method="post"
-				enctype="multipart/form-data">
-					<!-- 같은경로 라서 action="" 를 생략할수있음  -->
-					<div class="form-group">
-						<label for="input1">#번호</label> <input readonly name="rev_seq"
-							value="${RevBoard.rev_seq }" type="text" class="form-control"
-							id="input1" />
-					</div>
-					<div class="form-group">
-						
-						<label for="input2">카테고리</label> <%-- <input  name="rev_category"
-							value="${RevBoard.rev_category }" type="text" class="form-control"
-							id="input2" /> --%>
-							<select name="rev_category" >
-								<option value="${RevBoard.rev_category }">카테고리 선택</option>
-								<option value="1">모자</option>
-								<option value="2">신발</option>
-								<option value="3">상의</option>
-								<option value="4">하의</option>
-							</select>
-							<c:if test="${errors.noCategory }">
-							<small class="form-text text-muted">
-								카테고리를 입력하세요
-							</small>
-						</c:if>
-					</div>
+	<form id="modify-form" action="${modifyLink}" method="post" enctype="multipart/form-data">
+    <c:if test="${errors.noCategory }">
+	<small class="form-text text-muted">
+			카테고리를 입력하세요
+	</small>
+	</c:if>
+	<%-- <input type="text" name="rev_category" class="form-group" value="${category }"/> --%> 
 	
-					
-					<div class="form-group">
-						<%--<label for="input3">파일이름</label> <input  name="upload"
-							value="${RevBoard.rev_filename }" type="file" class="form-control"
-							id="input3" /> --%>
+	<div class="bo_w_tit write_div">
+        <label for="wr_subject" class="sound_only">카테고리<strong>필수</strong></label>
+        
+        <div id="autosave_wrapper write_div">
+            <select name="rev_category" class="form-control rm_input full_input" required>
+				<option value="${RevBoard.rev_category }">카테고리 선택</option>
+				<option value="1">모자</option>
+				<option value="2">신발</option>
+				<option value="3">상의</option>
+				<option value="4">하의</option>
+				<option value="5">전자 기기</option>
+				<option value="6">식품</option>
+			</select>
+         </div>
+        
+    </div>
+    <div class="bo_w_tit write_div">
+        <label for="wr_subject" class="sound_only">제목<strong>필수</strong></label>
+        
+        <div id="autosave_wrapper write_div">
+            <input type="text" name="rev_title" value="<c:out value="${RevBoard.rev_title }" />" maxlength="50" id="wr_subject" required="" class="frm_input full_input required" size="50" maxlength="255" placeholder="제목">
+                    </div>
+        
+    </div>
+
+    <div class="write_div">
+        <label for="wr_content" class="sound_only">내용<strong>필수</strong></label>
+        <div class="wr_content ">
+                        <span class="sound_only">웹에디터 시작</span>
+<textarea id="wr_content" name="rev_content" class="rm_input full_input required" required maxlength="65536" style="width:100%;height:300px" placeholder="내용을 입력해 주세요."><c:out value="${RevBoard.rev_content }" /></textarea>
+<span class="sound_only">웹 에디터 끝</span>                    </div>
+        <input type="text" name="rev_writer" class="form-group" value="${authUser.user_id }" hidden/>
+    </div>
+
+	<div class="bo_w_info"><b>관련 파일</b></div>
+     <div class = "inputArea">
+	<label for="revImg"></label>
+	 <div class="select_img"><img src="" /></div>
+	 
+	<!-- <script>
+	  $("#revImg").change(function(){
+	   if(this.files && this.files[0]) {
+	    var reader = new FileReader;
+	    reader.onload = function(data) {
+	     $(".select_img img").attr("src", data.target.result).width(50);        
+	    }
+	    reader.readAsDataURL(this.files[0]);
+	   }
+	  });
+ </script> -->
+ 	<!--이미지첨부시작  -->
+ 	
+							<div class = "input_wrap">
+								
+						
 							<!--이미지첨부시작  -->
 							<label for="input3">파일이름</label>
 							<input type="text" value="${preFileNames }" name ="preFileNames" hidden="hidden">							
@@ -159,7 +192,7 @@ $(document).ready(function() {
 										var reader = new FileReader();
 										reader.onload = function(e){
 											
-											 var html = "<div><img width=\"500\" src=\""+e.target.result+"\"></div>";
+											 var html = "<div><img width=\"150\" src=\""+e.target.result+"\"></div>";
 											$(".imgs_wrap").append(html);
 										
 										}
@@ -167,66 +200,35 @@ $(document).ready(function() {
 									});
 							 }
 						 	</script>
+						 	
 					</div>
+        
+                
+                <input type="hidden" value="${RevBoard.rev_seq }" name="rev_seq">
+                <input type="hidden" value="${cri.pageNum }" name="pageNum" /> 
+				<input type="hidden" value="${cri.amount }" name="amount" /> 
+				<input type="hidden" value="${cri.type }" name="type" /> 
+				<input type="hidden" value="${cri.keyword }" name="keyword" />
 					
-					
-					
-					<div class="form-group">
-						
-						<label for="input4">제목</label> <input
-							value='<c:out value = "${RevBoard.rev_title }"/>' name=rev_title type="text"
-							class="form-control" id="input4" placeholder="제목을 입력하세요.">
-							<c:if test="${errors.noTitle }">
-							<small class="form-text text-muted">
-								제목을 입력하세요
-							</small>
-							</c:if>
-					</div>
-
-					<div class="form-group">
-						
-						<label for="textarea1">내용</label>
-						<textarea name="rev_content" class="form-control" id="textarea1"
-							rows="3"><c:out value="${RevBoard.rev_content }" /></textarea>
-							<c:if test="${errors.noContent }">
-							<small class="form-text text-muted">
-								내용을 입력하세요
-							</small>
-							</c:if>
-					</div>
-					
-					<div class="form-group">
-						<label for="input5">조회수</label> <input  name="rev_readcnt"
-							value="${RevBoard.rev_readCnt }" type="text" class="form-control"
-							id="input5"  readonly/>
-					</div>
-					
-
-					<div class="form-group">
-						<label for="input6">작성자</label> <input name="rev_writer"
-							value='<c:out value="${RevBoard.rev_writer }"/>' type="text"
-							class="form-control" id="input6" readonly>
-					</div>
-										
-					
-					<div class="form-group">
-						<label for="input7">수정일</label> <input  
-							value="${RevBoard.rev_updatedate }" type="text" class="form-control"
-							id="input7" readonly />
-					</div>
-
-					<input type="hidden" value="${cri.pageNum }" name="pageNum" /> 
-					<input type="hidden" value="${cri.amount }" name="amount" /> 
-					<input type="hidden" value="${cri.type }" name="type" /> 
-					<input type="hidden" value="${cri.keyword }" name="keyword" /> 
-					<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
-					<button id="remove-btn" type="submit" class="btnbtn-danger">글
-						삭제</button>
-					<button id="btn_add" type="submit" class="btn btn-primary">글 수정</button>
+    				<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
+						<button id="remove-btn" type="submit" class="btn btn-danger">글 삭제</button>
+						<button id="btn_add" type="submit" class="btn btn-primary">글 수정</button> 
 					</c:if>
-				</form>
+   					
+					
+ 		<!-- <footer>
+			<div id="footdiv">
+				<div class="container" style="margin-left:100px;">
+					사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
+					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
+				</div>
 			</div>
-		</div>
-	</div>
+		</footer> -->
+		
+   		
+    </div>
+    </form>
+</div>
+    <u:footer></u:footer>			
 </body>
 </html>

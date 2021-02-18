@@ -1,5 +1,6 @@
 package org.zerock.RevBoard.domain;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import lombok.Data;
@@ -14,4 +15,11 @@ public class ReplyVO {
 	private Date reply_updatedate;
 	private String reply_boardname;
 	private int reply_boardseq;
+	
+	public Date getReply_regdateKST() {
+		return Date.from(reply_regdate.toInstant().plus(9, ChronoUnit.HOURS));
+	}
+	
+		
+	
 }

@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.product.domain.OrderVO;
+import org.zerock.product.domain.ProductVO;
 import org.zerock.user.domain.Criteria;
 import org.zerock.user.domain.UserVO;
 import org.zerock.user.mapper.UserMapper;
@@ -149,6 +150,36 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<OrderVO> cartList(int order_userseq, Criteria cri) {
 		return mapper.cartList(order_userseq, cri);
+	}
+
+	@Override
+	public List<ProductVO> productList(String user_nickname, Criteria cri) {
+		return mapper.productList(user_nickname, cri);
+	}
+
+	@Override
+	public List<OrderVO> orderInfo(int order_productseq, Criteria cri) {
+		return mapper.orderInfo(order_productseq, cri);
+	}
+
+	@Override
+	public int getTotalOrderList(int order_userseq, Criteria cri) {
+		return mapper.getTotalOrderList(order_userseq, cri);
+	}
+	
+	@Override
+	public int getTotalCartList(int order_userseq, Criteria cri) {
+		return mapper.getTotalCartList(order_userseq, cri);
+	}
+	
+	@Override
+	public int getTotalProductList(String user_nickname, Criteria cri) {
+		return mapper.getTotalProductList(user_nickname, cri);
+	}
+
+	@Override
+	public int getTotalOrderInfoList(int order_productseq, Criteria cri) {
+		return mapper.getTotalOrderInfoList(order_productseq, cri);
 	}
 
 }

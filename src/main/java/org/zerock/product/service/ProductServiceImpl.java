@@ -22,6 +22,10 @@ public class ProductServiceImpl implements ProductService {
 
 	private ProductMapper mapper;
 	
+	public int checkProductLike (ProductLikeVO productLikeVO) {
+		return mapper.checkProductLike(productLikeVO);
+	}
+	
 	@Override
 	@Transactional
 	public int changeProductLike(ProductLikeVO productLikeVO) {

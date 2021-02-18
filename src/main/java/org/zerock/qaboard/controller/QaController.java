@@ -193,7 +193,7 @@ public class QaController {
 			if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
 				@SuppressWarnings("unchecked")
 				List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
-				model.addAttribute("qafileNameList", fileNamesList);
+				model.addAttribute("getQafileNameList", fileNamesList);
 				
 				return "/qa/get";
 			}
@@ -208,16 +208,22 @@ public class QaController {
 				String userNickname = userVO.getUser_nickname();				
 				int userGrade = userVO.getUser_grade();				
 				System.out.println(vo.toString());
-
+				System.out.println("세션 곧 로그인은 되어있음");
 				if(userNickname.equals(vo.getQa_writer()) || userGrade == 0) {										
 					//	작성자와 세션에서 가져온 userNickname이 같은 경우
 					//	get 페이지로 이동
 					service.addCnt(qa_seq);
 					model.addAttribute("board", vo);
+					if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
+						@SuppressWarnings("unchecked")
+						List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
+						model.addAttribute("getQafileNameList", fileNamesList);
+					} 
 					return "/qa/get";
 
 				} else {
-					return "redirect:/qa/list";
+					//세션 곧 로그인은 되어있지만 일반 유저인경우 (자신의 글이 아닌경우 포함)
+					return "redirect:/qa/read_error";
 				}
 			}
 		}
@@ -243,10 +249,13 @@ public class QaController {
 			@ModelAttribute("criteria") Criteria cri, Model model) {
 				
 		QaVO vo = service.get(qa_seq);		
-		model.addAttribute("board", vo);	
+		model.addAttribute("board", vo);
+		
+		String preFileNames = vo.getQa_filename();
 		if (vo.getQa_filename() != null && !vo.getQa_filename().isEmpty()) {
 			@SuppressWarnings("unchecked")
 			List<String> fileNamesList = Arrays.asList(vo.getQa_filename().split(","));
+			model.addAttribute("preFileNames", preFileNames);
 			model.addAttribute("qafileNameList", fileNamesList);
 		}
 	}
@@ -271,7 +280,7 @@ public class QaController {
 		}
 		
 		// 파일이 업로드 될 경로 설정
-		String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload");
+		String saveDir = request.getSession().getServletContext().getRealPath("/resources/qaboard/upload");
 		// 위에서 설정한 경로의 폴더가 없을 경우 생성
 		System.out.println(saveDir);
 		File dir = new File(saveDir);
@@ -310,8 +319,12 @@ public class QaController {
 		if (!errors.isEmpty()) {
 			rttr.addFlashAttribute("errors", errors);
 			rttr.addFlashAttribute("board", board);
+			rttr.addFlashAttribute("secret", board.getQa_secret());
+			rttr.addFlashAttribute("title",board.getQa_title());
+			rttr.addFlashAttribute("content", board.getQa_content());
+			rttr.addFlashAttribute("filename", board.getQa_filename());
 
-			return "redirect:/qa/modify?rev_seq=" + board.getQa_seq();
+			return "redirect:/qa/modify?qa_seq=" + board.getQa_seq();
 		}
 
 		// list를 string 쉼표구분으로 만들기
@@ -328,7 +341,7 @@ public class QaController {
 			List<String> fileNamesList = Arrays.asList(oldFileNames.split(","));
 			System.out.println(fileNamesList);
 
-			String saveDir2 = request.getSession().getServletContext().getRealPath("/resources/upload");
+			String saveDir2 = request.getSession().getServletContext().getRealPath("/resources/qaboard/upload");
 
 			/* 그림파일삭제 */
 			for (String f : fileNamesList) {

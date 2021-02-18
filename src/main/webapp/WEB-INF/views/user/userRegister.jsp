@@ -27,13 +27,16 @@ var goPopup = function(){
 	} 
 	var jusoCallBack = function(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr, jibunAddr, zipNo) { 
 		document.getElementById("zipNo").value = zipNo; 
-		document.getElementById("addr").value = roadAddrPart1 + " " + addrDetail; 
+		//document.getElementById("addr").value = roadAddrPart1 + " " + addrDetail; 
+		$("#addr").val(roadAddrPart1+" "+addrDetail);
 		if(addrDetail.length>30) { 
 			alert('상세주소가 너무 길어 다시 입력해야 합니다.'); 
 			return; 
 		} 
-		
-		document.getElementById("addrDetail").value = addrDetail; 
+		$("#zipLabel").hide();
+		$("#zipLabel2").hide();
+		//document.getElementById("addrDetail").value = addrDetail; 
+		//document.getElementById("addrDetail").text(addrDetail); 
 	}
 
 $(document).ready(function() {
@@ -485,7 +488,7 @@ $(document).ready(function() {
 	          <i class="material-icons prefix">home</i>
 	          <input id="addr" name="user_address" type="text" required/>
 	          <button type="button" id="zip_code_btn" onclick="javascript:goPopup();" class="btn waves-effect waves-light col s2">검색</button>
-	          <label for="user_address">주소</label>
+	          <label for="addr" id="zipLabel">주소</label>
 	        </div>
 	      </div>
 	      
@@ -494,7 +497,7 @@ $(document).ready(function() {
 	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
 	          <i class="material-icons prefix">home</i>
 	          <input id="zipNo" name="user_addresscode" type="text" required/>
-	          <label for="user_addresscode">우편번호</label>
+	          <label for="zipNo" id="zipLabel2">우편번호</label>
 	        </div>
 	      </div>
 	      
