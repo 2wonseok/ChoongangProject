@@ -97,7 +97,7 @@
         <label for="wr_subject" class="sound_only">카테고리<strong>필수</strong></label>
         
         <div id="autosave_wrapper write_div">
-            <select name="rev_category" class="form-control rm_input full_input required">
+            <select name="rev_category" class="form-control rm_input full_input" required>
 				<option value="${RevBoard.rev_category }">카테고리 선택</option>
 				<option value="1">모자</option>
 				<option value="2">신발</option>
@@ -122,7 +122,7 @@
         <label for="wr_content" class="sound_only">내용<strong>필수</strong></label>
         <div class="wr_content ">
                         <span class="sound_only">웹에디터 시작</span>
-<textarea id="wr_content" name="rev_content" class="rm_input full_input required"  maxlength="65536" style="width:100%;height:300px" placeholder="내용을 입력해 주세요."><c:out value="${RevBoard.rev_content }" /></textarea>
+<textarea id="wr_content" name="rev_content" class="rm_input full_input required" required maxlength="65536" style="width:100%;height:300px" placeholder="내용을 입력해 주세요."><c:out value="${RevBoard.rev_content }" /></textarea>
 <span class="sound_only">웹 에디터 끝</span>                    </div>
         <input type="text" name="rev_writer" class="form-group" value="${authUser.user_id }" hidden/>
     </div>
