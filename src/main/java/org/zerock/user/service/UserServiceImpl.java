@@ -162,4 +162,24 @@ public class UserServiceImpl implements UserService {
 		return mapper.orderInfo(order_productseq, cri);
 	}
 
+	@Override
+	public int getTotalOrderList(int order_userseq, Criteria cri) {
+		return mapper.getTotalOrderList(order_userseq, cri);
+	}
+	
+	@Override
+	public int getTotalCartList(int order_userseq, Criteria cri) {
+		return mapper.getTotalCartList(order_userseq, cri);
+	}
+	
+	@Override
+	public int getTotalProductList(String user_nickname, Criteria cri) {
+		return mapper.getTotalProductList(user_nickname, cri);
+	}
+
+	@Override
+	public int getTotalOrderInfoList(int order_productseq, Criteria cri) {
+		return mapper.getTotalOrderInfoList(order_productseq, cri);
+	}
+
 }

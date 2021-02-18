@@ -219,7 +219,7 @@ $(document).ready(function() {
 		<div class="container">
 			<section id="container">
 				<h3>회원 정보 수정</h3>
-				<input type="text" id="phoneNum" value="${read.user_phone }">
+				<input type="hidden" id="phoneNum" value="${read.user_phone }">
 				<form id="modify-form" action="${root}/user/userModify" method="post">
 				<input type="hidden" name="pageNum" value=${cri.pageNum }>
 				<input type="hidden" name="amount" value=${cri.amount }>

@@ -78,8 +78,10 @@ $(document).ready(function() {
 			} 
 		
 		$("#productTable").hide();
+		$("#productPage").hide();
 		$("#payComplateTable").show();
 		$("#send_btn").show();
+		$("#orderInfoPage").show();
 		
 		var check_arr = [];
 		
@@ -87,6 +89,7 @@ $(document).ready(function() {
 			var checkVal = $(this).val();
 			check_arr.push(checkVal);
 			console.log(check_arr);
+			var complateList = $("#complateList").empty();
 			
 			$.ajax({
 				type: "GET",
@@ -96,6 +99,22 @@ $(document).ready(function() {
 				success: function(res) {
 					alert('성공');
 					console.log(res);
+					
+					for (var i = 0; i < res.length; i++) {
+						var order_seq = res[i].order_seq;
+						var order_poname = res[i].order_poname;
+						var order_username = res[i].order_username;
+						var order_date = res[i].order_date;
+						
+						var complateTbody = '<tr>'
+															 +'<td><input type="checkbox" id="order_seq" name="order_seq" value="'+order_seq+'" /></td>'
+															 +'<td><a style= "color: #000;" href="${root}/product/get?product_seq='+order_productseq+'">&nbsp;'+order_poname+'</a></td>'
+															 +'<td><p>'+dateString(order_date)+'</p></td>';
+															 
+					 		complateList.append(complateTbody);
+					 		
+					}
+					
 				}
 				
 			});
@@ -109,6 +128,8 @@ $(document).ready(function() {
 		$("#productTable").show();
 		$("#payComplateTable").hide();
 		$("#send_btn").hide();
+		$("#orderInfoPage").hide();
+		$("#productPage").show();
 	});
 	
 	showList();
@@ -148,6 +169,35 @@ p {
     float: left;
     border-radius: 3px;
 }
+/* 페이지 네이션 css */
+.pagerWrap {
+    position: relative;
+    text-align: center;
+    margin: 0px 0;
+}
+.pagerWrap a {
+    width: 34px;
+    height: 34px;
+    color: #333;
+    border: 1px solid #dedede;
+    text-align: center;
+    line-height: 34px;
+    background: #fff;
+    display: inline-block;
+}
+.pagerWrap a.on {
+    border-color: #222222;
+    background: #4a4a4a;
+    color: #fff;
+}
+.pagerWrap a:hover {
+    border-color: #4a4a4a;
+    color: #4a4a4a;
+}
+.pagerWrap a.on:hover {
+    border-color: #4a4a4a;
+    color: #fff;
+}
 </style>
 <body>
 <u:mainNav/>
@@ -182,7 +232,48 @@ p {
 				<tbody id="complateList">
 				
 				</tbody>
-			</table>	
+			</table>
+			<!-- 판매 목록 페이징 -->
+			<div class="container d-flex justify-content-center">
+				<div class="pagerWrap" id="productPage">
+						<c:if test="${pageMaker.prev}">
+							<c:url value="/user/productList" var="preLink">
+								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
+									<c:param name="type" value="${pageMaker.cri.type }"></c:param>
+									<c:param name="keyword" value="${pageMaker.cri.keyword }"></c:param>
+								</c:if>
+								<c:param name="pageNum" value="${pageMaker.startPage - 1 }"></c:param>
+								<c:param name="amount" value="${pageMaker.cri.amount}"></c:param>
+							</c:url>
+								<a href="${preLink}">Previous</a>
+						</c:if>
+						
+						<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+							<c:url value="/user/productList" var="pageLink">
+								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
+									<c:param name="type" value="${param.type }"></c:param>
+									<c:param name="keyword" value="${param.keyword }"></c:param>
+								</c:if>	
+								<c:param name="pageNum" value="${num }"></c:param>
+								<c:param name="amount" value="${pageMaker.cri.amount }"></c:param>
+							</c:url>
+								<a class="${pageMaker.cri.pageNum == num ? 'on' : ''}" href="${pageLink}">${num }</a>
+						</c:forEach>
+						
+						<c:if test="${pageMaker.next }">
+							<c:url value="/user/productList" var="nextLink">
+								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
+									<c:param name="type" value="${pageMaker.cri.type }"></c:param>
+									<c:param name="keyword" value="${pageMaker.cri.keyword }"></c:param>
+								</c:if>
+								<c:param name="pageNum" value="${pageMaker.endPage + 1 }"></c:param>
+								<c:param name="amount" value="${pageMaker.cri.amount}"></c:param>
+							</c:url>
+							<a href="${nextLink }">Next</a>
+						</c:if>
+				</div>
+		</div>
+			
 		</section>
 	</div>
 	</c:when>

@@ -98,7 +98,7 @@
 			WHERE
 				order_userseq = #{order_userseq}
  			AND
-				rn BETWEEN (#{cri.pageNum} - 1) * #{cri.amount} + 1 AND #{cri.pageNum} * #{cri.amount}
+				rn BETWEEN (#{cri.pageNum} - 1) * 5 + 1 AND #{cri.pageNum} * 5
 	</select>
 	
 	<select id="cartList" resultType="org.zerock.product.domain.OrderVO">
@@ -119,7 +119,7 @@
 			AND
 				order_status = 0
  			AND
-				rn BETWEEN (#{cri.pageNum} - 1) * #{cri.amount} + 1 AND #{cri.pageNum} * #{cri.amount}
+				rn BETWEEN (#{cri.pageNum} - 1) * 5 + 1 AND #{cri.pageNum} * 5
 	</select>
 	
 	<select id="productList" resultType="org.zerock.product.domain.ProductVO">
@@ -139,7 +139,7 @@
    WHERE
    		user_nickname = #{user_nickname}
    AND	
-    	rn BETWEEN (#{cri.pageNum} - 1) * #{cri.amount} + 1 AND #{cri.pageNum} * #{cri.amount} 
+    	rn BETWEEN (#{cri.pageNum} - 1) * 5 + 1 AND #{cri.pageNum} * 5
 	
 	</select>
 	
@@ -162,6 +162,22 @@
 				order_status = 1
  			AND
 				rn BETWEEN (#{cri.pageNum} - 1) * #{cri.amount} + 1 AND #{cri.pageNum} * #{cri.amount}
+	</select>
+	
+	<select id="getTotalOrderList" resultType="int">
+		SELECT COUNT(*) FROM tbl_order WHERE order_userseq = #{order_userseq}
+	</select>
+	
+	<select id="getTotalCartList" resultType="int">
+		SELECT COUNT(*) FROM tbl_order WHERE order_userseq = #{order_userseq} AND order_status = 0
+	</select>
+	
+	<select id="getTotalProductList" resultType="int">
+		SELECT COUNT(*) FROM tbl_product WHERE user_nickname = #{user_nickname}
+	</select>
+	
+	<select id="getTotalOrderInfoList" resultType="int">
+		SELECT COUNT(*) FROM tbl_order WHERE order_productseq = #{order_productseq} AND order_status = 1
 	</select>
 	
 	<update id="gradeUpdate">

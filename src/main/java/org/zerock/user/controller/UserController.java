@@ -341,7 +341,7 @@ public class UserController {
 		}
 		
 		List<OrderVO> order = service.orderList(order_userseq, cri);
-		
+		model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalOrderList(vo.getUser_seq(), cri)));
 		model.addAttribute("order", order);
 	}
 	
@@ -355,7 +355,7 @@ public class UserController {
 		}
 		
 		List<OrderVO> cart = service.cartList(order_userseq, cri);
-		
+		model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalCartList(vo.getUser_seq(), cri)));
 		model.addAttribute("cartList", cart);
 	}
 	
@@ -389,12 +389,16 @@ public class UserController {
 	}
 	
 	@GetMapping("/productList") // 판매 목록 
-	public void proList() {
+	public void proList(HttpSession session, Criteria cri, Model model) {
+		UserVO vo = (UserVO) session.getAttribute("authUser");
 		
+		if (vo != null) {
+			model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalProductList(vo.getUser_nickname(), cri)));
+		}
 	}
 	
 	@GetMapping(value = "/productList2", produces = MediaType.APPLICATION_JSON_UTF8_VALUE) // 판매 목록 AJAX
-	public @ResponseBody List<ProductVO> pdList(HttpSession session, Criteria cri) {
+	public @ResponseBody List<ProductVO> pdList(HttpSession session, Criteria cri, Model model) {
 		List<ProductVO> list = new ArrayList<ProductVO>();
 		UserVO vo = (UserVO) session.getAttribute("authUser");
 		
@@ -402,13 +406,15 @@ public class UserController {
 			list = service.productList(vo.getUser_nickname(), cri);
 		}
 		
+		model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalProductList(vo.getUser_nickname(), cri)));
+		
 		return list;
 	}
 	
 	@GetMapping("/orderList")
-	public @ResponseBody List<OrderVO> odInfo(OrderVO order, Criteria cri) {
+	public @ResponseBody List<OrderVO> odInfo(OrderVO order, Criteria cri, Model model) {
 		List<OrderVO> vo = service.orderInfo(order.getOrder_productseq(), cri);
-		System.out.println(vo);
+		model.addAttribute("orderPageMaker", new PageDTO(cri, service.getTotalOrderInfoList(order.getOrder_productseq(), cri)));
 		return vo;
 		
 	}
