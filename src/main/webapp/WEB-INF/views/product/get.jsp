@@ -123,9 +123,22 @@ $(document).ready(function(){
 			$("#myModal").modal("show");
 			return;
 		}
+		$("#checkCartOrder").val("order");
+
+		$("#order_form").submit();
+	});
+	$("#cart_btn").click(function(){
+		if ("${authUser}" == ""){
+			$("#myModal .modal-body p").html("로그인 해야합니다.");
+			$("#myModal").modal("show");
+			return;
+		}
+		$("#checkCartOrder").val("cart");
 		
 		$("#order_form").submit();
 	});
+	
+	 
 	
 	
 	/* 하트 누르면 */
@@ -326,6 +339,7 @@ $(document).ready(function(){
 							            	<c:param name="amount" value="${cri.amount }"></c:param>
 							            	<c:param name="type" value="${cri.type }"></c:param>
 								    		<c:param name="keyword" value="${cri.keyword }"></c:param>      
+								    		<c:param name="array" value="${cri.array }"></c:param>      
 										</c:url>
 										
 										<button class="btn_add mx-2" type="button" onclick="location.href='${productModify}' ">정보 수정</button>
@@ -337,6 +351,7 @@ $(document).ready(function(){
 							            	<c:param name="amount" value="${cri.amount }"></c:param>
 							            	<c:param name="type" value="${cri.type }"></c:param>
 								    		<c:param name="keyword" value="${cri.keyword }"></c:param>      
+								    		<c:param name="array" value="${cri.array }"></c:param>      
 										</c:url>
 										<form action="${productFinish }" method="post">
 											<button class="btn_add mx-2">판매종료</button>
@@ -376,7 +391,7 @@ $(document).ready(function(){
 							</select>
 						</td>
 						<td colspan="2" >
-							<form id="order_form" action="${root }/product/order" method="post">
+							<form id="order_form" action="${root }/product/cart" method="get">
 								<input name="product_seq" value="${product.product_seq }" hidden="hidden"/>
 								<input name="order_filename" value="${productImgList[0] }" hidden="hidden"/>
 								<input name="order_productseq" value="${product.product_seq }" hidden="hidden"/>
@@ -384,6 +399,10 @@ $(document).ready(function(){
 								<input name="order_username" value="${authUser.user_name }" hidden="hidden"/>
 								<input name="order_useraddress" value="${authUser.user_address }" hidden="hidden"/>
 								<input name="order_userphone" value="${authUser.user_phone }" hidden="hidden"/>
+								<input hidden="hidden" name="type" value="${cri.type }"/>
+					    		<input hidden="hidden" name="keyword" value="${cri.keyword }"/>      
+					    		<input hidden="hidden" name="array" value="${cri.array }"/> 
+					    		<input id="checkCartOrder" hidden="hidden" name="checkCartOrder" value=""/> 
 								<div id="optionBox">
 								</div>
 							</form>
@@ -398,12 +417,12 @@ $(document).ready(function(){
 					            	<input hidden="hidden" name="amount" value="${cri.amount }"/>
 					            	<input hidden="hidden" name="type" value="${cri.type }"/>
 						    		<input hidden="hidden" name="keyword" value="${cri.keyword }"/>      
-						    		<input hidden="hidden" name="array" value="${cri.array }"/>      
+						    		<input hidden="hidden" name="array" value="${cri.array }"/>
 									<button class="btn_add mx-4"> 목록으로</button>
 								</form>
 								<div class="col-2"></div>
 								<input class="total_price" value="0" name="order_totalprice" readonly/>
-								<button class="btn_add mx-2" type="button"> 장바구니</button>
+								<button id="cart_btn" class="btn_add mx-2" type="button"> 장바구니</button>
 								<button id="order_btn" class="btn_add mx-2" type="button"> 구매</button>
 							</div>
 						</td>
