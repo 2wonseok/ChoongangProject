@@ -130,10 +130,18 @@ public class RevBoardController {
 		int cnt = service.boardSelect(revVo.getRev_writer());
 		if (cnt == 5) {
 			service.pointUpdate(user.getUser_id());
+			/* service.pointCheck(user.getUser_id()); */
 			rttr.addFlashAttribute("result", revVo.getRev_writer()); // 객체로 붙게됨.
 			rttr.addFlashAttribute("message", revVo.getRev_writer() + "님 포인트 500000원이 증정됐습니다.");
 
-		}
+		} /*
+			 * else if (cnt == 5 && user.getEventCheck() == 1) {
+			 * rttr.addFlashAttribute("result", revVo.getRev_writer()); // 객체로 붙게됨.
+			 * rttr.addFlashAttribute("message", revVo.getRev_writer() +
+			 * "님은 이미 포인트 이벤트에 참여하셨습니다."); }
+			 */
+			 
+			 
 
 		return "redirect:/rev/list";
 	}

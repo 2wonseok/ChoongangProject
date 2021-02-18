@@ -113,7 +113,7 @@
         <label for="wr_subject" class="sound_only">제목<strong>필수</strong></label>
         
         <div id="autosave_wrapper write_div">
-            <input type="text" name="rev_title" value="<c:out value="${RevBoard.rev_title }" />" maxlength="15" id="wr_subject" required="" class="frm_input full_input required" size="50" maxlength="255" placeholder="제목">
+            <input type="text" name="rev_title" value="<c:out value="${RevBoard.rev_title }" />" maxlength="50" id="wr_subject" required="" class="frm_input full_input required" size="50" maxlength="255" placeholder="제목">
                     </div>
         
     </div>

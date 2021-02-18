@@ -102,7 +102,7 @@
         <label for="wr_subject" class="sound_only">제목<strong>필수</strong></label>
         
         <div id="autosave_wrapper write_div">
-            <input type="text" name="rev_title" value="${title }" maxlength="15" id="wr_subject" required="" class="frm_input full_input required" size="50"  placeholder="제목">
+            <input type="text" name="rev_title" value="${title }" maxlength="50" id="wr_subject" required="" class="frm_input full_input required" size="50"  placeholder="제목">
                     </div>
         
     </div>
@@ -116,29 +116,17 @@
         <input type="text" name="rev_writer" class="form-group" value="${authUser.user_id }" hidden/>
     </div>
 
-	<div class="bo_w_info"><b>관련 파일</b></div>
+	<div class="bo_w_info"><b>관련 파일</b>
      <div class = "inputArea">
 	<label for="revImg"></label>
-	 <div class="select_img"><img src="" /></div>
-	 
-	<!-- <script>
-	  $("#revImg").change(function(){
-	   if(this.files && this.files[0]) {
-	    var reader = new FileReader;
-	    reader.onload = function(data) {
-	     $(".select_img img").attr("src", data.target.result).width(50);        
-	    }
-	    reader.readAsDataURL(this.files[0]);
-	   }
-	  });
- </script> -->
- 	<!--이미지첨부시작  -->
-							<div class = "input_wrap">
-								 <input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*"/>
+	
+ 							<!--이미지첨부시작  -->
+							<div class = "input_wrap" >
+								 <input type="file"  class="form-control" name="upload" id="input_imgs" multiple="multiple" accept="image/*"/>
 							</div>	
 							<div class="imgs_wrap">
 								<img id="img"/>
-							</div>
+							
 						
 							<script>
 							  
@@ -171,7 +159,7 @@
 										var reader = new FileReader();
 										reader.onload = function(e){
 											
-											 var html = "<div><img width=\"150\" src=\""+e.target.result+"\"></div>";
+											 var html = "<div><img width=\"200\" src=\""+e.target.result+"\"></div>";
 											$(".imgs_wrap").append(html);
 										
 										}
@@ -181,8 +169,8 @@
 						 	</script>
 						<!--이미지첨부끝 -->
 	</div>
-        
-                
+  </div>     
+      </div>          
    
 
         
@@ -190,10 +178,10 @@
 
     <div class="btn_confirm write_div">
         <input type="submit" value="작성완료" id="btn_submit" accesskey="s" class="btn_submit btn-secondary" style="border: thin;">
-         <footer>
+        <footer>
 			<div id="footdiv">
 			
-				<div class="container" style="margin-left:100px;">
+				<div class="container" style="margin-left:100px;width:100%;float:center;">
 					사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
 					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
 				</div>
@@ -203,6 +191,6 @@
     </form>
 </section>
 </div>
-
+ 
 </body>
 </html>

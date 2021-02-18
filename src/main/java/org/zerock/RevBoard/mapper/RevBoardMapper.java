@@ -55,6 +55,9 @@ public interface RevBoardMapper {
 	// 만약에 글을 5개 썻을경우 포인트를 50만포인트증정.
 	public void pointUpdate(String user_id);
 	
+	// 포인트를 받았을 시에 +1 해서 중복으로 못받음
+	public int pointCheck(String user_id);
+	
 	// 리플카운터를 리스트에서 몇개인지 업데이트해줌
 	public void updateReplyCnt(@Param("reply_boardseq") int reply_boardseq, @Param("amount") int amount);
 	
