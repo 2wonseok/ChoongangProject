@@ -44,4 +44,6 @@ public interface UserMapper {
 	public List<OrderVO> cartList(@Param("order_userseq") int order_userseq, @Param("cri") Criteria cri);
 	
 	public List<ProductVO> productList(@Param("user_nickname") String user_nickname, @Param("cri") Criteria cri);
+
+	public List<OrderVO> orderInfo(@Param("order_productseq") int order_productseq, @Param("cri") Criteria cri);
 }

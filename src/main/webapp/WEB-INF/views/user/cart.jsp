@@ -37,8 +37,8 @@ $(document).ready(function(){
     z-index: 1;
 }
 .table img {
-	width: 100px;
-	height: 100px;
+	width: 70px;
+	height: 70px;
 }
 .tablep p {
 	display:table-cell

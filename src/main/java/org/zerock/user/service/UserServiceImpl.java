@@ -157,4 +157,9 @@ public class UserServiceImpl implements UserService {
 		return mapper.productList(user_nickname, cri);
 	}
 
+	@Override
+	public List<OrderVO> orderInfo(int order_productseq, Criteria cri) {
+		return mapper.orderInfo(order_productseq, cri);
+	}
+
 }

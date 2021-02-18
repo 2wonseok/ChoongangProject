@@ -49,4 +49,5 @@ public interface UserService {
 	
 	public List<ProductVO> productList(@Param("user_nickname") String user_nickname, @Param("cri") Criteria cri);
 	
+	public List<OrderVO> orderInfo(@Param("order_productseq") int order_productseq, @Param("cri") Criteria cri);
 }

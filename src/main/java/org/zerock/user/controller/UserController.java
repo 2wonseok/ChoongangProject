@@ -364,7 +364,7 @@ public class UserController {
 		
 	}
 	
-	@GetMapping("/smsSubmit")
+	@GetMapping("/smsSubmit") // 회원 문자 전송
 	public void smsSubmit(@RequestParam("seq") ArrayList<Integer> seq, Model model) {
 		List<UserVO> list = new ArrayList<UserVO>();
 			for (int no : seq) {
@@ -388,12 +388,12 @@ public class UserController {
 		return "redirect:/user/userList";
 	}
 	
-	@GetMapping("/productList")
+	@GetMapping("/productList") // 판매 목록 
 	public void proList() {
 		
 	}
 	
-	@GetMapping(value = "/productList2", produces = MediaType.APPLICATION_JSON_UTF8_VALUE) 
+	@GetMapping(value = "/productList2", produces = MediaType.APPLICATION_JSON_UTF8_VALUE) // 판매 목록 AJAX
 	public @ResponseBody List<ProductVO> pdList(HttpSession session, Criteria cri) {
 		List<ProductVO> list = new ArrayList<ProductVO>();
 		UserVO vo = (UserVO) session.getAttribute("authUser");
@@ -403,5 +403,13 @@ public class UserController {
 		}
 		
 		return list;
+	}
+	
+	@GetMapping("/orderList")
+	public @ResponseBody List<OrderVO> odInfo(OrderVO order, Criteria cri) {
+		List<OrderVO> vo = service.orderInfo(order.getOrder_productseq(), cri);
+		System.out.println(vo);
+		return vo;
+		
 	}
 }
