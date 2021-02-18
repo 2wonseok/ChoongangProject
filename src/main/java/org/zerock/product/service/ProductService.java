@@ -31,9 +31,11 @@ public interface ProductService {
 
 	public List<ProductOptionVO> getProductOption(int product_seq);
 
-	public void makeOrder(List<OrderVO> list);
+	public int makeCart(List<OrderVO> list);
 	
 	public int changeProductLike(ProductLikeVO productLikeVO);
 	
 	public int checkProductLike(ProductLikeVO productLikeVO);
+	
+	public List<OrderVO> getOrderList(String[] order_seq);
 }
