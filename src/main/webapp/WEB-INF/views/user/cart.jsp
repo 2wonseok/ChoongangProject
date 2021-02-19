@@ -31,6 +31,8 @@ $(document).ready(function(){
 			alert('체크 박스를 선택해주세요');
 			return false;
 		} 
+		
+		$("#buyForm").submit();
 	})
 	
 
@@ -67,7 +69,7 @@ p {
 		<div class="container">
 			<section id ="container">
 			<h3>장바구니</h3><br>
-			<form action="${root }/product/order">
+			<form action="${root }/product/order" id="buyForm">
 			<button type="submit" id="buy">구매하기</button>
 				<table class="table table-hover">
 					<thead>
