@@ -59,15 +59,12 @@ p {
 <body>
 <u:mainNav/>
 
-<c:choose>
+<c:choose> 
 	<c:when test="${authUser != null }">
 		<div class="container">
 			<section id ="container">
 			
 			<form action="${root }/product/order" method="post">
-				
-				<!-- 상품페이지에서 넘어왔는데 카트에서 넘어왔는지 구별하는것 -->
-				<input name="checkCartOrder" value="${checkCartOrder }" hidden="hidden"/>
 			
 			<h3>결제 페이지</h3><br>
 			
