@@ -23,6 +23,18 @@ $(document).ready(function(){
 		}
 	});	
 	
+	$("#buy").click(function(e) {
+		e.preventDefault();
+		var checkVal = $("input:checkbox[name='order_seq']:checked").val();
+		
+		if (!checkVal) {
+			alert('체크 박스를 선택해주세요');
+			return false;
+		} 
+	})
+	
+
+	
 });
 </script>
 <title>장바구니</title>
@@ -55,6 +67,8 @@ p {
 		<div class="container">
 			<section id ="container">
 			<h3>장바구니</h3><br>
+			<form action="${root }/product/order">
+			<button type="submit" id="buy">구매하기</button>
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -67,7 +81,7 @@ p {
 					<tbody>
 					<c:forEach items="${cartList }" var="cart">
 						<tr>
-							<td><p><input type="checkbox" id="seq" name="seq" value="" /></p></td>
+							<td><p><input type="checkbox" id="order_seq" name="order_seq" value="${cart.order_seq }" /></p></td>
 							<td>
 								<img alt="상품사진" src="${root }/resources/upload/${cart.order_filename}">
 								<a href="${root}/product/get?product_seq=${cart.order_productseq}" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
@@ -80,6 +94,7 @@ p {
 					</c:forEach>
 					</tbody>
 				</table>
+				</form>
 			</section>
 		</div>
 	</c:when>

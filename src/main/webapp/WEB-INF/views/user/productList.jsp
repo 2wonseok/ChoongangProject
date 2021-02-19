@@ -108,9 +108,10 @@ $(document).ready(function() {
 						
 						var complateTbody = '<tr>'
 															 +'<td><input type="checkbox" id="order_seq" name="order_seq" value="'+order_seq+'" /></td>'
-															 +'<td><a style= "color: #000;" href="${root}/product/get?product_seq='+order_productseq+'">&nbsp;'+order_poname+'</a></td>'
-															 +'<td><p>'+dateString(order_date)+'</p></td>';
-															 
+															 +'<td><a style= "color: #000;" href="${root}/product/get?product_seq='+order_seq+'">&nbsp;'+order_poname+'</a></td>'
+															 +'<td><p>'+order_username+'</p></td>'
+															 +'<td><p>'+dateString(order_date)+'</p></td>'
+															 +'<tr>';
 					 		complateList.append(complateTbody);
 					 		
 					}
