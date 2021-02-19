@@ -61,7 +61,7 @@ border-radius: 3px;
     position: relative;
     margin: 35px auto 0px;
     padding: 0 0 50px 0;
-    width: 1200px;
+    width: 1000px;
     z-index: 1;
 }
 #foot{
@@ -305,12 +305,9 @@ thead {
 		</div> 	
 	</div>
 	</div>			
-  </section>
-</div>
 
 
-
-<div class="container d-flex justify-content-center">
+<div class="container d-flex justify-content-center" style="margin-top: 15px;">
 		<div class="pagerWrap">
 			<!-- 페이징 처리 -->
 		  	<c:if test="${pageMaker.prev }" >
@@ -345,7 +342,8 @@ thead {
 	</div>
 </div>
 
-
+	</section>
+</div>
 
 <div class="modal fade" id="password_input">
 		<div class="modal-dialog">

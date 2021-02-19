@@ -21,7 +21,14 @@
 	border-radius: 3px;
 	text-align: center;
 }
-
+#container {
+    clear: both;
+    position: relative;
+    margin: 35px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1000px;
+    z-index: 1;
+}
 
 
 </style>
@@ -41,10 +48,10 @@
 </script>
 
 <u:mainNav/>
-<h2> 질문 답변 글쓰기</h2>
-<div class="container-sm">
-	<div class="row">
-		<div class="col-12 col-lg-6 offset-lg-3">
+<div class="container">
+	<section id="container">
+	<h3>질문 답변 글쓰기</h3>
+		<!-- <div class="col-12 col-lg-6 offset-lg-3"> -->
 			<form action="${root }/qa/register" method="post" enctype="multipart/form-data">
 				<!-- 게시물의 공개, 비공개 상태 선택 (라디오) -->
 				<input class="btn-check" id="open" name="qa_secret" value="공개" type="radio" checked/> 
@@ -152,8 +159,8 @@
 			
 				<input type="submit" value="글 등록" id="btn_add">	
 			</form> 
-		</div>
-	</div>
+		<!-- </div> -->
+	</section>	
 </div>
 <u:footer/>
 </body>

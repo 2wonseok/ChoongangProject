@@ -67,7 +67,14 @@ var grade = '${authUser.user_grade}';
 #image {
 	max-width: 100%
 }
-
+#container {
+    clear: both;
+    position: relative;
+    margin: 35px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1000px;
+    z-index: 1;
+}
 
 </style>
 
@@ -279,15 +286,9 @@ $(document).ready(function() {
 
 
 	
-<div class="container-sm">
-	<div class="row">
-		<div class="col-12 col-lg-6 offset-lg-3">
-			<h1>게시물 보기</h1>
-		</div>
-	</div>
-	
-	<div class="row">
-		<div class="col-12 col-lg-6 offset-lg-3">		
+<div class="container">
+	<section id="container">
+			<h3>게시물 보기</h3>
 	<%-- 
 		<form action="${pageContext.request.contextPath }/board/register">
 	 --%>	
@@ -399,8 +400,7 @@ $(document).ready(function() {
 
 </c:if>
 
-		</div>
-	</div>
+	</section>
 </div>
 
 <div class="modal fade" id="modify-delete-reply-modal">

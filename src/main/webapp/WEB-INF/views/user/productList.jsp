@@ -143,7 +143,7 @@ $(document).ready(function() {
     position: relative;
     margin: 50px auto 0px;
     padding: 0 0 50px 0;
-    width: 1200px;
+    width: 1000px;
     z-index: 1;
 }
 .table img {

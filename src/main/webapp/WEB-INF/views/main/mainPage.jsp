@@ -33,7 +33,7 @@ $(document).ready(function() {
     position: relative;
     margin: 35px auto 0px;
     padding: 0 0 50px 0;
-    width: 1200px;
+    width: 1000px;
     z-index: 1;
 }
 #footdiv {
@@ -50,7 +50,7 @@ $(document).ready(function() {
     height: 300px;
     position: absolute;
     margin-top: -240px;
-    margin-left: 255px;
+    margin-left: 157px;
 }
 #foothr {
 		margin-bottom: 15rem;
@@ -90,7 +90,7 @@ $(document).ready(function() {
     padding: 0px 30px;
     line-height: 45px;
     border-radius: 3px;
-    margin-left: 520px;
+    margin-left: 425px;
 		margin-top: 20px;
 		margin-bottom: -100px;
 }
