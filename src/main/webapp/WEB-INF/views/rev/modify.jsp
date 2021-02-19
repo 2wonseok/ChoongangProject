@@ -30,14 +30,13 @@
     }
     #footdiv {
     width: 1000px;
-    margin: -200px auto;
     padding: 0 30px 30px 30px;
     text-align: center;
     color: gray;
     white-space: pre-line;
-   
   	bottom:0;
-}
+	}
+	
 }
 </style>
 
@@ -66,17 +65,33 @@
 			// #modify-form 의 action attr 값을 바꿔야함.
 	 		
 			$("#modify-form").attr("action", '${root }/rev/remove');
+			var remove = confirm('정말 삭제하시겠습니까?');
+			if (remove) {
 			$("#modify-form").submit();
+			}
 		});
 	}); 
 	
+	 $(document).ready(function() {
+			$("#btn_add").click(function(e) {
+				e.preventDefault();
+				
+				var modify = confirm('정말 수정하시겠습니까?');
+				if (modify) {
+					$("#modify-form").submit();
+				}
+			})
+			 });
 	
 </script>
 <title>구매후기글 수정</title>
 </head>
 <body>
 <u:mainNav></u:mainNav>
-	<div class="container mt-5">
+<c:choose>
+	<c:when test="${authUser.user_grade == 0 || authUser.user_id eq RevBoard.rev_writer}">
+	<div class="container mt-5" style="width: 1000px">
+	<h3>게시글 수정</h3><br>
 	<c:url value="${root }/rev/modify" var="modifyLink">
 					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
 					<c:param name="pageNum" value="${cri.pageNum }" />
@@ -96,8 +111,8 @@
 	<div class="bo_w_tit write_div">
         <label for="wr_subject" class="sound_only">카테고리<strong>필수</strong></label>
         
-        <div id="autosave_wrapper write_div">
-            <select name="rev_category" class="form-control rm_input full_input" required>
+        <div id="autosave_wrapper write_div" style="margin-bottom:8px;">
+            <select name="rev_category" class="form-control" style="width:160px;" required>
 				<option value="${RevBoard.rev_category }">카테고리 선택</option>
 				<option value="1">모자</option>
 				<option value="2">신발</option>
@@ -109,7 +124,7 @@
          </div>
         
     </div>
-    <div class="bo_w_tit write_div">
+    <div class="bo_w_tit write_div" style="margin-bottom:8px;">
         <label for="wr_subject" class="sound_only">제목<strong>필수</strong></label>
         
         <div id="autosave_wrapper write_div">
@@ -132,18 +147,6 @@
 	<label for="revImg"></label>
 	 <div class="select_img"><img src="" /></div>
 	 
-	<!-- <script>
-	  $("#revImg").change(function(){
-	   if(this.files && this.files[0]) {
-	    var reader = new FileReader;
-	    reader.onload = function(data) {
-	     $(".select_img img").attr("src", data.target.result).width(50);        
-	    }
-	    reader.readAsDataURL(this.files[0]);
-	   }
-	  });
- </script> -->
- 	<!--이미지첨부시작  -->
  	
 							<div class = "input_wrap">
 								
@@ -216,19 +219,32 @@
 					</c:if>
    					
 					
- 		<!-- <footer>
-			<div id="footdiv">
-				<div class="container" style="margin-left:100px;">
-					사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
-					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
-				</div>
-			</div>
-		</footer> -->
 		
    		
     </div>
     </form>
 </div>
-    <u:footer></u:footer>			
+    <footer>
+    	<div class="container">
+    		<section id="container1">
+    		
+			<div id="footdiv">
+			
+				<<!-- div class="container1" style="margin-left:100px;width:100%;"> -->
+					사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
+					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
+				<!-- </div> -->
+			</div>
+			</section>
+    	</div>
+		</footer> 
+    </c:when>
+    <c:otherwise>
+    		<script type="text/javascript">
+    			alert('관리자나 작성자만 접근가능합니다');
+    			location.href='${root}/rev/list';
+    		</script>
+    </c:otherwise>
+    </c:choose>		
 </body>
 </html>

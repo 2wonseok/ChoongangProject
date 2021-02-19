@@ -126,22 +126,14 @@
 	<select id="boardSelect" resultType="int">
         SELECT COUNT(rev_seq) FROM tbl_reviewboard WHERE rev_writer = #{rev_writer}
     </select>
-	<!-- 포인트 50만원 증정 -->
+	<!-- 포인트 50만원 증정 , 중복 체크-->
     <update id="pointUpdate">
         UPDATE tbl_user
         SET
-            user_point = user_point + 500000
+            user_point = user_point + 500000, EventCheck = 1
         WHERE
             user_id = #{user_id}
     </update>
-   <!-- 포인트 50만원 중복증정 체크 -->
-    <update id="pointCheck">
-    	UPDATE tbl_user
-    	SET 
-    		EventCheck = 1
-    	WHERE 
-    		user_id = #{user_id}
-    </update> 
     
     <update id="updateReplyCnt">
 		UPDATE tbl_reviewboard SET rev_replycnt = rev_replycnt + #{amount}

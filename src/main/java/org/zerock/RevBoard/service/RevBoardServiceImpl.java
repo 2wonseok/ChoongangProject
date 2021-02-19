@@ -98,12 +98,6 @@ public class RevBoardServiceImpl implements RevBoardService{
 	@Override
 	public void pointUpdate(String user_id) {
 		mapper.pointUpdate(user_id);
-		
-	}
-	// 포인트 50만원 증정 중복 x
-	@Override
-	public int pointCheck(String user_id) {
-		return mapper.pointCheck(user_id);
 	}
 	
 	// 좋아요시 like_check 컬럼에 +1 을 해서 이미 좋아요를 했다고 표시
@@ -177,4 +171,5 @@ public class RevBoardServiceImpl implements RevBoardService{
 	public void hateCheck_cancel(int user_seq, int rev_seq) {
 		mapper.hateCheck_cancel(user_seq, rev_seq);
 	}
+	
 }
