@@ -62,7 +62,7 @@ var grade = '${authUser.user_grade}';
 
 
 #table {
-    border: 2px solid black;
+    border: 1px solid white;
 }
 #image {
 	max-width: 100%
@@ -318,7 +318,7 @@ $(document).ready(function() {
 		  	<strong><label for="input6">이미지</label> <br></strong>	  	
 		  	<div class="form-group" contentEditable="false" id="table">		 
 		  	<c:forEach items="${getQafileNameList }" var="qaImg" varStatus="imgNum">
-				<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${qaImg }" width="200px" height="200px">
+				<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${qaImg }" width="245px" height="245px">
 			</c:forEach>
 
 			</div>

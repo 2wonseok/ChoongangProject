@@ -74,15 +74,28 @@ public class QaController {
 
 	
 	@GetMapping("/register")
-	public void register(@ModelAttribute("criteria") Criteria cri) {
-		
+	public String register(@ModelAttribute("criteria") Criteria cri) {
+		// 세션에 로그인이 되어있지 않은 상태로 url에 우회로 접속시
+		if (session.getAttribute("authUser") == null) {
+			System.out.println("세션 없는 상태로 글쓰기");
+			return "redirect:/qa/writer_error";
+		}
+		return "redirect:/qa/register";
 	}
 	
+	// register 페이지를 세션에 로그인 되어 있지 않은 상태로 url로 접속시
+		@GetMapping({"/writer_error"})
+		public void writer_error() {
+			
+	}
+		
 	// 게시물 작성
 	@PostMapping("/register")
 	public String register(QaVO board, RedirectAttributes rttr, 
-			MultipartFile[] upload, HttpServletRequest request) {
-		
+			MultipartFile[] upload, HttpServletRequest request, HttpSession session) {
+		if (session.getAttribute("authUser") == null) {
+			return "redirect:/qa/writer_error";
+		} else {		
 		Map<String, Boolean> errors = new HashMap<String, Boolean>();
 		// 제목의 값이 없을때
 		if (board.getQa_title().isEmpty() || board.getQa_title() == null) {
@@ -158,6 +171,7 @@ public class QaController {
 		service.register(board);				
 		rttr.addFlashAttribute("result", board.getQa_seq());
 		return "redirect:/qa/list";
+		}
 	}
 	
 	// 게시물 가져오기
