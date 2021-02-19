@@ -52,6 +52,11 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public int makeOrder(String[] order_seq) {
+		return mapper.updateOrder(order_seq);
+	}
+	
+	@Override
 	@Transactional
 	public int makeCart(List<OrderVO> list) {
 		int count = 0;

@@ -117,6 +117,8 @@ $(document).ready(function(){
 		totalp();
 	});
 	
+	
+	/* 장바구니/구매 버튼 */
 	$("#order_btn").click(function(){
 		if ("${authUser}" == ""){
 			$("#myModal .modal-body p").html("로그인 해야합니다.");

@@ -38,4 +38,7 @@ public interface ProductService {
 	public int checkProductLike(ProductLikeVO productLikeVO);
 	
 	public List<OrderVO> getOrderList(String[] order_seq);
+
+	public int makeOrder(String[] order_seq);
+
 }

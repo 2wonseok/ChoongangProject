@@ -463,7 +463,9 @@ public class ProductController {
 				rttr.addFlashAttribute("message", "장바구니 담기 성공");			
 			}
 			return "redirect:/product/get";
+		/* get에서 구매버튼 눌렀으면 order로 넘겨주기 */
 		} else {
+			rttr.addFlashAttribute("checkCartOrder", checkCartOrder);
 			rttr.addFlashAttribute("direct", list);
 			return "redirect:/product/order";
 		}
@@ -471,22 +473,56 @@ public class ProductController {
 	}
 	
 	@GetMapping("/order")
-	public void order (String[] order_seq, @ModelAttribute("direct") List<OrderVO> direct, Model model, HttpSession session) {
+	public void order (String checkCartOrder, String[] order_seq, @ModelAttribute("direct") List<OrderVO> direct, Model model, HttpSession session) {
 		List<OrderVO> list = new ArrayList<>();
 		
 		if(order_seq !=null && order_seq.length != 0) {
 			list = service.getOrderList(order_seq);
 		} else {
-			list = direct;	
+			list = direct;
 		}
 		model.addAttribute("orderList", list);
 	}
 	
 	@PostMapping("/order")
-	public String order (String[] order_seq) {
+	public String order (@RequestParam ("usePoint") String usePoint, 
+			@RequestParam ("requireTotalPrice") String requireTotalPrice, 
+			@RequestParam ("checkCartOrder") String checkCartOrder, 
+			String[] order_seq, 
+			OrderVO orderVO, RedirectAttributes rttr) {
 		
-		System.out.println(order_seq.length);
+		/* 일단 가격이 맞는지 확인 */
+		if(!usePoint.equals(requireTotalPrice)) {
+			rttr.addFlashAttribute("message", "가격이 부족합니다.");
+			return "redirect:/product/list";
+		}
 		
+		/* get에서 구매버튼으로 눌렀을 때 넘어온거면*/
+		if (checkCartOrder.equals("order")) {
+			
+			List<OrderVO> orderVOList = orderVO.getOrderVOList();
+			if(orderVOList.size() == 0) {
+				rttr.addFlashAttribute("message", "선택한 항목이 없습니다");
+				return "redirect:/product/list";
+			}
+			
+			service.makeCart(orderVOList);
+			
+			
+		/* 장바구니에서 order_seq 배열로 넘어온것을 처리 */
+		} else {
+			
+			if(order_seq.length == 0) {
+				rttr.addFlashAttribute("message", "선택한 항목이 없습니다");
+				return "redirect:/product/list";
+			}
+			int result= service.makeOrder(order_seq);
+			if(order_seq.length != result) {
+				rttr.addFlashAttribute("message", "오더 실패");
+				return "redirect:/product/list";
+			}
+		
+		}
 		
 		return "redirect:/user/userOrderList";
 	}

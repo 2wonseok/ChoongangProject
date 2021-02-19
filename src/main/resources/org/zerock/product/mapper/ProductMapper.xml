@@ -32,15 +32,25 @@
 		delete from tbl_productlike where product_seq = #{product_seq} AND user_seq = #{user_seq}
 	</delete>
 	
-
 	<insert id="insertOrder">
 		insert into tbl_order (order_seq, order_productseq, order_poseq,
-		order_poname, order_poprice, order_quantity, order_userseq, order_username, order_useraddress, order_userphone, order_filename)
+		order_poname, order_poprice, order_quantity, order_userseq, order_username, 
+		order_useraddress, order_userphone, order_filename, order_status, order_date)
 		values 
 		(order_seq.nextval, #{order_productseq}, #{order_poseq},
 		#{order_poname}, #{order_poprice}, #{order_quantity},
-		#{order_userseq}, #{order_username}, #{order_useraddress}, #{order_userphone}, #{order_filename})
+		#{order_userseq}, #{order_username}, #{order_useraddress}, 
+		#{order_userphone}, #{order_filename}, #{order_status}, SYSDATE)
 	</insert>
+	
+	<update id="updateOrder">
+		UPDATE tbl_order
+		SET
+		order_status = 1,
+		order_date = sysdate
+		WHERE
+		order_seq = #{order_seq}
+	</update>
 
 	<insert id="insertProductOption" >
 		insert into tbl_productoption (productoption_seq, product_seq, po_name, po_quantity, po_price

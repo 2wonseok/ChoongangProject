@@ -1,6 +1,7 @@
 package org.zerock.product.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -24,4 +25,7 @@ public class OrderVO {
 	private String order_username;
 	private String order_useraddress;
 	private String order_userphone;
+	
+	private List<OrderVO> orderVOList;
+	
 }

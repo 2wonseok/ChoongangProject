@@ -152,27 +152,26 @@ $(document).ready(function(){
 <div class="container">
   <section id="container">
   		
-  		<div class="row col-md-6">
+  		<div class="row col-10 offset-1">
   		
-  		<form id="formArray" action="${root }/product/list">
-          	<input hidden="hidden" name="product_seq" value="${product.product_seq }"/>
-          	<input hidden="hidden" name="pageNum" value="${pageDTO.cri.pageNum }"/>
-          	<input hidden="hidden" name="amount" value="${pageDTO.cri.amount }"/>
-          	<input hidden="hidden" name="type" value="${pageDTO.cri.type }"/>
-   			<input hidden="hidden" name="keyword" value="${pageDTO.cri.keyword }"/>            	
-   			<input id="inputArray" hidden="hidden" name="array" value="${pageDTO.cri.array }"/>            	
-        </form>
-  			<button id="latest_btn" class="btn" type="button">최신순</button>
-  			<button id="like_btn" class="btn" type="button">찜많은순</button>
-  			<button id="priceLow_btn" class="btn" type="button">가격낮은순</button>
-  			<button id="priceHign_btn" class="btn" type="button">가격높은순</button>
-  			<button id="readcnt_btn" class="btn" type="button">조회순</button>
+	  		<form id="formArray" action="${root }/product/list">
+	          	<input hidden="hidden" name="product_seq" value="${product.product_seq }"/>
+	          	<input hidden="hidden" name="pageNum" value="${pageDTO.cri.pageNum }"/>
+	          	<input hidden="hidden" name="amount" value="${pageDTO.cri.amount }"/>
+	          	<input hidden="hidden" name="type" value="${pageDTO.cri.type }"/>
+	   			<input hidden="hidden" name="keyword" value="${pageDTO.cri.keyword }"/>            	
+	   			<input id="inputArray" hidden="hidden" name="array" value="${pageDTO.cri.array }"/>            	
+	        </form>
+	  			<button id="latest_btn" class="btn" type="button">최신순</button>
+	  			<button id="like_btn" class="btn" type="button">찜많은순</button>
+	  			<button id="priceLow_btn" class="btn" type="button">가격낮은순</button>
+	  			<button id="priceHign_btn" class="btn" type="button">가격높은순</button>
+	  			<button id="readcnt_btn" class="btn" type="button">조회순</button>
   		</div>
   		
-		<div class="row">
-			<div class="col-md-6, col-md-offset-3">
+		<div class="row justify-content-center">
 		
-				<div class="row d-flex justify-content-center">
+				<div class="row col-10 d-flex justify-content-center">
 					<!--상품 bootstrap card 시작  -->
 					<c:forEach items="${list }" var="product">
 			
@@ -219,12 +218,11 @@ $(document).ready(function(){
 					</c:forEach>
 				</div>
 				<!--상품 bootstrap card 끝  -->			
-		</div>
 	</div>
 		
 	 	
 	 	<!-- 등록버튼 & 서치바 row -->
-		<div class="row my-3 ml-1">
+		<div class="row col-10 offset-1 my-2">
 		 
 			<!-- 서치  -->
 			<div class="col-8 align-left">

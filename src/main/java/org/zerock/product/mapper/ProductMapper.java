@@ -53,6 +53,8 @@ public interface ProductMapper {
 		
 	/* order */
 		public OrderVO readOrderbyOrderSeq(int order_seq);
+
+		public int updateOrder(String[] order_seq);
 	
 	
 }
