@@ -160,7 +160,7 @@ thead {
 		<div class="container-sm">
   			<div class="row">
 			    <table class="table table-hover ">
-
+					<!-- 리스트 게시물의 상단 메뉴 -->
       				<thead>
 				       <tr>
 				         <th id="menu_no">NO</th>
@@ -173,62 +173,58 @@ thead {
 				    </thead>
 
       			<tbody>      
-
+					<!-- c:forEach로 Controller의 list를 board라는 변수로 사용하도록 지정 -->
+					<!-- 예) 제목의 값을 가져오고 싶다 : board.qa_title -->
         			<c:forEach items="${list }" var="board">
           				<tr>
 							<td id="menu">${board.qa_seq} </td>
 							<td id="menu">${board.qa_category} </td>              
 							<td>            
-								<c:url value="/qa/get" var="boardLink">
-					            	<c:param value="${board.qa_seq }" name="qa_seq" />
-					            	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
-					            	<c:param value="${pageMaker.cri.amount }" name="amount" />
-					            	<c:param value="${pageMaker.cri.type }" name="type"	/>
-					            	<c:param value="${pageMaker.cri.keyword }" name="keyword" />
-								</c:url>
 							<div>			
 								<c:choose>									
-
+									<%-- qa_secret의 값이 비공개 일때 --%>
 					            	<c:when test="${board.qa_secret eq '비공개'}">					            	
 					            		<span id="lock" class="badge badge-secondary"> 
 					            			<i class="fas fa-lock"></i> 비밀글
 					            		</span>
-				            	
+				            			<%-- qa_updatedate의 값이 비어 있지 않을때 --%>
 					            		<c:if test="${not empty board.qa_updatedate}">
 					            			<span class="badge badge-secondary"> 
 					            				<i class="fas fa-edit"></i> 수정됨
 					            			</span>
 					            		</c:if>
-	
+										<%-- qa_readcnt 의 값이 100이 넘을시 --%>
 						            	<c:if test="${board.qa_readcnt > 100}">
 						            		<span id="star" class="badge badge-secondary"> 
 						            			<i class="far fa-star"></i> 인기글
 						            		</span>
 						            	</c:if> 
+						            	<%-- qa_filename 의 값이 비어 있지 않을시  --%>
 						            	<c:if test="${not empty board.qa_filename}">
 						            		<span id="star" class="badge badge-secondary"> 
 						            			<i class="far fa-image"></i> 이미지
 						            		</span>
-						            	</c:if>
-						            	           	
+						            	</c:if>						            	           	
 					            	</c:when>
-            	
+					            	
+            						<%-- qa_secret의 값이 공개 일때 --%>
 									<c:when test="${board.qa_secret eq '공개'}"> 
 										<span class="badge badge-secondary"> 
 											<i class="fas fa-unlock"></i> 공개글
 										</span>
-
+										<%-- qa_updatedate의 값이 비어 있지 않을때 --%>
 										<c:if test="${not empty board.qa_updatedate}">
 						            		<span class="badge badge-secondary"> 
 						            		<i class="fas fa-edit"></i> 수정됨
 						            		</span>
 						            	</c:if>
-
+										<%-- qa_readcnt 의 값이 100이 넘을시 --%>
 						            	<c:if test="${board.qa_readcnt > 100}">
 						            		<span id="star" class="badge badge-secondary"> 
 						            		<i class="far fa-star"></i> 인기글
 						            		</span>
 						            	</c:if>		
+						            	<%-- qa_filename 의 값이 비어 있지 않을시  --%>
 						            	<c:if test="${not empty board.qa_filename}">
 						            		<span id="star" class="badge badge-secondary"> 
 						            			<i class="far fa-image"></i> 이미지
@@ -237,28 +233,40 @@ thead {
 									</c:when>									
 					            </c:choose>			
 							</div>
-			
-								<a style="color: #4a4a4a;" href="${boardLink }">         	
-									<c:out value="${board.qa_title}" />
-								</a>
+							
+							<!-- 게시물의 제목 a링크를 누를시 해당하는 링크로 이동 -->
+							<c:url value="/qa/get" var="boardLink">
+					            	<c:param value="${board.qa_seq }" name="qa_seq" />
+					            	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
+					            	<c:param value="${pageMaker.cri.amount }" name="amount" />
+					            	<c:param value="${pageMaker.cri.type }" name="type"	/>
+					            	<c:param value="${pageMaker.cri.keyword }" name="keyword" />
+								</c:url>
+							
+							<a style="color: #4a4a4a;" href="${boardLink }"><c:out value="${board.qa_title}" /></a>
 										 
 							</td>
-							            
+							<!-- 작성자, 작성일 -->            
             				<td>
 					            <small id="writer" class="form-text text-dark"><i class="far fa-user"></i>${board.qa_writer}</small>                        
 					 			<small id="regdate" class="form-text text-dark"><fmt:formatDate pattern="yyyy-MM-dd" value="${board.qa_regdate}" /> </small>
-            				</td>                  
+            				</td>  
+            				<!-- 조회수 -->                
             				<td>
 				            	<small id="readcnt" class="form-text text-dark">${board.qa_readcnt}</small>
 				            </td>
+				            <!-- 답변상태 -->
 				            <td id="status">
+				            	<!-- 유저답변, 관리자 답변 카운트가 0일시 기본값(답변예정)으로 -->
 				 				<c:if test="${board.qa_replycnt == 0 && board.qa_replycnt_admin == 0}">
 				            		<span class="badge badge-secondary">${board.qa_status }</span> 
 				 				</c:if>
+				 				<!-- 유저답변의 값이 1이상일시 유저답변의 갯수로 표현 -->
 				 		 		<c:if test="${board.qa_replycnt > 0 }">
 				            		<span id="user_color" class="badge badge-secondary">유저 답변:${board.qa_replycnt }</span>  
 				 				</c:if>
 				 				<br>
+				 				<!-- 관리자 답변의 값이 1이상일시 관리자 답변의 갯수로 표현 -->
 				 				<c:if test="${board.qa_replycnt_admin > 0 }">
 				            		<span id="admin_color" class="badge badge-secondary">관리자 답변:${board.qa_replycnt_admin }</span>
 				 				</c:if>
@@ -271,8 +279,8 @@ thead {
 	
 	<div id="foot" class="row">
 		<div class="col-7 align-left ml-0 my-lg-2">
-			<form action="${root }/qa/list" id="searchForm" class="form-inline my-0">
-			
+			<!-- 검색  -->
+			<form action="${root }/qa/list" id="searchForm" class="form-inline my-0">			
 	      		<select name="type" id="inlineFormCustomSelectPref">      
 					<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : ''}>제목</option>
 					<option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : ''}>내용</option>
@@ -290,6 +298,7 @@ thead {
 		</div>
 		
 		<div class="col-5 align-right my-lg-2">
+			<!-- 글쓰기 처리 세션의 user_id 값이 있을때만 글쓰기 버튼 활성화 -->
 			<c:if test="${!empty authUser.user_id}">
 	   			<a href="/qa/register/" id="btn_add">글쓰기</a>
 	   		</c:if>
@@ -303,29 +312,26 @@ thead {
 
 <div class="container d-flex justify-content-center">
 		<div class="pagerWrap">
+			<!-- 페이징 처리 -->
 		  	<c:if test="${pageMaker.prev }" >
-		  	<c:url value="/qa/list" var="prevLink">
-		  		<c:param value="${pageMaker.startPage - 1 }" name="pageNum" />
-		  		<c:param value="${pageMaker.cri.amount }" name="amount" />
-		  		<c:param name="type" value="${pageMaker.cri.type }"/>
-		  		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>	
-		  	</c:url>
-		  			  	
-		   <a href="${prevLink }" style="width:80px;">Prev</a>
+			  	<c:url value="/qa/list" var="prevLink">
+			  		<c:param value="${pageMaker.startPage - 1 }" name="pageNum" />
+			  		<c:param value="${pageMaker.cri.amount }" name="amount" />
+			  		<c:param name="type" value="${pageMaker.cri.type }"/>
+			  		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>	
+			  	</c:url>		  			  	
+		  			<a href="${prevLink }" style="width:80px;">Prev</a>
 		  	</c:if>
 		  	
-		  	<c:forEach var="num" begin="${pageMaker.startPage }" 
-		  						end="${pageMaker.endPage }">
+		  	<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
 		  		<c:url value="/qa/list" var="pageLink" >
 		  			<c:param name="pageNum" value="${num }" />
 		  			<c:param name="pageNum" value="${pageMaker.cri.amount }" />	
 		  			<c:param name="type" value="${pageMaker.cri.type }"/>
 		  			<c:param name="keyword" value="${pageMaker.cri.keyword }"/>		  				  			
-		  		</c:url>
-		  						
-			<a class="${pageMaker.cri.pageNum eq num ? 'on' : '' }" href="${pageLink }">${num }</a>
-		  	</c:forEach>
-		  	
+		  		</c:url>		  						
+					<a class="${pageMaker.cri.pageNum eq num ? 'on' : '' }" href="${pageLink }">${num }</a>
+		  	</c:forEach>		  	
 		  	
 		    <c:if test="${pageMaker.next }">
 		  	<c:url value="/qa/list" var="nextLink">
@@ -334,8 +340,7 @@ thead {
 		  		<c:param name="type" value="${pageMaker.cri.type }"/>
 		  		<c:param name="keyword" value="${pageMaker.cri.keyword }"/>	
 		  	</c:url>
-		    
-		    <a href="${nextLink }" style="width:80px;">Next</a>
+		    		<a href="${nextLink }" style="width:80px;">Next</a>
 		    </c:if>
 	</div>
 </div>

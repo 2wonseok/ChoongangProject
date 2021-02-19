@@ -46,17 +46,18 @@
 	<div class="row">
 		<div class="col-12 col-lg-6 offset-lg-3">
 			<form action="${root }/qa/register" method="post" enctype="multipart/form-data">
+				<!-- 게시물의 공개, 비공개 상태 선택 (라디오) -->
 				<input class="btn-check" id="open" name="qa_secret" value="공개" type="radio" checked/> 
 					<label class="btn btn-secondary" for="open">공개</label>
 				<input class="btn-check" id="close" name="qa_secret" value="비공개" type="radio"/>
 					<label class="btn btn-secondary" for="close">비공개</label>
-	
+				<!-- 공개, 비공개 값이 비어있는 경우 -->
 				<c:if test="${errors.noSecret }">
 					<small class="form-text text-danger">
 						공개 여부를 선택해주세요.
 					</small>
 				</c:if>	
-	
+				<!-- 질문 분류 선택 (셀렉트) -->
 				<div class="input-group mb-3">
 				<label class="input-group-text" for="select_category">질문 선택</label>
 					<select id="select_category" class="form-select" name="qa_category">
@@ -72,30 +73,32 @@
 						<option value="기타">기타</option>    
 					</select>
 				</div>
-	
+				<!-- 질문분류 값이 비어있는 경우 -->
 				<c:if test="${errors.noCategory }">
 					<small class="form-text text-danger">
 						질문 분류를 선택 해주세요.
 					</small>
 				</c:if>	
-
-	
+				
+				<!-- 제목 -->
 				<input maxlength="25" class="form-control" type="text" name="qa_title" value="${title }" placeholder="제목"/>	
+					<!-- 제목이 비어있을 경우 -->
 					<c:if test="${errors.noTitle }">
 						<small class="form-text text-danger">
 						제목을 입력 해주세요.
 						</small>
 					</c:if>	
 				<br>
-				
+				<!-- 내용 -->
 				<textarea class="form-control" name="qa_content" cols="30" rows="10" placeholder="내용" >${content }</textarea>
+					<!-- 내용이 비어 있을경우 -->
 					<c:if test="${errors.noContent }">
 						<small class="form-text text-danger">
 							내용을 입력 해주세요.
 						</small>
 					</c:if>	 
 					<br>
-
+				<!-- 작성자 값 히든처리 -->
 				<input type="hidden" type="text" name="qa_writer" value="${authUser.user_nickname }"/>	
 	
 				<!--이미지첨부시작  -->

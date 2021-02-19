@@ -5,6 +5,11 @@
 
 <mapper namespace="org.zerock.product.mapper.ProductMapper">
 
+	<select id="readOrderbyOrderSeq"
+		resultType="org.zerock.product.domain.OrderVO">
+		select * from tbl_order where order_seq = #{order_seq} order_status = 0;
+	</select>
+
 	<update id="updateProductLike">
 		UPDATE tbl_product SET product_like = #{product_like} WHERE product_seq = #{product_seq}
 	</update>

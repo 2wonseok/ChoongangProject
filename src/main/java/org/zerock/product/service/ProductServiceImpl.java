@@ -22,6 +22,16 @@ public class ProductServiceImpl implements ProductService {
 
 	private ProductMapper mapper;
 	
+	public List<OrderVO> getOrderList(String[] order_seq) {
+		
+		List<OrderVO> list = new ArrayList<>();
+		for (int i = 0; i<order_seq.length ;i++ ) {
+			OrderVO orderVO = mapper.readOrderbyOrderSeq(Integer.parseInt(order_seq[i]));
+			list.add(orderVO);
+		}
+		return list;
+	}
+	
 	public int checkProductLike (ProductLikeVO productLikeVO) {
 		return mapper.checkProductLike(productLikeVO);
 	}
@@ -43,10 +53,12 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	@Transactional
-	public void makeOrder(List<OrderVO> list) {
+	public int makeCart(List<OrderVO> list) {
+		int count = 0;
 		for(OrderVO vo : list) {
-			mapper.insertOrder(vo);
+			count += mapper.insertOrder(vo);
 		}
+		return count;
 	}
 	
 	@Override

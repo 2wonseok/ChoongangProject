@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.mapper.Mapper;
 import org.apache.commons.collections.map.HashedMap;
@@ -397,10 +398,10 @@ public class ProductController {
 		return "redirect:/product/list";
 	}
 	
-	
-	
-	@PostMapping("/order")
-	public String order (int product_seq, String[] order_poseq, String[] order_poname, String[] order_poprice, String[] order_quantity, OrderVO orderVO, Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
+	@GetMapping("/cart")
+	public String cart (int product_seq, String[] order_poseq, String[] order_poname, 
+			String[] order_poprice, String[] order_quantity, OrderVO orderVO, Criteria cri, 
+			HttpServletRequest request, RedirectAttributes rttr, Model model, String checkCartOrder) {
 		
 		/*상품옵션이 비었을때 돌려보냄*/
 			String emp = "";
@@ -425,27 +426,70 @@ public class ProductController {
 				rttr.addAttribute("product_seq", product_seq);
 				return "redirect:/product/get";
 			}
-		/* 올바르면 리스트 만들어서 보내주기*/
+		/* 올바르면 리스트 만들기*/
 		List<OrderVO> list = new ArrayList<OrderVO>();
 		for (int i=0; i<order_quantity.length; i++) {
 			OrderVO orderVOn = new OrderVO();
+			orderVOn.setOrder_productseq(orderVO.getOrder_productseq());
 			orderVOn.setOrder_poseq(Integer.parseInt(order_poseq[i]));
 			orderVOn.setOrder_quantity(Integer.parseInt(order_quantity[i]));
 			orderVOn.setOrder_poname(order_poname[i]);
 			orderVOn.setOrder_poprice(Integer.parseInt(order_poprice[i]));
-			orderVOn.setOrder_productseq(orderVO.getOrder_productseq());
 			orderVOn.setOrder_userseq(orderVO.getOrder_userseq());
 			orderVOn.setOrder_username(orderVO.getOrder_username());
 			orderVOn.setOrder_useraddress(orderVO.getOrder_useraddress());
 			orderVOn.setOrder_userphone(orderVO.getOrder_userphone());
 			orderVOn.setOrder_filename(orderVO.getOrder_filename());
+			orderVOn.setOrder_filename(orderVO.getOrder_filename());
 			
 			list.add(orderVOn);
 		}
-		service.makeOrder(list);
-		return "redirect:/product/list";
+		
+		/*get에서 카트버튼으로 넘어왔으면 등록*/
+		if (checkCartOrder.equals("cart")) {
+			int rowNum = service.makeCart(list);
+			
+			rttr.addAttribute("product_seq", product_seq);
+			rttr.addAttribute("pageNum", cri.getPageNum());
+			rttr.addAttribute("amount", cri.getAmount());
+			rttr.addAttribute("type", cri.getType());
+			rttr.addAttribute("keyword", cri.getKeyword());
+			rttr.addAttribute("array", cri.getArray());
+			rttr.addAttribute("type", cri.getType());
+			
+			if(rowNum != list.size()) {
+				rttr.addFlashAttribute("message", "장바구니 담기 실패");
+			} else {
+				rttr.addFlashAttribute("message", "장바구니 담기 성공");			
+			}
+			return "redirect:/product/get";
+		} else {
+			rttr.addFlashAttribute("direct", list);
+			return "redirect:/product/order";
+		}
+		
 	}
 	
+	@GetMapping("/order")
+	public void order (String[] order_seq, @ModelAttribute("direct") List<OrderVO> direct, Model model, HttpSession session) {
+		List<OrderVO> list = new ArrayList<>();
+		
+		if(order_seq !=null && order_seq.length != 0) {
+			list = service.getOrderList(order_seq);
+		} else {
+			list = direct;	
+		}
+		model.addAttribute("orderList", list);
+	}
+	
+	@PostMapping("/order")
+	public String order (String[] order_seq) {
+		
+		System.out.println(order_seq.length);
+		
+		
+		return "redirect:/user/userOrderList";
+	}
 	
 	
 	/* 삭제참고용-구현만해둠 */
