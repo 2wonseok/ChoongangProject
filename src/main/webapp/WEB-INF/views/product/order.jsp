@@ -90,7 +90,6 @@ p {
 						<tr>
 							<td><p><input type="checkbox" id="seq" name="seq" value="" /></p></td>
 							<td>
-								<input name="order_seq" value="${order.order_seq}" type="number" hidden="hidden"/>
 								<img alt="상품사진" src="${root }/resources/upload/${order.order_filename}">
 								<a href="${root}/product/get?product_seq=${order.order_productseq}" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
 									<c:out value="${order.order_poname }"></c:out>
@@ -100,7 +99,7 @@ p {
 							<td><p><fmt:formatNumber value='${order.order_poprice }' type="number"></fmt:formatNumber>원</p></td>
 						</tr>
 						<!--판매에서 넘어왔을 시에 처리할것  -->
-
+						<input name="orderVOList[${status.index}].order_seq" value="${order.order_seq }" hidden="hidden"/>
 						<input name="orderVOList[${status.index}].order_status" value="1" hidden="hidden"/>
 						<input name="orderVOList[${status.index}].order_productseq" value="${order.order_productseq }" hidden="hidden"/>
 						<input name="orderVOList[${status.index}].order_filename" value="${order.order_filename }" hidden="hidden"/>

@@ -39,6 +39,8 @@ public interface ProductService {
 	
 	public List<OrderVO> getOrderList(String[] order_seq);
 
-	public int makeOrder(String[] order_seq);
+	public int makeOrder(List<OrderVO> orderVOList);
+
+	public int directOrder(List<OrderVO> orderVOList);
 
 }

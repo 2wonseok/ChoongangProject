@@ -40,7 +40,7 @@ public interface ProductMapper {
 		
 		public void insertProductOption(ProductOptionVO productOption);
 	
-		public int insertOrder(OrderVO orderVO);
+		public int insertCart(OrderVO orderVO);
 	
 	/* ProductLike */
 		public void insertProductLike(ProductLikeVO productLikeVO);
@@ -54,7 +54,9 @@ public interface ProductMapper {
 	/* order */
 		public OrderVO readOrderbyOrderSeq(int order_seq);
 
-		public int updateOrder(String[] order_seq);
+		public int updateOrder(int order_seq);
+
+		public int directOrder(OrderVO vo);
 	
 	
 }

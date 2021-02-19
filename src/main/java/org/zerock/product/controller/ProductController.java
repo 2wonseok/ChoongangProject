@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -465,30 +466,43 @@ public class ProductController {
 			return "redirect:/product/get";
 		/* get에서 구매버튼 눌렀으면 order로 넘겨주기 */
 		} else {
-			rttr.addFlashAttribute("checkCartOrder", checkCartOrder);
 			rttr.addFlashAttribute("direct", list);
-			return "redirect:/product/order";
+			return "redirect:/product/orderFromDirect";
 		}
 		
 	}
-	
 	@GetMapping("/order")
-	public void order (String checkCartOrder, String[] order_seq, @ModelAttribute("direct") List<OrderVO> direct, Model model, HttpSession session) {
+	public void order(@ModelAttribute("orderList")List<OrderVO> orderList, Model model) {
+		System.out.println(orderList.toString());
+		
+		model.addAttribute("orderList", orderList);
+	}
+	
+	@GetMapping("/orderFromDirect")
+	public String order(@ModelAttribute("direct")List<OrderVO> direct,
+		RedirectAttributes rttr	) {
+		
+		rttr.addFlashAttribute("orderList", direct);
+		return "redirect:/product/order";
+		
+	}
+	@GetMapping("/orderFromCart")
+	public String order(@RequestParam("order_seq") String[] order_seq, RedirectAttributes rttr) {
+		
 		List<OrderVO> list = new ArrayList<>();
 		
-		if(order_seq !=null && order_seq.length != 0) {
-			list = service.getOrderList(order_seq);
-		} else {
-			list = direct;
+		if(order_seq == null || order_seq.length == 0) {
+			rttr.addFlashAttribute("message","카트에 물품을 하나라도 선택해야합니다.");
+			return "redirect:/product/list";
 		}
-		model.addAttribute("orderList", list);
+		list = service.getOrderList(order_seq);
+		rttr.addFlashAttribute("orderList", list);
+		return "redirect:/product/order";
+		
 	}
-	
 	@PostMapping("/order")
 	public String order (@RequestParam ("usePoint") String usePoint, 
-			@RequestParam ("requireTotalPrice") String requireTotalPrice, 
-			@RequestParam ("checkCartOrder") String checkCartOrder, 
-			String[] order_seq, 
+			@RequestParam ("requireTotalPrice") String requireTotalPrice,
 			OrderVO orderVO, RedirectAttributes rttr) {
 		
 		/* 일단 가격이 맞는지 확인 */
@@ -497,31 +511,33 @@ public class ProductController {
 			return "redirect:/product/list";
 		}
 		
-		/* get에서 구매버튼으로 눌렀을 때 넘어온거면*/
-		if (checkCartOrder.equals("order")) {
-			
-			List<OrderVO> orderVOList = orderVO.getOrderVOList();
-			if(orderVOList.size() == 0) {
-				rttr.addFlashAttribute("message", "선택한 항목이 없습니다");
-				return "redirect:/product/list";
+		/* null체크 */
+		if(orderVO == null || orderVO.getOrderVOList() == null || orderVO.getOrderVOList().get(0) == null) {
+			rttr.addFlashAttribute("message", "선택항목이 없습니다.");
+			return "redirect:/product/list";
+		}
+		
+		List<OrderVO> orderVOList = orderVO.getOrderVOList();
+		
+		int result = 0;
+		boolean check = false;
+		/* get에서 구매버튼으로 눌렀을 때 넘어온거면 들어온첫번째order_seq는 반드시0임*/
+		if (orderVOList.get(0).getOrder_seq() == 0) {
+			result = service.directOrder(orderVOList);
+			if(result != orderVOList.size()) {
+				check = true;
 			}
-			
-			service.makeCart(orderVOList);
-			
-			
 		/* 장바구니에서 order_seq 배열로 넘어온것을 처리 */
 		} else {
-			
-			if(order_seq.length == 0) {
-				rttr.addFlashAttribute("message", "선택한 항목이 없습니다");
-				return "redirect:/product/list";
+			result= service.makeOrder(orderVOList);
+			if(result != orderVOList.size()) {
+				check = true;
 			}
-			int result= service.makeOrder(order_seq);
-			if(order_seq.length != result) {
-				rttr.addFlashAttribute("message", "오더 실패");
-				return "redirect:/product/list";
-			}
-		
+		}
+		/* 위 두개의 열 적용수가 다르면 돌려보냄 */
+		if (check) {
+			rttr.addFlashAttribute("message", "오더실패");
+			return "redirect:/product/list";	
 		}
 		
 		return "redirect:/user/userOrderList";

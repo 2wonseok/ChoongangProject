@@ -52,8 +52,22 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public int makeOrder(String[] order_seq) {
-		return mapper.updateOrder(order_seq);
+	public int makeOrder(List<OrderVO> orderVOList) {
+		int count = 0;
+		for(OrderVO vo : orderVOList) {
+			count += mapper.updateOrder(vo.getOrder_seq());
+		}
+		return count;
+	}
+	
+	@Override
+	@Transactional
+	public int directOrder(List<OrderVO> orderVOList) {
+		int count = 0;
+		for(OrderVO vo : orderVOList) {
+			count += mapper.directOrder(vo);
+		}
+		return count;
 	}
 	
 	@Override
@@ -61,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
 	public int makeCart(List<OrderVO> list) {
 		int count = 0;
 		for(OrderVO vo : list) {
-			count += mapper.insertOrder(vo);
+			count += mapper.insertCart(vo);
 		}
 		return count;
 	}

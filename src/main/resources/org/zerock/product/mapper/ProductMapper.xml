@@ -7,7 +7,7 @@
 
 	<select id="readOrderbyOrderSeq"
 		resultType="org.zerock.product.domain.OrderVO">
-		select * from tbl_order where order_seq = #{order_seq} order_status = 0;
+		select * from tbl_order where order_seq = #{order_seq} AND order_status = 0
 	</select>
 
 	<update id="updateProductLike">
@@ -32,6 +32,17 @@
 		delete from tbl_productlike where product_seq = #{product_seq} AND user_seq = #{user_seq}
 	</delete>
 	
+	<insert id="insertCart">
+		insert into tbl_order (order_seq, order_productseq, order_poseq,
+		order_poname, order_poprice, order_quantity, order_userseq, order_username, 
+		order_useraddress, order_userphone, order_filename, order_status, order_date)
+		values 
+		(order_seq.nextval, #{order_productseq}, #{order_poseq},
+		#{order_poname}, #{order_poprice}, #{order_quantity},
+		#{order_userseq}, #{order_username}, #{order_useraddress}, 
+		#{order_userphone}, #{order_filename}, #{order_status}, SYSDATE)
+	</insert>
+	
 	<insert id="insertOrder">
 		insert into tbl_order (order_seq, order_productseq, order_poseq,
 		order_poname, order_poprice, order_quantity, order_userseq, order_username, 
@@ -41,6 +52,17 @@
 		#{order_poname}, #{order_poprice}, #{order_quantity},
 		#{order_userseq}, #{order_username}, #{order_useraddress}, 
 		#{order_userphone}, #{order_filename}, #{order_status}, SYSDATE)
+	</insert>
+
+	<insert id="directOrder">
+		insert into tbl_order (order_seq, order_productseq, order_poseq,
+		order_poname, order_poprice, order_quantity, order_userseq, order_username, 
+		order_useraddress, order_userphone, order_filename, order_status, order_date)
+		values 
+		(order_seq.nextval, #{order_productseq}, #{order_poseq},
+		#{order_poname}, #{order_poprice}, #{order_quantity},
+		#{order_userseq}, #{order_username}, #{order_useraddress}, 
+		#{order_userphone}, #{order_filename}, 1, SYSDATE)
 	</insert>
 	
 	<update id="updateOrder">
