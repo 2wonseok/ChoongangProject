@@ -400,7 +400,8 @@ $(document).ready(function() {
 	          <label for="user_id">아이디</label>
 	          <small class="text-danger" id="idLengthFail">영문 숫자 최소 4글자 이상 입력해주세요.</small>
 	          <small class="text-primary" id="idCheckSuccess">사용 가능합니다.</small>
-			    	<button type="button" id="idYes">확인</button>
+			    	<button type="button" id="idYes" class="btn waves-effect waves-light col s3"
+			    		style="margin-top: -25px; width: 13%; float: right; margin-right: 233px;">확인</button>
 	          <small class="text-danger" id="idCheckFail">이미 사용중인 아이디입니다.</small>
 	        </div>
 	      </div>
@@ -422,7 +423,8 @@ $(document).ready(function() {
 	          <label for="user_nickname">닉네임</label>
 	          <small class="text-danger" id="nicknameLengthFail">최소 2글자 이상 입력해주세요.</small>
 	          <small class="text-primary" id="nickCheckSuccess">사용 가능합니다.</small>
-			  	  <button type="button" id="nickYes">확인</button>
+			  	  <button type="button" id="nickYes" class="btn waves-effect waves-light col s3"
+			    		style="margin-top: -25px; width: 13%; float: right; margin-right: 233px;">확인</button>
 				    <small class="text-danger" id="nickCheckFail">이미 사용중인 닉네임입니다.</small>
 	        </div>
 	      </div>

@@ -16,10 +16,19 @@
 $(document).ready(function() {
 	
 	$("#payComplateTable").hide();
+	$("#sendListTable").hide();
 	$("#send_btn").hide();
 	
 	$('#allCheck').click(function () {
 		if ($("input:checkbox[id='allCheck']").prop("checked")) {
+			$("input[type=checkbox]").prop("checked", true);
+		} else {
+			$("input[type=checkbox]").prop("checked", false);
+		}
+	});	
+	
+	$('#allCheckOrderInfo').click(function () {
+		if ($("input:checkbox[id='allCheckOrderInfo']").prop("checked")) {
 			$("input[type=checkbox]").prop("checked", true);
 		} else {
 			$("input[type=checkbox]").prop("checked", false);
@@ -76,12 +85,15 @@ $(document).ready(function() {
 				alert('체크 박스를 선택해주세요');
 				return false;
 			} 
-		
+		 	
+		$("#sendListTable").hide();
 		$("#productTable").hide();
 		$("#productPage").hide();
 		$("#payComplateTable").show();
 		$("#send_btn").show();
 		$("#orderInfoPage").show();
+		$("input:checkbox[id='allCheck']").prop("checked", false);
+		$("input:checkbox[id='allCheckOrderInfo']").prop("checked", false);
 		
 		var check_arr = [];
 		
@@ -97,7 +109,7 @@ $(document).ready(function() {
 				dataType: "JSON",
 				data: {"order_productseq": checkVal},
 				success: function(res) {
-					alert('성공');
+					//alert('성공');
 					console.log(res);
 					
 					for (var i = 0; i < res.length; i++) {
@@ -108,9 +120,9 @@ $(document).ready(function() {
 						
 						var complateTbody = '<tr>'
 															 +'<td><input type="checkbox" id="order_seq" name="order_seq" value="'+order_seq+'" /></td>'
-															 +'<td><a style= "color: #000;" href="${root}/product/get?product_seq='+order_seq+'">&nbsp;'+order_poname+'</a></td>'
-															 +'<td><p>'+order_username+'</p></td>'
-															 +'<td><p>'+dateString(order_date)+'</p></td>'
+															 +'<td><a style= "color: #000;" href="${root}/product/get?product_seq='+checkVal+'">&nbsp;'+order_poname+'</a></td>'
+															 +'<td>'+order_username+'</td>'
+															 +'<td>'+dateString(order_date)+'</td>'
 															 +'<tr>';
 					 		complateList.append(complateTbody);
 					 		
@@ -125,12 +137,64 @@ $(document).ready(function() {
 	
 	});
 	
+	$("#send_btn").click(function() {
+		var checkboxVal = $("input:checkbox[name='order_seq']:checked").val();
+		var allCheckVal = $("input:checkbox[name='allCheckOrderInfo']:checked").val();
+		
+	 	if (!checkboxVal) {
+			alert('체크 박스를 선택해주세요');
+			return false;
+		} 
+	 	
+	 	var check_arr = [];
+	 	
+	 	$("input:checkbox[name='order_seq']:checked").each(function() {
+			var checkVal = $(this).val();
+			check_arr.push(checkVal);
+			
+			if(!confirm('발송하시겠습니까?'))	{
+				return false;
+			}
+			
+			location.href="${root}/user/productSend?order_seq="+checkVal;
+	 	});
+	});
+	
 	$("#defaultList").click(function() {
 		$("#productTable").show();
 		$("#payComplateTable").hide();
+		$("#sendListTable").hide();
 		$("#send_btn").hide();
 		$("#orderInfoPage").hide();
 		$("#productPage").show();
+		$("input:checkbox[id='allCheck']").prop("checked", false);
+		$("input:checkbox[id='allCheckOrderInfo']").prop("checked", false);
+		$("input:checkbox[id='product_seq']").prop("checked", false);
+		$("input:checkbox[id='order_seq']").prop("checked", false);
+	});
+	
+	$("#sendListTab").click(function() {
+		$("#productTable").hide();
+		$("#payComplateTable").hide();
+		$("#send_btn").hide();
+		$("#orderInfoPage").hide();
+		$("#productPage").hide();
+		$("input:checkbox[id='allCheck']").prop("checked", false);
+		$("input:checkbox[id='allCheckOrderInfo']").prop("checked", false);
+		$("input:checkbox[id='product_seq']").prop("checked", false);
+		$("input:checkbox[id='order_seq']").prop("checked", false);
+		$("#sendListTable").show();
+		
+		$.ajax({
+			type: "GET",
+			url: "${root}/user/sendList",
+			dataType: "JSON",
+			success: function(res) {
+				console.log(res);
+			}
+			
+		});
+		
 	});
 	
 	showList();
@@ -156,7 +220,7 @@ $(document).ready(function() {
 }
 p {
 	vertical-align: middle;
-	padding-top: 30px;
+	padding-top: 18px;
 } 
 #send_btn {
     color: #fff;
@@ -206,7 +270,8 @@ p {
 	<c:when test="${authUser != null }">
 	<div class="container">
 		<section id ="container">
-		<h3><a style= "color: #000;" href="#" id="defaultList">판매 목록</a> / <a style= "color: #000;" href="#" id="payComplateList">결제완료 상품</a></h3><br>
+		<h3><a style= "color: #000;" href="#" id="defaultList">판매 목록</a> / <a style= "color: #000;" href="#" id="payComplateList">결제완료 상품</a>
+		/ <a style= "color: #000;" href="#" id="sendListTab">배송중인상품</a></h3><br>
 			<button id="send_btn">발송처리</button><br>
 			<table class="table table-hover" id="productTable">
 				<thead>
@@ -224,13 +289,29 @@ p {
 			<table class="table table-hover" id="payComplateTable">
 				<thead>
 					<tr>
-						<th><input type="checkbox" id="allCheck"  value=""/>&nbsp; 전체선택</th>
+						<th><input type="checkbox" name="allCheckOrderInfo" id="allCheckOrderInfo"  value=""/>&nbsp; 전체선택</th>
 						<th>상품명</th>
 						<th>구매자</th>
 						<th>구매일</th>
 					</tr>
 				</thead>
 				<tbody id="complateList">
+				
+				</tbody>
+			</table>
+			
+			<table class="table table-hover" id="sendListTable">
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>상품명</th>
+						<th>구매자</th>
+						<th>배송시작일</th>
+						<th>도착예정일</th>
+						<th>수취상태</th>
+					</tr>
+				</thead>
+				<tbody id="sendList">
 				
 				</tbody>
 			</table>

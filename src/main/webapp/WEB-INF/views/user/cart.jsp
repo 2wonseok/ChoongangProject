@@ -69,7 +69,7 @@ p {
 		<div class="container">
 			<section id ="container">
 			<h3>장바구니</h3><br>
-			<form action="${root }/product/order" id="buyForm">
+			<form action="${root }/product/orderFromCart" id="buyForm">
 			<button type="submit" id="buy">구매하기</button>
 				<table class="table table-hover">
 					<thead>

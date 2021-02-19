@@ -243,7 +243,7 @@ public class UserController {
 			return 2;
 		} 
 		
-		if (phoneCheck == null || user_phone.equals(phoneCheck.getUser_phone())) {
+		if (phoneCheck == null && user_phone != null) {
 			Random rand  = new Random();
 	    String numStr = "";
 	    for(int i=0; i<4; i++) {
@@ -260,7 +260,7 @@ public class UserController {
 	    return 0;
 		}
 		
-		if (phoneCheck.getUser_phone() != null) {
+		if (phoneCheck.getUser_phone() != null || !phoneCheck.getUser_phone().isEmpty()) {
 			session.setAttribute("inUse", "이미 등록된 번호입니다.");
 			return 1;
 		} 
@@ -352,11 +352,13 @@ public class UserController {
 		
 		if (vo != null) {
 			order_userseq = vo.getUser_seq();
+			
+			List<OrderVO> cart = service.cartList(order_userseq, cri);
+			
+			model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalCartList(vo.getUser_seq(), cri)));
+			model.addAttribute("cartList", cart);
 		}
 		
-		List<OrderVO> cart = service.cartList(order_userseq, cri);
-		model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalCartList(vo.getUser_seq(), cri)));
-		model.addAttribute("cartList", cart);
 	}
 	
 	@GetMapping("/shippingCheck") //배송조회
@@ -411,11 +413,43 @@ public class UserController {
 		return list;
 	}
 	
-	@GetMapping("/orderList")
+	@GetMapping("/orderList") // 결제완료 목록
 	public @ResponseBody List<OrderVO> odInfo(OrderVO order, Criteria cri, Model model) {
 		List<OrderVO> vo = service.orderInfo(order.getOrder_productseq(), cri);
 		model.addAttribute("orderPageMaker", new PageDTO(cri, service.getTotalOrderInfoList(order.getOrder_productseq(), cri)));
 		return vo;
+		
+	}
+	
+	@GetMapping("/productSend") // 배송 처리
+	public String productSend(@RequestParam("order_seq") ArrayList<Integer> order_seq, Criteria cri) {
+		for (int no : order_seq) {
+			service.productSend(no, cri);
+		}
+		
+		return "redirect:/user/productList";
+	}
+	
+	@GetMapping("/sendList") // 배송중인 상품 목록
+	public @ResponseBody List<OrderVO> sendList(HttpSession session, Criteria cri) {
+		List<OrderVO> list = new ArrayList<OrderVO>();
+		UserVO vo = (UserVO) session.getAttribute("authUser");
+		
+		if (vo != null) {
+			List<ProductVO> pvo = service.productList(vo.getUser_nickname(), cri);
+			for (ProductVO pvoList : pvo) {
+				System.out.println("product seq 번호: " +pvoList.getProduct_seq());
+				list = service.sendList(pvoList.getProduct_seq(), cri);
+				if (list == null || list.isEmpty()) {
+					break;
+				}
+				return list;
+			}
+					
+		}
+		
+		
+		return list;
 		
 	}
 }
