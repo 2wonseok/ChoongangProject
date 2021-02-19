@@ -439,12 +439,11 @@ public class UserController {
 			List<ProductVO> pvo = service.productList(vo.getUser_nickname(), cri);
 			for (ProductVO pvoList : pvo) {
 				System.out.println("product seq 번호: " +pvoList.getProduct_seq());
-				list = service.sendList(pvoList.getProduct_seq(), cri);
-				if (list == null || list.isEmpty()) {
-					break;
-				}
-				return list;
+				List<OrderVO> sendList = service.sendList(pvoList.getProduct_seq(), cri);
+				list.addAll(sendList);
+				
 			}
+			return list;
 					
 		}
 		

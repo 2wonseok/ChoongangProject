@@ -185,12 +185,38 @@ $(document).ready(function() {
 		$("input:checkbox[id='order_seq']").prop("checked", false);
 		$("#sendListTable").show();
 		
+		var sendList = $("#sendList").empty();
+		
 		$.ajax({
 			type: "GET",
 			url: "${root}/user/sendList",
 			dataType: "JSON",
 			success: function(res) {
 				console.log(res);
+				
+				for (var i = 0; i < res.length; i++) {
+					
+					var order_seq = res[i].order_seq;
+					var order_poname = res[i].order_poname;
+					var order_username = res[i].order_username;
+					var order_productseq = res[i].order_productseq;
+					var order_date = res[i].order_date;
+					var successDate = new Date(order_date);
+					var arrivalDate = successDate.setDate(successDate.getDate() + 3);
+					//alert(successDate);
+					
+					var sendListTbody = '<tr>'
+														 +'<td>'+order_seq+'</td>'
+														 +'<td><a style= "color: #000;" href="${root}/product/get?product_seq='+order_productseq+'">&nbsp;'+order_poname+'</a></td>'
+														 +'<td>'+order_username+'</td>'
+														 +'<td>'+dateString(order_date)+'</td>'
+														 +'<td>'+dateString(arrivalDate)+'</td>'
+														 +'<tr>';
+						 
+					sendList.append(sendListTbody);
+					
+					
+				} 
 			}
 			
 		});
