@@ -6,6 +6,51 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style type="text/css">
+ #btn {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 40px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+}
+pre {
+    width:100%;
+    overflow:hidden;
+    word-break:break-all;
+    word-break:break-word;
+    line-height:30px;
+    white-space: pre-wrap;       /* CSS 3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	font-weight: bolder;
+	font-size: large;
+}
+
+#footdiv {
+    width: 1000px;
+    padding: 0 30px 30px 30px;
+    text-align: center;
+    color: gray;
+    white-space: pre-line;
+    position:absolute;
+  	bottom:0;
+  	margin-bottom: -143px;
+}
+#reply_content-input2{
+	font-size : 15px;
+}
+#reply_writer-input2{
+	font-size :20px;
+}
+
+
+</style>
 <script>
 var appRoot = '${root}';
 var free_seq = ${freeVO.free_seq};
