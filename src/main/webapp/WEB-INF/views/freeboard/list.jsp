@@ -6,14 +6,87 @@
 
 <!DOCTYPE html>
 <html>
-<style>
+<style type="text/css">
+#btn_add {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #4a4a4a;
+    padding: 0px 30px;
+    margin: 0 0px;
+    line-height: 36px;
+    float: right;
+    border-radius: 3px;
+    margin-left:414px;
+}
+#searchButton{
+	color: #fff;
+	font-size: 15px;
+	background: #4a4a4a;
+}
 #container {
-	clear: both;
-	position: relative;
-	margin: 50px auto 0px;
-	padding: 0 0 50px 0;
-	width: 1200px;
-	z-index: 1;
+    clear: both;
+    position: relative;
+    margin: 35px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1000px;
+    z-index: 1;
+}
+thead {
+	background: #f8f8f8;
+}
+/* 페이징 css */
+.pagerWrap {
+    position: relative;
+    text-align: center;
+    margin: 0px 0;
+}
+.pagerWrap a {
+    width: 34px;
+    height: 34px;
+    color: #333;
+    border: 1px solid #dedede;
+    text-align: center;
+    line-height: 34px;
+    background: #fff;
+    display: inline-block;
+}
+.pagerWrap a.on {
+    border-color: #222222;
+    background: #4a4a4a;
+    color: #fff;
+}
+.pagerWrap a:hover {
+    border-color: #4a4a4a;
+    color: #4a4a4a;
+}
+.pagerWrap a.on:hover {
+    border-color: #4a4a4a;
+    color: #fff;
+}
+.page-item:last-child .page-link {
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}
+.page-item:first-child .page-link {
+    margin-left: 0;
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
+.page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+#searchBoxBack{
+	background: #f8f8f8;
+	border-top: 2px solid #E3E1E1;
+	border-bottom: 1px solid #E3E1E1;
 }
 </style>
 <head>
@@ -26,7 +99,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
 	var userId = "${authUser.user_id}";
 	var nickname = "${authUser.user_nickname}";
@@ -65,7 +138,7 @@
 </script>
 <script>
 	$(document).ready(function() {
-		$("#register").click(function() {
+		$("#btn_add").click(function() {
 			if (userId == "") {
 				alert("로그인후 이용하세요");
 				location.href = "${root}/user/login";
@@ -93,9 +166,7 @@
 </head>
 <body>
 	<u:mainNav></u:mainNav>
-	<div class="container-sm">
 		<div class="container">
-			<div class="row">
 				<section id="container">
 					<table class="table table table-hover">
 						<thead>
@@ -129,7 +200,7 @@
 											<c:param value="${pageMaker.cri.type }" name="type" />
 											<c:param value="${pageMaker.cri.keyword }" name="keyword" />
 
-										</c:url> <a href="${freeboardLink }"> <c:out
+										</c:url> <a href="${freeboardLink }" style="color: black;"> <c:out
 												value="${freeVO.free_title}" /> 
 												<c:if
 												test="${freeVO.free_replyCnt gt 0 }">
@@ -147,8 +218,8 @@
 							</c:forEach>
 						</tbody>
 					</table>
-				</section>
-				<button id="register">글쓰기</button>
+			<div id="searchBoxBack" class="row">
+			
 				  <form action="${root }/freeboard/list" id="searchForm" class="form-inline my-2 my-lg-0">
 		      <select name="type" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
 			    <option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' }>제목</option>
@@ -160,14 +231,13 @@
 			    <option value="TWC" ${pageMaker.cri.type eq 'TWC' ? 'selected' : '' }>제목 or 내용 or 작성자</option>
 			  </select>
 		      <input name="keyword" required value="${pageMaker.cri.keyword }" class="form-control mr-sm-2" type="search"
-		       placeholder="Search" aria-label="Search" maxlength="20" id="searchbox">
+		       placeholder="검색어를 입력하세요" aria-label="Search" maxlength="20" id="searchbox">
 		      <input type="hidden" name="pageNum" value="1" />
 		      <input type="hidden" name="amount" value="${pageMaker.cri.amount }" />
-		      <button id="searchButton" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		      <button id="searchButton" class="btn my-2 my-sm-0 ml-3" type="submit" >검색</button>
+				<button id="btn_add">글쓰기</button>
 		    </form>
 			</div>
-		</div>
-	</div>
 	<div id="myModal" class="modal" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -190,8 +260,7 @@
 	</div>
 	<div class="container-sm mt-3">
 		<div class="row justify-content-center">
-			<nav aria-label="Page navigation example">
-				<ul class="pagination">
+			<div class="pagerWrap">
 					<c:if test="${pageMaker.prev }">
 						<c:url value="/freeboard/list" var="prevLink">
 							<c:param value="${pageMaker.startPage -1 }" name="pageNum" />
@@ -199,8 +268,7 @@
 							<c:param name="type" value="${pageMaker.cri.type }" />
 							<c:param name="keyword" value="${pageMaker.cri.keyword }" />
 						</c:url>
-						<li class="page-item"><a class="page-link"
-							href="${prevLink }">Previous</a></li>
+						<a href="${prevLink }" style="width:80px">Previous</a>
 					</c:if>
 					<c:forEach var="num" begin="${pageMaker.startPage }"
 						end="${pageMaker.endPage }">
@@ -210,10 +278,8 @@
 							<c:param name="type" value="${pageMaker.cri.type }" />
 							<c:param name="keyword" value="${pageMaker.cri.keyword }" />
 						</c:url>
-						<li
-							class="page-item ${pageMaker.cri.pageNum eq num ? 'active' : '' }">
-							<a class="page-link" href="${pageLink }">${num }</a>
-						</li>
+							<a class="${pageMaker.cri.pageNum eq num ? 'on' : '' }" href="${pageLink }">${num }</a>
+					
 					</c:forEach>
 					<c:if test="${pageMaker.next }">
 						<c:url value="/freeboard/list" var="nextLink">
@@ -222,14 +288,12 @@
 							<c:param name="type" value="${pageMaker.cri.type }" />
 							<c:param name="keyword" value="${pageMaker.cri.keyword }" />
 						</c:url>
-						<li class="page-item"><a class="page-link"
-							href="${nextLink }">Next</a></li>
+						<a href="${nextLink }" style="width:80px">Next</a>
 					</c:if>
-				</ul>
-			</nav>
+			</div>
 		</div>
 	</div>
-<!-- 채팅창 -->
+	<!-- 채팅창 -->
 <c:if test="${authUser != null}">
 <div id="_chatbox" style="display: none">
 	<fieldset>
@@ -240,6 +304,9 @@
 </div>
 <img class="chat" src="/resources/chat.png" />
 </c:if>
+	</section>
+</div>
+
 <script>
 	$(".chat").on({
 		"click" : function() {
