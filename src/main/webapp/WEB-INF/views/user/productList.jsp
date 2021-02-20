@@ -211,6 +211,7 @@ $(document).ready(function() {
 														 +'<td>'+order_username+'</td>'
 														 +'<td>'+dateString(order_date)+'</td>'
 														 +'<td>'+dateString(arrivalDate)+'</td>'
+														 +'<td>'+'배송중'+'</td>'
 														 +'<tr>';
 						 
 					sendList.append(sendListTbody);

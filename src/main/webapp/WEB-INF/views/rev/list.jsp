@@ -8,15 +8,24 @@
 <html>
 <head>
 <style type="text/css">
+#btn_add_search {
+    color: #fff;
+    font-size: 15px;
+    background: #4a4a4a;
+}
 #btn_add {
     color: #fff;
     font-size: 15px;
     border: none;
     background: #4a4a4a;
-    padding: 0px 50px;
-    margin: 0 0px;
-    line-height: 45px;
+    padding: 0px 30px;
+    margin: 0px;
+    line-height: 40px;
     float: right;
+    width: 125px;
+    height: 40px;
+    border-radius: 3px;
+    text-align: center;
 }
 #container {
     clear: both;
@@ -172,11 +181,11 @@ thead {
 					placeholder="검색어 입력" aria-label="Search" required >
 					<input type="hidden"  name="pageNum" value="1"/>
 					<input type="hidden"  name="amount" value="${pageMaker.cri.amount }"/>
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				<button class="btn my-2 my-sm-0"  id="btn_add_search" type="submit">Search</button>
 			</form>
 			<div style="float: right;width: 370px;" ></div>
 			<c:if test="${ sessionScope.authUser.user_id != null }">
-					<a id="btn_add" class="btn" href="${root }/rev/register">후기 쓰기</a>
+					<a id="btn_add" class="btn" href="${root }/rev/register">후기 작성</a>
 					</c:if>
 					<c:url value="${root }/rev/list" var="searchLink">
 					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />

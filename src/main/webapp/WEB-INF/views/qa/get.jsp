@@ -16,6 +16,13 @@ var nickname = '${authUser.user_nickname}';
 var grade = '${authUser.user_grade}';
 
 </script>
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/default.css?ver=1432">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/skin/board/basic/style.css?v2">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/board.common.css?ver=1432">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/js/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/mobile.css?ver=1432">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/contents.css?ver=1432">
+<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/plugin/featherlight/featherlight.min.css?ver=1432">
 <script
   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -41,11 +48,12 @@ var grade = '${authUser.user_grade}';
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #1e263c;
-    padding: 0px 50px;
+    background: #4a4a4a;
+    padding: 0px 15px;
     margin: 0 0px;
     line-height: 45px;
     float: right;
+    border-radius: 3px;    
 }
 
 
@@ -53,11 +61,12 @@ var grade = '${authUser.user_grade}';
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #1e263c;
-    padding: 0px 50px;
+    background: #4a4a4a;
+    padding: 0px 15px;
     margin: 0 0px;
     line-height: 45px;
     float: right;
+    border-radius: 3px;
 }
 
 
@@ -67,7 +76,7 @@ var grade = '${authUser.user_grade}';
 #image {
 	max-width: 100%
 }
-#container {
+#containers {
     clear: both;
     position: relative;
     margin: 35px auto 0px;
@@ -75,7 +84,19 @@ var grade = '${authUser.user_grade}';
     width: 1000px;
     z-index: 1;
 }
-
+pre {
+    display: block;
+    font-size: 87.5%;
+    color: #212529;
+}
+#footdiv {
+    width: 1000px;
+    padding: 0 30px 30px 30px;
+	  text-align: center;
+    color: gray;
+    white-space: pre-line; 
+   	bottom:0;
+}
 </style>
 
 <script>
@@ -286,122 +307,113 @@ $(document).ready(function() {
 
 
 	
-<div class="container">
-	<section id="container">
-			<h3>게시물 보기</h3>
-	<%-- 
-		<form action="${pageContext.request.contextPath }/board/register">
-	 --%>	
-
-	 	<div class="form-group">
-	 		<strong><label for="input1">번호</label></strong>
-	 		<input class="form-control" readonly value="${board.qa_seq }">
-	 	</div>
-	 	
-	 	<div class="form-group">
-	 		<strong><label for="input2">질문 종류</label></strong>
-	 		<input class="form-control" readonly value="${board.qa_category }">
-	 	</div>	 	
-		 	 
-	 		 	 
-			<div class="form-group">
-		    <strong><label for="input5">제목</label></strong>
-		    <input readonly value='<c:out value="${board.qa_title }" />' type="text" class="form-control">
-		  	</div>		  	
-		  	
-		  	
-		  	<div class="form-group">
-		    <strong><label for="input6">내용</label></strong>
-		    <textarea readonly class="form-control" id="textarea1" rows="3"><c:out value="${board.qa_content }" /></textarea>
-		  	</div>	
-		  		  	
-		  	<strong><label for="input6">이미지</label> <br></strong>	  	
-		  	<div class="form-group" contentEditable="false" id="table">		 
-		  	<c:forEach items="${getQafileNameList }" var="qaImg" varStatus="imgNum">
-				<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${qaImg }" width="245px" height="245px">
-			</c:forEach>
-
+<div class="container-md">
+	<section id="containers">
+		<article id="bo_v" style="width:100%">
+			<header>
+      	<h2><span class="bo_v_tit">${board.qa_title }</span></h2>
+    	</header>
+		
+		<section id="bo_v_info">	
+			<h2>페이지 정보</h2>
+	 		<span class="sound_only" >작성자</span>
+      	<strong>
+        	<span class="sv_member">${board.qa_writer }</span>
+        </strong>
+      <span>&nbsp&nbsp&nbsp</span>
+	 		
+	 		<span class="sound_only" >질문 종류</span>
+	 			<strong>
+        	<i class="fas fa-info-circle" aria-hidden="false"></i>
+        		${board.qa_category }
+        </strong>
+       <span>&nbsp&nbsp</span>
+ 			 <span class="sound_only">조회</span>
+   		 	<strong>
+   		  	<i class="fa fa-eye" aria-hidden="true"></i>
+   					${board.qa_readcnt }
+   			</strong>	
+   			<c:if test="${board.qa_updatedateKST == null }">
+        	<small class="text-secondary" style="float:right">
+        		<fmt:formatDate value='${board.qa_regdateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
+        	</small>
+        	<i class="far fa-calendar-alt" style="float:right; margin-right:8px; margin-top: 1px;"></i>
+        </c:if>
+        <c:if test="${board.qa_updatedateKST != null }">
+        	<small class="text-secondary" style="float:right">
+        		수정됨 <fmt:formatDate value='${board.qa_updatedateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
+        	</small>
+        	<i class="far fa-calendar-alt" style="float:right; margin-right:8px; margin-top: 1px;"></i>
+        </c:if>  	
+		</section>  	
+		  
+		<section id="bo_v_atc">
+			<h2 id="bo_v_atc_title">본문</h2>
+			<div id="bo_v_con">
+				<div class="form-group" >
+					<c:forEach items="${getQafileNameList }" var="qaImg" varStatus="imgNum">
+						<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${qaImg }" width="245px" height="245px">
+					</c:forEach>
+				</div>
+				<hr class="dashHr" style="border:none;">
+				<pre>${board.qa_content }</pre>
+				<hr class="one">
+				<div id="bo_v_share" >
+		 			<a class="btn btn_b03" style="border: 0;outline: 0;" href="${root }/qa/list">목록으로</a> 
+		 			<!-- 보드 작성자 이름과 로그인 아이디가 같고, 등급이 1인 경우(일반)에만 활성화  -->
+					<c:if test="${board.qa_writer == authUser.user_nickname && authUser.user_grade == 1 }">
+						<a class="btn btn_b03" style="border: 0;outline: 0;" href="${root }/qa/modify?qa_seq=${board.qa_seq }" >수정</a> 
+						<a class="btn btn_b03" style="border: 0;outline: 0;" href="${root }/qa/remove?qa_seq=${board.qa_seq }" >삭제</a>				
+					</c:if>
+					<!-- 등급이 0 , 곧 관리자 일경우만 모든 게시물 삭제 가능 하도록 활성화 -->
+					<c:if test="${authUser.user_grade == 0 }">
+						<a class="btn btn_b03" style="border: 0;outline: 0;" href="${root }/qa/remove?qa_seq=${board.qa_seq }">삭제</a>
+					</c:if>		
+				  	<!-- 관리자이면서 자신의 글일 경우  -->
+				  	<c:if test="${authUser.user_grade == 0 && board.qa_writer == authUser.user_nickname }">
+						<a class="btn btn_b03" style="border: 0;outline: 0;" href="${root }/qa/modify?qa_seq=${board.qa_seq }">수정</a> 
+					</c:if>
+				</div>
 			</div>
-			<small class="form-text text-primary">
-	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 hh시mm분" value="${board.qa_regdateKST}" /> 에 작성 되었습니다.
-	 		</small>
-			<c:if test="${!empty board.qa_updatedate}">
-	 		<div class="form-group">
-	 		<small class="form-text text-danger">
-	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 hh시mm분" value="${board.qa_updatedateKST}" /> 에 수정 되었습니다.
-	 		</small>
-	 		</div>
-	 		</c:if>
-
-<%-- 		  	
-			<div class="form-group">
-		    <label for="textarea1">내용</label>
-		    <textarea readonly class="form-control" id="textarea1" rows="50" id="input6"><c:out value="${board.qa_content }" /></textarea>
-		    <img src="${root }/resources/upload/${board.qa_filename }"> 
-		  	</div>
- --%>
-		  	
-		  	<div class="form-group">
-		    <label for="input6">조회수</label>
-		    <input readonly value='<c:out value="${board.qa_readcnt }" />' type="text" class="form-control" id="input7">
-		  	</div>
-		  	
-
- 
- 			<a href="${root }/qa/list" id="btn_add">목록 보기</a> 
- 			<!-- 보드 작성자 이름과 로그인 아이디가 같고, 등급이 1인 경우(일반)에만 활성화  -->
-			<c:if test="${board.qa_writer == authUser.user_nickname && authUser.user_grade == 1 }">
-				<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
-				<a href="${root }/qa/remove?qa_seq=${board.qa_seq }" id="btn_add">삭제</a>				
-			</c:if>
-			<!-- 등급이 0 , 곧 관리자 일경우만 모든 게시물 삭제 가능 하도록 활성화 -->
-			<c:if test="${authUser.user_grade == 0 }">
-				<a href="${root }/qa/remove?qa_seq=${board.qa_seq }" id="btn_add">삭제</a>
-			</c:if>		
-		  	<!-- 관리자이면서 자신의 글일 경우  -->
-		  	<c:if test="${authUser.user_grade == 0 && board.qa_writer == authUser.user_nickname }">
-				<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
-			</c:if>
-			<br><br>
+		</section>		  
 			
 <!-- 
 // 댓글 목록 AJAX
  -->
  
+				<div class="card-body">
+					<ul class="list-unstyled" id="reply_list"> 	
+					</ul>
+				</div>
+				<c:if test="${empty authUser.user_nickname}">
+					로그인시 댓글 작성 가능. (로그인 마크)
+				</c:if>
+				
+				<c:if test="${not empty authUser.user_nickname}">
+					<label for="reply-input">댓글</label>
+					<input class="form-control" type="text" name="reply_content" value="${reply_content }" id="reply_content_input"/><br>	
+				
+					<!-- // 작성자 hidden 처리 -->	
+					<input readonly type="hidden" type="text" name="reply_writer" value="${authUser.user_nickname }" id="reply_writer_input"/><br>
+					
+					<c:if test="${errors.reply_noContent }">
+						<small class="form-text text-danger"> 댓글 내용을 입력 해주세요. </small>
+					</c:if>
+				
+				<!-- 일반 유저 댓글 쓰기 -->
+					<c:if test="${!empty authUser.user_id && authUser.user_grade == 1}">
+						<button id="reply-submit-button">댓글 쓰기</button> 
+					</c:if>
+				<!-- 관리자 댓글 쓰기 -->
+					<c:if test="${!empty authUser.user_id && authUser.user_grade == 0}">
+						<button id="reply-submit-button_admin">댓글 쓰기 (관리자)</button> 
+					</c:if>
+				</c:if>
 
-	
-<div class="card-body">
-	<ul class="list-unstyled" id="reply_list"> 	
-	</ul>
-</div>
-<c:if test="${empty authUser.user_nickname}">
-	로그인시 댓글 작성 가능. (로그인 마크)
-</c:if>
-
-<c:if test="${not empty authUser.user_nickname}">
-<label for="reply-input">댓글</label>
-	<input class="form-control" type="text" name="reply_content" value="${reply_content }" id="reply_content_input"/><br>	
-
-	<!-- // 작성자 hidden 처리 -->	
-	<input readonly type="hidden" type="text" name="reply_writer" value="${authUser.user_nickname }" id="reply_writer_input"/><br>
-	
-<c:if test="${errors.reply_noContent }">
-<small class="form-text text-danger"> 댓글 내용을 입력 해주세요. </small>
-</c:if>
-
-<!-- 일반 유저 댓글 쓰기 -->
-<c:if test="${!empty authUser.user_id && authUser.user_grade == 1}">
-<button id="reply-submit-button">댓글 쓰기</button> 
-</c:if>
-<!-- 관리자 댓글 쓰기 -->
-<c:if test="${!empty authUser.user_id && authUser.user_grade == 0}">
-<button id="reply-submit-button_admin">댓글 쓰기 (관리자)</button> 
-</c:if>
-
-</c:if>
-
+	   </article>
 	</section>
 </div>
+		
 
 <div class="modal fade" id="modify-delete-reply-modal">
 		<div class="modal-dialog">
@@ -440,7 +452,19 @@ $(document).ready(function() {
 			</div>		
 		</div>
 	</div>
-
-	<u:footer/>
+	<div class="container-md">
+	<section id="containers">
+		<article id="bo_v" style="width:100%">
+    <footer>
+			<div id="footdiv">
+				<div class="container" style="width:100%;">
+				사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
+				주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
+				</div>
+			</div>
+		</footer> 
+	</article>
+	</section>
+	</div>
 </body>
 </html>

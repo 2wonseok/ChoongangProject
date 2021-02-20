@@ -54,7 +54,6 @@
     text-align: center;
     color: gray;
     white-space: pre-line;
-    
   	bottom:0;
   	margin-bottom: -143px;
 }
