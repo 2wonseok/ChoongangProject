@@ -17,60 +17,165 @@
     line-height: 45px;
     float: right;
 }
-#containers {
+	#container {
     clear: both;
     position: relative;
     margin: 35px auto 0px;
     padding: 0 0 50px 0;
     width: 1000px;
     z-index: 1;
-}
-/*
-#goodbtn {
+	}
+	#container td {
+    float: left;
+    margin: 20px;
+    border: 1px solid #d8d8d8;
+    border-bottom: 3px solid #d8d8d8;
+    background: #fff;
+    width: 310px;
+    min-height: 330px;
+    overflow: hidden;
+	}
+	#btn_write {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #1e263c;
-    padding: 0px 40px;
-    margin: 0 0px;
-    line-height: 45px;
-    float: right;
-}
-#hatebtn {
-    color: #fff;
-    font-size: 15px;
-    border: none;
-    background: #1e263c;
-    padding: 0px 40px;
-    margin: 0 0px;
-    line-height: 45px;
-    float: right;
-}
-#login_add {
-    color: #fff;
-    font-size: 15px;
-    border: none;
-    background: #1e263c;
+  	background: #1e263c;
     padding: 0px 50px;
     margin: 0 0px;
     line-height: 45px;
+    float:right;
+    margin-right:120px;
+	}
+	.webzineTypeView {
+    clear: both;
+    border-top: 3px solid #4a4a4a;
+    border-bottom: 3px solid #4a4a4a;
+    margin: 50px 0 20px 0;
+    width:1000px;
+    height:100%;
+	}
+	.webzineTypeView .headWrap {
+    background: #f5f5f5;
+    position: relative;
+    height: 60px;
+    padding: 10px 30px;
+    font-size: 14px;
+    color: #222222;
+    border-bottom: 1px solid #dedede;
+    word-break: keep-all;
+    word-wrap: break-word;
+	}
+	.webzineTypeView .bodyWrap {
+    color: #555555;
+    font-size: 14px;
+    line-height: 35px;
+    word-break: keep-all;
+    word-wrap: break-word;
+	}
+	.mr-t10 {
+    margin-top: 10px !important;
+	}
+	.webzineTypeView .headWrap .category {
+    color: #41a1eb;
+    font-size: 14px;
+	}
+	.webzineTypeView .headWrap .date {
+    position: absolute;
+    right: 30px;
+    top: 18px;
+	}
+	.webzineTypeView .headWrap .date p {
+    float: left;
+    color: #555555;
+    margin-left: 30px;
+    font-size: 14px;
+	}
+#btn_add {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #747474;
+    padding: 0px 30px;
+    margin-top: 8px;
+    line-height: 45px;
     float: right;
-} */
-pre {
-    width:100%;
-    overflow:hidden;
-    word-break:break-all;
-    word-break:break-word;
-    line-height:30px;
-    white-space: pre-wrap;       /* CSS 3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
-	font-weight: bolder;
-	font-size: large;
+    border-radius: 3px;
 }
 
+	ol, ul {
+	    list-style: none;
+	}
+	.recommView ul {
+    border-top: 1px solid #dedede;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 30px;
+	}
+	.recommView li {
+    position: relative;
+    padding: 20px 35px;
+    margin-bottom: -40px;
+	}
+	.recommView li p.txt {
+    font-size: 14px;
+    color: #444444;
+    line-height: 22px;
+    margin-bottom: 20px;
+    display: block;
+    word-break: keep-all;
+    word-wrap: break-word;
+	}
+	.recommView li p span {
+    color: #999999;
+    font-size: 13px;
+    padding: 0 15px;
+	}
+	.recommView li p #datespan {
+    color: #999999;
+    font-size: 13px;
+    padding: 0 15px;
+    display: inline-block; 
+    width: 133px; 
+    white-space: nowrap; 
+    overflow: hidden;
+    margin-bottom: -6px;
+	}
+	.lws #reply_content_input {
+		padding: 10px 20px;
+    width: 877px;
+    color: #666666;
+    font-size: 15px;
+    margin-top: 0;
+    border: 1px solid #cccccc;
+    line-height: 24px;
+    height: 70px;
+    box-sizing: content-box;
+	}
+	#btn_replyadd {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #353535;
+    padding: 0px 50px;
+    margin-right: -20px;
+    line-height: 45px;
+    float: right;
+    margin-left: 10px;
+    width: 180px;
+    height: 80px;
+    margin-top: 11px;
+	}
+	.recommView ul li .replyform {
+    clear: both;
+    color: #999999;
+    font-size: 15px;
+    height: 30px;
+    width: 50px;
+    border: 1px solid #dedede;
+    padding: 3px 10px;
+    background-color: white;
+  }
+  
 #footdiv {
     width: 1000px;
     padding: 0 30px 30px 30px;
@@ -105,13 +210,6 @@ pre {
 
 
 <script src="${root }/resources/rev_js/rev.js"></script>
-<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/default.css?ver=1432">
-<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/skin/board/basic/style.css?v2">
-<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/board.common.css?ver=1432">
-<link rel="stylesheet" href="http://sample.paged.kr/purewhite/js/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/mobile.css?ver=1432">
-<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/css/contents.css?ver=1432">
-<link rel="stylesheet" href="http://sample.paged.kr/purewhite/theme/pagedtheme/plugin/featherlight/featherlight.min.css?ver=1432">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
 
@@ -433,6 +531,52 @@ showList();
 </head>
 <body>
 <u:mainNav></u:mainNav>
+	<section id="container">
+		<div class="webzineTypeView">
+			<div class="headWrap">
+				<p class="mr-t10">${board.qa_title }</p>
+				<div class="date">
+					<p><strong>조회수 : </strong>${RevBoard.rev_readCnt}</p>
+					<p><strong>댓글수 : </strong>${RevBoard.rev_replyCnt }</p>
+					<p>
+						<strong>작성자 : ${board.qa_writer } </strong>
+					</p>
+					<c:choose>
+						<c:when test="${board.qa_updatedateKST == null }">
+							<p>
+								<strong>등록일 :</strong>
+								<fmt:formatDate value='${board.qa_regdateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
+							</p>
+						</c:when>
+						<c:otherwise>
+							<p>
+								<strong>수정일 :</strong>
+								<fmt:formatDate value='${board.qa_updatedateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
+							</p>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		</div>
+	</section>
+	
+	
+	
+	
+	
+	
 	
 	<div class="container-md">
 		<section id="containers">
