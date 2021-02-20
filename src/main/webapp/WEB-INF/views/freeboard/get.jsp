@@ -17,6 +17,179 @@
     line-height: 45px;
     float: right;
 }
+	#container {
+    clear: both;
+    position: relative;
+    margin: 35px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1000px;
+    z-index: 1;
+	}
+	#container td {
+    float: left;
+    margin: 20px;
+    border: 1px solid #d8d8d8;
+    border-bottom: 3px solid #d8d8d8;
+    background: #fff;
+    width: 310px;
+    min-height: 330px;
+    overflow: hidden;
+	}
+	#btn_write {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+  	background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float:right;
+    margin-right:120px;
+	}
+	.webzineTypeView {
+    clear: both;
+    border-top: 3px solid #4a4a4a;
+    border-bottom: 3px solid #4a4a4a;
+    margin: 50px 0 20px 0;
+    width:1000px;
+    height: 580px;
+	}
+	.webzineTypeView .headWrap {
+    background: #f5f5f5;
+    position: relative;
+    height: 60px;
+    padding: 10px 30px;
+    font-size: 14px;
+    color: #222222;
+    border-bottom: 1px solid #dedede;
+    word-break: keep-all;
+    word-wrap: break-word;
+	}
+	.webzineTypeView .bodyWrap {
+		padding: 21px;
+    color: #555555;
+    font-size: 14px;
+    line-height: 35px;
+    word-break: keep-all;
+    word-wrap: break-word;
+	}
+	.mr-t10 {
+    margin-top: 10px !important;
+	}
+	.webzineTypeView .headWrap .category {
+    color: #41a1eb;
+    font-size: 14px;
+	}
+	.webzineTypeView .headWrap .date {
+    position: absolute;
+    right: 30px;
+    top: 18px;
+	}
+	.webzineTypeView .headWrap .date p {
+    float: left;
+    color: #555555;
+    margin-left: 30px;
+    font-size: 14px;
+	}
+#btn_add {
+    color: #000;
+    font-size: 15px;
+    border: none;
+    padding: 0px 10px;
+    line-height: 45px;
+    float: right;
+}
+#new-reply-button {
+    cursor: pointer; 
+    color: #000;
+    font-size: 15px;
+    border: none;
+    padding: 0px 30px;
+    line-height: 45px;
+}
+	ol, ul {
+	    list-style: none;
+	}
+	.recommView ul {
+    border-top: 1px solid #dedede;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 30px;
+	}
+	.recommView li {
+    position: relative;
+    padding: 20px 35px;
+    margin-bottom: -40px;
+	}
+	.recommView li p.txt {
+    font-size: 14px;
+    color: #444444;
+    line-height: 22px;
+    margin-bottom: 20px;
+    display: block;
+    word-break: keep-all;
+    word-wrap: break-word;
+	}
+	.recommView li p span {
+    color: #999999;
+    font-size: 13px;
+    padding: 0 15px;
+	}
+	.recommView li p #datespan {
+    color: #999999;
+    font-size: 13px;
+    padding: 0 15px;
+    display: inline-block; 
+    width: 133px; 
+    white-space: nowrap; 
+    overflow: hidden;
+    margin-bottom: -6px;
+	}
+	.lws #reply_content_input {
+		padding: 10px 20px;
+    width: 877px;
+    color: #666666;
+    font-size: 15px;
+    margin-top: 0;
+    border: 1px solid #cccccc;
+    line-height: 24px;
+    height: 70px;
+    box-sizing: content-box;
+	}
+	#btn_replyadd {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #353535;
+    padding: 0px 50px;
+    margin-right: -20px;
+    line-height: 45px;
+    float: right;
+    margin-left: 10px;
+    width: 180px;
+    height: 80px;
+    margin-top: 11px;
+	}
+	.recommView ul li .replyform {
+    clear: both;
+    color: #999999;
+    font-size: 15px;
+    height: 30px;
+    width: 50px;
+    border: 1px solid #dedede;
+    padding: 3px 10px;
+    background-color: white;
+  }
+ #btn {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #1e263c;
+    padding: 0px 40px;
+    margin: 0 0px;
+    line-height: 45px;
+    float: right;
+}
 pre {
     width:100%;
     overflow:hidden;
@@ -82,15 +255,19 @@ var user_id = "${authUser.user_id}";
 			// data, callback, error
 			// 게시글 번호와 페이지 를 받는다
 			replyService.getList({"free_seq" : free_seq, "page" : page}, function(list) {			
-				var replyUL = $("#reply-ul");
-				replyUL.empty();
+				var reply_list = $("#reply_list").empty();
+				
 				for (var i = 0; i < list.length; i++) {
-					var replyLI = '<li class="media" data-reply_seq="' 
-					+ list[i].reply_seq + '" ><div class="media-body"><h5>'
-					+ list[i].reply_nickname + '<small class="float-right">' 
-					+ dateString(list[i].reply_regdate) + "</small></h5>"
-					+ list[i].reply_content + "<hr></div></li>";
-					replyUL.append(replyLI);
+					var replyLI = '<ul>'
+											 +'<li style="border-top:none;" data-reply_seq="'+list[i].reply_seq+'">'
+											 +'<p class="txt">'+list[i].reply_content+'</p>'
+											 +'<p><span>'+list[i].reply_nickname+'</span>'
+											 +'<span id="datespan">'+dateString(list[i].reply_regdate)+'</span>'
+										 	 +'</p>'
+										   +'</li>'
+											 +'</ul>';
+					reply_list.append(replyLI);
+					
 				}
 			});
 		}
@@ -136,7 +313,7 @@ var user_id = "${authUser.user_id}";
 		});
 		
 		// reply-ul 클릭 이벤트 처리
-	 	$("#reply-ul").on("click", "li", function() {
+	 	$("#reply_list").on("click", "li", function() {
 			// console.log("reply ul clicked......");
 			console.log($(this).attr("data-reply_seq"));
 			
@@ -189,78 +366,43 @@ var user_id = "${authUser.user_id}";
 <title>Insert title here</title>
 </head>
 <body>
-	<u:mainNav></u:mainNav> 
-	<div class="container-sm">
-		<div class="row">
-			<div class="col-12 col-lg-6 offset-lg-3">
-				<h1>게시물 보기</h1>
+<u:mainNav></u:mainNav> 
+<section id="container">
+	<div class="webzineTypeView">
+		<div class="headWrap">
+			<input class="form-control" type="hidden" id="input3" readonly value="${freeVO.free_seq }" />
+			<p class="mr-t10">${freeVO.free_title }</p>
+			<div class="date">
+				<p><strong>번호 : </strong>${freeVO.free_seq }</p>
+				<p><strong>작성자 : </strong>${freeVO.free_nickname}</p>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-12 col-lg-6 offset-lg-3">
-
-				<div class="form-group">
-					<label for="input3">번호</label> <input class="form-control"
-						type="text" id="input3" readonly value="${freeVO.free_seq }" />
-				</div>
-
-				<div class="form-group">
-					<label for="input1">제목</label> <input readonly
-						value='<c:out value="${freeVO.free_title }" />' type="text"
-						class="form-control" id="input1">
-				</div>
-
-				<div class="form-group">
-					<label for="textarea1">내용</label>
-					<textarea readonly class="form-control" id="textarea1" rows="3"><c:out
-							value="${freeVO.free_content }" /></textarea>
-				</div>
-
-				<div class="form-group">
-					<label for="input2">닉네임</label> <input readonly
-						value='<c:out value="${freeVO.free_nickname}" />' type="text"
-						class="form-control" id="input2">
-				</div>
-
-				<c:url value="/freeboard/modify" var="modifyLink">
-					<c:param name="free_seq" value="${freeVO.free_seq }"></c:param>
-					<c:param name="pageNum" value="${cri.pageNum }"></c:param>
-					<c:param name="amount" value="${cri.amount }"></c:param>
-					<c:param name="type" value="${cri.type }"></c:param>
-					<c:param name="keyword" value="${cri.keyword }"></c:param>
-				</c:url>
-				<!-- 유저의 정보가 있고 아이디가 writer와 userid값이 같을때 -->
-				<c:if test="${authUser != null && authUser.user_id == freeVO.free_writer}">
-				<form action="${root}/freeboard/remove" method="post">
-				<a href="${root}/freeboard/modify?free_seq=${freeVO.free_seq}"
-					class="btn btn-secondary"> 수정 </a>
-					<input hidden="hidden" name="free_seq" value="${freeVO.free_seq}">
-					<button class="btn btn-secondary">삭제</button>
-				</form>
-				</c:if>
+			<!-- 본문 -->
+			<div class="bodyWrap">
+				<p>${freeVO.free_content }</p>
 			</div>
-		</div>
 	</div>
+	<c:url value="/freeboard/modify" var="modifyLink">
+		<c:param name="free_seq" value="${freeVO.free_seq }"></c:param>
+		<c:param name="pageNum" value="${cri.pageNum }"></c:param>
+		<c:param name="amount" value="${cri.amount }"></c:param>
+		<c:param name="type" value="${cri.type }"></c:param>
+		<c:param name="keyword" value="${cri.keyword }"></c:param>
+	</c:url>
+	<a id="new-reply-button">댓글 작성</a>
+	<!-- 유저의 정보가 있고 아이디가 writer와 userid값이 같을때 -->
+	<c:if test="${authUser != null && authUser.user_id == freeVO.free_writer}">
+		<form action="${root}/freeboard/remove" method="post">
+			<a href="${root}/freeboard/modify?free_seq=${freeVO.free_seq}" id="btn_add"> 수정 </a>
+			<input hidden="hidden" name="free_seq" value="${freeVO.free_seq}">
+			<button id="btn_add">삭제</button>
+		</form>
+	</c:if>
+	<!--  댓글 목록 -->
+	<div class="recommView" id="reply_list"></div><br><br>
+	
+</section>
 
-	<!-- 댓글 목록 container -->
-	<div class="container-sm mt-3">
-		<div class="row">
-			<div class="col-12 col-lg-6 offset-lg-3">
-				<div class="card">
-					<div class="card-header d-flex justify-content-between align-items-center">
-						<span> 댓글 목록 </span>
-						<c:if test="${authUser != null }">
-						<button class="btn btn-info" id="new-reply-button">댓글 쓰기</button>
-						</c:if>
-					</div>
-					<div class="card-body">
-						<ul class="list-unstyled" id="reply-ul">
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<%-- modal 새 댓글 form --%>
 	<div class="modal fade" id="new-reply-modal">
 		<div class="modal-dialog">

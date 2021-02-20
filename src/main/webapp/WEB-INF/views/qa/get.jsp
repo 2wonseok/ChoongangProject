@@ -14,7 +14,7 @@ var appRoot = '${root}';
 var seq = ${board.qa_seq};
 var nickname = '${authUser.user_nickname}';
 var grade = '${authUser.user_grade}';
-
+var img = '${getQafileNameList }';
 </script>
 <script
   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -75,6 +75,7 @@ var grade = '${authUser.user_grade}';
     word-wrap: break-word;
 	}
 	.webzineTypeView .bodyWrap {
+		padding: 3px;
     color: #555555;
     font-size: 14px;
     line-height: 35px;
@@ -100,15 +101,12 @@ var grade = '${authUser.user_grade}';
     font-size: 14px;
 	}
 #btn_add {
-    color: #fff;
+    color: #000;
     font-size: 15px;
     border: none;
-    background: #747474;
-    padding: 0px 30px;
-    margin-top: 8px;
+    padding: 0px 10px;
     line-height: 45px;
     float: right;
-    border-radius: 3px;
 }
 /* 댓글 작성 폼 */
 	.lws {
@@ -240,6 +238,10 @@ var grade = '${authUser.user_grade}';
 
 $(document).ready(function() {
 	
+	if (img == null || img == '') {
+		$('.webzineTypeView').css('height', '588px');
+		$('.bodyWrap').css('padding', '21px');
+	}
 //	reply_seq NUMBER(10) PRIMARY KEY,
 //	reply_content VARCHAR2(3000) NOT NULL,
 //	reply_writer VARCHAR2(30) NOT NULL,
@@ -434,6 +436,7 @@ $(document).ready(function() {
 			<div class="headWrap">
 				<p class="mr-t10">${board.qa_title }</p>
 				<div class="date">
+					<p><strong>구분 : </strong>${board.qa_category }</p>
 					<p><strong>조회수 : </strong>${board.qa_readcnt }</p>
 					<p>
 						<strong>작성자 : ${board.qa_writer } </strong>
@@ -462,22 +465,21 @@ $(document).ready(function() {
 				</div>
 				<p>${board.qa_content }</p>
 			</div>
-				<a id="btn_add" style="background:#1e263c;" href="${root }/qa/list">목록으로</a> 
-				<!-- 보드 작성자 이름과 로그인 아이디가 같고, 등급이 1인 경우(일반)에만 활성화  -->
-				<c:if test="${board.qa_writer == authUser.user_nickname && authUser.user_grade == 1 }">
-					<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/modify?qa_seq=${board.qa_seq }" >수정</a> 
-					<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/remove?qa_seq=${board.qa_seq }" >삭제</a>				
-				</c:if>
-				<!-- 등급이 0 , 곧 관리자 일경우만 모든 게시물 삭제 가능 하도록 활성화 -->
-				<c:if test="${authUser.user_grade == 0 }">
-					<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/remove?qa_seq=${board.qa_seq }">삭제</a>
-				</c:if>		
-	  		<!-- 관리자이면서 자신의 글일 경우  -->
-	  		<c:if test="${authUser.user_grade == 0 && board.qa_writer == authUser.user_nickname }">
-					<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/modify?qa_seq=${board.qa_seq }">수정</a> 
-				</c:if>
 		</div>
-	
+		<a id="btn_add" href="${root }/qa/list">목록으로</a> 
+		<!-- 보드 작성자 이름과 로그인 아이디가 같고, 등급이 1인 경우(일반)에만 활성화  -->
+		<c:if test="${board.qa_writer == authUser.user_nickname && authUser.user_grade == 1 }">
+			<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/modify?qa_seq=${board.qa_seq }" >수정</a> 
+			<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/remove?qa_seq=${board.qa_seq }" >삭제</a>				
+		</c:if>
+		<!-- 등급이 0 , 곧 관리자 일경우만 모든 게시물 삭제 가능 하도록 활성화 -->
+		<c:if test="${authUser.user_grade == 0 }">
+			<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/remove?qa_seq=${board.qa_seq }">삭제</a>
+		</c:if>		
+ 		<!-- 관리자이면서 자신의 글일 경우  -->
+ 		<c:if test="${authUser.user_grade == 0 && board.qa_writer == authUser.user_nickname }">
+			<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/modify?qa_seq=${board.qa_seq }">수정</a> 
+		</c:if>
 	<!-- 댓글 작성 폼 -->
 	<div class="recommWritebox">
 		<div class="lws">

@@ -99,16 +99,28 @@ $(document).ready(function(){
 		
 
 <style>
-
+#foot {
+    background: #f8f8f8;
+    border-top: 2px solid #E3E1E1;
+    border-bottom: 1px solid #E3E1E1;
+    margin-top: 20px;
+}
+#btn_add_search {
+    color: #fff;
+    font-size: 15px;
+    background: #4a4a4a;
+}
 	.btn_add {
 	    color: #fff;
 	    font-size: 15px;
 	    border: none;
-	    background: #1e263c;
-	    padding: 0px 50px;
+	    background: #4a4a4a;
+	    padding: 0px 30px;
 	    margin: 0 0px;
 	    line-height: 45px;
 	    float: right;
+   	 	border-radius: 3px;
+    	text-align: center;
 	}
 	
 
@@ -146,9 +158,9 @@ $(document).ready(function(){
 	#container {
 	    clear: both;
 	    position: relative;
-	    margin: 50px auto 0px;
+	    margin: 35px auto 0px;
 	    padding: 0 0 50px 0;
-	    width: 1200px;
+	    width: 1000px;
 	    z-index: 1;
 	}
 
@@ -196,7 +208,7 @@ $(document).ready(function(){
   			</c:if>
   		</div>
   		
-  		<div class="row col-10 offset-1">
+  		<div class="row col-12 ml-1">
   			
 	  		<form id="formArray" action="${root }/product/list">
 	          	<input hidden="hidden" name="product_seq" value="${product.product_seq }"/>
@@ -213,23 +225,23 @@ $(document).ready(function(){
 	  			<button id="priceHign_btn" class="btn" type="button">가격높은순</button>
 	  			<button id="readcnt_btn" class="btn" type="button">조회순</button>
   			
-  			<div class="d-flex">
-				<select class="custom-select my-1 mr-sm-2" id="categoryMainSelectBox">
-					<option>===대분류===</option>
-					<c:forEach items="${ categoryMainList}" var="categoryMain" >
-						<option value="${categoryMain }" >${categoryMain }</option>
-					</c:forEach>
-				</select>
-				<select class="custom-select my-1 mr-sm-2" id="categorySubSelectBox">
-					<option>===소분류===</option>
-				</select>
-			</div>
+  			<div class="d-flex" style="margin-left: 184px;"> 
+					<select class="custom-select my-1 mr-sm-2" id="categoryMainSelectBox">
+						<option>===대분류===</option>
+						<c:forEach items="${ categoryMainList}" var="categoryMain" >
+							<option value="${categoryMain }" >${categoryMain }</option>
+						</c:forEach>
+					</select>
+					<select class="custom-select my-1 mr-sm-2" id="categorySubSelectBox">
+						<option>===소분류===</option>
+					</select>
+				</div>
   		</div>
   		
   		
-		<div class="row justify-content-center">
+	  <div class="row justify-content-center"> 
 		
-				<div class="row col-10 d-flex justify-content-center">
+				<div class="row col-12 d-flex justify-content-center">
 					<!--상품 bootstrap card 시작  -->
 					<c:forEach items="${list }" var="product">
 			
@@ -276,10 +288,11 @@ $(document).ready(function(){
 					</c:forEach>
 				</div>
 				<!--상품 bootstrap card 끝  -->			
-	</div>
+	 	</div>
 		
 	 	
 	 	<!-- 등록버튼 & 서치바 row -->
+	 	<div id="foot" class="row">
 		<div class="row col-10 offset-1 my-2">
 		 	
 			<!-- 서치  -->
@@ -306,7 +319,7 @@ $(document).ready(function(){
 						placeholder="Search" aria-label="Search" required>
 						<input type="hidden"  name="pageNum" value="1"/>
 						<input type="hidden"  name="amount" value="${pageDTO.cri.amount }"/>
-					<button class="btn btn-outline-success" type="submit">Search</button>
+					<button class="btn" id="btn_add_search" type="submit">Search</button>
 				</form>
 			</div>
 			
@@ -320,10 +333,10 @@ $(document).ready(function(){
 			</div>
 			
 		</div>
-		 
+		</div> 
 		
 		<!-- 페이징용row -->
-		<div class="row d-flex justify-content-center">
+		<div class="row d-flex justify-content-center" style="margin-top: 20px;">
 			<div class="col-md-6, col-md-offset-3">
 	
 				<!--페이징 시작  -->
