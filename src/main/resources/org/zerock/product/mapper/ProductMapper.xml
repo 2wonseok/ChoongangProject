@@ -9,6 +9,22 @@
 		resultType="org.zerock.product.domain.OrderVO">
 		select * from tbl_order where order_seq = #{order_seq} AND order_status = 0
 	</select>
+	
+	<select id="getCategoryMains" resultType="java.lang.String">
+		select category_main from tbl_category GROUP BY CATEGORY_MAIN
+	</select>
+	
+	<select id="getCategorySubs" resultType="java.lang.String">
+		select category_sub from tbl_category WHERE category_main = #{category_main}
+	</select>
+	
+	<select id="getCategorySeq" resultType="int">
+		select category_seq from tbl_category WHERE category_main = #{category_main} AND category_sub = #{category_sub}
+	</select>
+	
+	<select id="getCategoryMainAndSubs" resultType="org.zerock.product.domain.CategoryVO">
+		select category_main, category_sub from tbl_category WHERE category_seq = #{category_seq}
+	</select>
 
 	<update id="updateProductLike">
 		UPDATE tbl_product SET product_like = #{product_like} WHERE product_seq = #{product_seq}
@@ -123,6 +139,11 @@
 					</when>
 				</choose>
 			</foreach>
+			<choose>
+				<when test="categoryNum != null">
+					category_seq = #{categoryNum}
+				</when>
+			</choose>
 		</where>
 	</sql>
 

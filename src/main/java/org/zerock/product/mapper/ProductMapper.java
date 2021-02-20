@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.zerock.product.domain.CategoryVO;
 import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.OrderVO;
 import org.zerock.product.domain.ProductLikeVO;
@@ -57,6 +58,15 @@ public interface ProductMapper {
 		public int updateOrder(int order_seq);
 
 		public int directOrder(OrderVO vo);
+
+	/* category */
+		public List<String> getCategoryMains();
+
+		public List<String> getCategorySubs(String categoryMain);
+
+		public int getCategorySeq(CategoryVO categoryVO);
+
+		public CategoryVO getCategoryMainAndSubs(int category_seq);
 	
 	
 }

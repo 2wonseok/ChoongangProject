@@ -19,13 +19,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
 
-
 <script>
-
-var root = '${root }';
+var appRoot = '${root }';
 var productSeq = '${product.product_seq}';
 var userSeq = '${authUser.user_seq}';
-
+</script>
+<script>
 $(document).ready(function(){
 	
 	/*밑의 이미지를 호버하면 main이미지가 바뀌는 js */
@@ -152,7 +151,7 @@ $(document).ready(function(){
 		}
 		$.ajax({
 			type: "post",
-			url: root + "/product/like",
+			url: appRoot + "/product/like",
 			contentType: "application/json",
 			dataType: "JSON",
 			data: '{"product_seq":'+productSeq+',"user_seq":'+userSeq+'}',
@@ -279,7 +278,7 @@ $(document).ready(function(){
   <section id="container">
   
 	<div class="container">
-					<p class="text-left">상품 카테고리 > <c:out value="${product.category_seq }"></c:out></p>
+					<p class="text-left">상품 카테고리 > ${category.category_main } > ${category.category_sub }</p>
 				<table>
 					<colgroup>
 					    <col width="20%"/>

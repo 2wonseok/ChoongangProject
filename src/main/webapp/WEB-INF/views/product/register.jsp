@@ -18,8 +18,41 @@
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 <script>
+var appRoot = '${root }';
+var productSeq = '${product.product_seq}';
+var userSeq = '${authUser.user_seq}';
+</script>
+<script src="${root }/resources/product_js/category.js"></script>
+<script>
 	$(document).ready(function(){
 		
+		/* 카테고리 대분류를 선택하면 소분류를 ajax로 넘겨줘서가져옴-js파일사용 */
+		$("#categoryMainSelectBox").on( 'change', function(){
+			var categoryMain = $(this).find("option:selected").val();
+			
+			categoryService.getCategorySubList(categoryMain, function(list) {
+				var subBox = $("#categorySubSelectBox");
+				subBox.empty();
+					subBox.append(
+						'<option>===소분류===</option>'
+					);
+				for (var i = 0; i < list.length; i++) {
+					subBox.append(
+						'<option value="'+list[i]+'" >'+list[i]+'</option>'
+					);
+				}
+			})
+		});
+		/* 카테고리 소분류를 선택하면 대분류+소분류에 맞는 seq를 가져와야함 */
+		$("#categorySubSelectBox").on( 'change', function(){
+			var categoryMain = $("#categoryMainSelectBox").find("option:selected").val();
+			var categorySub = $(this).find("option:selected").val();
+			var data = {category_main : categoryMain, category_sub : categorySub};
+			categoryService.getCategorySeq(data, function(categorySeq) {
+				$("#categorySeq").val(categorySeq);
+			})
+		});
+			
 		/*모달창함수설정(+redirect시 넘어온 메세지도 출력)  */
 		var message = '${message}';
 		checkModal(message);
@@ -88,6 +121,12 @@
 
 <style>
 
+	/* 카테고리옵션 */
+
+	#categorySubSelectBox, #categoryMainSelectBox {
+	 width: 180px;
+	}
+
 	.btn_add {
     color: #fff;
     font-size: 15px;
@@ -97,7 +136,7 @@
     margin: 0 0px;
     line-height: 45px;
     float: right;
-}
+	}
 
 table.type05 {
   border-collapse: separate;
@@ -179,14 +218,6 @@ table.type05 td {
 									<th scope="row">상품 이름 *</th>
 									<td><input class="inputTop" id="product_name" name="product_name" type="text" value="${product.product_name }"></td>
 								</tr>
-								<%-- <tr>
-									<th scope="row">상품 단위 가격 * </th>
-									<td><input class="inputTop" id="product_price" name="product_price" type="number" value="${product.product_price }"></td>
-								</tr>
-								<tr>
-									<th scope="row">상품 수량 * </th>
-									<td><input class="inputTop" id="product_quantity" name="product_quantity" type="number" value="${product.product_quantity }"></td>
-								</tr> --%>
 								<tr>
 									<th scope="row">상품 판매자(Nickname)</th><!--value=authUser로 넣을 예정  -->
 									<td><input class="inputTop" id="user_nickname" name="user_nickname" type="text" value="${authUser.user_nickname }" style="background-color:silver;"readonly>
@@ -194,8 +225,21 @@ table.type05 td {
 									</td>
 								</tr>
 								<tr>
-									<th scope="row">상품 카테고리 번호(카테고리테이블에서 가져와서 넣어질 예정)</th>
-									<td> <input class="inputTop" name="category_seq" type="number" value="${product.category_seq }"></td>
+									<th scope="row">상품 카테고리 선택 *</th>
+									<td> 
+										<div class="d-flex">
+											<select id="categoryMainSelectBox">
+												<option>===대분류===</option>
+												<c:forEach items="${ categoryMainList}" var="categoryMain" >
+													<option value="${categoryMain }" >${categoryMain }</option>
+												</c:forEach>
+											</select>
+											<select id="categorySubSelectBox">
+												<option>===소분류===</option>
+											</select>
+											<input id="categorySeq" name="category_seq" type="text" value="0" hidden="hidden">
+										</div>
+									</td>
 								</tr>
 								<tr>
 									<th scope="row">상품 설명 *</th>
@@ -222,28 +266,6 @@ table.type05 td {
 								</tr>
 							</tbody>
 						</table>
-		
-				
-						<!--이전꺼 파일여러개올리는것 -->
-						<%-- <c:forEach begin="1" end="3" var="number">
-							<div class = "inputArea">
-								 <label><input type="file" name="upload" class="productImg${number }"/></label>
-							</div>						
-							<div class="select_img${number }"><img src="" /></div>
-						
-							<script>
-							  $(".productImg${number}").change(function(){
-								   if(this.files /* && this.files[0] */) {
-								    	var reader = new FileReader;
-								    	reader.onload = function(data) {
-								     					$(".select_img${number} img").attr("src", data.target.result).width(500);        
-								    					}
-								    	reader.readAsDataURL(this.files[0]);
-								   }
-								  });
-						 	</script>
-						</c:forEach> --%>
-						
 						
 						<!--이미지첨부시작  -->
 							<div class = "input_wrap">

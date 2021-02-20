@@ -2,6 +2,7 @@ package org.zerock.product.service;
 
 import java.util.List;
 
+import org.zerock.product.domain.CategoryVO;
 import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.OrderVO;
 import org.zerock.product.domain.ProductLikeVO;
@@ -42,5 +43,13 @@ public interface ProductService {
 	public int makeOrder(List<OrderVO> orderVOList);
 
 	public int directOrder(List<OrderVO> orderVOList);
+
+	public List<String> getCategoryMainList();
+
+	public List<String> getCategorySubList(String categoryMain);
+
+	public int getCategorySeq(CategoryVO categoryVO);
+
+	public CategoryVO getCategoryMainAndSub(int category_seq);
 
 }
