@@ -18,11 +18,49 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
+<script src="${root }/resources/product_js/category.js"></script>
 
 <title>Insert title here</title>
 
 <script>
+var appRoot = '${root }';
+var productSeq = '${product.product_seq}';
+var userSeq = '${authUser.user_seq}';
+</script>
+
+<script>
 $(document).ready(function(){
+	
+	/* 카테고리 대분류를 선택하면 소분류를 ajax로 넘겨줘서가져옴-js파일사용 */
+	$("#categoryMainSelectBox").on( 'change', function(){
+		console.log("클릭");
+		var categoryMain = $(this).find("option:selected").val();
+		
+		categoryService.getCategorySubList(categoryMain, function(list) {
+			var subBox = $("#categorySubSelectBox");
+			subBox.empty();
+				subBox.append(
+					'<option>===소분류===</option>'
+				);
+			for (var i = 0; i < list.length; i++) {
+				subBox.append(
+					'<option value="'+list[i]+'" >'+list[i]+'</option>'
+				);
+			}
+		})
+	});
+	/* 카테고리 소분류를 선택하면 대분류+소분류에 맞는 seq를 오고 자동으로넘어감*/
+	$("#categorySubSelectBox").on( 'change', function(){
+		var categoryMain = $("#categoryMainSelectBox").find("option:selected").val();
+		var categorySub = $(this).find("option:selected").val();
+		var data = {category_main : categoryMain, category_sub : categorySub};
+		categoryService.getCategorySeq(data, function(categorySeq) {
+			$("#categorySeq").val(categorySeq);
+			$("#formArray").submit();
+		})
+	});
+	
+	
 	
 	/*모달창-메세지넘어왔을때나오게함  */
 	var message = '${message}';
@@ -151,28 +189,47 @@ $(document).ready(function(){
 <u:mainNav/>
 <div class="container">
   <section id="container">
-  		
-  		<div class="row col-md-6">
-  		
-  		<form id="formArray" action="${root }/product/list">
-          	<input hidden="hidden" name="product_seq" value="${product.product_seq }"/>
-          	<input hidden="hidden" name="pageNum" value="${pageDTO.cri.pageNum }"/>
-          	<input hidden="hidden" name="amount" value="${pageDTO.cri.amount }"/>
-          	<input hidden="hidden" name="type" value="${pageDTO.cri.type }"/>
-   			<input hidden="hidden" name="keyword" value="${pageDTO.cri.keyword }"/>            	
-   			<input id="inputArray" hidden="hidden" name="array" value="${pageDTO.cri.array }"/>            	
-        </form>
-  			<button id="latest_btn" class="btn" type="button">최신순</button>
-  			<button id="like_btn" class="btn" type="button">찜많은순</button>
-  			<button id="priceLow_btn" class="btn" type="button">가격낮은순</button>
-  			<button id="priceHign_btn" class="btn" type="button">가격높은순</button>
-  			<button id="readcnt_btn" class="btn" type="button">조회순</button>
+  
+  		<div class="row col-10 offset-1">
+  			<c:if test="${not empty pageDTO.cri.categoryNum}">
+  				<p class="text-left">상품 카테고리 > ${category.category_main } > ${category.category_sub }</p>
+  			</c:if>
   		</div>
   		
-		<div class="row">
-			<div class="col-md-6, col-md-offset-3">
+  		<div class="row col-10 offset-1">
+  			
+	  		<form id="formArray" action="${root }/product/list">
+	          	<input hidden="hidden" name="product_seq" value="${product.product_seq }"/>
+	          	<input hidden="hidden" name="pageNum" value="${pageDTO.cri.pageNum }"/>
+	          	<input hidden="hidden" name="amount" value="${pageDTO.cri.amount }"/>
+	          	<input hidden="hidden" name="type" value="${pageDTO.cri.type }"/>
+	   			<input hidden="hidden" name="keyword" value="${pageDTO.cri.keyword }"/>            	
+	   			<input id="inputArray" hidden="hidden" name="array" value="${pageDTO.cri.array }"/>            	
+				<input id="categorySeq" hidden="hidden" name="categoryNum" type="text" value="" >
+	        </form>
+	  			<button id="latest_btn" class="btn" type="button">최신순</button>
+	  			<button id="like_btn" class="btn" type="button">찜많은순</button>
+	  			<button id="priceLow_btn" class="btn" type="button">가격낮은순</button>
+	  			<button id="priceHign_btn" class="btn" type="button">가격높은순</button>
+	  			<button id="readcnt_btn" class="btn" type="button">조회순</button>
+  			
+  			<div class="d-flex">
+				<select class="custom-select my-1 mr-sm-2" id="categoryMainSelectBox">
+					<option>===대분류===</option>
+					<c:forEach items="${ categoryMainList}" var="categoryMain" >
+						<option value="${categoryMain }" >${categoryMain }</option>
+					</c:forEach>
+				</select>
+				<select class="custom-select my-1 mr-sm-2" id="categorySubSelectBox">
+					<option>===소분류===</option>
+				</select>
+			</div>
+  		</div>
+  		
+  		
+		<div class="row justify-content-center">
 		
-				<div class="row d-flex justify-content-center">
+				<div class="row col-10 d-flex justify-content-center">
 					<!--상품 bootstrap card 시작  -->
 					<c:forEach items="${list }" var="product">
 			
@@ -219,13 +276,12 @@ $(document).ready(function(){
 					</c:forEach>
 				</div>
 				<!--상품 bootstrap card 끝  -->			
-		</div>
 	</div>
 		
 	 	
 	 	<!-- 등록버튼 & 서치바 row -->
-		<div class="row my-3 ml-1">
-		 
+		<div class="row col-10 offset-1 my-2">
+		 	
 			<!-- 서치  -->
 			<div class="col-8 align-left">
 				<c:url value="${root }/product/list" var="searchLink">
@@ -236,8 +292,9 @@ $(document).ready(function(){
 						<c:param name="keyword" value="${cri.keyword }"/>
 						<c:param name="array" value="${cri.array }" /> 
 				</c:url>
-	
+				
 				<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar">
+					<!--카테고리옵션 옵션  -->
 					<select class="custom-select my-1 mr-sm-2" name="type" 
 						id="inlineFormCustomSelectPref">
 						<option value="T" ${pageDTO.cri.type eq 'T' ? 'selected' : '' } >상품명</option>
@@ -249,7 +306,7 @@ $(document).ready(function(){
 						placeholder="Search" aria-label="Search" required>
 						<input type="hidden"  name="pageNum" value="1"/>
 						<input type="hidden"  name="amount" value="${pageDTO.cri.amount }"/>
-					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					<button class="btn btn-outline-success" type="submit">Search</button>
 				</form>
 			</div>
 			

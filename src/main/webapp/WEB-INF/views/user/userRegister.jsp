@@ -295,7 +295,7 @@ $(document).ready(function() {
     position: relative;
     margin: 50px auto 0px;
     padding: 0 0 50px 0;
-    width: 1200px;
+    width: 1000px;
     z-index: 1;
 }
 .row .col.s2 {
@@ -383,7 +383,7 @@ $(document).ready(function() {
 <div class="container">
 <section id="container">
 	<div id="login-page" class="row">
-		<div class="z-depth-1 card-panel" style="margin-left: 350px;">
+		<div class="z-depth-1 card-panel" style="margin-left: 255px;">
 	    <form class="login-form" action="${root }/user/userRegister" method="post" id="joinForm">
 	      <div class="row">
 	        <div class="input-field col s12 center">
@@ -400,7 +400,8 @@ $(document).ready(function() {
 	          <label for="user_id">아이디</label>
 	          <small class="text-danger" id="idLengthFail">영문 숫자 최소 4글자 이상 입력해주세요.</small>
 	          <small class="text-primary" id="idCheckSuccess">사용 가능합니다.</small>
-			    	<button type="button" id="idYes">확인</button>
+			    	<button type="button" id="idYes" class="btn waves-effect waves-light col s3"
+			    		style="margin-top: -25px; width: 13%; float: right; margin-right: 233px;">확인</button>
 	          <small class="text-danger" id="idCheckFail">이미 사용중인 아이디입니다.</small>
 	        </div>
 	      </div>
@@ -422,7 +423,8 @@ $(document).ready(function() {
 	          <label for="user_nickname">닉네임</label>
 	          <small class="text-danger" id="nicknameLengthFail">최소 2글자 이상 입력해주세요.</small>
 	          <small class="text-primary" id="nickCheckSuccess">사용 가능합니다.</small>
-			  	  <button type="button" id="nickYes">확인</button>
+			  	  <button type="button" id="nickYes" class="btn waves-effect waves-light col s3"
+			    		style="margin-top: -25px; width: 13%; float: right; margin-right: 233px;">확인</button>
 				    <small class="text-danger" id="nickCheckFail">이미 사용중인 닉네임입니다.</small>
 	        </div>
 	      </div>

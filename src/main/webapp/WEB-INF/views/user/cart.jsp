@@ -23,6 +23,20 @@ $(document).ready(function(){
 		}
 	});	
 	
+	$("#buy").click(function(e) {
+		e.preventDefault();
+		var checkVal = $("input:checkbox[name='order_seq']:checked").val();
+		
+		if (!checkVal) {
+			alert('체크 박스를 선택해주세요');
+			return false;
+		} 
+		
+		$("#buyForm").submit();
+	})
+	
+
+	
 });
 </script>
 <title>장바구니</title>
@@ -33,7 +47,7 @@ $(document).ready(function(){
     position: relative;
     margin: 50px auto 0px;
     padding: 0 0 50px 0;
-    width: 1200px;
+    width: 1000px;
     z-index: 1;
 }
 .table img {
@@ -55,6 +69,8 @@ p {
 		<div class="container">
 			<section id ="container">
 			<h3>장바구니</h3><br>
+			<form action="${root }/product/orderFromCart" id="buyForm">
+			<button type="submit" id="buy">구매하기</button>
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -67,7 +83,7 @@ p {
 					<tbody>
 					<c:forEach items="${cartList }" var="cart">
 						<tr>
-							<td><p><input type="checkbox" id="seq" name="seq" value="" /></p></td>
+							<td><p><input type="checkbox" id="order_seq" name="order_seq" value="${cart.order_seq }" /></p></td>
 							<td>
 								<img alt="상품사진" src="${root }/resources/upload/${cart.order_filename}">
 								<a href="${root}/product/get?product_seq=${cart.order_productseq}" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
@@ -80,6 +96,7 @@ p {
 					</c:forEach>
 					</tbody>
 				</table>
+				</form>
 			</section>
 		</div>
 	</c:when>

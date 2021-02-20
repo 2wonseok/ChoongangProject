@@ -26,49 +26,214 @@ var grade = '${authUser.user_grade}';
 <script src="${root }/resources/js/qa_reply.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <style>
-
+	#container {
+    clear: both;
+    position: relative;
+    margin: 35px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1000px;
+    z-index: 1;
+	}
+	#container td {
+    float: left;
+    margin: 20px;
+    border: 1px solid #d8d8d8;
+    border-bottom: 3px solid #d8d8d8;
+    background: #fff;
+    width: 310px;
+    min-height: 330px;
+    overflow: hidden;
+	}
+	#btn_write {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+  	background: #1e263c;
+    padding: 0px 50px;
+    margin: 0 0px;
+    line-height: 45px;
+    float:right;
+    margin-right:120px;
+	}
+	.webzineTypeView {
+    clear: both;
+    border-top: 3px solid #4a4a4a;
+    border-bottom: 3px solid #4a4a4a;
+    margin: 50px 0 20px 0;
+    width:1000px;
+    height:100%;
+	}
+	.webzineTypeView .headWrap {
+    background: #f5f5f5;
+    position: relative;
+    height: 60px;
+    padding: 10px 30px;
+    font-size: 14px;
+    color: #222222;
+    border-bottom: 1px solid #dedede;
+    word-break: keep-all;
+    word-wrap: break-word;
+	}
+	.webzineTypeView .bodyWrap {
+    color: #555555;
+    font-size: 14px;
+    line-height: 35px;
+    word-break: keep-all;
+    word-wrap: break-word;
+	}
+	.mr-t10 {
+    margin-top: 10px !important;
+	}
+	.webzineTypeView .headWrap .category {
+    color: #41a1eb;
+    font-size: 14px;
+	}
+	.webzineTypeView .headWrap .date {
+    position: absolute;
+    right: 30px;
+    top: 18px;
+	}
+	.webzineTypeView .headWrap .date p {
+    float: left;
+    color: #555555;
+    margin-left: 30px;
+    font-size: 14px;
+	}
 #btn_add {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #1e263c;
-    padding: 0px 50px;
-    margin: 0 0px;
+    background: #747474;
+    padding: 0px 30px;
+    margin-top: 8px;
     line-height: 45px;
     float: right;
+    border-radius: 3px;
 }
-#reply-submit-button {
+/* 댓글 작성 폼 */
+	.lws {
+		display: flex;
+	}
+	.recommWritebox {
+    clear: both;
+    width: 1000px;
+    margin: 95px auto 40px;
+    background: #f8f8f8;
+    padding: 15px 30px;
+    border: 1px solid #e7e9ee;
+    text-align: center;
+    color: #666666;
+    font-size: 15px;
+	}
+	.recommWritebox textarea {
+    padding: 10px 20px;
+    width: 1030px;
+    color: #666666;
+    font-size: 15px;
+    margin: 0;
+    border: 1px solid #cccccc;
+    line-height: 24px;
+    height: 80px;
+    box-sizing: content-box;
+	}
+	.replyBtn_add {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #1e263c;
+    background: #353535;
     padding: 0px 50px;
-    margin: 0 0px;
+    margin-right: -20px;
     line-height: 45px;
     float: right;
+    margin-left: 10px;
+    width: 180px;
 }
-
-
-#reply-submit-button_admin {
+/* 댓글 리스트 폼 */
+	ol, ul {
+	    list-style: none;
+	}
+	.recommView ul {
+    border-top: 1px solid #dedede;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 30px;
+	}
+	.recommView li {
+    position: relative;
+    padding: 20px 35px;
+    margin-bottom: -40px;
+	}
+	.recommView li p.txt {
+    font-size: 14px;
+    color: #444444;
+    line-height: 22px;
+    margin-bottom: 20px;
+    display: block;
+    word-break: keep-all;
+    word-wrap: break-word;
+	}
+	.recommView li p span {
+    color: #999999;
+    font-size: 13px;
+    padding: 0 15px;
+	}
+	.recommView li p #datespan {
+    color: #999999;
+    font-size: 13px;
+    padding: 0 15px;
+    display: inline-block; 
+    width: 133px; 
+    white-space: nowrap; 
+    overflow: hidden;
+    margin-bottom: -6px;
+	}
+	.lws #reply_content_input {
+		padding: 10px 20px;
+    width: 877px;
+    color: #666666;
+    font-size: 15px;
+    margin-top: 0;
+    border: 1px solid #cccccc;
+    line-height: 24px;
+    height: 70px;
+    box-sizing: content-box;
+	}
+	#btn_replyadd {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #1e263c;
+    background: #353535;
     padding: 0px 50px;
-    margin: 0 0px;
+    margin-right: -20px;
     line-height: 45px;
     float: right;
-}
-
-
-#table {
-    border: 2px solid black;
-}
+    margin-left: 10px;
+    width: 180px;
+    height: 80px;
+    margin-top: 11px;
+	}
+	.recommView ul li .replyform {
+    clear: both;
+    color: #999999;
+    font-size: 15px;
+    height: 30px;
+    width: 50px;
+    border: 1px solid #dedede;
+    padding: 3px 10px;
+    background-color: white;
+  }
+/* 기존 */
 #image {
 	max-width: 100%
 }
-
-
+#footdiv {
+    width: 1000px;
+    padding: 0 30px 30px 30px;
+	  text-align: center;
+    color: gray;
+    white-space: pre-line; 
+   	bottom:0;
+}
 </style>
 
 <script>
@@ -96,8 +261,7 @@ $(document).ready(function() {
 	function showList() {			
 		replyService.getList({qa_seq: seq}, function(list) {
 			
-			var replyUL = $("#reply_list");
-			replyUL.empty();		
+			var replyUL = $("#reply_list").empty();
 
 			for (var i = 0; i < list.length; i++) {
 				
@@ -105,56 +269,46 @@ $(document).ready(function() {
 				var content = list[i].reply_content;
 				var writer = list[i].reply_writer;
 				var regdate = list[i].reply_regdateKST;
-								
+
 				// 로그인 아이디와 닉네임이 동일 하고, 등급이 1(일반) 인 경우
 				if(writer == nickname && grade == 1) {
 					replyUL.append(
-						'<li class="main" data-seq="'+ seq +'">'
-						+ '<div>'
-						+ '<i class="fab fa-replyd"></i><div class="content" value="'+ content +'">' + content +'</div>'	
-						+ '<small class="float-right text-primary">'
-						+ '<div class="modify">수정</div>'
-						+ '<div class="delete">삭제</div>'
-						+ '</small>'
-						+ '</div >'
-						+ '<div class="float-reft text-info"><i class="far fa-user"></i>' + writer +'</div>' 
-						+ '<small class="float-reft text-info"><i class="far fa-clock"></i>'
-						+ moment(regdate).format('YYYY.MM.DD.HH:mm') 
-						+ '</small>'
-						+ '</li>'
-						+ '<hr>'				
+							'<ul>'
+							+'<li style="border-top:none;" data-seq="'+seq+'">'
+							+'<p class="txt">'+content+'</p>'
+							+'<p><span>'+writer+'</span>'
+							+'<span id="datespan">'+moment(regdate).format('YYYY.MM.DD.HH:mm')+'<span>'
+							+'<span style="color:red;" class="modify">수정</span>'
+							+'<span style="color:red;" class="delete">삭제</span>'
+							+'</p>'
+							+'</li>'
+							+'</ul>'
 					);			
 				} 
 				// 로그인 아이디와 닉네임이 동일 하고, 등급이 0(관리자) 인 경우
 				else if(writer == nickname && grade == 0) {
 					replyUL.append(
-						'<li class="main" data-seq="'+ seq +'">'
-						+ '<div>'
-						+ '<i class="fab fa-replyd"></i><div class="content" value="'+ content +'">' + content +'</div>'	
-						+ '<small class="float-right text-primary">'
-						+ '<div class="modify_admin">수정</div>'
-						+ '<div class="delete_admin">삭제</div>'
-						+ '</small>'
-						+ '</div>'
-						+ '<div class="float-reft text-info"><i class="far fa-user"></i>' + writer +'</div>'
-						+ '<small class="float-reft text-info"><i class="far fa-clock"></i>'
-						+ moment(regdate).format('YYYY.MM.DD.HH:mm') 
-						+ '</small>'
-						+ '</li>'
-						+ '<hr>'				
+							'<ul>'
+							+'<li style="border-top:none;" data-seq="'+seq+'">'
+							+'<p class="txt">'+content+'</p>'
+							+'<p><span>'+writer+'</span>'
+							+'<span id="datespan">'+moment(regdate).format('YYYY.MM.DD.HH:mm')+'</span>'
+							+'<span style="color:gray;" class="modify_admin">수정</span>'
+							+'<span style="color:red;" class="delete_admin">삭제</span>'
+							+'</p>'
+							+'</li>'
+							+'</ul>'
 					);			
 				} else { //로그인 되어있지 않은 유저나, 로그인 되어있지만 댓글을 작성하지 않은 유저
 					replyUL.append(
-							'<li class="main" data-seq="'+ seq +'">'
-							+ '<div>'
-							+ '<i class="fab fa-replyd"></i><div class="content" value="'+ content +'">' + content +'</div>'	
-							+ '</div>'
-							+ '<div class="float-reft text-info"><i class="far fa-user"></i>' + writer +'</div>'
-							+ '<small class="float-reft text-info"><i class="far fa-clock"></i>'
-							+ moment(regdate).format('YYYY.MM.DD.HH:mm') 
-							+ '</small>'
-							+ '</li>'
-							+ '<hr>'
+							'<ul>'
+							+'<li style="border-top:none;" data-seq="'+seq+'">'
+							+'<p class="txt">'+content+'</p>'
+							+'<p><span>'+writer+'</span>'
+							+'<span id="datespan">'+moment(regdate).format('YYYY.MM.DD.HH:mm')+'<span>'
+							+'</p>'
+							+'</li>'
+							+'</ul>'
 					);
 				} 
 			};
@@ -220,8 +374,8 @@ $(document).ready(function() {
 	// reply-list seq, content 값 불러오고 삭체 처리 처리
 	$("#reply_list").on("click", ".delete", function() {		
 		// 하나의 댓글 읽어오기
-		var seq = $(this).parent('small').parent('div').parent('li').attr("data-seq");
-		var content = $(this).parent('small').parent('div').children('div').attr("value");
+		var seq = $(this).parent('p').parent('li').attr('data-seq');
+		var content = $(this).parent('p').parent('li').children('.txt').text();
  
  		if(confirm("삭제 하시겠습니까?") == true){
 			replyService.remove(seq, function() {
@@ -237,9 +391,9 @@ $(document).ready(function() {
 	// reply-list seq, content 값 불러오고 삭체 처리 처리
 	$("#reply_list").on("click", ".delete_admin", function() {		
 		// 하나의 댓글 읽어오기
-		var seq = $(this).parent('small').parent('div').parent('li').attr("data-seq");
-		var content = $(this).parent('small').parent('div').children('div').attr("value");
-
+		var seq = $(this).parent('p').parent('li').attr('data-seq');
+		var content = $(this).parent('p').parent('li').children('.txt').text();
+		
  		if(confirm("삭제 하시겠습니까?") == true){
 			replyService.remove_admin(seq, function() {
 				alert("댓글 삭제 완료.");
@@ -252,11 +406,11 @@ $(document).ready(function() {
 	
 	
 	
-/* 	// 댓글 값 가져오기
+ 	// 댓글 값 가져오기
 	// 수정 버튼 이벤트 처리
 	$("#reply_list").on("click", ".modify", function() {
-		var seq = $(this).parent('small').parent('div').parent('li').attr("data-seq");
-		var content = $(this).parent('small').parent('div').children('div').attr("value");
+		var seq = $(this).parent('p').parent('li').attr('data-seq');
+		var content = $(this).parent('p').parent('li').children('.txt').text();
 		
 		
  		var data = {reply_seq: seq, reply_content: content};		
@@ -264,7 +418,7 @@ $(document).ready(function() {
 			alert("댓글을 수정 하였습니다.");
 			showList();
 		});		
-	}); */
+	}); 
 	
 	// 댓글 목록 함수 showList() 불러오기
 	showList();
@@ -274,134 +428,86 @@ $(document).ready(function() {
 <title>게시물 보기</title>
 </head>
 <body>
-
 <u:mainNav/>
-
-
+	<section id="container">
+		<div class="webzineTypeView">
+			<div class="headWrap">
+				<p class="mr-t10">${board.qa_title }</p>
+				<div class="date">
+					<p><strong>조회수 : </strong>${board.qa_readcnt }</p>
+					<p>
+						<strong>작성자 : ${board.qa_writer } </strong>
+					</p>
+					<c:choose>
+						<c:when test="${board.qa_updatedateKST == null }">
+							<p>
+								<strong>등록일 :</strong>
+								<fmt:formatDate value='${board.qa_regdateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
+							</p>
+						</c:when>
+						<c:otherwise>
+							<p>
+								<strong>수정일 :</strong>
+								<fmt:formatDate value='${board.qa_updatedateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
+							</p>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+			<div class="bodyWrap">
+				<div class="form-group" style="margin-top:5px;">
+					<c:forEach items="${getQafileNameList }" var="qaImg" varStatus="imgNum">
+						<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${qaImg }" width="245px" height="245px">
+					</c:forEach>
+				</div>
+				<p>${board.qa_content }</p>
+			</div>
+				<a id="btn_add" style="background:#1e263c;" href="${root }/qa/list">목록으로</a> 
+				<!-- 보드 작성자 이름과 로그인 아이디가 같고, 등급이 1인 경우(일반)에만 활성화  -->
+				<c:if test="${board.qa_writer == authUser.user_nickname && authUser.user_grade == 1 }">
+					<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/modify?qa_seq=${board.qa_seq }" >수정</a> 
+					<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/remove?qa_seq=${board.qa_seq }" >삭제</a>				
+				</c:if>
+				<!-- 등급이 0 , 곧 관리자 일경우만 모든 게시물 삭제 가능 하도록 활성화 -->
+				<c:if test="${authUser.user_grade == 0 }">
+					<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/remove?qa_seq=${board.qa_seq }">삭제</a>
+				</c:if>		
+	  		<!-- 관리자이면서 자신의 글일 경우  -->
+	  		<c:if test="${authUser.user_grade == 0 && board.qa_writer == authUser.user_nickname }">
+					<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/modify?qa_seq=${board.qa_seq }">수정</a> 
+				</c:if>
+		</div>
 	
-<div class="container-sm">
-	<div class="row">
-		<div class="col-12 col-lg-6 offset-lg-3">
-			<h1>게시물 보기</h1>
+	<!-- 댓글 작성 폼 -->
+	<div class="recommWritebox">
+		<div class="lws">
+			<textarea id="reply_content_input" name="reply_content"  >${reply_content }</textarea>
+			<c:if test="${not empty authUser.user_nickname}">
+			<!-- // 작성자 hidden 처리 -->	
+				<input readonly type="hidden" type="text" name="reply_writer" value="${authUser.user_nickname }" id="reply_writer_input"/><br>
+				<c:if test="${errors.reply_noContent }">
+					<small class="form-text text-danger"> 댓글 내용을 입력 해주세요. </small>
+				</c:if>
+		
+			<!-- 일반 유저 댓글 쓰기 -->
+				<c:if test="${!empty authUser.user_id && authUser.user_grade == 1}">
+					<button class="replyBtn_add" id="reply-submit-button">댓글작성</button> 
+				</c:if>
+			<!-- 관리자 댓글 쓰기 -->
+				<c:if test="${!empty authUser.user_id && authUser.user_grade == 0}">
+					<button class="replyBtn_add" id="reply-submit-button_admin">댓글작성</button> 
+				</c:if>
+			</c:if>
 		</div>
 	</div>
 	
-	<div class="row">
-		<div class="col-12 col-lg-6 offset-lg-3">		
-	<%-- 
-		<form action="${pageContext.request.contextPath }/board/register">
-	 --%>	
-
-	 	<div class="form-group">
-	 		<strong><label for="input1">번호</label></strong>
-	 		<input class="form-control" readonly value="${board.qa_seq }">
-	 	</div>
-	 	
-	 	<div class="form-group">
-	 		<strong><label for="input2">질문 종류</label></strong>
-	 		<input class="form-control" readonly value="${board.qa_category }">
-	 	</div>	 	
-		 	 
-	 		 	 
-			<div class="form-group">
-		    <strong><label for="input5">제목</label></strong>
-		    <input readonly value='<c:out value="${board.qa_title }" />' type="text" class="form-control">
-		  	</div>		  	
-		  	
-		  	
-		  	<div class="form-group">
-		    <strong><label for="input6">내용</label></strong>
-		    <textarea readonly class="form-control" id="textarea1" rows="3"><c:out value="${board.qa_content }" /></textarea>
-		  	</div>	
-		  		  	
-		  	<strong><label for="input6">이미지</label> <br></strong>	  	
-		  	<div class="form-group" contentEditable="false" id="table">		 
-		  	<c:forEach items="${getQafileNameList }" var="qaImg" varStatus="imgNum">
-				<img onerror="this.src='${root }/resources/noimage.jpg'" src="${root }/resources/qaboard/upload/${qaImg }" width="200px" height="200px">
-			</c:forEach>
-
-			</div>
-			<small class="form-text text-primary">
-	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 hh시mm분" value="${board.qa_regdateKST}" /> 에 작성 되었습니다.
-	 		</small>
-			<c:if test="${!empty board.qa_updatedate}">
-	 		<div class="form-group">
-	 		<small class="form-text text-danger">
-	 		<fmt:formatDate pattern="- yyyy년 MM월 dd일 hh시mm분" value="${board.qa_updatedateKST}" /> 에 수정 되었습니다.
-	 		</small>
-	 		</div>
-	 		</c:if>
-
-<%-- 		  	
-			<div class="form-group">
-		    <label for="textarea1">내용</label>
-		    <textarea readonly class="form-control" id="textarea1" rows="50" id="input6"><c:out value="${board.qa_content }" /></textarea>
-		    <img src="${root }/resources/upload/${board.qa_filename }"> 
-		  	</div>
- --%>
-		  	
-		  	<div class="form-group">
-		    <label for="input6">조회수</label>
-		    <input readonly value='<c:out value="${board.qa_readcnt }" />' type="text" class="form-control" id="input7">
-		  	</div>
-		  	
-
- 
- 			<a href="${root }/qa/list" id="btn_add">목록 보기</a> 
- 			<!-- 보드 작성자 이름과 로그인 아이디가 같고, 등급이 1인 경우(일반)에만 활성화  -->
-			<c:if test="${board.qa_writer == authUser.user_nickname && authUser.user_grade == 1 }">
-				<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
-				<a href="${root }/qa/remove?qa_seq=${board.qa_seq }" id="btn_add">삭제</a>				
-			</c:if>
-			<!-- 등급이 0 , 곧 관리자 일경우만 모든 게시물 삭제 가능 하도록 활성화 -->
-			<c:if test="${authUser.user_grade == 0 }">
-				<a href="${root }/qa/remove?qa_seq=${board.qa_seq }" id="btn_add">삭제</a>
-			</c:if>		
-		  	<!-- 관리자이면서 자신의 글일 경우  -->
-		  	<c:if test="${authUser.user_grade == 0 && board.qa_writer == authUser.user_nickname }">
-				<a href="${root }/qa/modify?qa_seq=${board.qa_seq }" id="btn_add">수정</a> 
-			</c:if>
-			<br><br>
-			
 <!-- 
 // 댓글 목록 AJAX
  -->
- 
+	<div class="recommView" id="reply_list">
 
-	
-<div class="card-body">
-	<ul class="list-unstyled" id="reply_list"> 	
-	</ul>
-</div>
-<c:if test="${empty authUser.user_nickname}">
-	로그인시 댓글 작성 가능. (로그인 마크)
-</c:if>
-
-<c:if test="${not empty authUser.user_nickname}">
-<label for="reply-input">댓글</label>
-	<input class="form-control" type="text" name="reply_content" value="${reply_content }" id="reply_content_input"/><br>	
-
-	<!-- // 작성자 hidden 처리 -->	
-	<input readonly type="hidden" type="text" name="reply_writer" value="${authUser.user_nickname }" id="reply_writer_input"/><br>
-	
-<c:if test="${errors.reply_noContent }">
-<small class="form-text text-danger"> 댓글 내용을 입력 해주세요. </small>
-</c:if>
-
-<!-- 일반 유저 댓글 쓰기 -->
-<c:if test="${!empty authUser.user_id && authUser.user_grade == 1}">
-<button id="reply-submit-button">댓글 쓰기</button> 
-</c:if>
-<!-- 관리자 댓글 쓰기 -->
-<c:if test="${!empty authUser.user_id && authUser.user_grade == 0}">
-<button id="reply-submit-button_admin">댓글 쓰기 (관리자)</button> 
-</c:if>
-
-</c:if>
-
-		</div>
 	</div>
-</div>
+</section>	 
 
 <div class="modal fade" id="modify-delete-reply-modal">
 		<div class="modal-dialog">
@@ -440,7 +546,19 @@ $(document).ready(function() {
 			</div>		
 		</div>
 	</div>
-
-	<u:footer/>
+	<div class="container-md">
+	<section id="containers">
+		<article id="bo_v" style="width:100%">
+    <footer>
+			<div id="footdiv">
+				<div class="container" style="width:100%;">
+				사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
+				주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
+				</div>
+			</div>
+		</footer> 
+	</article>
+	</section>
+	</div>
 </body>
 </html>

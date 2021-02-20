@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.zerock.product.domain.CategoryVO;
 import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.OrderVO;
 import org.zerock.product.domain.ProductLikeVO;
@@ -21,6 +22,26 @@ import lombok.AllArgsConstructor;
 public class ProductServiceImpl implements ProductService {
 
 	private ProductMapper mapper;
+	
+	@Override
+	public CategoryVO getCategoryMainAndSub(int category_seq) {
+		return mapper.getCategoryMainAndSubs(category_seq);
+	}
+	
+	@Override
+	public int getCategorySeq(CategoryVO categoryVO) {
+		return mapper.getCategorySeq(categoryVO);
+	}
+	
+	@Override
+	public List<String> getCategorySubList(String categoryMain) {
+		return mapper.getCategorySubs(categoryMain);
+	}
+	
+	@Override
+	public List<String> getCategoryMainList() {
+		return mapper.getCategoryMains();
+	}
 	
 	public List<OrderVO> getOrderList(String[] order_seq) {
 		
@@ -52,11 +73,30 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public int makeOrder(List<OrderVO> orderVOList) {
+		int count = 0;
+		for(OrderVO vo : orderVOList) {
+			count += mapper.updateOrder(vo.getOrder_seq());
+		}
+		return count;
+	}
+	
+	@Override
+	@Transactional
+	public int directOrder(List<OrderVO> orderVOList) {
+		int count = 0;
+		for(OrderVO vo : orderVOList) {
+			count += mapper.directOrder(vo);
+		}
+		return count;
+	}
+	
+	@Override
 	@Transactional
 	public int makeCart(List<OrderVO> list) {
 		int count = 0;
 		for(OrderVO vo : list) {
-			count += mapper.insertOrder(vo);
+			count += mapper.insertCart(vo);
 		}
 		return count;
 	}

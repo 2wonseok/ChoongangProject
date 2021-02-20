@@ -15,10 +15,11 @@ public class Criteria {
 	private String type;
 	private String keyword;
 	private String array;
+	private String categoryNum;
 	
 
 	public Criteria() {
-		this(1, 10);
+		this(1, 8);
 	}
 
 	public Criteria(int pageNum, int amount) {

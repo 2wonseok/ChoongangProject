@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,7 @@ import org.zerock.RevBoard.domain.PageDTO;
 import org.zerock.RevBoard.domain.RevVO;
 import org.zerock.RevBoard.service.RevBoardService;
 import org.zerock.user.domain.UserVO;
+import org.zerock.user.service.UserService;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 import lombok.AllArgsConstructor;
@@ -43,7 +45,8 @@ import lombok.extern.log4j.Log4j;
 public class RevBoardController {
 
 	private RevBoardService service;
-
+	private UserService UserSvc;
+	
 	@GetMapping("/register")
 	public void register() {
 
@@ -51,7 +54,8 @@ public class RevBoardController {
 
 	@PostMapping("/register")
 	public String register(RevVO revVo, Model model, RedirectAttributes rttr, MultipartFile[] upload,
-			HttpServletRequest request) {
+			HttpServletRequest request, HttpSession session) {
+		
 		Map<String, Boolean> errors = new HashMap<String, Boolean>();
 
 		if (revVo.getRev_title().isEmpty() || revVo.getRev_title() == null) {
@@ -108,7 +112,7 @@ public class RevBoardController {
 		String filenames = String.join(",", reNames);
 		revVo.setRev_filename(filenames);
 		System.out.println(filenames);
-
+		
 		if (!errors.isEmpty()) {
 			rttr.addFlashAttribute("errors", errors);
 			rttr.addFlashAttribute("category", revVo.getRev_category());
@@ -118,31 +122,33 @@ public class RevBoardController {
 
 			return "redirect:/rev/register";
 		}
-
-		UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
-
-		revVo.setRev_writer(user.getUser_id());
+		
+		UserVO user = (UserVO) session.getAttribute("authUser");
+		UserVO vo = UserSvc.getUser(user.getUser_id());
+		int eventcnt = vo.getEventCheck();
+		
+		revVo.setRev_writer(user.getUser_nickname());
 
 		service.register(revVo);
+		
 		rttr.addFlashAttribute("result", "success");
 		rttr.addFlashAttribute("message", revVo.getRev_writer() + " 님" + revVo.getRev_seq() + " 번 글이 등록되었습니다.");
-
+		
 		int cnt = service.boardSelect(revVo.getRev_writer());
-		if (cnt == 5) {
+		session.setAttribute("authUser", vo);
+		if (cnt == 5 && eventcnt == 0) {
 			service.pointUpdate(user.getUser_id());
-			/* service.pointCheck(user.getUser_id()); */
+			UserVO vo1 = UserSvc.getUser(user.getUser_id());
+			session.setAttribute("authUser", vo1);
 			rttr.addFlashAttribute("result", revVo.getRev_writer()); // 객체로 붙게됨.
 			rttr.addFlashAttribute("message", revVo.getRev_writer() + "님 포인트 500000원이 증정됐습니다.");
-
-		} /*
-			 * else if (cnt == 5 && user.getEventCheck() == 1) {
-			 * rttr.addFlashAttribute("result", revVo.getRev_writer()); // 객체로 붙게됨.
-			 * rttr.addFlashAttribute("message", revVo.getRev_writer() +
-			 * "님은 이미 포인트 이벤트에 참여하셨습니다."); }
-			 */
-			 
-			 
-
+			return "redirect:/rev/list";
+		} 
+			System.out.println("141:" + eventcnt);
+		if (cnt == 5 && eventcnt == 1) {
+			  	rttr.addFlashAttribute("result", revVo.getRev_writer()); // 객체로 붙게됨.
+			  	rttr.addFlashAttribute("message", revVo.getRev_writer() + "님은 이미 포인트 이벤트에 참여하셨습니다.");
+			  }
 		return "redirect:/rev/list";
 	}
 

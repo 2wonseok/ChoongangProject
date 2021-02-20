@@ -8,22 +8,31 @@
 <html>
 <head>
 <style type="text/css">
+#btn_add_search {
+    color: #fff;
+    font-size: 15px;
+    background: #4a4a4a;
+}
 #btn_add {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #1e263c;
-    padding: 0px 50px;
-    margin: 0 0px;
-    line-height: 45px;
+    background: #4a4a4a;
+    padding: 0px 30px;
+    margin: 0px;
+    line-height: 40px;
     float: right;
+    width: 125px;
+    height: 40px;
+    border-radius: 3px;
+    text-align: center;
 }
 #container {
     clear: both;
     position: relative;
     margin: 35px auto 0px;
     padding: 0 0 50px 0;
-    width: 1200px;
+    width: 1000px;
     z-index: 1;
 }
 thead {
@@ -98,7 +107,6 @@ thead {
 <u:mainNav></u:mainNav>
 
 
-
 			
 	<div class="container">
 	<section id="container">	
@@ -111,8 +119,12 @@ thead {
 						<th>카테고리</th>
 						<th>제목</th>
 						<th>작성자</th>
+						<c:if test="${rev.rev_updatedateKST == null }">
 						<th>작성일</th>
+						</c:if>
+						<c:if test="${rev.rev_updatedateKST != null }">
 						<th>수정일</th>
+						</c:if>
 						<th>좋아요</th>
 						<th>싫어요</th>
 						<th>조회수</th>
@@ -139,8 +151,12 @@ thead {
 								</c:if>
 							</a></td>
 							<td><c:out value="${rev.rev_writer}" /></td>
-							<td><fmt:formatDate value='${rev.rev_regdate}' pattern='yyyy-MM-dd/hh:mm'/></td>
-							<td><fmt:formatDate value='${rev.rev_updatedateKST}' pattern='yyyy-MM-dd/hh:mm'/></td>
+							<c:if test="${rev.rev_updatedateKST == null}">
+							<td><fmt:formatDate value='${rev.rev_regdate}' pattern='yyyy-MM-dd'/></td>
+							</c:if>	
+							<c:if test="${rev.rev_updatedateKST != null}">						
+							<td><fmt:formatDate value='${rev.rev_updatedateKST}' pattern='yyyy-MM-dd'/></td>
+							</c:if>
 									<td>${rev.rev_good }</td>
 									<td>${rev.rev_hate }</td>
 									<td>${rev.rev_readCnt }</td>
@@ -162,14 +178,14 @@ thead {
 					<option value="TWC" ${pageMaker.cri.type eq 'TWC' ? 'selected' : '' }>제목 or 내용 or 작성자</option>
 				</select> 
 				<input class="form-control mr-sm-2" type="search" name="keyword" value="${pageMaker.cri.keyword }"
-					placeholder="Search" aria-label="Search" required>
+					placeholder="검색어 입력" aria-label="Search" required >
 					<input type="hidden"  name="pageNum" value="1"/>
 					<input type="hidden"  name="amount" value="${pageMaker.cri.amount }"/>
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				<button class="btn my-2 my-sm-0"  id="btn_add_search" type="submit">Search</button>
 			</form>
-			<div style="float: left;width: 46%;" ></div>
+			<div style="float: right;width: 370px;" ></div>
 			<c:if test="${ sessionScope.authUser.user_id != null }">
-					<a id="btn_add" class="btn btn-info" href="${root }/rev/register">후기 쓰기</a>
+					<a id="btn_add" class="btn" href="${root }/rev/register">후기 작성</a>
 					</c:if>
 					<c:url value="${root }/rev/list" var="searchLink">
 					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />

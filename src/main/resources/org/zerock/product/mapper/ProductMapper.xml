@@ -7,7 +7,23 @@
 
 	<select id="readOrderbyOrderSeq"
 		resultType="org.zerock.product.domain.OrderVO">
-		select * from tbl_order where order_seq = #{order_seq} order_status = 0;
+		select * from tbl_order where order_seq = #{order_seq} AND order_status = 0
+	</select>
+	
+	<select id="getCategoryMains" resultType="java.lang.String">
+		select category_main from tbl_category GROUP BY CATEGORY_MAIN
+	</select>
+	
+	<select id="getCategorySubs" resultType="java.lang.String">
+		select category_sub from tbl_category WHERE category_main = #{category_main}
+	</select>
+	
+	<select id="getCategorySeq" resultType="int">
+		select category_seq from tbl_category WHERE category_main = #{category_main} AND category_sub = #{category_sub}
+	</select>
+	
+	<select id="getCategoryMainAndSubs" resultType="org.zerock.product.domain.CategoryVO">
+		select category_main, category_sub from tbl_category WHERE category_seq = #{category_seq}
 	</select>
 
 	<update id="updateProductLike">
@@ -32,15 +48,47 @@
 		delete from tbl_productlike where product_seq = #{product_seq} AND user_seq = #{user_seq}
 	</delete>
 	
-
-	<insert id="insertOrder">
+	<insert id="insertCart">
 		insert into tbl_order (order_seq, order_productseq, order_poseq,
-		order_poname, order_poprice, order_quantity, order_userseq, order_username, order_useraddress, order_userphone, order_filename)
+		order_poname, order_poprice, order_quantity, order_userseq, order_username, 
+		order_useraddress, order_userphone, order_filename, order_status, order_date)
 		values 
 		(order_seq.nextval, #{order_productseq}, #{order_poseq},
 		#{order_poname}, #{order_poprice}, #{order_quantity},
-		#{order_userseq}, #{order_username}, #{order_useraddress}, #{order_userphone}, #{order_filename})
+		#{order_userseq}, #{order_username}, #{order_useraddress}, 
+		#{order_userphone}, #{order_filename}, #{order_status}, SYSDATE)
 	</insert>
+	
+	<insert id="insertOrder">
+		insert into tbl_order (order_seq, order_productseq, order_poseq,
+		order_poname, order_poprice, order_quantity, order_userseq, order_username, 
+		order_useraddress, order_userphone, order_filename, order_status, order_date)
+		values 
+		(order_seq.nextval, #{order_productseq}, #{order_poseq},
+		#{order_poname}, #{order_poprice}, #{order_quantity},
+		#{order_userseq}, #{order_username}, #{order_useraddress}, 
+		#{order_userphone}, #{order_filename}, #{order_status}, SYSDATE)
+	</insert>
+
+	<insert id="directOrder">
+		insert into tbl_order (order_seq, order_productseq, order_poseq,
+		order_poname, order_poprice, order_quantity, order_userseq, order_username, 
+		order_useraddress, order_userphone, order_filename, order_status, order_date)
+		values 
+		(order_seq.nextval, #{order_productseq}, #{order_poseq},
+		#{order_poname}, #{order_poprice}, #{order_quantity},
+		#{order_userseq}, #{order_username}, #{order_useraddress}, 
+		#{order_userphone}, #{order_filename}, 1, SYSDATE)
+	</insert>
+	
+	<update id="updateOrder">
+		UPDATE tbl_order
+		SET
+		order_status = 1,
+		order_date = sysdate
+		WHERE
+		order_seq = #{order_seq}
+	</update>
 
 	<insert id="insertProductOption" >
 		insert into tbl_productoption (productoption_seq, product_seq, po_name, po_quantity, po_price
@@ -91,6 +139,11 @@
 					</when>
 				</choose>
 			</foreach>
+			<choose>
+				<when test="categoryNum != null">
+					category_seq = #{categoryNum}
+				</when>
+			</choose>
 		</where>
 	</sql>
 

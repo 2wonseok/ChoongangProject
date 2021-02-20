@@ -113,12 +113,12 @@
 		 		order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone
 		 		, order_filename 
 			FROM tbl_order
-			)	
-			WHERE
+			WHERE 
 				order_userseq = #{order_userseq}
 			AND
-				order_status = 0
- 			AND
+				order_status = 0 
+			)	
+			WHERE
 				rn BETWEEN (#{cri.pageNum} - 1) * 5 + 1 AND #{cri.pageNum} * 5
 	</select>
 	
@@ -135,10 +135,9 @@
       product_updatedate, user_nickname, product_like
    FROM
       tbl_product
+   WHERE user_nickname = #{user_nickname}   
       )
    WHERE
-   		user_nickname = #{user_nickname}
-   AND	
     	rn BETWEEN (#{cri.pageNum} - 1) * 5 + 1 AND #{cri.pageNum} * 5
 	
 	</select>
@@ -179,6 +178,34 @@
 	<select id="getTotalOrderInfoList" resultType="int">
 		SELECT COUNT(*) FROM tbl_order WHERE order_productseq = #{order_productseq} AND order_status = 1
 	</select>
+	
+	<select id="sendList" resultType="org.zerock.product.domain.OrderVO">
+		select order_seq, order_productseq, order_date, order_poseq, order_poname, order_poprice,
+			order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone
+			, order_filename
+		FROM
+			(
+			SELECT
+				ROW_NUMBER() OVER (ORDER BY order_date DESC) rn,
+		 		order_seq, order_productseq, order_date, order_poseq, order_poname, order_poprice,
+		 		order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone
+		 		, order_filename 
+			FROM tbl_order
+			WHERE 
+				order_productseq = #{order_productseq} AND order_status = 2
+			)	
+			WHERE
+				rn BETWEEN (#{cri.pageNum} - 1) * #{cri.amount} + 1 AND #{cri.pageNum} * #{cri.amount}
+	</select>
+	
+	<update id="productSend">
+		UPDATE tbl_order
+		SET
+			order_status = 2
+		WHERE
+			order_seq = #{order_seq}
+			order_date = SYSDATE	
+	</update>
 	
 	<update id="gradeUpdate">
 		UPDATE tbl_user

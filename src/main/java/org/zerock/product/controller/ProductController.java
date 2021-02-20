@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.product.domain.CategoryVO;
 import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.OrderVO;
 import org.zerock.product.domain.PageDTO;
@@ -50,13 +52,7 @@ public class ProductController {
 
 	private ProductService service;
 	
-	/*
-	@PostMapping(value="/like", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody int productLikeUp (ProductLikeVO productLikeVO) {
-		int total = service.changeProductLike(productLikeVO);
-		return total;
-	}
-	*/
+	/* 좋아요 */
 	@ResponseBody
 	@PostMapping(value="/like", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public  ResponseEntity<Integer> productLikeUp (@RequestBody ProductLikeVO productLikeVO) {
@@ -64,21 +60,46 @@ public class ProductController {
 		return new ResponseEntity<Integer>(total,HttpStatus.OK) ;
 	}
 	
+	/* 카테고리관련 */
+	@ResponseBody
+	@PostMapping("/getCategorySub")
+	public  ResponseEntity<List<String>> categorySub (@RequestBody String categoryMain) {
+		List<String> list = service.getCategorySubList(categoryMain);
+		return new ResponseEntity<List<String>>(list,HttpStatus.OK) ;
+	}
+	@ResponseBody
+	@PostMapping("/getCategorySeq")
+	public  ResponseEntity<Integer> categorySub (@RequestBody CategoryVO categoryVO) {
+		Integer categorySeq = service.getCategorySeq(categoryVO);
+		return new ResponseEntity<Integer>(categorySeq,HttpStatus.OK) ;
+	}
+	
 	
 	@GetMapping("/register")
-	public String register(@ModelAttribute("cri") Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
+	public String register(@ModelAttribute("cri") Criteria cri, HttpServletRequest request, Model model, RedirectAttributes rttr) {
 		
 		/* 로그인 해야지만 register를 할 수 있게끔 */
 		if (request.getSession().getAttribute("authUser") == null) {
 			rttr.addFlashAttribute("message","로그인 되어있지 않습니다.");
 			return "redirect:/product/list";
 		}
+		/* 카테고리 대분류를 보내줌 */
+		List<String> categoryMainList = service.getCategoryMainList();
+		model.addAttribute("categoryMainList", categoryMainList);
+		
 		return "/product/register";
 	}
 
 	@PostMapping("/register")
 	public String register(String[] po_name, String[] po_quantity, String[] po_price, ProductVO product, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request) {
 
+		/* 카테고리가 비어 있을 때 돌려보냄 */
+		if (product.getCategory_seq() == 0) {
+			rttr.addFlashAttribute("product", product);
+			rttr.addFlashAttribute("message", "카테고리 선택이 올바르지 않습니다");
+			return "redirect:/product/register";
+		}
+		
 		/*상품옵션이 비었을때 돌려보냄*/
 			/*for(String po_p : po_price) {
 				System.out.println(po_p);				
@@ -221,6 +242,17 @@ public class ProductController {
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pageDTO", dto);
+		
+		/* 카테고리 대분류를 보내줌 */
+		List<String> categoryMainList = service.getCategoryMainList();
+		model.addAttribute("categoryMainList", categoryMainList);
+		
+		//카테고리를 구해서 넣어줌(검색연동
+		if (cri.getCategoryNum() != null && !cri.getCategoryNum().isEmpty()) {
+			CategoryVO  categoryVO = service.getCategoryMainAndSub(Integer.parseInt(cri.getCategoryNum()));
+			model.addAttribute("category", categoryVO);
+		}
+		
 	}
 
 	@GetMapping("/get")
@@ -231,8 +263,11 @@ public class ProductController {
 		//옵션리스트넣어줌
 		List<ProductOptionVO> poVOList = service.getProductOption(product_seq);
 		model.addAttribute("poList", poVOList);
-		
 		model.addAttribute("cri", cri);
+		
+		//카테고리를 구해서 넣어줌
+		CategoryVO  categoryVO = service.getCategoryMainAndSub(vo.getCategory_seq());
+		model.addAttribute("category", categoryVO);
 		
 		//여러 상품파일이름을 list로 변환하고 넘겨줌
 		List<String> fileNamesList = Arrays.asList(vo.getProduct_filename().split(","));
@@ -463,31 +498,82 @@ public class ProductController {
 				rttr.addFlashAttribute("message", "장바구니 담기 성공");			
 			}
 			return "redirect:/product/get";
+		/* get에서 구매버튼 눌렀으면 order로 넘겨주기 */
 		} else {
 			rttr.addFlashAttribute("direct", list);
-			return "redirect:/product/order";
+			return "redirect:/product/orderFromDirect";
 		}
 		
 	}
-	
 	@GetMapping("/order")
-	public void order (String[] order_seq, @ModelAttribute("direct") List<OrderVO> direct, Model model, HttpSession session) {
+	public void order(@ModelAttribute("orderList")List<OrderVO> orderList, Model model) {
+		System.out.println(orderList.toString());
+		
+		model.addAttribute("orderList", orderList);
+	}
+	
+	@GetMapping("/orderFromDirect")
+	public String order(@ModelAttribute("direct")List<OrderVO> direct,
+		RedirectAttributes rttr	) {
+		
+		rttr.addFlashAttribute("orderList", direct);
+		return "redirect:/product/order";
+		
+	}
+	@GetMapping("/orderFromCart")
+	public String order(@RequestParam("order_seq") String[] order_seq, RedirectAttributes rttr) {
+		
 		List<OrderVO> list = new ArrayList<>();
 		
-		if(order_seq !=null && order_seq.length != 0) {
-			list = service.getOrderList(order_seq);
-		} else {
-			list = direct;	
-		}
-		model.addAttribute("orderList", list);
+		if(order_seq == null || order_seq.length == 0) {
+			rttr.addFlashAttribute("message","카트에 물품을 하나라도 선택해야합니다.");
+			return "redirect:/product/list";
+		}	
+		list = service.getOrderList(order_seq);
+		rttr.addFlashAttribute("orderList", list);
+		return "redirect:/product/order";
+		
 	}
-	
 	@PostMapping("/order")
-	public String order (String[] order_seq) {
+	public String order (@RequestParam ("usePoint") String usePoint, 
+			@RequestParam ("requireTotalPrice") String requireTotalPrice,
+			OrderVO orderVO, RedirectAttributes rttr) {
 		
-		System.out.println(order_seq.length);
+		/* 일단 가격이 맞는지 확인 */
+		if(!usePoint.equals(requireTotalPrice)) {
+			rttr.addFlashAttribute("message", "가격이 부족합니다.");
+			return "redirect:/product/list";
+		}
 		
+		/* null체크 */
+		if(orderVO == null || orderVO.getOrderVOList() == null || orderVO.getOrderVOList().get(0) == null) {
+			rttr.addFlashAttribute("message", "선택항목이 없습니다.");
+			return "redirect:/product/list";
+		}
 		
+		List<OrderVO> orderVOList = orderVO.getOrderVOList();
+		
+		int result = 0;
+		boolean check = false;
+		/* get에서 구매버튼으로 눌렀을 때 넘어온거면 들어온첫번째order_seq는 반드시0임*/
+		if (orderVOList.get(0).getOrder_seq() == 0) {
+			result = service.directOrder(orderVOList);
+			if(result != orderVOList.size()) {
+				check = true;
+			}
+		/* 장바구니에서 order_seq 배열로 넘어온것을 처리 */
+		} else {
+			result= service.makeOrder(orderVOList);
+			if(result != orderVOList.size()) {
+				check = true;
+			}
+		}
+		/* 위 두개의 열 적용수가 다르면 돌려보냄 */
+		if (check) {
+			rttr.addFlashAttribute("message", "오더실패");
+			return "redirect:/product/list";	
+		}
+		System.out.println("오더개수:"+ result);
 		return "redirect:/user/userOrderList";
 	}
 	

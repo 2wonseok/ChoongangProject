@@ -31,7 +31,7 @@ $(document).ready(function() {
     position: relative;
     margin: 50px auto 0px;
     padding: 0 0 50px 0;
-    width: 1200px;
+    width: 1000px;
     z-index: 1;
 }
 html, body {
@@ -96,7 +96,7 @@ html, body {
 <div class="container">
 <section id="container">
 	<div id="login-page" class="row">
-		<div class="z-depth-1 card-panel" style="margin-left: 350px;">
+		<div class="z-depth-1 card-panel" style="margin-left: 255px;">
       <form class="login-form" action="${root }/user/login" method="post">
         <div class="row">
           <div class="input-field col s12 center">
