@@ -25,7 +25,7 @@ $(document).ready(function() {
 
 });
 </script>
-<title>임시 메인 페이지</title>
+<title>BCD쇼핑몰</title>
 </head>
 <style>
 #container {
