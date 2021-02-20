@@ -61,6 +61,21 @@ p {
 	vertical-align: middle;
 	padding-top: 30px;
 } 
+#buy {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #4a4a4a;
+    padding: 0px 30px;
+    margin-top: -20px;
+    margin-bottom: 5px;
+    line-height: 40px;
+    float: left;
+    width: 125px;
+    height: 40px;
+    border-radius: 3px;
+    text-align: center;
+}
 </style>
 <body>
 <u:mainNav/>
