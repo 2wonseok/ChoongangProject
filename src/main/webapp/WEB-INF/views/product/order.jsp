@@ -16,6 +16,10 @@
 <script>
 $(document).ready(function(){
 	
+	/* 일단 넘어온 것들을 모두 체크해두기 */
+	$("input[type=checkbox]").prop("checked", true);
+	
+	/* 맨위 모두클릭버튼기능 */
 	$('#allCheck').click(function () {
 		if ($("input:checkbox[id='allCheck']").prop("checked")) {
 			$("input[type=checkbox]").prop("checked", true);
@@ -24,10 +28,28 @@ $(document).ready(function(){
 		}
 	});	
  	
+	/*버튼누를때 가격이들어감  */
 	$('#useMaxPointBtn').click(function () {
  		var totalP = $('#requireTotalPrice').val();
  		$('#usePoint').val(totalP);
 	});
+	
+
+	/* 지울거 $("input:checkbox[name='aaa']").length */
+	
+	
+/* 	$('#submit_btn').click(function (e) {
+		e.preventDefault();
+ 		
+		 체크된 박스의 값을가져오기 
+		 $("input:checkbox[name='aaaa']:checked").val()
+		
+		$('#usePoint').val(totalP);
+ 		
+		
+ 		$('#form_order').submit();
+	}); */
+	
 	
 });
 </script>
@@ -64,7 +86,7 @@ p {
 		<div class="container">
 			<section id ="container">
 			
-			<form action="${root }/product/order" method="post">
+			<form id="form_order" action="${root }/product/order" method="post">
 			
 			<h3>결제 페이지</h3><br>
 			
@@ -85,7 +107,7 @@ p {
 					
 					<c:forEach items="${orderList }" var="order" varStatus="status" >
 						<tr>
-							<td><p><input type="checkbox" id="seq" name="seq" value="" /></p></td>
+							<td><p><input type="checkbox" id="inputCheckBox${status.index}" name="checkbox" value="inputCheckBox${status.index}" /></p></td>
 							<td>
 								<img alt="상품사진" src="${root }/resources/upload/${order.order_filename}">
 								<a href="${root}/product/get?product_seq=${order.order_productseq}" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
@@ -96,18 +118,18 @@ p {
 							<td><p><fmt:formatNumber value='${order.order_poprice }' type="number"></fmt:formatNumber>원</p></td>
 						</tr>
 						<!--판매에서 넘어왔을 시에 처리할것  -->
-						<input name="orderVOList[${status.index}].order_seq" value="${order.order_seq }" hidden="hidden"/>
-						<input name="orderVOList[${status.index}].order_status" value="1" hidden="hidden"/>
-						<input name="orderVOList[${status.index}].order_productseq" value="${order.order_productseq }" hidden="hidden"/>
-						<input name="orderVOList[${status.index}].order_filename" value="${order.order_filename }" hidden="hidden"/>
-						<input name="orderVOList[${status.index}].order_poseq" value="${order.order_poseq }" hidden="hidden"/>
-						<input name="orderVOList[${status.index}].order_poname" value="${order.order_poname }" hidden="hidden"/>
-						<input name="orderVOList[${status.index}].order_poprice" value="${order.order_poprice }" hidden="hidden"/>
-						<input name="orderVOList[${status.index}].order_quantity" value="${order.order_quantity }" hidden="hidden"/>
-						<input name="orderVOList[${status.index}].order_userseq" value="${order.order_userseq }" hidden="hidden"/>
-						<input name="orderVOList[${status.index}].order_username" value="${order.order_username }" hidden="hidden"/>
-						<input name="orderVOList[${status.index}].order_useraddress" value="${order.order_useraddress }" hidden="hidden"/>
-						<input name="orderVOList[${status.index}].order_userphone" value="${order.order_userphone }" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_seq" value="${order.order_seq }" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_status" value="1" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_productseq" value="${order.order_productseq }" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_filename" value="${order.order_filename }" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_poseq" value="${order.order_poseq }" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_poname" value="${order.order_poname }" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_poprice" value="${order.order_poprice }" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_quantity" value="${order.order_quantity }" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_userseq" value="${order.order_userseq }" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_username" value="${order.order_username }" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_useraddress" value="${order.order_useraddress }" hidden="hidden"/>
+						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_userphone" value="${order.order_userphone }" hidden="hidden"/>
 					</c:forEach>
 					</tbody>
 				</table>
@@ -160,7 +182,7 @@ p {
 			<div>사용 포인트 : <input id="usePoint" name="usePoint" type="number"/>
 				<button id="useMaxPointBtn" type="button">포인트 모두 사용</button>
 			</div>
-				<button>구매하기</button>
+				<button id="submit_btn">구매하기</button>
 			</form>
 
 			</section>

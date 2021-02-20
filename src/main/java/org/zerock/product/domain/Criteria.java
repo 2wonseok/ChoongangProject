@@ -15,6 +15,7 @@ public class Criteria {
 	private String type;
 	private String keyword;
 	private String array;
+	private String categoryNum;
 	
 
 	public Criteria() {

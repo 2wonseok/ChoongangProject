@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.product.domain.CategoryVO;
 import org.zerock.product.domain.Criteria;
 import org.zerock.product.domain.OrderVO;
 import org.zerock.product.domain.PageDTO;
@@ -51,13 +52,7 @@ public class ProductController {
 
 	private ProductService service;
 	
-	/*
-	@PostMapping(value="/like", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody int productLikeUp (ProductLikeVO productLikeVO) {
-		int total = service.changeProductLike(productLikeVO);
-		return total;
-	}
-	*/
+	/* 좋아요 */
 	@ResponseBody
 	@PostMapping(value="/like", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public  ResponseEntity<Integer> productLikeUp (@RequestBody ProductLikeVO productLikeVO) {
@@ -65,21 +60,46 @@ public class ProductController {
 		return new ResponseEntity<Integer>(total,HttpStatus.OK) ;
 	}
 	
+	/* 카테고리관련 */
+	@ResponseBody
+	@PostMapping("/getCategorySub")
+	public  ResponseEntity<List<String>> categorySub (@RequestBody String categoryMain) {
+		List<String> list = service.getCategorySubList(categoryMain);
+		return new ResponseEntity<List<String>>(list,HttpStatus.OK) ;
+	}
+	@ResponseBody
+	@PostMapping("/getCategorySeq")
+	public  ResponseEntity<Integer> categorySub (@RequestBody CategoryVO categoryVO) {
+		Integer categorySeq = service.getCategorySeq(categoryVO);
+		return new ResponseEntity<Integer>(categorySeq,HttpStatus.OK) ;
+	}
+	
 	
 	@GetMapping("/register")
-	public String register(@ModelAttribute("cri") Criteria cri, HttpServletRequest request, RedirectAttributes rttr) {
+	public String register(@ModelAttribute("cri") Criteria cri, HttpServletRequest request, Model model, RedirectAttributes rttr) {
 		
 		/* 로그인 해야지만 register를 할 수 있게끔 */
 		if (request.getSession().getAttribute("authUser") == null) {
 			rttr.addFlashAttribute("message","로그인 되어있지 않습니다.");
 			return "redirect:/product/list";
 		}
+		/* 카테고리 대분류를 보내줌 */
+		List<String> categoryMainList = service.getCategoryMainList();
+		model.addAttribute("categoryMainList", categoryMainList);
+		
 		return "/product/register";
 	}
 
 	@PostMapping("/register")
 	public String register(String[] po_name, String[] po_quantity, String[] po_price, ProductVO product, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request) {
 
+		/* 카테고리가 비어 있을 때 돌려보냄 */
+		if (product.getCategory_seq() == 0) {
+			rttr.addFlashAttribute("product", product);
+			rttr.addFlashAttribute("message", "카테고리 선택이 올바르지 않습니다");
+			return "redirect:/product/register";
+		}
+		
 		/*상품옵션이 비었을때 돌려보냄*/
 			/*for(String po_p : po_price) {
 				System.out.println(po_p);				
@@ -222,6 +242,17 @@ public class ProductController {
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pageDTO", dto);
+		
+		/* 카테고리 대분류를 보내줌 */
+		List<String> categoryMainList = service.getCategoryMainList();
+		model.addAttribute("categoryMainList", categoryMainList);
+		
+		//카테고리를 구해서 넣어줌(검색연동
+		if (cri.getCategoryNum() != null && !cri.getCategoryNum().isEmpty()) {
+			CategoryVO  categoryVO = service.getCategoryMainAndSub(Integer.parseInt(cri.getCategoryNum()));
+			model.addAttribute("category", categoryVO);
+		}
+		
 	}
 
 	@GetMapping("/get")
@@ -232,8 +263,11 @@ public class ProductController {
 		//옵션리스트넣어줌
 		List<ProductOptionVO> poVOList = service.getProductOption(product_seq);
 		model.addAttribute("poList", poVOList);
-		
 		model.addAttribute("cri", cri);
+		
+		//카테고리를 구해서 넣어줌
+		CategoryVO  categoryVO = service.getCategoryMainAndSub(vo.getCategory_seq());
+		model.addAttribute("category", categoryVO);
 		
 		//여러 상품파일이름을 list로 변환하고 넘겨줌
 		List<String> fileNamesList = Arrays.asList(vo.getProduct_filename().split(","));
@@ -494,7 +528,7 @@ public class ProductController {
 		if(order_seq == null || order_seq.length == 0) {
 			rttr.addFlashAttribute("message","카트에 물품을 하나라도 선택해야합니다.");
 			return "redirect:/product/list";
-		}
+		}	
 		list = service.getOrderList(order_seq);
 		rttr.addFlashAttribute("orderList", list);
 		return "redirect:/product/order";
@@ -539,7 +573,7 @@ public class ProductController {
 			rttr.addFlashAttribute("message", "오더실패");
 			return "redirect:/product/list";	
 		}
-		
+		System.out.println("오더개수:"+ result);
 		return "redirect:/user/userOrderList";
 	}
 	
