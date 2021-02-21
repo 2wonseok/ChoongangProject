@@ -121,6 +121,7 @@ $(document).ready(function(){
 	    float: right;
    	 	border-radius: 3px;
     	text-align: center;
+    	margin-right: -76px;
 	}
 	
 

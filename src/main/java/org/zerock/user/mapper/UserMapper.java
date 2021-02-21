@@ -45,9 +45,9 @@ public interface UserMapper {
 	
 	public List<ProductVO> productList(@Param("user_nickname") String user_nickname, @Param("cri") Criteria cri);
 
-	public List<OrderVO> orderInfo(@Param("order_productseq") int order_productseq, @Param("cri") Criteria cri);
+	public List<OrderVO> orderInfo(int order_productseq);
 	
-	public List<OrderVO> sendList(@Param("order_productseq") int order_productseq, @Param("cri") Criteria cri);
+	public List<OrderVO> sendList(int order_productseq);
 
 	public int getTotalOrderList(@Param("order_userseq") int order_userseq, @Param("cri") Criteria cri);
 

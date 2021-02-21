@@ -348,7 +348,8 @@ $(document).ready(function() {
 										<td class="DesktopOrderBoxStyle__DesktopOrderBoxBundleContentsWrapper-gnmni8-4 dGttDc">
 											<div class="DesktopOrderBoxBundleHeaderLayout__Wrapper-ki5ja7-0 ibYFEB">
 												<div class="DesktopOrderBoxBundleHeaderLayout__Wrapper-ki5ja7-0 ibYFEB">
-													배송 완료 2/12(금) 도착
+													배송중 3일 뒤 도착예정
+												
 												</div>
 											</div>
 											<div class="DesktopOrderBoxGoodsProductList__Wrapper-sc-1jiyjbz-0 eEWKXq">

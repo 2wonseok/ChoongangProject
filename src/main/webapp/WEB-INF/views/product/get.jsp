@@ -70,15 +70,15 @@ $(document).ready(function(){
 		if (exist == 0) {
 			$("#optionBox").append(
 				'<div id="optionContainer"'+poSeq+'>' +
-					'<input style="width:150px;" class="border-0" type="text" name="order_poname" value="'+po_name+'" readonly/>' +
+					'<input style="width:130px;" class="border-0" type="text" name="order_poname" value="'+po_name+'" readonly/>' +
 					'<input style="width:60px; text-align:right;" class="border-0 po_price" type="number" name="order_poprice" value="'+po_price+'" readonly/>'+"원"+
 					'<input type="number" name="order_poseq" value="'+poSeq+'"hidden/>' +
 					'<span class="mx-3"></span>' +
-					'<button class="minus_btn" type="button">감소</button>'+
+					'<button class="minus_btn" type="button" id="optionBtn"><i class="fas fa-minus"></i></button>'+
 					'<input style="width:40px;" class="amount" type="number" min="1" value="1" name="order_quantity" />'+
-					'<button class="plus_btn" type="button">증가</button>'+
-					'<button class="removeOption_btn" type="button">제거</button>'+
-					'<input style="width:60px; text-align:right;" class="border-0 po_groupprice" type="number" name="" value="'+po_price+'" readonly/>'+"원" +
+					'<button class="plus_btn" type="button" id="optionBtn"><i class="fas fa-plus"></i></button>'+
+					'<button class="removeOption_btn" type="button" id="optionBtn">제거</button>'+
+					'<input style="width:80px; text-align:right;" class="border-0 po_groupprice" type="number" name="" value="'+po_price+'" readonly/>'+"원" +
 				'</div>'
 			);
 			
@@ -197,10 +197,11 @@ $(document).ready(function(){
 	    font-size: 15px;
 	    border: none;
 	    background: #1e263c;
-	    padding: 0px 50px;
+	    padding: 0px 30px;
 	    margin: 0 0px;
 	    line-height: 45px;
 	    float: right;
+	    border-radius: 3px;
 	}
 	
 	table {
@@ -263,7 +264,12 @@ $(document).ready(function(){
 		background-position: right
 	}
 }
-
+#optionBtn {
+	border-radius: 3px;
+	border: none;
+	background:#fff;
+	
+}
 
 
 </style>
@@ -328,7 +334,7 @@ $(document).ready(function(){
 								</div>
 									
 								<p class="text-left">상품설명 </p>
-								<textarea style="resize: none;" rows="15" cols="50" readonly><c:out value="${product.product_info }"></c:out></textarea>
+								<textarea style="resize: none; border: none" rows="15" cols="50" readonly><c:out value="${product.product_info }"></c:out></textarea>
 	
 							<c:if test="${product.product_status != 1 }">
 								<c:if test="${product.product_seller eq authUser.user_seq}">	
@@ -343,7 +349,7 @@ $(document).ready(function(){
 								    		<c:param name="array" value="${cri.array }"></c:param>      
 										</c:url>
 										
-										<button class="btn_add mx-2" type="button" onclick="location.href='${productModify}' ">정보 수정</button>
+										<button class="btn_add mx-2" style="background:#4a4a4a;" type="button" onclick="location.href='${productModify}' ">정보 수정</button>
 										
 										<!--삭제버튼(작성자만보이도록)-->
 										<c:url value="/product/finish" var="productFinish">
@@ -382,9 +388,9 @@ $(document).ready(function(){
 								<p>상품 정보 수정일 : <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" value="${product.product_updatedate }"/> </p>
 						</td>
 					</tr>
-					<tr>
-						<td>
-							<select id="optionSelectBox" class="mx-3">
+					<tr style="height: 52px;">
+						<td style="width: 60%;">
+							<select id="optionSelectBox" style="width:280px; margin-left: 6px;" class="form-control">
 									<option>===옵션을 선택하세요===</option>
 								<c:forEach items="${ poList}" var="poLi" >
 									<option value="${poLi.productOption_seq }" data-name="${poLi.po_name}" data-price="${poLi.po_price}"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
@@ -409,7 +415,7 @@ $(document).ready(function(){
 							</form>
 						</td>
 					</tr>
-					<tr>
+					<tr style="height: 70px;">
 						<td colspan="3">
 							<div class="row">
 								<div class="ml-3"></div>
@@ -419,12 +425,13 @@ $(document).ready(function(){
 					            	<input hidden="hidden" name="type" value="${cri.type }"/>
 						    		<input hidden="hidden" name="keyword" value="${cri.keyword }"/>      
 						    		<input hidden="hidden" name="array" value="${cri.array }"/>
-									<button class="btn_add mx-4"> 목록으로</button>
+									<button style="background:#4a4a4a;" class="btn_add mx-4"> 목록으로</button>
 								</form>
 								<div class="col-2"></div>
-								<input class="total_price" value="0" name="order_totalprice" readonly/>
-								<button id="cart_btn" class="btn_add mx-2" type="button"> 장바구니</button>
-								<button id="order_btn" class="btn_add mx-2" type="button"> 구매</button>
+								<span style="margin-top: 11px;">결제금액 : </span>
+								<input class="total_price" style="border:none; width: 120px;" value="0" name="order_totalprice" readonly/>
+								<button id="cart_btn" style="margin-left: 142px;" class="btn_add" type="button"> 장바구니</button>
+								<button style="background:#4a4a4a;" id="order_btn" class="btn_add mx-2" type="button"> 구매</button>
 							</div>
 						</td>
 					</tr>					

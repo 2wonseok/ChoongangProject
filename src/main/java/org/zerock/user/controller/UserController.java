@@ -335,6 +335,7 @@ public class UserController {
 	public void orderList(HttpSession session, Criteria cri, Model model) {
 		UserVO vo = (UserVO) session.getAttribute("authUser");
 		int order_userseq = 0;
+		cri.setAmount(5);
 		
 		if (vo != null) {
 			order_userseq = vo.getUser_seq();
@@ -349,6 +350,7 @@ public class UserController {
 	public void cart(HttpSession session, Criteria cri, Model model) {
 		UserVO vo = (UserVO) session.getAttribute("authUser");
 		int order_userseq = 0;
+		cri.setAmount(5);
 		
 		if (vo != null) {
 			order_userseq = vo.getUser_seq();
@@ -415,7 +417,7 @@ public class UserController {
 	
 	@GetMapping("/orderList") // 결제완료 목록
 	public @ResponseBody List<OrderVO> odInfo(OrderVO order, Criteria cri, Model model) {
-		List<OrderVO> vo = service.orderInfo(order.getOrder_productseq(), cri);
+		List<OrderVO> vo = service.orderInfo(order.getOrder_productseq());
 		model.addAttribute("orderPageMaker", new PageDTO(cri, service.getTotalOrderInfoList(order.getOrder_productseq(), cri)));
 		return vo;
 		
@@ -439,7 +441,7 @@ public class UserController {
 			List<ProductVO> pvo = service.productList(vo.getUser_nickname(), cri);
 			for (ProductVO pvoList : pvo) {
 				System.out.println("product seq 번호: " +pvoList.getProduct_seq());
-				List<OrderVO> sendList = service.sendList(pvoList.getProduct_seq(), cri);
+				List<OrderVO> sendList = service.sendList(pvoList.getProduct_seq());
 				list.addAll(sendList);
 				
 			}
