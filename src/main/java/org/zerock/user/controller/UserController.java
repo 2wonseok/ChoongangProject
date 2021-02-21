@@ -342,7 +342,7 @@ public class UserController {
 		}
 		
 		List<OrderVO> order = service.orderList(order_userseq, cri);
-		model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalOrderList(vo.getUser_seq(), cri)));
+		model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalOrderList(order_userseq, cri)));
 		model.addAttribute("order", order);
 	}
 	
@@ -364,8 +364,13 @@ public class UserController {
 	}
 	
 	@GetMapping("/shippingCheck") //배송조회
-	public void ShippingCheckBtn(int order_seq) {
+	public void ShippingCheckBtn(@RequestParam int order_seq, @RequestParam int product_seq, Model model) {
+		OrderVO vo = service.getOrderInfo(order_seq);
+		ProductVO pvo = service.getProductInfo(product_seq);
+		UserVO uvo = service.getUserSeq(pvo.getProduct_seller());
 		
+		model.addAttribute("getOrder", vo);
+		model.addAttribute("getProduct", uvo);
 	}
 	
 	@GetMapping("/smsSubmit") // 회원 문자 전송

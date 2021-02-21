@@ -161,6 +161,14 @@
 				order_status = 1
 	</select>
 	
+	<select id="getOrderInfo" resultType="org.zerock.product.domain.OrderVO">
+		SELECT * FROM tbl_order WHERE order_seq = #{order_seq}	
+	</select>
+	
+	<select id="getProductInfo" resultType="org.zerock.product.domain.ProductVO">
+		SELECT * FROM tbl_product WHERE product_seq = #{product_seq}
+	</select>
+	
 	<select id="getTotalOrderList" resultType="int">
 		SELECT COUNT(*) FROM tbl_order WHERE order_userseq = #{order_userseq}
 	</select>

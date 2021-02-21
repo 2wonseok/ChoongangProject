@@ -26,13 +26,16 @@ $(document).ready(function() {
 	
 	$("#ShippingCheckBtn").click(function() {
 		var order_seq = $("#order_seq").val();
-		location.href="${root}/user/shippingCheck?order_seq="+order_seq;
+		var product_seq = $("#product_seq").val();
+		alert(product_seq);
+		//location.href="${root}/user/shippingCheck?order_seq="+order_seq+"&product_seq="+product_seq;
 	});
 	
 	$(".jBDGcA").click(function() {
 		var product_seq = $("#product_seq").val();
 		location.href="${root}/product/get?product_seq="+product_seq;
 	});
+
 });
 </script>
 <title>주문목록</title>
@@ -382,7 +385,7 @@ $(document).ready(function() {
 																			</div>
 																		</div>
 																		<div class="DesktopOrderBoxGoodsBodyText__AddCartButtonWrapper-sc-8q24ha-3 dhufUh">
-																			<button class="RectButton__Wrapper-sc-1k9quwu-0 jluEnQ DesktopAddToCartButton__CartButton-xuyxga-0 kBhIpv">
+																			<button id="cartBtn" class="RectButton__Wrapper-sc-1k9quwu-0 jluEnQ DesktopAddToCartButton__CartButton-xuyxga-0 kBhIpv">
 																				장바구니 담기</button>
 																			<div class="DesktopAddToCartButton__InfoWrapper-xuyxga-1 TTZuV"></div>
 																		</div>
@@ -396,7 +399,8 @@ $(document).ready(function() {
 										</td>
 										<td class="DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceWrapper-gnmni8-5 kstGdW">
 											<div class="DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceInnerWrapper-gnmni8-6 ebLxeX">
-												<a onclick="location.href='${root}/user/shippingCheck?order_seq=${orders.order_seq }'" class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
+												<a onclick="location.href='${root}/user/shippingCheck?order_seq=${orders.order_seq }&product_seq=${orders.order_productseq }'" 
+													class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
 													배송조회
 												</a>
 												<button class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">

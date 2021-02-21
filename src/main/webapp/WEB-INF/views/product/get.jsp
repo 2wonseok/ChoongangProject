@@ -55,7 +55,7 @@ $(document).ready(function(){
 		$(".po_groupprice").each(function(){
 			sum += Number($(this).val());
 		});
-		$(".total_price").val(sum);
+		$(".total_price").val(sum+"원");
 	}
 	
 	 /* 옵션 클릭시 추가하기 */
@@ -71,7 +71,7 @@ $(document).ready(function(){
 			$("#optionBox").append(
 				'<div id="optionContainer"'+poSeq+'>' +
 					'<input style="width:130px;" class="border-0" type="text" name="order_poname" value="'+po_name+'" readonly/>' +
-					'<input style="width:60px; text-align:right;" class="border-0 po_price" type="number" name="order_poprice" value="'+po_price+'" readonly/>'+"원"+
+					'<input style="width:70px; text-align:right;" class="border-0 po_price" type="number" name="order_poprice" value="'+po_price+'" readonly/>'+"원"+
 					'<input type="number" name="order_poseq" value="'+poSeq+'"hidden/>' +
 					'<span class="mx-3"></span>' +
 					'<button class="minus_btn" type="button" id="optionBtn"><i class="fas fa-minus"></i></button>'+
@@ -428,9 +428,9 @@ $(document).ready(function(){
 									<button style="background:#4a4a4a;" class="btn_add mx-4"> 목록으로</button>
 								</form>
 								<div class="col-2"></div>
-								<span style="margin-top: 11px;">결제금액 : </span>
-								<input class="total_price" style="border:none; width: 120px;" value="0" name="order_totalprice" readonly/>
-								<button id="cart_btn" style="margin-left: 142px;" class="btn_add" type="button"> 장바구니</button>
+								<span style="margin-top: 11px; margin-left: 132px;">결제금액 : </span>
+								<input class="total_price" style="border:none; width: 87px;" value="0" name="order_totalprice" readonly/>
+								<button id="cart_btn" class="btn_add" type="button"> 장바구니</button>
 								<button style="background:#4a4a4a;" id="order_btn" class="btn_add mx-2" type="button"> 구매</button>
 							</div>
 						</td>

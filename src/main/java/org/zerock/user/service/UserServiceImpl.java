@@ -192,4 +192,14 @@ public class UserServiceImpl implements UserService {
 		return mapper.sendList(order_productseq);
 	}
 
+	@Override
+	public OrderVO getOrderInfo(int order_seq) {
+		return mapper.getOrderInfo(order_seq);
+	}
+
+	@Override
+	public ProductVO getProductInfo(int product_seq) {
+		return mapper.getProductInfo(product_seq);
+	}
+
 }
