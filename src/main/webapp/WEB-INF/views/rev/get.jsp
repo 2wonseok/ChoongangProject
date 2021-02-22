@@ -582,7 +582,7 @@ showList();
 						<c:when test="${RevBoard.rev_updatedate == null }">
 							<p>
 								<strong>등록일 :</strong>
-								<fmt:formatDate value='${RevBoard.rev_regdateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
+								<fmt:formatDate value='${RevBoard.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/>
 							</p>
 						</c:when>
 						<c:otherwise>
