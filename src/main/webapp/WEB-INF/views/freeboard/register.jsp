@@ -20,7 +20,6 @@
 $(document).ready(function (){
 	$('#registerButton').click(function(){
 			var freeArr = ["free_title","free_content"];
-
 			//입력 값 널 체크
 			for(var i=0;i<freeArr.length;i++){
 				//alert(arr[i]);
@@ -32,39 +31,54 @@ $(document).ready(function (){
 			}
 			//전송
 			$("#registerRoot").submit();
-			
-
 	});
 });
 </script>
 
 
 <title>Insert title here</title>
+<style>
+#container1 {
+	clear: both;
+	posistion: relative;
+	margin: 35px auto 0px;
+	padding: 0 0 50px 0;
+	width: 1000px;
+	z-index: 1;
+	
+}
+#registerButton {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #4a4a4a;
+    padding: 0px 30px;
+    margin: 0px;
+    line-height: 40px;
+    float: right;
+    width: 120px;
+	height : 40px;
+	border-radius: 3px;
+	text-align: center;
+}
+
+</style>
 </head>
 <body>
 	<u:mainNav></u:mainNav>
-	<div class="container-sm">
-		<div class="row">
-			<div class="col-12 col-lg-6 offset-lg-3">
+	<div class="container">
+		<section id ="container1">
 				<h1>게시물 작성</h1>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12 col-lg-6 offset-lg-3">
-
 				<form method="post" id="registerRoot"  action="${root}/freeboard/register">
-		
 					<div class="form-group">
 						<label for="input1">제목</label> <input name="free_title" type="text"
-							class="form-control" id="free_title" placeholder="제목을 입력하세요." maxlength="100">
+							class="form-control" id="free_title" placeholder="제목을 입력하세요." maxlength="15" required="required">
 					</div>
-
 					<div class="form-group">
 						<label for="textarea1">내용</label>
 						<textarea name="free_content" class="form-control" id="free_content" placeholder="내용을 입력하세요."
-							rows="3" maxlength="1000"></textarea>
+							rows="3" maxlength="300" required="required"></textarea>
 					</div>
-
 					<div class="form-group">
 						<label for="input2">닉네임</label>&nbsp;&nbsp;&nbsp;&nbsp;
 						<input type="checkbox" name="anonmyous" value="y" id="anonmyous_check"><label for="anonmyous_check">&nbsp;익명</label>
@@ -77,10 +91,9 @@ $(document).ready(function (){
 					</div>
 					<button type="submit" id="registerButton" class="btn btn-primary">등록</button>
 				</form>
-			</div>
-		</div>
+		</section>
 	</div>
-<%-- <u:footer/> --%>
+ <u:footer/> 
 </body>
 </html>
 

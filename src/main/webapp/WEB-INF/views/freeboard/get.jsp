@@ -91,7 +91,7 @@
     margin-left: 30px;
     font-size: 14px;
 	}
-#btn_add {
+	.btn_add {
     color: #000;
     font-size: 15px;
     border: none;
@@ -271,6 +271,16 @@ var user_id = "${authUser.user_id}";
 				}
 			});
 		}
+		//삭제 버튼 클릭시 확인
+		$("#remove-btn").click(function(e) {
+			e.preventDefault();
+	 
+	 		
+			var remove = confirm('정말 삭제하시겠습니까?');
+			if (remove) {
+			$("#remove-form").submit();
+			}
+		});
 		
 		// 새 댓글 버튼 클릭 이벤트 처리
 		$("#new-reply-button").click(function() {
@@ -392,10 +402,10 @@ var user_id = "${authUser.user_id}";
 	<a id="new-reply-button">댓글 작성</a>
 	<!-- 유저의 정보가 있고 아이디가 writer와 userid값이 같을때 -->
 	<c:if test="${authUser != null && authUser.user_id == freeVO.free_writer}">
-		<form action="${root}/freeboard/remove" method="post">
-			<a href="${root}/freeboard/modify?free_seq=${freeVO.free_seq}" id="btn_add"> 수정 </a>
+		<form action="${root}/freeboard/remove" method="post" id="remove-form">
+			<a href="${root}/freeboard/modify?free_seq=${freeVO.free_seq}" class="btn_add"> 수정 </a>
 			<input hidden="hidden" name="free_seq" value="${freeVO.free_seq}">
-			<button id="btn_add">삭제</button>
+			<button class="btn_add" id="remove-btn">삭제</button>
 		</form>
 	</c:if>
 	<!--  댓글 목록 -->
@@ -476,7 +486,7 @@ var user_id = "${authUser.user_id}";
 			</div>
 		</div>
 	</div>
-	 <%-- <u:footer/>  --%>
+<%-- 	 <u:footer/> --%>
 </body>
 </html>
 

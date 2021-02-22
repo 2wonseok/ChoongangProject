@@ -16,42 +16,84 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+	
+	<script>
+	 $(document).ready(function() {
+			$("#modify-btn").click(function(e) {
+				var freeArr = ["free_title","free_content"];
 
-<script>
-	$(document).ready(function() {
-		$("#remove-btn").click(function(e) {
-			e.preventDefault();
-			// #modify-form의 action attr값을 바꿔야함.
-
-			$("#modify-form").attr("action", "${root}/freeboard/remove");
-
-			$("#modify-form").submit();
-		})
-	})
-</script>
-
-
+				//입력 값 널 체크
+				for(var i=0;i<freeArr.length;i++){
+					//alert(arr[i]);
+					if($.trim($('#'+freeArr[i]).val()) == ''){
+						alert('제목 또는 내용 을 모두 입력해 주세요.');
+						$('#'+freeArr[i]).focus();
+						return false;
+					}
+				}
+				e.preventDefault();
+				
+				var modify = confirm('정말 수정하시겠습니까?');
+				if (modify) {
+					$("#modify-form").submit();
+				}
+			})
+	 });
+	
+	
+	</script>
 <title>Insert title here</title>
+<style>
+#container {
+    clear: both;
+    position: relative;
+    margin: 35px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1000px;
+    z-index: 1;
+}
+#modify-btn{
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #4a4a4a;
+    padding: 0px 30px;
+    margin: 0px;
+    line-height: 40px;
+    float: right;
+    width: 120px;
+	height : 40px;
+	border-radius: 3px;
+	text-align: center;
+}
+#goList{
+	color: #fff;
+    font-size: 15px;
+    border: none;
+    background: red;
+    padding: 0px 30px;
+    margin: 0px;
+    line-height: 40px;
+    float: right;
+    width: 120px;
+	height : 40px;
+	border-radius: 3px;
+	text-align: center;
+
+
+}
+
+</style>
 </head>
 <body>
 
 	<u:mainNav></u:mainNav>
 
-	<div class="container-sm">
-		<div class="row">
-			<div class="col-12 col-lg-6 offset-lg-3">
+	<div class="container">
+		<section id="container">
 				<h1>게시물 수정</h1>
-			</div>
-		</div>
 
-		<div class="row">
-			<div class="col-12 col-lg-6 offset-lg-3">
-				<%-- 
-		<form action="${pageContext.request.contextPath }/board/register">
-	 --%>
-				<form id="modify-form" method="post"
-					action="${root }/freeboard/modify">
-
+				<form id="modify-form" method="post" action="${root }/freeboard/modify">
 					<div class="form-group">
 						<label for="input3">번호</label> <input name="free_seq"
 							class="form-control" id="input3" readonly
@@ -61,14 +103,13 @@
 					<div class="form-group">
 						<label for="input1">제목</label> <input
 							value='<c:out value="${freeVO.free_title }" />' name="free_title"
-							type="text" class="form-control" id="input1"
-							placeholder="제목을 입력 하세요.">
+							type="text" class="form-control" id="free_title" placeholder="제목을 입력 하세요." >
 					</div>
 
 					<div class="form-group">
 						<label for="textarea1">내용</label>
-						<textarea name="free_content" class="form-control" id="textarea1"
-							rows="3"><c:out value="${freeVO.free_content }" /></textarea>
+						<textarea name="free_content" class="form-control" id="free_content"
+							rows="3" placeholder="내용을 입력하세요."><c:out value="${freeVO.free_content }" /></textarea>
 
 					</div>
 
@@ -83,15 +124,11 @@
 					<input type="hidden" value="${criteria.amount }" name="amount">
 					<input type="hidden" value="${criteria.type }" name="type">
 					<input type="hidden" value="${criteria.keyword }" name="keyword">
-					<button type="submit" class="btn btn-primary">수정</button>
-					<!-- <button id="remove-btn" type="submit" class="btn btn-danger">취소</button>
-					 -->
-					<a href="${root}/freeboard/list" >목록</a>
+					<button id ="modify-btn"type="submit" class="btn btn-primary">수정</button>
+					<a href="${root}/freeboard/list"  id="goList">목록</a>
 				</form>
-			</div>
-		</div>
+		</section>
 	</div>
-
-<%-- <u:footer/> --%>
+ <u:footer/>
 </body>
 </html>
