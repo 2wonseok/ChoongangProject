@@ -34,10 +34,17 @@ $(document).ready(function (){
 	});
 });
 </script>
-
-
-<title>Insert title here</title>
+<title>자유게시판 글 쓰기</title>
 <style>
+#footdiv {
+    width: 1000px;
+    padding: 0 30px 30px 30px;
+    text-align: center;
+    color: gray;
+    white-space: pre-line;
+  	bottom:0;
+  	margin-bottom: -143px;
+}
 #container1 {
 	clear: both;
 	posistion: relative;
@@ -61,39 +68,46 @@ $(document).ready(function (){
 	border-radius: 3px;
 	text-align: center;
 }
-
 </style>
 </head>
 <body>
 	<u:mainNav></u:mainNav>
 	<div class="container">
 		<section id ="container1">
-				<h1>게시물 작성</h1>
+				<h2>자유게시판 글 쓰기</h2>
 				<form method="post" id="registerRoot"  action="${root}/freeboard/register">
+					<!--유저의 grade가  관리자일때만 보여지게  -->
+					<c:if test="${authUser.user_grade == 0}">
+						<input type="checkbox" name="notice" value="n" id="notice_check"><label for="notice_check">&nbsp;공지사항</label> 
+					</c:if>
 					<div class="form-group">
-						<label for="input1">제목</label> <input name="free_title" type="text"
-							class="form-control" id="free_title" placeholder="제목을 입력하세요." maxlength="15" required="required">
+						 <input name="free_title" type="text"
+							class="form-control" id="free_title" placeholder="제목을 입력하세요." style=width:1000px; maxlength="30" size="50">
 					</div>
 					<div class="form-group">
-						<label for="textarea1">내용</label>
-						<textarea name="free_content" class="form-control" id="free_content" placeholder="내용을 입력하세요."
-							rows="3" maxlength="300" required="required"></textarea>
+						<textarea name="free_content" class="form-control" style="width:100%;height:300px" id="free_content" placeholder="내용을 입력하세요."
+							rows="10" maxlength="300" required="required"></textarea>
 					</div>
 					<div class="form-group">
-						<label for="input2">닉네임</label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="input2">닉네임</label>&nbsp;
 						<input type="checkbox" name="anonmyous" value="y" id="anonmyous_check"><label for="anonmyous_check">&nbsp;익명</label>
 						&nbsp;
-						<!--유저의 grade가  관리자일때만 보여지게  -->
-						<c:if test="${authUser.user_grade == 0}">
-							<input type="checkbox" name="notice" value="n" id="notice_check"><label for="notice_check">&nbsp;공지사항</label> 
-						</c:if>
 						<input name="free_nickname" type="text" class="form-control" id="free_nickname" value="${authUser.user_nickname }" readonly>
 					</div>
 					<button type="submit" id="registerButton" class="btn btn-primary">등록</button>
 				</form>
 		</section>
+		<footer>
+			<div id="footdiv">
+			
+				<div class="container" style="width:100%;">
+					사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
+					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
+				</div>
+			</div>
+		</footer>
+		
 	</div>
- <u:footer/> 
 </body>
 </html>
 

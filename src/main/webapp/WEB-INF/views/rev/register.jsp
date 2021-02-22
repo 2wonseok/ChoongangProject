@@ -101,7 +101,7 @@
     	<div class="bo_w_tit write_div">
         	<label for="wr_subject" class="sound_only">제목<strong>필수</strong></label>
         	<div id="autosave_wrapper write_div" style="margin-bottom:8px;">
-            	<input type="text" name="rev_title" value="${title }" maxlength="50" id="wr_subject" required="" class="frm_input full_input required" size="50"  placeholder="제목">
+            	<input type="text" name="rev_title" value="${title }" maxlength="50" id="wr_subject" required="" class="frm_input full_input required" size="100"  placeholder="제목">
             </div>
     	</div>
 

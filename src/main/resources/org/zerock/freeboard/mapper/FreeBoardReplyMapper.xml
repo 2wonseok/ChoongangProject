@@ -44,7 +44,7 @@
 		FROM 	TBL_REPLY TR
 		WHERE 	TR.REPLY_BOARDSEQ = #{free_seq}
 		ORDER BY 
-				TR.REPLY_BOARDSEQ ASC
+				TR.REPLY_SEQ DESC
 	</select>
 
 </mapper>

@@ -50,20 +50,14 @@ public class FreeBoardController {
 	}
 
 	@GetMapping("/register")
-	public void register(@ModelAttribute("cri") FreeBoardCriteria cri, Model model, 
+	public String register(@ModelAttribute("cri") FreeBoardCriteria cri, Model model, 
 			HttpServletRequest request) {
-		
-		try {
-			UserVO user = (UserVO) request.getSession(false).getAttribute("authUser");
-			System.out.println("user nick name : "+user.getUser_nickname());
-			//authUser 이름 
-			model.addAttribute("authUser", user);
-			
-		} catch (NullPointerException e) {
-			//로그인하지않았을경우 글쓰기 불가처리
-			System.out.println("Session 정보 없음");
-			e.printStackTrace();
+		UserVO user = (UserVO) request.getSession(true).getAttribute("authUser");
+		if (user == null || user.getUser_id() == null) {
+			return "redirect:/user/login";
 		}
+		model.addAttribute("authUser", user);
+		return "/freeboard/register";
 	}
 
 	@PostMapping("/register")

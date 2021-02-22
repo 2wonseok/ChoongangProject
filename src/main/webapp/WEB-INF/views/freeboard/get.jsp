@@ -52,7 +52,7 @@
     border-bottom: 3px solid #4a4a4a;
     margin: 50px 0 20px 0;
     width:1000px;
-    height: 580px;
+    height: 100%;
 	}
 	.webzineTypeView .headWrap {
     background: #f5f5f5;
@@ -106,6 +106,15 @@
     border: none;
     padding: 0px 30px;
     line-height: 45px;
+}
+#logoffReply{
+ 	cursor: pointer; 
+    color: #000;
+    font-size: 15px;
+    border: none;
+    padding: 0px 30px;
+    line-height: 45px;
+
 }
 	ol, ul {
 	    list-style: none;
@@ -206,7 +215,7 @@ pre {
 }
 
 #footdiv {
-    width: 1000px;
+  	width: 1000px;
     padding: 0 30px 30px 30px;
     text-align: center;
     color: gray;
@@ -259,13 +268,13 @@ var user_id = "${authUser.user_id}";
 				
 				for (var i = 0; i < list.length; i++) {
 					var replyLI = '<ul>'
-											 +'<li style="border-top:none;" data-reply_seq="'+list[i].reply_seq+'">'
-											 +'<p class="txt">'+list[i].reply_content+'</p>'
-											 +'<p><span>'+list[i].reply_nickname+'</span>'
-											 +'<span id="datespan">'+dateString(list[i].reply_regdate)+'</span>'
-										 	 +'</p>'
-										   +'</li>'
-											 +'</ul>';
+					 +'<li style="border-top:none;" data-reply_seq="'+list[i].reply_seq+'">'
+					 +'<p class="txt">'+list[i].reply_content+'</p>'
+					 +'<p><span>'+list[i].reply_nickname+'</span>'
+					 +'<span id="datespan">'+dateString(list[i].reply_regdate)+'</span>'
+					 +'</p>'
+				     +'</li>'
+					 +'</ul>';
 					reply_list.append(replyLI);
 					
 				}
@@ -283,18 +292,27 @@ var user_id = "${authUser.user_id}";
 		});
 		
 		// 새 댓글 버튼 클릭 이벤트 처리
+			
 		$("#new-reply-button").click(function() {
 			console.log("new reply button clicked....");
 			$("#new-reply-modal").modal("show");
-			
 		});
 		
 		// 새 댓글 등록 버튼 클릭 이벤트 처리
 		$("#reply-submit-button").click(function() {
-			
 			// input에서 value 가져와서 변수에 저장
 			var reply_content = $("#reply_content-input").val();
 			var reply_writer = $("#reply_writer-input").val();
+			
+			// 댓글 내용 체크
+			if (reply_content.trim() == "") {
+				alert("댓글 내용을 입력해주세요.");
+				return false;
+			}
+			if (reply_content.trim().length > 100) {
+				alert("100자 이내로 입력해주세요.")
+				return false;
+			}
 			
 			// ajax 요청을 위한 데이터 만들기
 			var data = {
@@ -303,23 +321,21 @@ var user_id = "${authUser.user_id}";
 				"reply_content" : reply_content, 
 				"reply_writer" : reply_writer
 			};
-			
 			replyService.add(data,
-					function() {
-						// 댓글 목록 가져오기 실행
-						showList();
-						alert("댓글 등록에 성공하였습니다.");
-					},
-					function() {
-						alert("댓글 등록에 실패하였습니다.")
-					});
+				function() {
+					// 댓글 목록 가져오기 실행
+					showList();
+					alert("댓글 등록에 성공하였습니다.");
+				},
+				function() {
+					alert("댓글 등록에 실패하였습니다.")
+				}
+			);
 			
 			// 모달창 닫기
 			$("#new-reply-modal").modal("hide");
 			// 모달창 내의 input 요소들 value를 초기화
-			$("#new-reply-modal input").val("");
-			
-			
+			$("#reply_content-input").val("");
 		});
 		
 		// reply-ul 클릭 이벤트 처리
@@ -368,7 +384,6 @@ var user_id = "${authUser.user_id}";
 				showList();
 			});
 		});
-		
 		// 댓글 목록 가져오기 실행
 		showList();
 	});
@@ -383,8 +398,13 @@ var user_id = "${authUser.user_id}";
 			<input class="form-control" type="hidden" id="input3" readonly value="${freeVO.free_seq }" />
 			<p class="mr-t10">${freeVO.free_title }</p>
 			<div class="date">
-				<p><strong>번호 : </strong>${freeVO.free_seq }</p>
-				<p><strong>작성자 : </strong>${freeVO.free_nickname}</p>
+				<p><strong>NO : </strong>${freeVO.free_seq }</p>
+				<p><strong>조회수 : </strong>${freeVO.free_readCnt }</p>
+				<p><strong>작성자(닉네임) : </strong>${freeVO.free_nickname}</p>
+				<p><strong>작성일</strong>
+				<fmt:formatDate pattern="yyyy-MM-dd" value="${freeVO.free_regdate}" /></p>
+				<p><strong>수정일</strong>
+				<fmt:formatDate pattern="yyyy-MM-dd" value="${freeVO.free_updatedate}" /></p>
 			</div>
 		</div>
 			<!-- 본문 -->
@@ -399,18 +419,27 @@ var user_id = "${authUser.user_id}";
 		<c:param name="type" value="${cri.type }"></c:param>
 		<c:param name="keyword" value="${cri.keyword }"></c:param>
 	</c:url>
-	<a id="new-reply-button">댓글 작성</a>
 	<!-- 유저의 정보가 있고 아이디가 writer와 userid값이 같을때 -->
-	<c:if test="${authUser != null && authUser.user_id == freeVO.free_writer}">
 		<form action="${root}/freeboard/remove" method="post" id="remove-form">
-			<a href="${root}/freeboard/modify?free_seq=${freeVO.free_seq}" class="btn_add"> 수정 </a>
-			<input hidden="hidden" name="free_seq" value="${freeVO.free_seq}">
+			<c:choose> 
+				<c:when test="${authUser.user_id !=null }">
+					<a id="new-reply-button">댓글 작성</a>
+				</c:when>
+				<c:otherwise>
+					<a href="${root }/user/login" id="logoffReply">댓글 작성</a>
+				</c:otherwise>
+			</c:choose>
+		<c:if test="${authUser != null && authUser.user_id == freeVO.free_writer}">
 			<button class="btn_add" id="remove-btn">삭제</button>
+			<input hidden="hidden" name="free_seq" value="${freeVO.free_seq}">
+			<a href="${root}/freeboard/modify?free_seq=${freeVO.free_seq}" class="btn_add"> 수정 </a>
+		</c:if>
+			<a href="${root }/freeboard/list" class="btn_add">목록으로 </a>		
 		</form>
-	</c:if>
 	<!--  댓글 목록 -->
-	<div class="recommView" id="reply_list"></div><br><br>
-	
+	<div class="recommView" id="reply_list"></div>
+	<br>
+	<br>
 </section>
 
 	<%-- modal 새 댓글 form --%>
@@ -425,8 +454,9 @@ var user_id = "${authUser.user_id}";
 				</div>			
 				<div class="modal-body">
 					 <div class="form-group">
+					 	<!-- null처리 -->
 						<label for="reply_content-input" class="col-form-label"> 댓글 </label> <input
-								type="text" class="form-control" id="reply_content-input" maxlength="100">
+								type="text" class="form-control" id="reply_content-input" maxlength="100" >
 								</div>	
 					<div class="form-group">
 						<label for="reply_writer-input" class="col-form-label"> 작성자 </label> <input
@@ -486,7 +516,7 @@ var user_id = "${authUser.user_id}";
 			</div>
 		</div>
 	</div>
-<%-- 	 <u:footer/> --%>
+	 <u:footer/> 
 </body>
 </html>
 
