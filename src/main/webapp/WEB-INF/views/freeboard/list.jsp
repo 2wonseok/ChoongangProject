@@ -238,26 +238,7 @@ thead {
 				<button id="btn_add">글쓰기</button>
 		    </form>
 			</div>
-	<div id="myModal" class="modal" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">알림</h5>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<p>처리가 완료되었습니다.</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 	<div class="container-sm mt-3">
 		<div class="row justify-content-center">
 			<div class="pagerWrap">
@@ -306,7 +287,27 @@ thead {
 </c:if>
 	</section>
 </div>
-
+			<!--게시글 알림  -->
+<div id="myModal" class="modal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">알림</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>처리가 완료되었습니다.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 <script>
 	$(".chat").on({
 		"click" : function() {

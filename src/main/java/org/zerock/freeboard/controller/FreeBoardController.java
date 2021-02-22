@@ -90,7 +90,7 @@ public class FreeBoardController {
 		service.register(freeVO);
 
 		rttr.addFlashAttribute("result", freeVO.getFree_seq());
-		rttr.addFlashAttribute("message", freeVO.getFree_seq());
+		rttr.addFlashAttribute("message", freeVO.getFree_seq() + "번 글이 등록되었습니다");
 
 		return "redirect:/freeboard/list";
 	}
