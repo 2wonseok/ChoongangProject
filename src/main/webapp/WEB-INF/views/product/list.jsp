@@ -205,7 +205,7 @@ $(document).ready(function(){
 	          	<input hidden="hidden" name="type" value="${pageDTO.cri.type }"/>
 	   			<input hidden="hidden" name="keyword" value="${pageDTO.cri.keyword }"/>            	
 	   			<input id="inputArray" hidden="hidden" name="array" value="${pageDTO.cri.array }"/>            	
-				<input id="categorySeq" hidden="hidden" name="categoryNum" type="text" value="" >
+				<input id="categorySeq" hidden="hidden" name="categoryNum" type="text" value="${pageDTO.cri.categoryNum }" >
 	        </form>
 	  			<button id="latest_btn" class="btn" type="button">최신순</button>
 	  			<button id="like_btn" class="btn" type="button">찜많은순</button>

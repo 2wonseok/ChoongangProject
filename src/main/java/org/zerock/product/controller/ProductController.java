@@ -51,6 +51,7 @@ import lombok.extern.log4j.Log4j;
 public class ProductController {
 
 	private ProductService service;
+	private UserService userService;
 	
 	/* 좋아요 */
 	@ResponseBody
@@ -536,9 +537,7 @@ public class ProductController {
 	@PostMapping("/order")
 	public String order (@RequestParam ("usePoint") String usePoint, 
 			@RequestParam ("requireTotalPrice") String requireTotalPrice,
-			OrderVO orderVO, RedirectAttributes rttr) {
-		
-		System.out.println(orderVO.getOrderVOList().toString());
+			OrderVO orderVO, RedirectAttributes rttr, HttpSession session) {
 		
 		/* 일단 가격이 맞는지 확인 */
 		if(!usePoint.equals(requireTotalPrice)) {
@@ -556,6 +555,7 @@ public class ProductController {
 		
 		int result = 0;
 		boolean check = false;
+		
 		/* get에서 구매버튼으로 눌렀을 때 넘어온거면 들어온첫번째order_seq는 반드시0임*/
 		if (orderVOList.get(0).getOrder_seq() == 0) {
 			result = service.directOrder(orderVOList);
@@ -574,6 +574,17 @@ public class ProductController {
 			rttr.addFlashAttribute("message", "오더실패");
 			return "redirect:/product/list";	
 		}
+		/* 오더가 성공하면 구매자의 포인트를 낮춤*/
+		int user_seq = orderVO.getOrderVOList().get(0).getOrder_userseq();
+		int updatePointResult = service.updateUserPoint(user_seq, usePoint);
+		if (updatePointResult == 0) {
+			rttr.addFlashAttribute("message", "포인트반영실패");
+			return "redirect:/product/list";
+		}
+		/* 포인트반영세션업데이트 */
+		UserVO userVO = userService.getUserSeq(user_seq);
+		session.setAttribute("authUser", userVO);
+		
 		return "redirect:/user/userOrderList";
 	}
 	
