@@ -166,19 +166,18 @@ $(document).ready(function() {
 			return false;
 		} 
 	 	
-		if(!confirm('발송하시겠습니까?'))	{
-			return false;
-		}
-	 	
-	 	var check_arr = [];
+		var check_arr = [];
 	 	
 	 	$("input:checkbox[name='order_seq']:checked").each(function() {
 			var checkVal = $(this).val();
 			check_arr.push(checkVal);
-			
-			
-			location.href="${root}/user/productSend?order_seq="+checkVal;
 	 	});
+	 	
+	 	if(!confirm('발송하시겠습니까?'))	{
+			return false;
+		}
+	 	
+		location.href="${root}/user/productSend?order_seq="+check_arr;
 	});
 	
 	$("#defaultList").click(function() {
