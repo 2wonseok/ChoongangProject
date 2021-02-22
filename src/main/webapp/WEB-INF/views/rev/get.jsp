@@ -578,20 +578,20 @@ showList();
 					<p>
 						<strong>작성자 : ${RevBoard.rev_writer } </strong>
 					</p>
-					<c:choose>
-						<c:when test="${RevBoard.rev_updatedate == null }">
+					
+						<c:if test="${RevBoard.rev_updatedate == null }">
 							<p>
 								<strong>등록일 :</strong>
 								<fmt:formatDate value='${RevBoard.rev_regdate}' pattern='yyyy년 MM월 dd일 h시 m분'/>
 							</p>
-						</c:when>
-						<c:otherwise>
+						</c:if>
+						<c:if test="${RevBoard.rev_updatedate != null }">
 							<p>
 								<strong>수정일 :</strong>
 								<fmt:formatDate value='${RevBoard.rev_updatedateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
 							</p>
-						</c:otherwise>
-					</c:choose>
+						</c:if>
+					
 				</div>
 			</div>
 			<!-- 본문 -->
@@ -630,7 +630,7 @@ showList();
 			</c:if>
 		</div>
 		<a id="btn_add" href="${listLink }">목록으로</a> 
-		<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
+		<c:if test="${ sessionScope.authUser.user_nickname eq RevBoard.rev_writer || authUser.user_grade == 0}">
 			<a id="btn_add" style="margin-right: 3px;" href="${modifyLink }" >수정</a> 
 		</c:if>
 		<c:if test="${authUser != null }">
