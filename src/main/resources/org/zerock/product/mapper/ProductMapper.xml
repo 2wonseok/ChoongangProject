@@ -149,7 +149,7 @@
 			</foreach>
 			<choose>
 				<when test="categoryNum != null and !categoryNum.equals('')">
-					category_seq = #{categoryNum}
+					AND category_seq = #{categoryNum}
 				</when>
 			</choose>
 		</where>
