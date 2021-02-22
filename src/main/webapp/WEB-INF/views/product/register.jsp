@@ -189,6 +189,36 @@ table.type05 td {
     z-index: 1;
 }
 
+.tableBWrite {
+    clear: both;
+    display: table;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-top: 3px solid #4a4a4a;
+    margin-bottom: 20px;
+}
+.tableBWrite tbody th {
+    background: #f5f5f5;
+    position: relative;
+    padding: 15px 25px;
+    font-size: 17px;
+    text-align: left;
+    color: #222222;
+    border-bottom: 1px solid #dedede;
+    width: 140px;
+    font-weight: normal;
+}
+.tableBWrite tbody td {
+    border-bottom: 1px solid #dedede;
+    color: #555555;
+    font-size: 14px;
+    padding: 17px;
+    position: relative;
+    vertical-align: top;
+    line-height: 25px;
+}
+
 </style>
 
 <title>Insert title here</title>
@@ -197,10 +227,9 @@ table.type05 td {
 
 <u:mainNav/>
 <div class="container">
-
 	<section id="container">
-
-
+	
+		<h3>상품 등록</h3>
 	<div class="container col-8 d-flex justify-content-center">
 		<div class="row">
 			

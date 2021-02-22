@@ -75,7 +75,7 @@ $(document).ready(function(){
 					'<input type="number" name="order_poseq" value="'+poSeq+'"hidden/>' +
 					'<span class="mx-3"></span>' +
 					'<button class="minus_btn" type="button" id="optionBtn"><i class="fas fa-minus"></i></button>'+
-					'<input style="width:40px;" class="amount" type="number" min="1" value="1" name="order_quantity" />'+
+					'<input style="width:50px;" class="amount" type="number" min="1" value="1" name="order_quantity" />'+
 					'<button class="plus_btn" type="button" id="optionBtn"><i class="fas fa-plus"></i></button>'+
 					'<button class="removeOption_btn" type="button" id="optionBtn">제거</button>'+
 					'<input style="width:80px; text-align:right;" class="border-0 po_groupprice" type="number" name="" value="'+po_price+'" readonly/>'+"원" +
@@ -187,11 +187,19 @@ $(document).ready(function(){
 </script>
 
 <style>
+	
+	input[type="number"]::-webkit-outer-spin-button,
+	input[type="number"]::-webkit-inner-spin-button {
+	    -webkit-appearance: none;
+	    margin: 0;
+	}
+	input:focus {outline:none;}
+	textarea:focus {outline:none;}
+	
+
 	#like {
 		cursor:pointer;
 	}
-	
-	
 	.btn_add {
 	    color: #fff;
 	    font-size: 15px;
@@ -205,13 +213,13 @@ $(document).ready(function(){
 	}
 	
 	table {
-	    width: 80%;
+	    width: 85%;
         height : 800px;
+        margin-left: 4%;
 	}
 	
     table,td,th,textarea {
     	border : 1px solid #F2DCF1;
-    	margin: auto;
     }
     table td {
     	width : 50%;
@@ -219,12 +227,12 @@ $(document).ready(function(){
     }
     
     .tableLeftUp {
-    	height : 400px;
+    	height : 540px;
     }
     
     #productMainImage {
-    	width : 350px;
-        height : 400px;
+    	width : 420px;
+        height : 480px;
     }
     
    	#container {
@@ -284,7 +292,7 @@ $(document).ready(function(){
   <section id="container">
   
 	<div class="container">
-					<p class="text-left">상품 카테고리 > ${category.category_main } > ${category.category_sub }</p>
+					<p class="text-left ml-5">상품 카테고리 > ${category.category_main } > ${category.category_sub }</p>
 				<table>
 					<colgroup>
 					    <col width="20%"/>
@@ -346,7 +354,10 @@ $(document).ready(function(){
 							            	<c:param name="amount" value="${cri.amount }"></c:param>
 							            	<c:param name="type" value="${cri.type }"></c:param>
 								    		<c:param name="keyword" value="${cri.keyword }"></c:param>      
-								    		<c:param name="array" value="${cri.array }"></c:param>      
+								    		<c:param name="array" value="${cri.array }"></c:param>
+								    		<c:param name="categoryNum" value="${cri.categoryNum }"/>
+								    		<c:param name="categoryMain" value="${cri.categoryMain }"/>
+											<c:param name="categorySub" value="${cri.categorySub }"/>    
 										</c:url>
 										
 										<button class="btn_add mx-2" style="background:#4a4a4a;" type="button" onclick="location.href='${productModify}' ">정보 수정</button>
@@ -358,7 +369,10 @@ $(document).ready(function(){
 							            	<c:param name="amount" value="${cri.amount }"></c:param>
 							            	<c:param name="type" value="${cri.type }"></c:param>
 								    		<c:param name="keyword" value="${cri.keyword }"></c:param>      
-								    		<c:param name="array" value="${cri.array }"></c:param>      
+								    		<c:param name="array" value="${cri.array }"></c:param>
+								    		<c:param name="categoryNum" value="${cri.categoryNum }"/>
+								    		<c:param name="categoryMain" value="${cri.categoryMain }"/>
+											<c:param name="categorySub" value="${cri.categorySub }"/> 
 										</c:url>
 										<form action="${productFinish }" method="post">
 											<button class="btn_add mx-2">판매종료</button>
@@ -391,10 +405,17 @@ $(document).ready(function(){
 					<tr style="height: 52px;">
 						<td style="width: 60%;">
 							<select id="optionSelectBox" style="width:280px; margin-left: 6px;" class="form-control">
+							<c:choose>
+								<c:when test="${product.product_status == 0}">
 									<option>===옵션을 선택하세요===</option>
-								<c:forEach items="${ poList}" var="poLi" >
-									<option value="${poLi.productOption_seq }" data-name="${poLi.po_name}" data-price="${poLi.po_price}"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
-								</c:forEach>
+										<c:forEach items="${ poList}" var="poLi" >
+											<option value="${poLi.productOption_seq }" data-name="${poLi.po_name}" data-price="${poLi.po_price}"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
+										</c:forEach>
+								</c:when>
+								<c:otherwise>
+									<option>===판매가 종료된 상품입니다.===</option>
+								</c:otherwise>
+							</c:choose>
 							</select>
 						</td>
 						<td colspan="2" >
@@ -425,9 +446,12 @@ $(document).ready(function(){
 					            	<input hidden="hidden" name="type" value="${cri.type }"/>
 						    		<input hidden="hidden" name="keyword" value="${cri.keyword }"/>      
 						    		<input hidden="hidden" name="array" value="${cri.array }"/>
+						    		<input hidden="hidden" name="categoryNum" value="${cri.categoryNum }"/>
+						    		<input hidden="hidden" name="categoryMain" value="${cri.categoryMain }"/>
+									<input hidden="hidden" name="categorySub" value="${cri.categorySub }"/>  
 									<button style="background:#4a4a4a;" class="btn_add mx-4"> 목록으로</button>
 								</form>
-								<div class="col-2"></div>
+								<div class="col-3"></div>
 								<span style="margin-top: 11px; margin-left: 132px;">결제금액 : </span>
 								<input class="total_price" style="border:none; width: 87px;" value="0" name="order_totalprice" readonly/>
 								<button id="cart_btn" class="btn_add" type="button"> 장바구니</button>
