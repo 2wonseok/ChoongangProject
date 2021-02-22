@@ -17,20 +17,6 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-<script>
-	$(document).ready(function() {
-		$("#remove-btn").click(function(e) {
-			e.preventDefault();
-			// #modify-form의 action attr값을 바꿔야함.
-
-			$("#modify-form").attr("action", "${root}/freeboard/remove");
-
-			$("#modify-form").submit();
-		})
-	})
-</script>
-
-
 <title>Insert title here</title>
 </head>
 <body>
@@ -46,9 +32,6 @@
 
 		<div class="row">
 			<div class="col-12 col-lg-6 offset-lg-3">
-				<%-- 
-		<form action="${pageContext.request.contextPath }/board/register">
-	 --%>
 				<form id="modify-form" method="post"
 					action="${root }/freeboard/modify">
 
@@ -62,13 +45,13 @@
 						<label for="input1">제목</label> <input
 							value='<c:out value="${freeVO.free_title }" />' name="free_title"
 							type="text" class="form-control" id="input1"
-							placeholder="제목을 입력 하세요.">
+							placeholder="제목을 입력 하세요." required="required" maxlength="15" >
 					</div>
 
 					<div class="form-group">
 						<label for="textarea1">내용</label>
 						<textarea name="free_content" class="form-control" id="textarea1"
-							rows="3"><c:out value="${freeVO.free_content }" /></textarea>
+							rows="3" required="required" maxlength="200"><c:out value="${freeVO.free_content }" /></textarea>
 
 					</div>
 
@@ -84,8 +67,6 @@
 					<input type="hidden" value="${criteria.type }" name="type">
 					<input type="hidden" value="${criteria.keyword }" name="keyword">
 					<button type="submit" class="btn btn-primary">수정</button>
-					<!-- <button id="remove-btn" type="submit" class="btn btn-danger">취소</button>
-					 -->
 					<a href="${root}/freeboard/list" >목록</a>
 				</form>
 			</div>

@@ -104,7 +104,7 @@ thead {
 	var userId = "${authUser.user_id}";
 	var nickname = "${authUser.user_nickname}";
 </script>
-<script>
+<!-- <script> 게시글 작성 및 수정시 에러발생
 	$(document).ready(
 			function() {
 
@@ -135,7 +135,7 @@ thead {
 					$("#myModal").modal("show");
 				}
 			});
-</script>
+</script> -->
 <script>
 	$(document).ready(function() {
 		$("#btn_add").click(function() {
@@ -202,18 +202,18 @@ thead {
 
 										</c:url> <a href="${freeboardLink }" style="color: black;"> <c:out
 												value="${freeVO.free_title}" /> 
-												<c:if
-												test="${freeVO.free_replyCnt gt 0 }">
+												<c:if test="${freeVO.free_replyCnt gt 0 }">
 												<span class="badge badge-info">${freeVO.free_replyCnt }</span>
 												</c:if>
-									</a></td>
+												</a>
+									</td>
+									
 									<td><c:out value="${freeVO.free_nickname}" /></td>
 									<td><fmt:formatDate pattern="yyyy-MM-dd"
 											value="${freeVO.free_regdate}" /></td>
 									<td><fmt:formatDate pattern="yyyy-MM-dd"
 											value="${freeVO.free_updatedate}" /></td>
-									<td>${freeVO.free_readCnt}
-									<td>
+									<td>${freeVO.free_readCnt}</td>
 								</tr>
 							</c:forEach>
 						</tbody>

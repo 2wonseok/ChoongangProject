@@ -164,8 +164,7 @@ var user_id = "${authUser.user_id}";
 			var reply_seq = $("#reply_seq-input2").val();
 			var reply_content = $("#reply_content-input2").val();
 			var data = {"reply_seq":reply_seq , "reply_content": reply_content};
-				//null처리 
-			replyService.update(data, function() {
+				replyService.update(data, function() {
 				alert("댓글을 수정하였습니다.");
 				$("#modify-reply-modal").modal('hide');
 				showList();
@@ -207,12 +206,12 @@ var user_id = "${authUser.user_id}";
 				<div class="form-group">
 					<label for="input1">제목</label> <input readonly
 						value='<c:out value="${freeVO.free_title }" />' type="text"
-						class="form-control" id="input1">
+						class="form-control" id="input1" required="required">
 				</div>
 
 				<div class="form-group">
 					<label for="textarea1">내용</label>
-					<textarea readonly class="form-control" id="textarea1" rows="3"><c:out
+					<textarea readonly class="form-control" id="textarea1" rows="3" required="required"><c:out
 							value="${freeVO.free_content }" /></textarea>
 				</div>
 
@@ -273,9 +272,10 @@ var user_id = "${authUser.user_id}";
 				</div>			
 				<div class="modal-body">
 					 <div class="form-group">
-						<label for="reply_content-input" class="col-form-label"> 댓글 </label> <input
-								type="text" class="form-control" id="reply_content-input" maxlength="100">
-								</div>	
+						<label for="reply_content-input" class="col-form-label"> 댓글 </label> 
+						<input type="text" class="form-control" id="reply_content-input" maxlength="100" required="required">
+					</div>
+						
 					<div class="form-group">
 						<label for="reply_writer-input" class="col-form-label"> 작성자 </label> <input
 							type="text" class="form-control" value="${authUser.user_nickname}" readonly>
@@ -318,8 +318,8 @@ var user_id = "${authUser.user_id}";
 							</c:choose>
 					</div>
 					<div class="form-group">
-						<label for="reply_writer-input2" class="col-form-label"> 작성자 </label> <input
-							readonly type="text" class="form-control" id="reply_writer-input2" >
+						<label for="reply_writer-input2" class="col-form-label"> 작성자 </label>
+						 <input  type="text" class="form-control" id="reply_writer-input2" readonly>
 					</div>
 				</div>
 
