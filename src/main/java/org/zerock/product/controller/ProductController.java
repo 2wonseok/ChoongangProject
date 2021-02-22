@@ -507,7 +507,6 @@ public class ProductController {
 	}
 	@GetMapping("/order")
 	public void order(@ModelAttribute("orderList")List<OrderVO> orderList, Model model) {
-		System.out.println(orderList.toString());
 		
 		model.addAttribute("orderList", orderList);
 	}
@@ -539,6 +538,8 @@ public class ProductController {
 			@RequestParam ("requireTotalPrice") String requireTotalPrice,
 			OrderVO orderVO, RedirectAttributes rttr) {
 		
+		System.out.println(orderVO.getOrderVOList().toString());
+		
 		/* 일단 가격이 맞는지 확인 */
 		if(!usePoint.equals(requireTotalPrice)) {
 			rttr.addFlashAttribute("message", "가격이 부족합니다.");
@@ -561,7 +562,7 @@ public class ProductController {
 			if(result != orderVOList.size()) {
 				check = true;
 			}
-		/* 장바구니에서 order_seq 배열로 넘어온것을 처리 */
+		/* 장바구니에서 order_seq 배열로 넘어온것을 처리(seq만빼서사용됨) */
 		} else {
 			result= service.makeOrder(orderVOList);
 			if(result != orderVOList.size()) {
@@ -573,7 +574,6 @@ public class ProductController {
 			rttr.addFlashAttribute("message", "오더실패");
 			return "redirect:/product/list";	
 		}
-		System.out.println("오더개수:"+ result);
 		return "redirect:/user/userOrderList";
 	}
 	

@@ -28,27 +28,70 @@ $(document).ready(function(){
 		}
 	});	
  	
-	/*버튼누를때 가격이들어감  */
+	/*포인트모두사용버튼  */
 	$('#useMaxPointBtn').click(function () {
  		var totalP = $('#requireTotalPrice').val();
  		$('#usePoint').val(totalP);
 	});
-	
 
-	/* 지울거 $("input:checkbox[name='aaa']").length */
+	/* 체크된것들로 가격총합을 바꿔서 넣어주는 함수 */
+	function updateTotalPrice() {
+		var totalPrice = 0;
+		$('input:checkbox[name="checkbox"]:checked').each(function(){
+			var index = $(this).data("index");
+			var popriceName = "orderVOList["+index+"].order_poprice";
+			var poquantityName = "orderVOList["+index+"].order_quantity";
+			var poprice = $('input[name="'+ popriceName + '"]').val();
+			var poquantity = $('input[name="'+poquantityName+'"]').val();
+			var sectorPrice = poprice * poquantity;
+			totalPrice += sectorPrice;
+		});
+			var deliveryPrice = Number( $('#deliveryPrice').html() );
+			if(totalPrice != 0 ){
+				totalPrice += deliveryPrice;
+			}
+			
+		$('#requireTotalPrice').val(totalPrice);
+		$('.requireTotalPrice').each(function(){
+			$(this).html(totalPrice);
+		});
+	};
+	/* 일단 첫 로딩시 총가격 실행 */
+	updateTotalPrice();
+	/* 체크박스누를때마다 체크박스된것들로 총합 바꾸기 */
+	$('input:checkbox[name="checkbox"]').click(function () {
+		updateTotalPrice();
+	});
 	
-	
-/* 	$('#submit_btn').click(function (e) {
+	/*전송버튼 누를때 체크된것들만 보내기  */
+ 	$('#submit_btn').click(function (e) {
 		e.preventDefault();
- 		
-		 체크된 박스의 값을가져오기 
-		 $("input:checkbox[name='aaaa']:checked").val()
 		
-		$('#usePoint').val(totalP);
- 		
+		/*check안된 input들을 disabled해서 못보내게함  */
+		$('input:checkbox[name="checkbox"]:not(:checked)').each(function(){
+			var className = $(this).val();
+			$('.'+className).attr("disabled", true);
+		});
 		
+		/* 못보내면 name에 리스트번호가 꼬이니 OrderVO안의 list의 인덱스번호를 다시구성 해줘야함*/
+		var num = 0;
+		$('input:checkbox[name="checkbox"]:checked').each(function(){
+			var className = $(this).val();
+			$('.'+className).each(function(){
+				var inputName = $(this).attr("name");
+				var first = inputName.indexOf("[");
+				var last = inputName.indexOf("]");
+				var beforeIndex = inputName.substring(first+1,last);
+				var newInputName = inputName.replace(beforeIndex, num);
+				$(this).attr("name", newInputName);
+				
+				console.log(newInputName);
+			});
+			num++;
+		});
+
  		$('#form_order').submit();
-	}); */
+	});
 	
 	
 });
@@ -97,7 +140,7 @@ p {
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th><input type="checkbox" id="allCheck"  value=""/>&nbsp; 전체선택</th>
+							<th><input type="checkbox" id="allCheck"/>&nbsp; 전체선택</th>
 							<th>상품명</th>
 							<th>상품금액</th>
 							<th>상품개수</th>
@@ -107,7 +150,7 @@ p {
 					
 					<c:forEach items="${orderList }" var="order" varStatus="status" >
 						<tr>
-							<td><p><input type="checkbox" id="inputCheckBox${status.index}" name="checkbox" value="inputCheckBox${status.index}" /></p></td>
+							<td><p><input type="checkbox" id="inputCheckBox${status.index}" name="checkbox" data-index="${status.index}" value="inputCheckBox${status.index}" /></p></td>
 							<td>
 								<img alt="상품사진" src="${root }/resources/upload/${order.order_filename}">
 								<a href="${root}/product/get?product_seq=${order.order_productseq}" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
@@ -133,13 +176,6 @@ p {
 					</c:forEach>
 					</tbody>
 				</table>
-				
-				<!-- 총합구하기 -->
-					<c:set var = "total" value = "0" />
-						<c:forEach var="orderCal" items="${orderList}" varStatus="status">     
-							<c:set var= "total" value="${total + orderCal.order_poprice * orderCal.order_quantity}"/>
-						</c:forEach>
-				
 				<table class="table col-2">
 						<tr>
 							<th>택배비</th>
@@ -147,9 +183,9 @@ p {
 						</tr>
 					<tbody>
 						<tr>
-							<td><p>5000원</p></td>
-							<td><p><c:out value="${total}"/></p>원
-								<input id="requireTotalPrice" name="requireTotalPrice" value="${total}" hidden="hidden"/>
+							<td><p> <span id="deliveryPrice">5000</span> 원</p></td>
+							<td><p class="requireTotalPrice"></p>원
+								<input id="requireTotalPrice" name="requireTotalPrice" value="" hidden="hidden"/>
 							</td>
 						</tr>
 					</tbody>
@@ -177,7 +213,10 @@ p {
 			<br>
 			<br>	
 			<h5>결제 정보</h5><br>
-			
+			<div class="d-flex">
+				<p>총 가격</p>
+				<p class="requireTotalPrice"></p>
+			</div>
 			<p>보유 포인트 : ${authUser.user_point}</p>
 			<div>사용 포인트 : <input id="usePoint" name="usePoint" type="number"/>
 				<button id="useMaxPointBtn" type="button">포인트 모두 사용</button>
