@@ -17,6 +17,36 @@
     line-height: 45px;
     float: right;
 }
+ #reply-modify-button {
+ 	display: inline-block !important;
+    padding: 8px 10px;
+    font-size: 12px;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 5px;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transition-timing-function: ease;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    margin-left: 370px;
+    margin-top: -5px;
+ }
+ #reply-delete-button {
+	display: inline-block !important;
+    padding: 8px 10px;
+    font-size: 12px;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 5px;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transition-timing-function: ease;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    margin-left: 420px;
+    margin-top: -65px;
+ }
 	#container {
     clear: both;
     position: relative;
