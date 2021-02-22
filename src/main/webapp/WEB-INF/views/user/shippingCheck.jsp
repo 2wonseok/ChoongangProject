@@ -8,10 +8,29 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script>
+var order_date = '${getOrder.order_date}';
+
+
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+<script>
+$(document).ready(function() {
+	var orderDate = $("#orderDate").val();
+
+ 	var odate = new Date(orderDate); 	// 주문 날짜
+	var send = new Date(odate.setDate(odate.getDate() + 3));	// 3일 뒤
+		//console.log("3일뒤 : ", send);
+	var sendDate = send.toISOString().split("T")[0];
+		//alert(sendDate);
+
+	$(".my-ship-track__head-title").text(sendDate+" 도착 예정");
+});
+
+</script>
 <title>Insert title here</title>
 </head>
 <style>
@@ -231,6 +250,7 @@ tbody {
 	<c:when test="${authUser != null }">
 <div class="container">
 	<section id="container">
+	<input type="hidden" name="orderDate" id="orderDate" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${getOrder.order_date}"/>">
 	<h3>배송조회</h3><br>
 		<div class="my-area-contents" id="ShippingCheckDiv"> <!-- 배송 조회 시작 -->
 			<div id="my__container" class="my-ship-track my-font--base" data-reference="{&quot;module&quot;: &quot;pcweb&quot;, &quot;controller&quot;: &quot;shiptrack&quot;}" data-accessedring="false" data-tracking="deliveryStatus=DELIVERY_DONE&amp;isCoupang=false&amp;isCoupangGlobal=false&amp;hasExternalLink=true&amp;vendorId=A00154520&amp;vendorItemIds=70061377622">
@@ -238,7 +258,7 @@ tbody {
 	  			 <div class="my-ship-track__header my-font--gothic ">
 	   		  <div class="my-ship-track__head-info">
 	           <div class="my-ship-track__head-title">
-	             3일 뒤 도착 예정
+	             
 	           </div>
 	           <div class="my-ship-track__head-sub-title">
 	             고객님이 주문하신 상품이 배송준비중입니다.
