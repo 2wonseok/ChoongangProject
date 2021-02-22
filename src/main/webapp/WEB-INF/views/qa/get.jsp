@@ -220,6 +220,15 @@ var img = '${getQafileNameList }';
     padding: 3px 10px;
     background-color: white;
   }
+.modify {
+		cursor: pointer;
+}
+.delete {
+		cursor: pointer;
+}
+.delete_admin {
+		cursor: pointer;
+}
 /* 기존 */
 #image {
 	max-width: 100%
