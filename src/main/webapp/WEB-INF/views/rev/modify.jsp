@@ -89,7 +89,7 @@
 <body>
 <u:mainNav></u:mainNav>
 <c:choose>
-	<c:when test="${authUser.user_grade == 0 || authUser.user_id eq RevBoard.rev_writer}">
+	<c:when test="${authUser.user_grade == 0 || authUser.user_nickname eq RevBoard.rev_writer}">
 	<div class="container mt-5" style="width: 1000px">
 	<h3>게시글 수정</h3><br>
 	<c:url value="${root }/rev/modify" var="modifyLink">
@@ -213,7 +213,7 @@
 				<input type="hidden" value="${cri.type }" name="type" /> 
 				<input type="hidden" value="${cri.keyword }" name="keyword" />
 					
-    				<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
+    				<c:if test="${ authUser.user_nickname eq RevBoard.rev_writer || authUser.user_grade == 0}">
 						<button id="remove-btn" type="submit" class="btn btn-danger">글 삭제</button>
 						<button id="btn_add" type="submit" class="btn btn-primary">글 수정</button> 
 					</c:if>
