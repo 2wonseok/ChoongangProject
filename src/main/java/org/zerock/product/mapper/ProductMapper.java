@@ -67,6 +67,9 @@ public interface ProductMapper {
 		public int getCategorySeq(CategoryVO categoryVO);
 
 		public CategoryVO getCategoryMainAndSubs(int category_seq);
+
+	/* userVO */
+		public int userPointUpdate(@Param("user_seq") int user_seq, @Param("changedPoint") int changedPoint);
 	
 	
 }
