@@ -13,10 +13,25 @@
     font-size: 15px;
     border: none;
     background: #4a4a4a;
-    padding: 0px 50px;
-    margin: 0 0px;
-    line-height: 45px;
+    padding: 0px 30px;
+    margin: 0px;
+    line-height: 40px;
     float: right;
+    width: 140px;
+	height : 40px;
+	border-radius: 3px;
+	text-align: center;
+}
+#search {
+width: 100px;
+height : 40px;
+border: 1px solid #D3D3D3;
+border-radius: 3px;
+}
+#btn_add_search{
+	color: #fff;
+	font-size: 15px;
+	background: #4a4a4a;
 }
 #container {
     clear: both;
@@ -26,6 +41,13 @@
     width: 1000px;
     z-index: 1;
 }
+
+#foot{
+	background: #f8f8f8;
+	border-top: 2px solid #E3E1E1;
+	border-bottom: 1px solid #E3E1E1;
+}
+
 thead {
 	background: #f8f8f8;
 }
@@ -99,7 +121,7 @@ thead {
 
 
 			
-	<div class="container">
+<div class="container">
 	<section id="container">	
 	
 		<div class="row">
@@ -151,45 +173,48 @@ thead {
 									<td>${rev.rev_good }</td>
 									<td>${rev.rev_hate }</td>
 									<td>${rev.rev_readCnt }</td>
-									
-		
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
-	<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar ">
-				<select class="custom-select my-1 mr-sm-2" name="type" 
-					id="inlineFormCustomSelectPref">
-					<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' } >제목</option>
-					<option value="K" ${pageMaker.cri.type eq 'K' ? 'selected' : '' } >카테고리</option>
-					<option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : '' }>내용</option>
-					<option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : '' }>작성자</option>
-					<option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : '' }>제목 or 내용</option>
-					<option value="TW" ${pageMaker.cri.type eq 'TW' ? 'selected' : '' }>제목 or 작성자</option>
-					<option value="TWC" ${pageMaker.cri.type eq 'TWC' ? 'selected' : '' }>제목 or 내용 or 작성자</option>
-				</select> 
-				<input class="form-control mr-sm-2" type="search" name="keyword" value="${pageMaker.cri.keyword }"
-					placeholder="검색어 입력" aria-label="Search" required >
-					<input type="hidden"  name="pageNum" value="1"/>
-					<input type="hidden"  name="amount" value="${pageMaker.cri.amount }"/>
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-			</form>
-			<div style="float: right;width: 370px;" ></div>
-			<c:if test="${ sessionScope.authUser.user_id != null }">
-					<a id="btn_add" class="btn" href="${root }/rev/register">후기 쓰기</a>
-					</c:if>
-					<c:url value="${root }/rev/list" var="searchLink">
-					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
-					<c:param name="pageNum" value="${cri.pageNum }" />
-					<c:param name="amount" value="${cri.amount }" />
-					<c:param name="type" value="${cri.type }"/>
-					<c:param name="keyword" value="${cri.keyword }"/>
-				</c:url>
 		</div>
+			<!-- 검색폼 시작 -->
+			<div id="foot" class="row">
+				<div class="col-7 align-left ml-0 my-lg-2">
+					<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar ">
+					<select class="custom-select my-1 mr-sm-2" name="type" 
+						id="inlineFormCustomSelectPref">
+						<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' } >제목</option>
+						<option value="K" ${pageMaker.cri.type eq 'K' ? 'selected' : '' } >카테고리</option>
+						<option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : '' }>내용</option>
+						<option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : '' }>작성자</option>
+						<option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : '' }>제목 or 내용</option>
+						<option value="TW" ${pageMaker.cri.type eq 'TW' ? 'selected' : '' }>제목 or 작성자</option>
+						<option value="TWC" ${pageMaker.cri.type eq 'TWC' ? 'selected' : '' }>제목 or 내용 or 작성자</option>
+					</select> 
+						<input class="col-md-4 ml-3" id="search" type="search" name="keyword" value="${pageMaker.cri.keyword }"
+						placeholder="검색어 입력" aria-label="Search" required />
+						<input type="hidden"  name="pageNum" value="1"/>
+						<input type="hidden"  name="amount" value="${pageMaker.cri.amount }"/>
+						<button class="btn my-2 my-sm-0 ml-3" id="btn_add_search" type="submit">검색</button>
+					</form>
+				</div>
+					<div class="col-5 align-right my-lg-2">
+						<c:if test="${ sessionScope.authUser.user_id != null }">
+						<a id="btn_add" class="btn" href="${root }/rev/register">후기 쓰기</a>
+						</c:if>
+					</div>
+			</div>
+					<c:url value="${root }/rev/list" var="searchLink">
+						<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+						<c:param name="pageNum" value="${cri.pageNum }" />
+						<c:param name="amount" value="${cri.amount }" />
+						<c:param name="type" value="${cri.type }"/>
+						<c:param name="keyword" value="${cri.keyword }"/>
+					</c:url>
+		<!-- 검색폼 종료 -->
 		
-		
-	
-	
+		<!-- 페이징 시작 -->
 		<div class="container d-flex justify-content-center mt-5">
 			<div class="pagerWrap">
 					<c:if test="${pageMaker.prev }">
@@ -231,10 +256,11 @@ thead {
 						<!-- href="${root}/board/list?pageNum=${pageMaker.endPage +1}&amount=${pageMaker.cri.amount}
 						 와 같음 -->
 					</c:if>
+			</div>
 		</div>
-	</div>
+		<!-- 페이징끝 -->
 	</section>
-	</div>
+</div>
 <u:footer/>
 <div id="myModal" class="modal" tabindex="-1">
 		<div class="modal-dialog">

@@ -449,7 +449,7 @@ showList();
         	<h2>페이지 정보</h2>
         	<span class="sound_only" >작성자</span>
         		<strong>
-        			<span class="sv_member">${RevBoard.rev_writer }</span>
+        			<span class="sv_member"><i class="fas fa-user"></i>&nbsp&nbsp${RevBoard.rev_writer }</span>
         		</strong>
         	<span>&nbsp&nbsp&nbsp</span>
         	<span class="sound_only" >카테고리</span>
