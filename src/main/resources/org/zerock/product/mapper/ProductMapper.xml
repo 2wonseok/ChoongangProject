@@ -5,6 +5,14 @@
 
 <mapper namespace="org.zerock.product.mapper.ProductMapper">
 
+	<update id="userPointUpdate">
+		UPDATE tbl_user
+			SET
+			user_point = #{changedPoint}
+			WHERE
+			user_seq = #{user_seq}
+	</update>
+
 	<select id="readOrderbyOrderSeq"
 		resultType="org.zerock.product.domain.OrderVO">
 		select * from tbl_order where order_seq = #{order_seq} AND order_status = 0
@@ -140,7 +148,7 @@
 				</choose>
 			</foreach>
 			<choose>
-				<when test="categoryNum != null">
+				<when test="categoryNum != null and !categoryNum.equals('')">
 					category_seq = #{categoryNum}
 				</when>
 			</choose>

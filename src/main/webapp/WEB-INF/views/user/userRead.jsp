@@ -235,7 +235,7 @@
 						</tr>	
 						<tr>
 							<th>가입일</th>
-							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${read.user_regdate }"/></td>
+							<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${read.user_regdate }"/></td>
 						</tr>		
 					</tbody>
 				</table>

@@ -272,22 +272,23 @@ $(document).ready(function() {
 				var writer = list[i].reply_writer;
 				var regdate = list[i].reply_regdateKST;
 
-				// 로그인 아이디와 닉네임이 동일 하고, 등급이 1(일반) 인 경우
+		
+				// 댓글 작성자 아이디와 로그인한 닉네임이 동일 하고, 등급이 1(일반) 인 경우
 				if(writer == nickname && grade == 1) {
 					replyUL.append(
 							'<ul>'
 							+'<li style="border-top:none;" data-seq="'+seq+'">'
 							+'<p class="txt">'+content+'</p>'
 							+'<p><span>'+writer+'</span>'
-							+'<span id="datespan">'+moment(regdate).format('YYYY.MM.DD.HH:mm')+'<span>'
-							+'<span style="color:red;" class="modify">수정</span>'
+							+'<span id="datespan">'+moment(regdate).format('YYYY.MM.DD.HH:mm')+'</span>'
+							+'<span style="color:gray;" class="modify">수정</span>'
 							+'<span style="color:red;" class="delete">삭제</span>'
 							+'</p>'
 							+'</li>'
 							+'</ul>'
-					);			
+					);
 				} 
-				// 로그인 아이디와 닉네임이 동일 하고, 등급이 0(관리자) 인 경우
+				// 작성자 아이디와 닉네임이 동일 하고, 등급이 0(관리자) 인 경우
 				else if(writer == nickname && grade == 0) {
 					replyUL.append(
 							'<ul>'
@@ -295,19 +296,19 @@ $(document).ready(function() {
 							+'<p class="txt">'+content+'</p>'
 							+'<p><span>'+writer+'</span>'
 							+'<span id="datespan">'+moment(regdate).format('YYYY.MM.DD.HH:mm')+'</span>'
-							+'<span style="color:gray;" class="modify_admin">수정</span>'
+							+'<span style="color:gray;" class="modify">수정</span>'
 							+'<span style="color:red;" class="delete_admin">삭제</span>'
 							+'</p>'
 							+'</li>'
 							+'</ul>'
-					);			
-				} else { //로그인 되어있지 않은 유저나, 로그인 되어있지만 댓글을 작성하지 않은 유저
+					);	
+				} else { 
 					replyUL.append(
 							'<ul>'
 							+'<li style="border-top:none;" data-seq="'+seq+'">'
 							+'<p class="txt">'+content+'</p>'
 							+'<p><span>'+writer+'</span>'
-							+'<span id="datespan">'+moment(regdate).format('YYYY.MM.DD.HH:mm')+'<span>'
+							+'<span id="datespan">'+moment(regdate).format('YYYY.MM.DD.HH:mm')+'</span>'
 							+'</p>'
 							+'</li>'
 							+'</ul>'
@@ -414,19 +415,44 @@ $(document).ready(function() {
 		var seq = $(this).parent('p').parent('li').attr('data-seq');
 		var content = $(this).parent('p').parent('li').children('.txt').text();
 		
-		
- 		var data = {reply_seq: seq, reply_content: content};		
-		replyService.modify(data, function() {
-			alert("댓글을 수정 하였습니다.");
-			showList();
+		replyService.get(seq, function() {			
+			$("#reply-seq").val(seq);
+			$("#reply-modify-delete").val(content);
+			$("#modify-reply-modal").modal("show");
 		});		
 	}); 
-	
+ 	
+	// 수정 버튼 이벤트 처리
+	$("#reply-modify-button").click(function() {
+		var seq = $("#reply-seq").val();
+		var reply = $("#reply-modify-delete").val();
+
+		var data = {reply_seq: seq, reply_content: reply};
+		replyService.modify(data, function() {
+			alert("댓글을 수정 하였습니다.");
+			$("#modify-reply-modal").modal('hide');
+			showList();
+		});		
+	});
+ 	
+ 	
 	// 댓글 목록 함수 showList() 불러오기
 	showList();
 });
 
 </script>
+
+<script>
+	$(document).ready(function() {
+		$("#reply_content_input").mousedown(function() {
+			if (nickname == "") {
+				alert("로그인 후 이용하세요.");
+				location.href = "${root}/user/login";
+			}
+		});
+	});
+</script>
+
 <title>게시물 보기</title>
 </head>
 <body>
@@ -442,7 +468,7 @@ $(document).ready(function() {
 						<strong>작성자 : ${board.qa_writer } </strong>
 					</p>
 					<c:choose>
-						<c:when test="${board.qa_updatedateKST == null }">
+						<c:when test="${empty board.qa_updatedate}">
 							<p>
 								<strong>등록일 :</strong>
 								<fmt:formatDate value='${board.qa_regdateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
@@ -483,7 +509,7 @@ $(document).ready(function() {
 	<!-- 댓글 작성 폼 -->
 	<div class="recommWritebox">
 		<div class="lws">
-			<textarea id="reply_content_input" name="reply_content"  >${reply_content }</textarea>
+			<textarea id="reply_content_input" name="reply_content" >${reply_content }</textarea>
 			<c:if test="${not empty authUser.user_nickname}">
 			<!-- // 작성자 hidden 처리 -->	
 				<input readonly type="hidden" type="text" name="reply_writer" value="${authUser.user_nickname }" id="reply_writer_input"/><br>
@@ -511,37 +537,27 @@ $(document).ready(function() {
 	</div>
 </section>	 
 
-<div class="modal fade" id="modify-delete-reply-modal">
+<div class="modal fade" id="modify-reply-modal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">
-						수정 / 삭제
+						댓글 수정
 					</h5>
 					<button type="button" class="close" data-dismiss="modal">
 						<span>&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<input id="reply-rno" type="hidden"/>
+					<input id="reply-seq" type="hidden"/>
 					<div class="form-group">
-						<label for="reply-modify-delete" class="col-form-label">
-							댓글
-						
-						</label>
+
 						<input type="text" class="form-control" id="reply-modify-delete">
-					</div>
-					<div class="form-group">
-						<label for="reply-input" class="col-form-label">
-							작성자
-						</label>
-						<input readonly type="text" class="form-control" id="replyer-modify-delete">
 					</div>
 				</div>
 				
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" id="reply-modify-button">수정</button>
-					<button type="button" class="btn btn-danger" id="reply-remove-button">삭제</button>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 				</div>
 				

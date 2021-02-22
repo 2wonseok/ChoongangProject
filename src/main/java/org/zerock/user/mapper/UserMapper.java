@@ -33,8 +33,6 @@ public interface UserMapper {
 	
 	public void gradeUpdate(UserVO user);
 	
-	public void pointUpdate(UserVO user);
-	
 	public void userRemove(String user_id);
 	
 	public int modifyPw(UserVO user);

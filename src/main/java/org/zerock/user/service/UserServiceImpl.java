@@ -73,11 +73,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void pointUpdate(UserVO user) {
-		mapper.pointUpdate(user);
-	}
-
-	@Override
 	public void smsService(String user_phone, String cerNum) {
 		String api_key = "NCSKI3A4IVCQ0M1E";
     String api_secret = "9FBKZ8X5QO6MLPBYMA21D0HZIR1Q4XCF";

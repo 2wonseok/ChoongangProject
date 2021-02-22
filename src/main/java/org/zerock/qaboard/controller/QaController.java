@@ -77,10 +77,9 @@ public class QaController {
 	public String register(@ModelAttribute("criteria") Criteria cri) {
 		// 세션에 로그인이 되어있지 않은 상태로 url에 우회로 접속시
 		if (session.getAttribute("authUser") == null) {
-			System.out.println("세션 없는 상태로 글쓰기");
 			return "redirect:/qa/writer_error";
 		}
-		return "redirect:/qa/register";
+		return "/qa/register";
 	}
 	
 	// register 페이지를 세션에 로그인 되어 있지 않은 상태로 url로 접속시

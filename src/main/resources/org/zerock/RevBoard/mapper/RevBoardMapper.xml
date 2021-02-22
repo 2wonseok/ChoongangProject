@@ -29,6 +29,12 @@
 			<when test="type == 'K'.toString(), keyword == '하의'.toString()">	
 				rev_category LIKE '%' || 4 || '%'
 			</when>
+			<when test="type == 'K'.toString(), keyword == '전자 기기'.toString()">	
+				rev_category LIKE '%' || 5 || '%'
+			</when>
+			<when test="type == 'K'.toString(), keyword == '식품'.toString()">	
+				rev_category LIKE '%' || 6 || '%'
+			</when>
 			
 		</choose>
 	</foreach>
@@ -41,9 +47,9 @@
 			SELECT rev_seq.nextval FROM dual
 		</selectKey>
 		INSERT INTO tbl_reviewboard (rev_seq, rev_category, rev_title,
-		rev_writer,rev_content, rev_filename, rev_regdate, rev_updatedate)
+		rev_writer,rev_content, rev_filename, rev_regdate)
 		VALUES (#{rev_seq}, #{rev_category}, #{rev_title}, #{rev_writer},
-		#{rev_content}, #{rev_filename},sysdate, sysdate)
+		#{rev_content}, #{rev_filename},sysdate)
 	</insert>
 
 	<select id="read" resultType="org.zerock.RevBoard.domain.RevVO">

@@ -14,6 +14,8 @@ import org.zerock.product.domain.ProductLikeVO;
 import org.zerock.product.domain.ProductOptionVO;
 import org.zerock.product.domain.ProductVO;
 import org.zerock.product.mapper.ProductMapper;
+import org.zerock.user.domain.UserVO;
+import org.zerock.user.mapper.UserMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -22,6 +24,17 @@ import lombok.AllArgsConstructor;
 public class ProductServiceImpl implements ProductService {
 
 	private ProductMapper mapper;
+	private UserMapper userMapper;
+	
+	@Override
+	public int updateUserPoint(int user_seq, String usePoint) {
+		int presentPoint = userMapper.getUserSeq(user_seq).getUser_point();
+		int changedPoint =presentPoint - Integer.parseInt(usePoint); 
+		if (changedPoint >=0) {
+			return mapper.userPointUpdate(user_seq, changedPoint);
+		}
+		return 0;
+	}
 	
 	@Override
 	public CategoryVO getCategoryMainAndSub(int category_seq) {

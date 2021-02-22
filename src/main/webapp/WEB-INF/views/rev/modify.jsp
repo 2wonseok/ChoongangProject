@@ -8,25 +8,35 @@
 <head>
 <style>
 	#btn_add {
-    color: #fff;
-    font-size: 15px;
-    border: none;
-    background: #1e263c;
-    padding: 0px 50px;
-    margin: 0 0px;
-    line-height: 45px;
-    float: right;
+    display: inline-block !important;
+    padding: 8px 10px;
+    font-size: 12px;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 5px;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transition-timing-function: ease;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    margin-left: 387px;
+    margin-top: 30px;
     }
     
     #remove-btn {
-    color: #fff;
-    font-size: 15px;
-    border: none;
-    background: #1e263c;
-    padding: 0px 50px;
-    margin: 0 0px;
-    line-height: 45px;
-    float: right;
+    display: inline-block !important;
+    padding: 8px 10px;
+    font-size: 12px;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 5px;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transition-timing-function: ease;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    margin-top: 30px;
+    
     }
     #footdiv {
     width: 1000px;
@@ -89,7 +99,7 @@
 <body>
 <u:mainNav></u:mainNav>
 <c:choose>
-	<c:when test="${authUser.user_grade == 0 || authUser.user_id eq RevBoard.rev_writer}">
+	<c:when test="${authUser.user_grade == 0 || authUser.user_nickname eq RevBoard.rev_writer}">
 	<div class="container mt-5" style="width: 1000px">
 	<h3>게시글 수정</h3><br>
 	<c:url value="${root }/rev/modify" var="modifyLink">
@@ -213,9 +223,9 @@
 				<input type="hidden" value="${cri.type }" name="type" /> 
 				<input type="hidden" value="${cri.keyword }" name="keyword" />
 					
-    				<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
-						<button id="remove-btn" type="submit" class="btn btn-danger">글 삭제</button>
-						<button id="btn_add" type="submit" class="btn btn-primary">글 수정</button> 
+    				<c:if test="${ authUser.user_nickname eq RevBoard.rev_writer || authUser.user_grade == 0}">
+						<button id="btn_add" type="submit" class="btn_submit btn-secondary" style="border: thin;">수정 완료</button> 
+						<button id="remove-btn" type="submit" class="btn_submit btn-secondary" style="border: thin;">글 삭제</button>
 					</c:if>
    					
 					
@@ -230,7 +240,7 @@
     		
 			<div id="footdiv">
 			
-				<<!-- div class="container1" style="margin-left:100px;width:100%;"> -->
+				<!-- div class="container1" style="margin-left:100px;width:100%;"> -->
 					사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
 					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
 				<!-- </div> -->

@@ -52,4 +52,6 @@ public interface ProductService {
 
 	public CategoryVO getCategoryMainAndSub(int category_seq);
 
+	public int updateUserPoint(int user_seq, String usePoint);
+
 }
