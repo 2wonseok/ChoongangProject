@@ -9,6 +9,10 @@
 <meta charset="UTF-8">
 <link rel="stylesheet"
   href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script>
+	var userId = "${authUser.user_id}";
+	var nickname = "${authUser.user_nickname}";
+</script>
 <script
   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -94,6 +98,22 @@ $(document).ready(function() {
 		margin-top: 20px;
 		margin-bottom: -100px;
 }
+.chat { 
+		position:fixed; 
+		width:130px; 
+		display:inline-block; 
+		top: 42%; /* 창에서 위에서 부터의 높이 */ 
+		background-color: transparent; margin:0; 
+}
+#_chatbox { 
+		overflow: scroll;
+		position:fixed; 
+		width:230px; 
+		display:inline-block;
+		left: 5px; 
+		top: 56%; /* 창에서 위에서 부터의 높이 */ 
+		background-color: transparent; margin:0; 
+} 
 </style>
 <body>
 <u:mainNav/>
@@ -186,5 +206,80 @@ $(document).ready(function() {
 		</footer>
 	</section>
 </div>
+<c:if test="${authUser != null}">
+	<div id="_chatbox" style="display: none">
+		<fieldset>
+			<div id="messageWindow" style="height:250px; margin-left: 20px;"></div><br />
+			<div style="position: fixed; top:88%;">
+				<input id="inputMessage" type="text" onkeyup="enterkey()" />
+				<input type="submit" value="send" onclick="send()" />
+			</div> 
+		</fieldset>
+	</div>
+	<img class="chat" src="/resources/chat.png" />
+</c:if>
+<script>
+	$(".chat").on({
+		"click" : function() {
+			if ($(this).attr("src") == "/resources/chat.png") {
+				//채팅끌때 클릭할 이미지 
+				$(".chat").attr("src", "/resources/chathide.png");
+				$("#_chatbox").css("display", "block");
+			} else if ($(this).attr("src") == "/resources/chathide.png") {
+				$(".chat").attr("src", "/resources/chat.png");
+				$("#_chatbox").css("display", "none");
+			}
+		}
+	});
+</script>
+<script type="text/javascript">
+	var textarea = document.getElementById("messageWindow");
+	//서버 ip주소 입력
+	var webSocket = new WebSocket('ws://localhost:8080/broadcasting');
+	var inputMessage = document.getElementById('inputMessage');
+	webSocket.onerror = function(event) {
+		onError(event)
+	};
+	webSocket.onopen = function(event) {
+		onOpen(event)
+	};
+	webSocket.onmessage = function(event) {
+		onMessage(event)
+	};
+	function onMessage(event) {
+		var message = event.data.split("|");
+		var sender = message[0];
+		var content = message[1];
+		if (content == "") {
+		} else {
+			$("#messageWindow").html($("#messageWindow").html() + "<p class='chat_content'>" + sender + " : " + content + "</p>");
+		}
+	}
+	function onOpen(event) {
+		$("#messageWindow").html("<p class='chat_content' style='width: 200px;'>채팅에 참여하였습니다.</p>");
+	}
+	function onError(event) {
+		alert(event.data);
+	}
+	function send() {
+		if (inputMessage.value == "") {
+		} else {
+			$("#messageWindow").html($("#messageWindow").html() + "<p class='chat_content'>나 : " + inputMessage.value + "</p>");
+		}
+		webSocket.send(nickname + "(" + userId + ") | " + inputMessage.value);
+		inputMessage.value = "";
+	}
+	// 엔터키를 통해 send함
+	function enterkey() {
+		if (window.event.keyCode == 13) {
+			send();
+		}
+	}
+	// 채팅이 많아져 스크롤바가 넘어가더라도 자동적으로 스크롤바가 내려가게함
+	window.setInterval(function() {
+		var elem = document.getElementById('messageWindow');
+		elem.scrollTop = elem.scrollHeight;
+	}, 0);
+</script>
 </body>
 </html>
