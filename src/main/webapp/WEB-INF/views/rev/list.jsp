@@ -158,12 +158,9 @@ thead {
 								</c:if>
 							</a></td>
 							<td><c:out value="${rev.rev_writer}" /></td>
-							<c:if test="${rev.rev_updatedateKST == null}">
+							
 							<td><fmt:formatDate value='${rev.rev_regdate}' pattern='yyyy-MM-dd'/></td>
-							</c:if>	
-							<c:if test="${rev.rev_updatedateKST != null}">						
-							<td><fmt:formatDate value='${rev.rev_updatedateKST}' pattern='yyyy-MM-dd'/></td>
-							</c:if>
+							
 									<td>${rev.rev_good }</td>
 									<td>${rev.rev_hate }</td>
 									<td>${rev.rev_readCnt }</td>
