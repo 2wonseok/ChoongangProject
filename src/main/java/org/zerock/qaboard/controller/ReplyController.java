@@ -153,7 +153,7 @@ public class ReplyController {
 
 	public ResponseEntity<String> modify(
 			@RequestBody QaReplyVO vo, 
-			@PathVariable int reply_seq) {
+			@PathVariable("reply_seq") int reply_seq) {
 		
 		vo.setReply_seq(reply_seq);
 

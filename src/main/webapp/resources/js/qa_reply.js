@@ -108,7 +108,7 @@ var replyService = (function() {
 			type: "put",
 			url: appRoot + "/reply/" + reply.reply_seq,
 			data: JSON.stringify(reply),
-			contentType: "application/json; charset=utf-8",
+			contentType: "application/json; charset=UTF-8",
 			success: function(result, status, xhr) {
 				if(callback) {
 					callback(result);
