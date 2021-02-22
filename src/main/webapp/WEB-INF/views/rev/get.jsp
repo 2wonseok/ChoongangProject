@@ -66,6 +66,7 @@
     word-wrap: break-word;
 	}
 	.webzineTypeView .bodyWrap {
+		padding: 21px;
     color: #555555;
     font-size: 14px;
     line-height: 35px;
@@ -91,17 +92,21 @@
     font-size: 14px;
 	}
 #btn_add {
-    color: #fff;
+    color: #000;
     font-size: 15px;
     border: none;
-    background: #747474;
-    padding: 0px 30px;
-    margin-top: 8px;
+    padding: 0px 10px;
     line-height: 45px;
     float: right;
-    border-radius: 3px;
 }
-
+.new-reply-button {
+		cursor: pointer; 
+    color: #000;
+    font-size: 15px;
+    border: none;
+    padding: 0px 30px;
+    line-height: 45px;
+}
 	ol, ul {
 	    list-style: none;
 	}
@@ -193,6 +198,7 @@
 	var rev_seq = ${RevBoard.rev_seq}; 
 	var authUser = '${authUser.user_id}';
 	var user_seq = '${authUser.user_seq}';
+	var img = '${RevfileNameList }';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes">
@@ -217,20 +223,23 @@
 //새 댓글 버튼 클릭 이벤트 처리
 $(document).ready(function() {
 		// 날짜 형식
-
 		function dateString(date) {
 			var d = new Date(date);
 			return d.toISOString().split("T")[0];
 			
 			
 		}
+		
+		if (img == null || img == '') {
+			$('.webzineTypeView').css('height', '588px');
+		}
+		
 function showList() {
 			replyService.getList(rev_seq, function(list) {
 				// console.log(list);	
 				
 				/* var replyUL = $("#reply-ul") */
-				var replyUL = $("#bo_vc");
-				replyUL.empty(); // append로 계속 있어도 리스트를 넣어주니까 한번비워주는 코드
+				var reply_list = $("#reply_list").empty(); // append로 계속 있어도 리스트를 넣어주니까 한번비워주는 코드
 				/* for (var i = 0; i < list.length; i++) {
 					var replyLI = '<li class="media" data-reply_seq="'
 						+ list[i].reply_seq + '"><div class="media-body"><h5>'
@@ -243,7 +252,25 @@ function showList() {
 						style="l"
 					}  */
 					  for (var i = 0; i < list.length; i++) {
-						var replyLI = '<article data-reply_seq="' + list[i].reply_seq + '"><header style="z-index:5;line-height: 40px;">'
+						  
+							var replyLI = '<ul>'
+														+'<li style="border-top:none;" data-reply_seq="'+list[i].reply_seq+'">'
+														+'<p class="txt">'+list[i].reply_content+'</p>'
+														+'<p><span>'+list[i].reply_writer+'</span>'
+														+'<span id="datespan">'+dateString(list[i].reply_regdateKST)+'</span>'
+														+'</p>'
+														+'</li>'
+														+'</ul>';
+														
+							reply_list.append(replyLI);
+						
+					  }
+							
+							
+							
+							
+							
+/* 							'<article data-reply_seq="' + list[i].reply_seq + '"><header style="z-index:5;line-height: 40px;">'
 						+  '<span class="guest">'
 						+ list[i].reply_writer
 						+  '</span><span class="bo_vc_hdinfo"><i class="far fa-clock" aria-hidden="true"></i>&nbsp<small class="text-secondary">'
@@ -251,11 +278,10 @@ function showList() {
 						+ list[i].reply_content
 						+ '<textarea style="display:none">' 
 						+  list[i].reply_content  
-						+ '</textarea></div></article>'
+						+ '</textarea></div></article>' */
 						 
 						
-						replyUL.append(replyLI);
-					  }
+						
 						
 				}),
 			function(err) {
@@ -314,7 +340,7 @@ $("#reply-submit-button").click(function() {
 //reply-ul 클릭 이벤트 처리
 
 
-$("#bo_vc").on("click", "article",  function() { // on메소드를 이용해서 reply-ul 안에있는 <li> 를 눌렀을때
+$("#reply_list").on("click", "li",  function() { // on메소드를 이용해서 reply-ul 안에있는 <li> 를 눌렀을때
 	//console.log("reply ul clicked.....");	   // 일이 일어나도록함.
 	console.log($(this).attr("data-reply_seq"));		// 여기서의 this는 click이벤트를 당한 li를 뜻함.
 
@@ -534,195 +560,90 @@ showList();
 	<section id="container">
 		<div class="webzineTypeView">
 			<div class="headWrap">
-				<p class="mr-t10">${board.qa_title }</p>
+				<p class="mr-t10">${RevBoard.rev_title }</p>
 				<div class="date">
+					<p>
+						<strong>카테고리 : </strong>
+						<c:choose>
+							<c:when test="${RevBoard.rev_category eq 1}">모자</c:when>
+							<c:when test="${RevBoard.rev_category eq 2}">신발</c:when>
+							<c:when test="${RevBoard.rev_category eq 3}">상의</c:when>
+							<c:when test="${RevBoard.rev_category eq 4}">하의</c:when>
+							<c:when test="${RevBoard.rev_category eq 5}">전자 기기</c:when>
+							<c:otherwise>식품</c:otherwise>
+						</c:choose>
+					</p>
 					<p><strong>조회수 : </strong>${RevBoard.rev_readCnt}</p>
 					<p><strong>댓글수 : </strong>${RevBoard.rev_replyCnt }</p>
 					<p>
-						<strong>작성자 : ${board.qa_writer } </strong>
+						<strong>작성자 : ${RevBoard.rev_writer } </strong>
 					</p>
 					<c:choose>
-						<c:when test="${board.qa_updatedateKST == null }">
+						<c:when test="${RevBoard.rev_updatedate == null }">
 							<p>
 								<strong>등록일 :</strong>
-								<fmt:formatDate value='${board.qa_regdateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
+								<fmt:formatDate value='${RevBoard.rev_regdateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
 							</p>
 						</c:when>
 						<c:otherwise>
 							<p>
 								<strong>수정일 :</strong>
-								<fmt:formatDate value='${board.qa_updatedateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
+								<fmt:formatDate value='${RevBoard.rev_updatedateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
 							</p>
 						</c:otherwise>
 					</c:choose>
 				</div>
 			</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		</div>
-	</section>
-	
-	
-	
-	
-	
-	
-	
-	<div class="container-md">
-		<section id="containers">
-			<article id="bo_v" style="width:100%">
-    			<header>
-        			<h2>
-                        <span class="bo_v_tit">
-            				${RevBoard.rev_title }
-            			</span>
-        			</h2>
-    			</header>
-
-    	<section id="bo_v_info">
-        	<h2>페이지 정보</h2>
-        	<span class="sound_only" >작성자</span>
-        		<strong>
-        			<span class="sv_member">${RevBoard.rev_writer }</span>
-        		</strong>
-        	<span>&nbsp&nbsp&nbsp</span>
-        	<span class="sound_only" >카테고리</span>
-        		<strong>
-        			<i class="fas fa-info-circle" aria-hidden="false"></i>&nbsp&nbsp<c:if test="${RevBoard.rev_category eq 1}">모자</c:if><c:if test="${RevBoard.rev_category eq 2}">신발</c:if><c:if test="${RevBoard.rev_category eq 3}">상의</c:if><c:if test="${RevBoard.rev_category eq 4}">하의</c:if><c:if test="${RevBoard.rev_category eq 5}">전자 기기</c:if><c:if test="${RevBoard.rev_category eq 6}">식품</c:if></strong>
-        	<span>&nbsp&nbsp&nbsp</span>
-       		<span class="sound_only">댓글</span>
-       			<strong>
-       				<i class="fas fa-comment-alt" aria-hidden="false"></i>
-       				&nbsp&nbsp${RevBoard.rev_replyCnt }
-       			</strong>
-        	<span>&nbsp&nbsp&nbsp</span>
-        	<span class="sound_only">조회</span>
-        		<strong>
-        			<i class="fa fa-eye" aria-hidden="true"></i>
-        			&nbsp&nbsp${RevBoard.rev_readCnt}
-        		</strong>
-        <c:if test="${RevBoard.rev_updatedate == null }">
-        	<small class="text-secondary" style="float:right"><fmt:formatDate value='${RevBoard.rev_regdateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/></small>
-        		<i class="far fa-calendar-alt" style="float:right; margin-right:8px; margin-top: 1px;"></i>
-        </c:if>
-        <c:if test="${RevBoard.rev_updatedate != null }">
-        	<small class="text-secondary" style="float:right"><fmt:formatDate value='${RevBoard.rev_updatedateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/></small>
-        		<i class="far fa-calendar-alt" style="float:right; margin-right:8px; margin-top: 1px;"></i>
-        </c:if>
-    	</section>
-
-    <section id="bo_v_atc">
-        <h2 id="bo_v_atc_title">본문</h2>
-       
-
-        <!-- 본문 내용 시작 { -->
-        <div id="bo_v_con">
-        	<c:if test="${RevBoard.rev_filename != null}">
-         		<div class="form-group" >
-					 <input readonly hidden
-						value="${RevBoard.rev_filename }" type="text" class="form-control" id="input3" />						
-					 <c:forEach items="${RevfileNameList }" var="revImg" varStatus="imgNum">
-						<img class="hoveredImage" onerror="this.src='${root }/resources/noimage.jpg'" alt="" src="${root }/resources/upload/${revImg}" height="280px" width="260px">
+			<!-- 본문 -->
+			<div class="bodyWrap">
+				<div class="form-group" style="margin-top:5px;">
+					<input readonly hidden value="${RevBoard.rev_filename }" type="text" class="form-control" id="input3" />	
+					<c:forEach items="${RevfileNameList }" var="revImg" varStatus="imgNum">
+						<img onerror="this.src='${root }/resources/noimage.jpg'" alt="" src="${root }/resources/upload/${revImg}" height="280px" width="260px">
 					 </c:forEach>
 				</div>
-        	</c:if>
-        <hr class="dashHr" style="border:none;">
-        <pre>${RevBoard.rev_content }</pre>
-        
-        <hr class="one">
-        		<c:url value="${root }/rev/modify" var="modifyLink">
-					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
-					<c:param name="pageNum" value="${cri.pageNum }" />
-					<c:param name="amount" value="${cri.amount }" />
-					<c:param name="type" value="${cri.type }"/>
-					<c:param name="keyword" value="${cri.keyword }"/>
-				</c:url>
-				<c:url value="${root }/rev/list" var="listLink">
-					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
-					<c:param name="pageNum" value="${cri.pageNum }" />
-					<c:param name="amount" value="${cri.amount }" />
-					<c:param name="type" value="${cri.type }"/>
-					<c:param name="keyword" value="${cri.keyword }"/>
-				</c:url>
-			<div id="bo_v_share" >
-				<c:if test="${authUser != null }">
+				<p>${RevBoard.rev_content }</p>
+			</div>
+		</div>
+		<c:url value="${root }/rev/modify" var="modifyLink">
+			<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+			<c:param name="pageNum" value="${cri.pageNum }" />
+			<c:param name="amount" value="${cri.amount }" />
+			<c:param name="type" value="${cri.type }"/>
+			<c:param name="keyword" value="${cri.keyword }"/>
+		</c:url>
+		<c:url value="${root }/rev/list" var="listLink">
+			<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+			<c:param name="pageNum" value="${cri.pageNum }" />
+			<c:param name="amount" value="${cri.amount }" />
+			<c:param name="type" value="${cri.type }"/>
+			<c:param name="keyword" value="${cri.keyword }"/>
+		</c:url>
+		<div class="form-group" style="float: right;">
+			<c:if test="${authUser != null }">
 				<button id="goodbtn" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-up" aria-hidden="false"></i>&nbsp&nbsp${RevBoard.rev_good }</button>
 				<button id="hatebtn" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-down" aria-hidden="false"></i>&nbsp&nbsp${RevBoard.rev_hate }</button>
-				</c:if>
-				<c:if test="${authUser == null }">
+			</c:if>
+			<c:if test="${authUser == null }">
 				<a id="login_add" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-up" aria-hidden="false"></i></a>
 				<a id="login_add2" class="btn btn_b03" style="border: 0;outline: 0;"><i class="fas fa-thumbs-down" aria-hidden="false"></i></a>
-				</c:if>
-				<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
-				<a id="btn_add" class="btn btn_b03" style="border: 0;outline: 0;" href="${modifyLink }">글수정</a>
-				</c:if>
-				<a id="btn_add" class="btn btn_b03" style="border: 0;outline: 0;" href="${listLink }">목록으로</a>
-	       </div>
-       </div>
-                <!-- } 본문 내용 끝 -->
-    </section>
-
-    
-		
-        <!--  추천 비추천 시작 { -->
-                <!-- }  추천 비추천 끝 -->
-		
-		
-                
-	
-			</article>
-		</section>
-	</div>
-		
-		<div class="container">
-			<section id="containers">
-				<article id="bo_v" style="width:100%">
-					<div class="container-sm mt-3">
-<!-- 	<div class="row">
-			<div class="col-12 col-lg-8 offset-lg-3"> -->
-			
-	<hr class="dashHr">
-	<div style="float: left;width: 87%;" class="cmt_btn"><i class="fas fa-comment-alt" aria-hidden="false"></i> 댓글목록 <i class="fa fa-chevron-up" aria-hidden="true"></i><i class="fa fa-chevron-down" aria-hidden="true"></i> </div>
-	<div style="float: right;width: 13%; margin-top:8px; margin-right:-33px"><c:if test="${authUser != null }">
-						<button class="btn btn-secondary" id="new-reply-button">댓글 쓰기</button>
-						</c:if>
-						<c:if test="${authUser == null }">
-						<button class="btn btn-secondary" id="new-reply-button1">댓글 쓰기</button>
-						</c:if></div>
-	
-	<hr class="dashHr" style="border: none;">
-	<section id="bo_vc">
-    <h2>댓글목록</h2>
-    
-    
-
-    
-        
-</section>
-<!-- <footer>
-			<div id="footdiv">
-				<div class="container" style="margin-left:-141px;">
-					사업자명 : BCD쇼핑몰 ㅣ 사업자 번호 : 123-45-78901 ㅣ 개인정보관리책임자 : 이원석
-					주소 : 서울특별시 마포구 신촌로 176 5층 501호ㅣ 전화 : 0507-1409-1711안내ㅣ 메일 : lws3793@naver.com
-				</div>
-			</div>
-		</footer> -->
-</div>
-<!-- </div>
-</div> -->
-				</article>
-			</section>
+			</c:if>
 		</div>
+		<a id="btn_add" href="${listLink }">목록으로</a> 
+		<c:if test="${ sessionScope.authUser.user_id eq RevBoard.rev_writer || authUser.user_grade == 0}">
+			<a id="btn_add" style="margin-right: 3px;" href="${modifyLink }" >수정</a> 
+		</c:if>
+		<c:if test="${authUser != null }">
+			<a class="new-reply-button" id="new-reply-button">댓글 작성</a>
+		</c:if>
+		<c:if test="${authUser == null }">
+			<a class="new-reply-button" id="new-reply-button1">댓글 작성</a>
+		</c:if>
+		<!-- 댓글 리스트 -->
+		<div class="recommView" id="reply_list"></div><br><br>
+	
+	</section>
+
 	<%-- modal 새 댓글 form --%>
 	<div class="modal fade" id="new-reply-modal">
 		<div class="modal-dialog">
@@ -789,22 +710,13 @@ showList();
 				
 				<div class="modal-footer" id="modify-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-					<!-- <div id="ddd">
-					<button id="reply-modify-button"type="button" class="btn btn-primary">수정</button>
-					<button id="reply-delete-button"type="button" class="btn btn-danger">삭제</button>
-					</div> -->
-					
+
 				</div>
 				
 			</div>
 		</div>
 	</div>
-	<div class="container">
-		<section id="containers">
-			<article id="bo_v" style="width:100%; margin-left: -250px;">
-				<u:footer/>	
-			</article>
-		</section>
-	</div>
+
+<u:footer/>
 </body>
 </html>

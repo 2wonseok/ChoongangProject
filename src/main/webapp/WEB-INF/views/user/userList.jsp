@@ -315,30 +315,30 @@ function reload() {
 		</table>
 		</form>
 		<div class="membersearchbox">
-				<form id="searchForm" action="${root }/user/userList" method="get" >
-					<div class="pagenation-container d-flex justify-content-center">
-						<select name="type" required style="margin-top: 4px;" class="form-control" id="searchType">
-							<option value=""
-								<c:out value="${cri.type == null ? 'selected' : '' }"/>>==선택==</option>
-							<option value="N"
-								<c:out value="${cri.type eq 'N' ? 'selected' : '' }"/>>이름</option>
-							<option value="I"
-								<c:out value="${cri.type eq 'I' ? 'selected' : '' }"/>>아이디</option>
-							<option value="G"
-								<c:out value="${cri.type eq 'G' ? 'selected' : '' }"/>>성별</option>
-							<option value="P"
-								<c:out value="${cri.type eq 'P' ? 'selected' : '' }"/>>휴대폰</option>
-							<option value="NI"
-								<c:out value="${cri.type eq 'NI' ? 'selected' : '' }"/>>이름 or 아이디</option>
-						</select>&nbsp;
-						<input type="text" required name="keyword" value="${cri.keyword }" style="margin-top: 4px;" id="searchKeyword" class="form-control"  placeholder="Search" aria-label="Search"/>&nbsp;
-						<input type="hidden" name="pageNum" value="1"/>
-						<input type="hidden" name="amount" value="${cri.amount }"/>
-						<input type="submit" value="검색" id="btn_search">&nbsp;
-						<input type="button" value="초기화" id="btn_reload" onclick="reload()">	
-					</div>
-				</form>
-			</div>
+			<form id="searchForm" action="${root }/user/userList" method="get" >
+				<div class="pagenation-container d-flex justify-content-center">
+					<select name="type" required style="margin-top: 4px;" class="form-control" id="searchType">
+						<option value=""
+							<c:out value="${cri.type == null ? 'selected' : '' }"/>>==선택==</option>
+						<option value="N"
+							<c:out value="${cri.type eq 'N' ? 'selected' : '' }"/>>이름</option>
+						<option value="I"
+							<c:out value="${cri.type eq 'I' ? 'selected' : '' }"/>>아이디</option>
+						<option value="G"
+							<c:out value="${cri.type eq 'G' ? 'selected' : '' }"/>>성별</option>
+						<option value="P"
+							<c:out value="${cri.type eq 'P' ? 'selected' : '' }"/>>휴대폰</option>
+						<option value="NI"
+							<c:out value="${cri.type eq 'NI' ? 'selected' : '' }"/>>이름 or 아이디</option>
+					</select>&nbsp;
+					<input type="text" required name="keyword" value="${cri.keyword }" style="margin-top: 4px;" id="searchKeyword" class="form-control"  placeholder="Search" aria-label="Search"/>&nbsp;
+					<input type="hidden" name="pageNum" value="1"/>
+					<input type="hidden" name="amount" value="${cri.amount }"/>
+					<input type="submit" value="검색" id="btn_search">&nbsp;
+					<input type="button" value="초기화" id="btn_reload" onclick="reload()">	
+				</div>
+			</form>
+		</div>
 			<!--페이징 -->
 			<div class="container d-flex justify-content-center">
 				<div class="pagerWrap">
@@ -378,7 +378,7 @@ function reload() {
 							<a href="${nextLink }">Next</a>
 						</c:if>
 				</div>
-		</div>
+			</div>
 		<%-- <div class="pagenation-container d-flex justify-content-center">
 				<nav aria-label="Page navigation example">
 					<ul class="pagination">

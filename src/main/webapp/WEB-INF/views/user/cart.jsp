@@ -61,6 +61,50 @@ p {
 	vertical-align: middle;
 	padding-top: 30px;
 } 
+#buy {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #4a4a4a;
+    padding: 0px 30px;
+    margin-top: -20px;
+    margin-bottom: 5px;
+    line-height: 40px;
+    float: left;
+    width: 125px;
+    height: 40px;
+    border-radius: 3px;
+    text-align: center;
+}
+/* 페이지 네이션 css */
+.pagerWrap {
+    position: relative;
+    text-align: center;
+    margin: 0px 0;
+}
+.pagerWrap a {
+    width: 34px;
+    height: 34px;
+    color: #333;
+    border: 1px solid #dedede;
+    text-align: center;
+    line-height: 34px;
+    background: #fff;
+    display: inline-block;
+}
+.pagerWrap a.on {
+    border-color: #222222;
+    background: #4a4a4a;
+    color: #fff;
+}
+.pagerWrap a:hover {
+    border-color: #4a4a4a;
+    color: #4a4a4a;
+}
+.pagerWrap a.on:hover {
+    border-color: #4a4a4a;
+    color: #fff;
+}
 </style>
 <body>
 <u:mainNav/>
@@ -97,6 +141,47 @@ p {
 					</tbody>
 				</table>
 				</form>
+				<!--페이징 -->
+			<div class="container d-flex justify-content-center">
+				<div class="pagerWrap">
+						<c:if test="${pageMaker.prev}">
+							<c:url value="/user/cart" var="preLink">
+								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
+									<c:param name="type" value="${pageMaker.cri.type }"></c:param>
+									<c:param name="keyword" value="${pageMaker.cri.keyword }"></c:param>
+								</c:if>
+								<c:param name="pageNum" value="${pageMaker.startPage - 1 }"></c:param>
+								<c:param name="amount" value="${pageMaker.cri.amount}"></c:param>
+							</c:url>
+								<a href="${preLink}">Previous</a>
+						</c:if>
+						
+						<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+							<c:url value="/user/cart" var="pageLink">
+								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
+									<c:param name="type" value="${param.type }"></c:param>
+									<c:param name="keyword" value="${param.keyword }"></c:param>
+								</c:if>	
+								<c:param name="pageNum" value="${num }"></c:param>
+								<c:param name="amount" value="${pageMaker.cri.amount }"></c:param>
+							</c:url>
+								<a class="${pageMaker.cri.pageNum == num ? 'on' : ''}" href="${pageLink}">${num }</a>
+						</c:forEach>
+						
+						<c:if test="${pageMaker.next }">
+							<c:url value="/user/cart" var="nextLink">
+								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
+									<c:param name="type" value="${pageMaker.cri.type }"></c:param>
+									<c:param name="keyword" value="${pageMaker.cri.keyword }"></c:param>
+								</c:if>
+								<c:param name="pageNum" value="${pageMaker.endPage + 1 }"></c:param>
+								<c:param name="amount" value="${pageMaker.cri.amount}"></c:param>
+							</c:url>
+							<a href="${nextLink }">Next</a>
+						</c:if>
+				</div>
+			</div>
+				
 			</section>
 		</div>
 	</c:when>

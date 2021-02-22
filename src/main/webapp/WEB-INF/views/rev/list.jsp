@@ -26,6 +26,8 @@
     height: 40px;
     border-radius: 3px;
     text-align: center;
+    margin-left: 406px;
+    margin-top: 3px;
 }
 #container {
     clear: both;
@@ -66,6 +68,11 @@ thead {
 .pagerWrap a.on:hover {
     border-color: #4a4a4a;
     color: #fff;
+}
+#foot{
+	background: #f8f8f8;
+	border-top: 2px solid #E3E1E1;
+	border-bottom: 1px solid #E3E1E1;
 }
 </style>
 <meta charset="UTF-8">
@@ -166,7 +173,9 @@ thead {
 					</c:forEach>
 				</tbody>
 			</table>
-	<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar ">
+		</div>
+		<div id="foot" class="row">
+			<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar ">
 				<select class="custom-select my-1 mr-sm-2" name="type" 
 					id="inlineFormCustomSelectPref">
 					<option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' } >제목</option>
@@ -183,19 +192,18 @@ thead {
 					<input type="hidden"  name="amount" value="${pageMaker.cri.amount }"/>
 				<button class="btn my-2 my-sm-0"  id="btn_add_search" type="submit">Search</button>
 			</form>
-			<div style="float: right;width: 370px;" ></div>
 			<c:if test="${ sessionScope.authUser.user_id != null }">
-					<a id="btn_add" class="btn" href="${root }/rev/register">후기 작성</a>
-					</c:if>
-					<c:url value="${root }/rev/list" var="searchLink">
-					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
-					<c:param name="pageNum" value="${cri.pageNum }" />
-					<c:param name="amount" value="${cri.amount }" />
-					<c:param name="type" value="${cri.type }"/>
-					<c:param name="keyword" value="${cri.keyword }"/>
-				</c:url>
+				<a id="btn_add" class="btn" href="${root }/rev/register">후기 작성</a>
+			</c:if>
+			<c:url value="${root }/rev/list" var="searchLink">
+				<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
+				<c:param name="pageNum" value="${cri.pageNum }" />
+				<c:param name="amount" value="${cri.amount }" />
+				<c:param name="type" value="${cri.type }"/>
+				<c:param name="keyword" value="${cri.keyword }"/>
+			</c:url>
 		</div>
-		
+	
 		
 	
 	
@@ -240,8 +248,8 @@ thead {
 						<!-- href="${root}/board/list?pageNum=${pageMaker.endPage +1}&amount=${pageMaker.cri.amount}
 						 와 같음 -->
 					</c:if>
+			</div>
 		</div>
-	</div>
 	</section>
 	</div>
 <u:footer/>

@@ -238,10 +238,10 @@ tbody {
 	  			 <div class="my-ship-track__header my-font--gothic ">
 	   		  <div class="my-ship-track__head-info">
 	           <div class="my-ship-track__head-title">
-	             화요일 2/16 도착 예정
+	             3일 뒤 도착 예정
 	           </div>
 	           <div class="my-ship-track__head-sub-title">
-	             고객님이 주문하신 상품이 배송시작 되었습니다.
+	             고객님이 주문하신 상품이 배송준비중입니다.
 	           </div>
 	   		  </div>
 	  			 </div>
@@ -273,7 +273,7 @@ tbody {
 	            	<div class="my-col my-width--70">판매자</div>
 	            		<div class="my-col">
 	              		<a href="#modalContactSeller" class="js_myModalShow my-color--primary" data-log-type="click" data-log-id="1567" data-log-version="5" data-log-payload="{&quot;eventName&quot;: &quot;product_inquiry&quot;}" data-has-log-group="shiptrack_meta_info">
-	                		<strong>빅컴퍼니 판매자 정보보기 &gt;</strong>
+	                		<strong>${getProduct.user_nickname } 판매자 정보보기 &gt;</strong>
 	              		</a>
 	            		</div>
 	          	</div>
@@ -283,14 +283,14 @@ tbody {
 	 						<div class="my-row my-pd-lr--16 my-pd-t--12">
 	   						<div class="my-col my-width--80">받는사람</div>
 	   						<div class="my-col">
-	     						<strong id="myDeliveryName"> 이원석 </strong>
+	     						<strong id="myDeliveryName">${getOrder.order_username }</strong>
 	   						</div>
 	 						</div>
 	 						
 	 						<div class="my-row--table my-mg-t--3 my-pd-lr--16" style="width:414px;">
 	   						<div class="my-col my-width--80">받는주소</div>
 	   						<div class="my-col my-width--240">
-	     						<strong id="myDeliveryAddress"> 서울특별시 은평구 신사동 237-40 2층 </strong>
+	     						<strong id="myDeliveryAddress">${getOrder.order_useraddress } </strong>
 	   						</div>
 	   						<div class="my-col"></div>
 	 						</div>
@@ -298,7 +298,7 @@ tbody {
 	   						<div class="my-col my-width--80" style="width: 110px;">배송요청사항</div>
 	   						<div class="my-col my-width--240">
 	     						<strong>
-	         					<span id="orderDeliveryMessageNormal">대문 안쪽에 놓아주세요</span>
+	         					<span id="orderDeliveryMessageNormal">없음</span>
 	     						</strong>
 	   						</div>
 	   						<div class="my-col"></div>
@@ -330,27 +330,27 @@ tbody {
 	              </tr>
 	              
 	               <tr>
-	                 <td class="my-ship-track__status-table__cell">2021.01.19 06:30</td>
-	                 <td class="my-ship-track__status-table__cell">남서울터미널</td>
-	                 <td class="my-ship-track__status-table__cell">배송중(입고)</td>
+	                 <td class="my-ship-track__status-table__cell"></td>
+	                 <td class="my-ship-track__status-table__cell"></td>
+	                 <td class="my-ship-track__status-table__cell"></td>
 	               </tr>
 	             
 	               <tr>
-	                 <td class="my-ship-track__status-table__cell">2021.01.19 06:37</td>
-	                 <td class="my-ship-track__status-table__cell">남서울터미널</td>
-	                 <td class="my-ship-track__status-table__cell">배송중(출고)</td>
+	                 <td class="my-ship-track__status-table__cell"></td>
+	                 <td class="my-ship-track__status-table__cell"></td>
+	                 <td class="my-ship-track__status-table__cell"></td>
 	               </tr>
 	             
 	               <tr>
-	                 <td class="my-ship-track__status-table__cell">2021.01.19 11:47</td>
-	                 <td class="my-ship-track__status-table__cell">은평남(집)</td>
-	                 <td class="my-ship-track__status-table__cell">배달중</td>
+	                 <td class="my-ship-track__status-table__cell"></td>
+	                 <td class="my-ship-track__status-table__cell"></td>
+	                 <td class="my-ship-track__status-table__cell"></td>
 	               </tr>
 	             
 	               <tr>
-	                 <td class="my-ship-track__status-table__cell">2021.01.19 13:34</td>
-	                 <td class="my-ship-track__status-table__cell">은평남(집)</td>
-	                 <td class="my-ship-track__status-table__cell">배달완료</td>
+	                 <td class="my-ship-track__status-table__cell"></td>
+	                 <td class="my-ship-track__status-table__cell"></td>
+	                 <td class="my-ship-track__status-table__cell"></td>
 	               </tr>
 	             
 	             </tbody>

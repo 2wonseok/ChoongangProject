@@ -335,13 +335,14 @@ public class UserController {
 	public void orderList(HttpSession session, Criteria cri, Model model) {
 		UserVO vo = (UserVO) session.getAttribute("authUser");
 		int order_userseq = 0;
+		cri.setAmount(5);
 		
 		if (vo != null) {
 			order_userseq = vo.getUser_seq();
 		}
 		
 		List<OrderVO> order = service.orderList(order_userseq, cri);
-		model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalOrderList(vo.getUser_seq(), cri)));
+		model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalOrderList(order_userseq, cri)));
 		model.addAttribute("order", order);
 	}
 	
@@ -349,6 +350,7 @@ public class UserController {
 	public void cart(HttpSession session, Criteria cri, Model model) {
 		UserVO vo = (UserVO) session.getAttribute("authUser");
 		int order_userseq = 0;
+		cri.setAmount(5);
 		
 		if (vo != null) {
 			order_userseq = vo.getUser_seq();
@@ -362,8 +364,13 @@ public class UserController {
 	}
 	
 	@GetMapping("/shippingCheck") //배송조회
-	public void ShippingCheckBtn(int order_seq) {
+	public void ShippingCheckBtn(@RequestParam int order_seq, @RequestParam int product_seq, Model model) {
+		OrderVO vo = service.getOrderInfo(order_seq);
+		ProductVO pvo = service.getProductInfo(product_seq);
+		UserVO uvo = service.getUserSeq(pvo.getProduct_seller());
 		
+		model.addAttribute("getOrder", vo);
+		model.addAttribute("getProduct", uvo);
 	}
 	
 	@GetMapping("/smsSubmit") // 회원 문자 전송
@@ -415,7 +422,7 @@ public class UserController {
 	
 	@GetMapping("/orderList") // 결제완료 목록
 	public @ResponseBody List<OrderVO> odInfo(OrderVO order, Criteria cri, Model model) {
-		List<OrderVO> vo = service.orderInfo(order.getOrder_productseq(), cri);
+		List<OrderVO> vo = service.orderInfo(order.getOrder_productseq());
 		model.addAttribute("orderPageMaker", new PageDTO(cri, service.getTotalOrderInfoList(order.getOrder_productseq(), cri)));
 		return vo;
 		
@@ -439,7 +446,7 @@ public class UserController {
 			List<ProductVO> pvo = service.productList(vo.getUser_nickname(), cri);
 			for (ProductVO pvoList : pvo) {
 				System.out.println("product seq 번호: " +pvoList.getProduct_seq());
-				List<OrderVO> sendList = service.sendList(pvoList.getProduct_seq(), cri);
+				List<OrderVO> sendList = service.sendList(pvoList.getProduct_seq());
 				list.addAll(sendList);
 				
 			}
