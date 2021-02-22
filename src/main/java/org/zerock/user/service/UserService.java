@@ -33,8 +33,6 @@ public interface UserService {
 	
 	public void gradeUpdate(UserVO user);
 	
-	public void pointUpdate(UserVO user);
-	
 	public void smsService(String user_phone, String cerNum);
 	
 	public void smsSubmit(String user_phone, String smsContent);
