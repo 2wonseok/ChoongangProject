@@ -53,16 +53,19 @@ var userSeq = '${authUser.user_seq}';
 		$("#categoryMainSelectBox").on( 'change', function(){
 			readSubCategory();
 		});
-		/* 카테고리 소분류를 선택하면 대분류+소분류에 맞는 seq를 가져와야함 */
-		$("#categorySubSelectBox").on( 'change', function(){
+		/* 수정시에는 카테고리소분류를 선택안해도 일단 값을 넣어줘야함==송부버튼전에한번더이거실행 */
+		function getCategorySeq(){
 			var categoryMain = $("#categoryMainSelectBox").find("option:selected").val();
-			var categorySub = $(this).find("option:selected").val();
+			var categorySub = $("#categorySubSelectBox").find("option:selected").val();
 			var data = {category_main : categoryMain, category_sub : categorySub};
 			categoryService.getCategorySeq(data, function(categorySeq) {
 				$("#categorySeq").val(categorySeq);
-			})
+			});
+		}
+		/* 카테고리 소분류를 선택하면 대분류+소분류에 맞는 seq를 가져와야함 */
+		$("#categorySubSelectBox").on( 'change', function(){
+			getCategorySeq();
 		});
-		
 		
 		/*모달창함수설정(+redirect시 넘어온 메세지도 출력)  */
 		var message = '${message}';
@@ -75,6 +78,42 @@ var userSeq = '${authUser.user_seq}';
 			}
 		}
 		
+		/* 클릭시 옵션추가 */
+		$("#addOption_btn").click(function(){
+			$("#optionBox").append(
+				'<div class="input-group">'+
+					'<div class="d-flex col-5">'+
+					  '<input name="productOption_seq" value="0" hidden="hidden">'+
+					  '<input name="po_name" type="text" class="form-control" placeholder="상품옵션이름" >'+
+					'</div>'+
+					'<div class="d-flex col-2">'+
+					  '<input min="1" name="po_quantity" type="number" class="form-control" placeholder="수량" >'+
+					'</div>'+
+					'<div class="d-flex col-2">'+
+					 ' <input min="1" name="po_price" type="number" class="form-control" placeholder="개당가격" >'+
+					'</div>'+
+					'<div class="d-flex col-3 justify-content-end">'+
+					'</div>'+
+				'</div>'
+			);
+		});
+				
+		/* 클릭시 옵션제거 */
+		$("#removeOption_btn").click(function(){
+			var block = $("#optionBox div.input-group").length;
+			if(block > 1){
+				$("#optionBox div.input-group:last-child").remove();
+			}
+		});
+		
+		/* 기존옵션 제거 클릭시 그 번호를 가져옴 */
+		var deletePo_seqArray = [];
+		$(".removeBeforeOption_btn").click(function(){
+			var deletePo_seq = $(this).data("delete");
+			$("."+"div"+deletePo_seq).remove();
+			deletePo_seqArray.push(deletePo_seq);
+		});
+
 		/*모달창-전송누르기전에 항목이 비어있으면 안넘어감  */
 		$("#btn_submit").click(function(e){
 			e.preventDefault(); // 전송버튼 막기
@@ -90,12 +129,16 @@ var userSeq = '${authUser.user_seq}';
 				}
 				checkModal(message);
 				
-			if(message == null){
-				$("#form_id").submit(); //message가 다 차있으면 전송
+				/* 송부전에 기존지운po_seq넘겨주기 */
+				$("#deletePo_seqArray").val(deletePo_seqArray);
+				
+				/* 송부전에 카테고리다시계산하기 */
+				getCategorySeq();
+ 			if(message == null){
+				$("#form_id").submit();
 			}
 			
 		})
-		
 		
 	});
 </script>
@@ -187,7 +230,7 @@ table.type05 td {
 									<select class="custom-select" id="categorySubSelectBox">
 										<option>===소분류===</option>
 									</select>
-									<input id="categorySeq" name="category_seq" type="text" value="0" hidden="hidden">
+									<input id="categorySeq" name="category_seq" type="text" value="${product.category_seq }" hidden="hidden">
 								</div>
 							</td>
 						</tr>
@@ -200,26 +243,37 @@ table.type05 td {
 				
 				<h5 class="my-3">상품 옵션 (첫번째 입력항목이 메인에 띄워집니다.)</h5>
 
+				<input id="deletePo_seqArray" name="deletePo_seqArray" hidden="hidden">
 				<div id="optionBox">
-					<c:forEach items="${ poList}" var="poLi" >
-						<div class="input-group">
+					<!-- 기존 옵션 수정제거 -->
+					<c:forEach items="${ poList}" var="poLi" varStatus="status">
+						<div class="input-group div${poLi.productOption_seq}">
 							<div class="d-flex col-5">
-							  <input name="po_name" type="text" class="form-control" placeholder="상품옵션이름" value="${poLi.po_name}" readonly>
+							  <input name="productOption_seq" value="${poLi.productOption_seq}" hidden="hidden">
+							  <input name="po_name" type="text" class="form-control input${poLi.productOption_seq}" placeholder="상품옵션이름" value="${poLi.po_name}">
 							</div>
 							<div class="d-flex col-2">
-							  <input min="1" name="po_quantity" type="text" class="form-control" placeholder="수량" value="${poLi.po_quantity}" readonly>
+							  <input min="1" name="po_quantity" type="text" class="form-control input${poLi.productOption_seq}" placeholder="수량" value="${poLi.po_quantity}">
 							</div>
 							<div class="d-flex col-2">
-							  <input min="1" name="po_price" type="text" class="form-control" placeholder="개당가격" value="${poLi.po_price}"readonly>
+							  <input min="1" name="po_price" type="text" class="form-control input${poLi.productOption_seq}" placeholder="개당가격" value="${poLi.po_price}">
 							</div>
 							<div class="d-flex col-3 justify-content-end">
 							  <div class="input-group-append" id="button-addon4">
-<!-- 							    <button id="addOption_btn"  class="btn btn-outline-secondary" type="button">옵션추가</button>
-							    <button id="removeOption_btn" class="btn btn-outline-secondary" type="button">옵션제거</button>
- -->							  </div>
+	 							<c:if test="${status.index != 0}">
+								    <button data-delete="${poLi.productOption_seq}" class="btn btn-outline-secondary removeBeforeOption_btn" type="button">기존제거</button>
+	 							</c:if>
+	 							<c:if test="${status.index == 0}">
+   								    <button id="addOption_btn"  class="btn btn-outline-secondary" type="button">옵션추가</button>
+							    	<button id="removeOption_btn" class="btn btn-outline-secondary" type="button">옵션제거</button>
+	 							</c:if>
+							  </div>
 							</div>
 						</div>
 					</c:forEach>
+						<div>
+						</div>
+					<!-- 신규옵션 -->
 				</div>
 				
 				<h5 class="my-3">상품이미지 첨부* (반드시 한 개 이상의 이미지를 올려야합니다.)</h5>
@@ -277,7 +331,7 @@ table.type05 td {
 						 	</script>
 						<!--이미지첨부끝 -->
 						
-						<button id ="btn_submit" class="btn_add">상품 수정하기</button>
+						<button id ="btn_submit" type="button" class="btn_add">상품 수정하기</button>
 					</form>
 
    </section>
