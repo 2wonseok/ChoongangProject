@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void smsSubmit(String user_phone, String smsContent) {
+	public void smsSubmit(String user_phone, String smsContent) { 
 		String api_key = "NCSKI3A4IVCQ0M1E";
     String api_secret = "9FBKZ8X5QO6MLPBYMA21D0HZIR1Q4XCF";
     Message coolsms = new Message(api_key, api_secret);
@@ -195,6 +195,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ProductVO getProductInfo(int product_seq) {
 		return mapper.getProductInfo(product_seq);
+	}
+
+	@Override
+	public void orderDel(int order_seq) {
+		mapper.orderDel(order_seq);
 	}
 
 }

@@ -60,4 +60,6 @@ public interface UserMapper {
 	public OrderVO getOrderInfo(int order_seq);
 	
 	public ProductVO getProductInfo(int product_seq);
+	
+	public void orderDel(int order_seq);
 }
