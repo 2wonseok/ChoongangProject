@@ -137,6 +137,7 @@ thead {
 			});
 </script>
 <script>
+	//글쓰기 버튼 로그인 체크 
 	$(document).ready(function() {
 		$("#btn_add").click(function() {
 			if (userId == "") {
@@ -149,6 +150,7 @@ thead {
 	});
 </script>
 <script>
+	//검색 버튼 유효성체크
 	$(document).ready(function() {
 		$("#searchButton").click(function() {
 			var blank_pattern = /[\s]/g;
@@ -156,13 +158,11 @@ thead {
 					alert('검색어를 입력해 주세요.');
 					$("#searchBox").focus();//커서입력
 			    		return false;
-					
-				}
+			}
 		})
 	})
 </script>
-<title>Insert title here</title>
-
+<title>자유게시판 리스트</title>
 </head>
 <body>
 	<u:mainNav></u:mainNav>
@@ -171,73 +171,72 @@ thead {
 					<table class="table table table-hover">
 						<thead>
 							<tr>
-								<th>#번호</th>
+								<th>NO</th>
 								<th>제목</th>
 								<th>닉네임</th>
 								<th>작성일</th>
-								<th>수정일</th>
-								<th>조회수<th>
+								<th>조회수</th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach items="${list}" var="freeVO">
 								<tr>
-									<td>
-										<c:choose>
-											<c:when test="${freeVO.free_notice == 2}">
-												공지
-											</c:when>
-											<c:otherwise>
-												${freeVO.free_seq}
-											</c:otherwise>
-										</c:choose>
-									</td>
-									<td><c:url value="/freeboard/get" var="freeboardLink">
-
+									<c:choose>
+										<c:when test="${freeVO.free_notice == 2}">
+											<td style="font-weight: bold; color: red; background-color:#F5F5F5;">공지</td>
+										</c:when>
+										<c:otherwise>
+											<td>${freeVO.free_seq}</td>
+										</c:otherwise>
+									</c:choose>
+									<td <c:if test="${freeVO.free_notice == 2}">style="background-color:#F5F5F5;"</c:if>>
+										<c:url value="/freeboard/get" var="freeboardLink">
 											<c:param value="${freeVO.free_seq }" name="free_seq" />
 											<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
 											<c:param value="${pageMaker.cri.amount }" name="amount" />
 											<c:param value="${pageMaker.cri.type }" name="type" />
 											<c:param value="${pageMaker.cri.keyword }" name="keyword" />
-
-										</c:url> <a href="${freeboardLink }" style="color: black;"> <c:out
-												value="${freeVO.free_title}" /> 
-												<c:if
-												test="${freeVO.free_replyCnt gt 0 }">
-												<span class="badge badge-info">${freeVO.free_replyCnt }</span>
-												</c:if>
-									</a></td>
-									<td><c:out value="${freeVO.free_nickname}" /></td>
-									<td><fmt:formatDate pattern="yyyy-MM-dd"
-											value="${freeVO.free_regdate}" /></td>
-									<td><fmt:formatDate pattern="yyyy-MM-dd"
-											value="${freeVO.free_updatedate}" /></td>
-									<td>${freeVO.free_readCnt}
-									<td>
+										</c:url> 
+										<a href="${freeboardLink}" <c:choose><c:when test="${freeVO.free_notice == 2}">style="font-weight: bold; color: red;"</c:when><c:otherwise>style="color: black;"</c:otherwise></c:choose>> 
+										<c:out value="${freeVO.free_title}" /> 
+										<c:if test="${freeVO.free_replyCnt gt 0 }">
+											<span class="badge badge-info">${freeVO.free_replyCnt}</span>
+										</c:if>
+										</a>
+									</td>
+									<td <c:if test="${freeVO.free_notice == 2}">style="background-color:#F5F5F5;"</c:if>>
+										<c:out value="${freeVO.free_nickname}" />
+									</td>
+									<td <c:if test="${freeVO.free_notice == 2}">style="background-color:#F5F5F5;"</c:if>>
+										<fmt:formatDate pattern="yyyy-MM-dd" value="${freeVO.free_regdate}" />
+									</td>
+									<td <c:if test="${freeVO.free_notice == 2}">style="background-color:#F5F5F5;"</c:if>>
+										${freeVO.free_readCnt}
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
+					
 			<div id="searchBoxBack" class="row">
-			
-				  <form action="${root }/freeboard/list" id="searchForm" class="form-inline my-2 my-lg-0">
-		      <select name="type" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-			    <option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' }>제목</option>
-			    <option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : '' }>내용</option>
-			    <option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : '' }>작성자</option>
-			   									 <!--여기서의 작성자는 유저의 닉네임 -->
-			    <option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : '' }>제목 or 내용</option>
-			    <option value="TW" ${pageMaker.cri.type eq 'TW' ? 'selected' : '' }>제목 or 작성자</option>
-			    <option value="TWC" ${pageMaker.cri.type eq 'TWC' ? 'selected' : '' }>제목 or 내용 or 작성자</option>
-			  </select>
+				<form action="${root }/freeboard/list" id="searchForm" class="form-inline my-0">
+		      		<select name="type" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+					    <option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : '' }>제목</option>
+					    <option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : '' }>내용</option>
+					    <option value="W" ${pageMaker.cri.type eq 'W' ? 'selected' : '' }>작성자</option>
+					   									 <!--여기서의 작성자는 유저의 닉네임 -->
+					    <option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : '' }>제목 or 내용</option>
+					    <option value="TW" ${pageMaker.cri.type eq 'TW' ? 'selected' : '' }>제목 or 작성자</option>
+					    <option value="TWC" ${pageMaker.cri.type eq 'TWC' ? 'selected' : '' }>제목 or 내용 or 작성자</option>
+				  </select>
 		      <input name="keyword" required value="${pageMaker.cri.keyword }" class="form-control mr-sm-2" type="search"
 		       placeholder="검색어를 입력하세요" aria-label="Search" maxlength="20" id="searchbox">
 		      <input type="hidden" name="pageNum" value="1" />
 		      <input type="hidden" name="amount" value="${pageMaker.cri.amount }" />
 		      <button id="searchButton" class="btn my-2 my-sm-0 ml-3" type="submit" >검색</button>
 				<button id="btn_add">글쓰기</button>
-		    </form>
-			</div>
+		    	</form>
+		   </div>
 	
 	<div class="container-sm mt-3">
 		<div class="row justify-content-center">
@@ -274,17 +273,6 @@ thead {
 			</div>
 		</div>
 	</div>
-	<!-- 채팅창 -->
-<c:if test="${authUser != null}">
-<div id="_chatbox" style="display: none">
-	<fieldset>
-		<div id="messageWindow"></div>
-		<br /> <input id="inputMessage" type="text" onkeyup="enterkey()" />
-		<input type="submit" value="send" onclick="send()" />
-	</fieldset>
-</div>
-<img class="chat" src="/resources/chat.png" />
-</c:if>
 	</section>
 </div>
 			<!--게시글 알림  -->
@@ -308,69 +296,6 @@ thead {
 			</div>
 		</div>
 	</div>
-<script>
-	$(".chat").on({
-		"click" : function() {
-			if ($(this).attr("src") == "/resources/chat.png") {
-				//채팅끌때 클릭할 이미지 
-				$(".chat").attr("src", "/resources/chathide.png");
-				$("#_chatbox").css("display", "block");
-			} else if ($(this).attr("src") == "/resources/chathide.png") {
-				$(".chat").attr("src", "/resources/chat.png");
-				$("#_chatbox").css("display", "none");
-			}
-		}
-	});
-</script>
-<script type="text/javascript">
-	var textarea = document.getElementById("messageWindow");
-	//서버 ip주소 입력
-	var webSocket = new WebSocket('ws://localhost:8080/broadcasting');
-	var inputMessage = document.getElementById('inputMessage');
-	webSocket.onerror = function(event) {
-		onError(event)
-	};
-	webSocket.onopen = function(event) {
-		onOpen(event)
-	};
-	webSocket.onmessage = function(event) {
-		onMessage(event)
-	};
-	function onMessage(event) {
-		var message = event.data.split("|");
-		var sender = message[0];
-		var content = message[1];
-		if (content == "") {
-		} else {
-			$("#messageWindow").html($("#messageWindow").html() + "<p class='chat_content'>" + sender + " : " + content + "</p>");
-		}
-	}
-	function onOpen(event) {
-		$("#messageWindow").html("<p class='chat_content'>채팅에 참여하였습니다.</p>");
-	}
-	function onError(event) {
-		alert(event.data);
-	}
-	function send() {
-		if (inputMessage.value == "") {
-		} else {
-			$("#messageWindow").html($("#messageWindow").html() + "<p class='chat_content'>나 : " + inputMessage.value + "</p>");
-		}
-		webSocket.send(nickname + "(" + userId + ") | " + inputMessage.value);
-		inputMessage.value = "";
-	}
-	// 엔터키를 통해 send함
-	function enterkey() {
-		if (window.event.keyCode == 13) {
-			send();
-		}
-	}
-	// 채팅이 많아져 스크롤바가 넘어가더라도 자동적으로 스크롤바가 내려가게함
-	window.setInterval(function() {
-		var elem = document.getElementById('messageWindow');
-		elem.scrollTop = elem.scrollHeight;
-	}, 0);
-</script>
 <u:footer/> 
 </body>
 </html>
