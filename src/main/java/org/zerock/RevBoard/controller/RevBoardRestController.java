@@ -2,12 +2,11 @@ package org.zerock.RevBoard.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +34,10 @@ public class RevBoardRestController {
 	@PostMapping(value="/new",
 				consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
 				produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> create(@RequestBody ReplyVO vo) {
+	public ResponseEntity<String> create(@RequestBody ReplyVO vo, HttpSession session) {
+		UserVO user = (UserVO) session.getAttribute("authUser");
+		
+		vo.setReply_writer(user.getUser_nickname());
 		
 		int insertCount = service.register(vo);
 		
