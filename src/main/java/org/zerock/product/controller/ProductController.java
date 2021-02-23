@@ -106,8 +106,8 @@ public class ProductController {
 				System.out.println(po_p);				
 			}*/
 			String emp = "";
+			int cnt = 0;
 			/* 숫자배열2개 내 최소값이 0보다 커야함을표시 */
-			int cnt = 0;	
 				for(int i = 0; i < po_quantity.length; i++) {
 					if(!po_quantity[i].equals(emp) && Integer.parseInt(po_quantity[i]) <= 0 ) {
 						cnt++;
@@ -311,6 +311,14 @@ public class ProductController {
 		//옵션리스트넣어줌
 		List<ProductOptionVO> poVOList = service.getProductOption(product_seq);
 		model.addAttribute("poList", poVOList);
+		
+		/* 카테고리 대분류를 보내줌 */
+		List<String> categoryMainList = service.getCategoryMainList();
+		model.addAttribute("categoryMainList", categoryMainList);
+		
+		//카테고리를 구해서 넣어줌(검색연동
+		CategoryVO  categoryVO = service.getCategoryMainAndSub(vo.getCategory_seq());
+		model.addAttribute("category", categoryVO);
 		
 		return "/product/modify";
 	}
