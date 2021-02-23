@@ -58,19 +58,6 @@ $(document).ready(function(){
 	/* 카테고리 대분류를 선택하면 소분류를 ajax로 넘겨줘서가져옴-js파일사용 */
 	$("#categoryMainSelectBox").on( 'change', function(){
 		readSubCategory();
-		/* var categoryMain = $(this).find("option:selected").val();
-		categoryService.getCategorySubList(categoryMain, function(list) {
-			var subBox = $("#categorySubSelectBox");
-			subBox.empty();
-				subBox.append(
-					'<option>===소분류===</option>'
-				);
-			for (var i = 0; i < list.length; i++) {
-				subBox.append(
-					'<option value="'+list[i]+'" >'+list[i]+'</option>'
-				);
-			}
-		}) */ 
 	});
 	
 	/* 카테고리 소분류를 선택하면 대분류+소분류에 맞는 seq를 가져오고 자동으로넘어감*/
