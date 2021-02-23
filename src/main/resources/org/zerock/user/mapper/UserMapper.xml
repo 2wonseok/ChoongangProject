@@ -199,16 +199,17 @@
 			FROM tbl_order
 			)	
 			WHERE 
-				order_productseq = #{order_productseq} AND order_status = 2
+				order_productseq = #{order_productseq} AND order_status = 2 
+			ORDER BY order_date DESC
 	</select>
 	
 	<update id="productSend">
 		UPDATE tbl_order
 		SET
-			order_status = 2
+			order_status = 2,
+			order_date = SYSDATE	
 		WHERE
 			order_seq = #{order_seq}
-			order_date = SYSDATE	
 	</update>
 	
 	<update id="gradeUpdate">

@@ -52,17 +52,37 @@ $(document).ready(function() {
 				console.log(res);
 				
 				for (var i = 0; i < res.length; i++) {
-					
 					var product_seq = res[i].product_seq;
+
+					/* 철수 수정 이걸가지고 해당하는 orderVO개수가져오기*/
+					var orderedNum;
+					var checkVal = product_seq;
+					$.ajax({
+						type: "GET",
+						url: "${root}/user/orderList",
+						dataType: "JSON",
+						data: {"order_productseq": checkVal},
+ 						async: false,
+						success: function(res2) {
+							orderedNum = res2.length;
+						}
+					});
+					/* 철수 수정끝 */
+					
 					var product_name = res[i].product_name;
 					var product_price = res[i].product_price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 					var product_regdate = res[i].product_regdate;
 					var product_filename = res[i].product_filename;
 					
+					/* 철수 추가 파일이름 여러개일시 한개로 */
+					product_filename = product_filename.split(",");
+					product_filename = product_filename[0];
+					/* 철수 수정 끝*/
+					
 					var productTbody = '<tr>'
 													  +'<td><input type="checkbox" id="product_seq" name="product_seq" value="'+product_seq+'" /></td>'
 													  +'<td><img alt="상품사진" src="${root }/resources/upload/'+product_filename+'">'
-													  +'<a style= "color: #000;" href="${root}/product/get?product_seq='+product_seq+'">&nbsp;'+product_name+'</a></td>'
+													  +'<a style= "color: #000;" href="${root}/product/get?product_seq='+product_seq+'">&nbsp;'+product_name+'</a>'+" ["+orderedNum+"]개 주문이 들어왔습니다"+ '</td>'
 													  +'<td><p>'+product_price+'원</p></td>'
 													  +'<td><p>'+dateString(product_regdate)+'</p></td>';
 					
@@ -146,18 +166,18 @@ $(document).ready(function() {
 			return false;
 		} 
 	 	
-	 	var check_arr = [];
+		var check_arr = [];
 	 	
 	 	$("input:checkbox[name='order_seq']:checked").each(function() {
 			var checkVal = $(this).val();
 			check_arr.push(checkVal);
-			
-			if(!confirm('발송하시겠습니까?'))	{
-				return false;
-			}
-			
-			location.href="${root}/user/productSend?order_seq="+checkVal;
 	 	});
+	 	
+	 	if(!confirm('발송하시겠습니까?'))	{
+			return false;
+		}
+	 	
+		location.href="${root}/user/productSend?order_seq="+check_arr;
 	});
 	
 	$("#defaultList").click(function() {

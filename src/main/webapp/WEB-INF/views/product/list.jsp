@@ -31,31 +31,44 @@ var userSeq = '${authUser.user_seq}';
 <script>
 $(document).ready(function(){
 	
-	/* 카테고리 대분류를 선택하면 소분류를 ajax로 넘겨줘서가져옴-js파일사용 */
-	$("#categoryMainSelectBox").on( 'change', function(){
-		console.log("클릭");
-		var categoryMain = $(this).find("option:selected").val();
-		
+	function readSubCategory(){
+		var categoryMain = $("#categoryMainSelectBox").find("option:selected").val();
 		categoryService.getCategorySubList(categoryMain, function(list) {
 			var subBox = $("#categorySubSelectBox");
+			var categorySub = $("#categorySub").val();
+			var selected ='';
 			subBox.empty();
-				subBox.append(
-					'<option>===소분류===</option>'
-				);
+			subBox.append(
+				'<option>===소분류===</option>'
+			);
 			for (var i = 0; i < list.length; i++) {
+				if (list[i] === categorySub){
+					selected='selected';
+				} else {
+					selected='';
+				}
 				subBox.append(
-					'<option value="'+list[i]+'" >'+list[i]+'</option>'
+					'<option value="'+list[i]+'" '+selected+'>'+list[i]+'</option>'
 				);
 			}
 		})
+	};
+	
+	readSubCategory();
+	/* 카테고리 대분류를 선택하면 소분류를 ajax로 넘겨줘서가져옴-js파일사용 */
+	$("#categoryMainSelectBox").on( 'change', function(){
+		readSubCategory();
 	});
-	/* 카테고리 소분류를 선택하면 대분류+소분류에 맞는 seq를 오고 자동으로넘어감*/
+	
+	/* 카테고리 소분류를 선택하면 대분류+소분류에 맞는 seq를 가져오고 자동으로넘어감*/
 	$("#categorySubSelectBox").on( 'change', function(){
 		var categoryMain = $("#categoryMainSelectBox").find("option:selected").val();
 		var categorySub = $(this).find("option:selected").val();
 		var data = {category_main : categoryMain, category_sub : categorySub};
 		categoryService.getCategorySeq(data, function(categorySeq) {
 			$("#categorySeq").val(categorySeq);
+			$("#categoryMain").val(categoryMain);
+			$("#categorySub").val(categorySub);
 			$("#formArray").submit();
 		})
 	});
@@ -203,7 +216,7 @@ $(document).ready(function(){
 <div class="container">
   <section id="container">
   
-  		<div class="row col-10 offset-1">
+  		<div class="row col-10 ml-3">
   			<c:if test="${not empty pageDTO.cri.categoryNum}">
   				<p class="text-left">상품 카테고리 > ${category.category_main } > ${category.category_sub }</p>
   			</c:if>
@@ -212,13 +225,14 @@ $(document).ready(function(){
   		<div class="row col-12 ml-1">
   			
 	  		<form id="formArray" action="${root }/product/list">
-	          	<input hidden="hidden" name="product_seq" value="${product.product_seq }"/>
 	          	<input hidden="hidden" name="pageNum" value="${pageDTO.cri.pageNum }"/>
 	          	<input hidden="hidden" name="amount" value="${pageDTO.cri.amount }"/>
 	          	<input hidden="hidden" name="type" value="${pageDTO.cri.type }"/>
 	   			<input hidden="hidden" name="keyword" value="${pageDTO.cri.keyword }"/>            	
 	   			<input id="inputArray" hidden="hidden" name="array" value="${pageDTO.cri.array }"/>            	
-				<input id="categorySeq" hidden="hidden" name="categoryNum" type="text" value="" >
+				<input id="categorySeq" hidden="hidden" name="categoryNum" type="text" value="${pageDTO.cri.categoryNum }" >
+	   			<input hidden="hidden" id="categoryMain" name="categoryMain" value="${pageDTO.cri.categoryMain }"/>            	
+	   			<input hidden="hidden" id="categorySub" name="categorySub" value="${pageDTO.cri.categorySub }"/>            	
 	        </form>
 	  			<button id="latest_btn" class="btn" type="button">최신순</button>
 	  			<button id="like_btn" class="btn" type="button">찜많은순</button>
@@ -230,7 +244,7 @@ $(document).ready(function(){
 					<select class="custom-select my-1 mr-sm-2" id="categoryMainSelectBox">
 						<option>===대분류===</option>
 						<c:forEach items="${ categoryMainList}" var="categoryMain" >
-							<option value="${categoryMain }" >${categoryMain }</option>
+							<option value="${categoryMain }" ${pageDTO.cri.categoryMain eq categoryMain ? 'selected' : '' }>${categoryMain }</option>
 						</c:forEach>
 					</select>
 					<select class="custom-select my-1 mr-sm-2" id="categorySubSelectBox">
@@ -252,7 +266,11 @@ $(document).ready(function(){
 			            	<c:param name="amount" value="${pageDTO.cri.amount }"/>
 			            	<c:param name="type" value="${pageDTO.cri.type }"/>
 				    		<c:param name="keyword" value="${pageDTO.cri.keyword }"/>            	
-				    		<c:param name="array" value="${pageDTO.cri.array }"/>            	
+				    		<c:param name="array" value="${pageDTO.cri.array }"/>
+				    		<c:param name="categoryNum" value="${pageDTO.cri.categoryNum }"/>
+				    		<c:param name="categoryMain" value="${pageDTO.cri.categoryMain }"/>
+							<c:param name="categorySub" value="${pageDTO.cri.categorySub }"/>    
+				    		   	
 			            </c:url>
 			            <c:set var="visibility" value="100%"></c:set>
 						<c:if test="${product.product_status == 1 }">
@@ -294,17 +312,19 @@ $(document).ready(function(){
 	 	
 	 	<!-- 등록버튼 & 서치바 row -->
 	 	<div id="foot" class="row">
-		<div class="row col-10 offset-1 my-2">
+		<div class="row col-10 ml-4">
 		 	
 			<!-- 서치  -->
-			<div class="col-8 align-left">
 				<c:url value="${root }/product/list" var="searchLink">
 						<c:param name="product_seq" value="${product.product_seq }" />
 						<c:param name="pageNum" value="${cri.pageNum }" />
 						<c:param name="amount" value="${cri.amount }" />
 						<c:param name="type" value="${cri.type }"/>
 						<c:param name="keyword" value="${cri.keyword }"/>
-						<c:param name="array" value="${cri.array }" /> 
+						<c:param name="array" value="${cri.array }" />
+						<c:param name="categoryNum" value="${cri.categoryNum }"/>
+						<c:param name="categoryMain" value="${cri.categoryMain }"/>            	
+						<c:param name="categorySub" value="${cri.categorySub }"/>            	
 				</c:url>
 				
 				<form action="${searchLink }" id="searchForm" class="form-inline my-2 my-lg-0 ar">
@@ -312,9 +332,9 @@ $(document).ready(function(){
 					<select class="custom-select my-1 mr-sm-2" name="type" 
 						id="inlineFormCustomSelectPref">
 						<option value="T" ${pageDTO.cri.type eq 'T' ? 'selected' : '' } >상품명</option>
-						<option value="C" ${pageDTO.cri.type eq 'C' ? 'selected' : '' } >상품설명</option>
+						<option value="C" ${pageDTO.cri.type eq 'C' ? 'selected' : '' } >상품 설명</option>
+						<option value="TC" ${pageDTO.cri.type eq 'TC' ? 'selected' : '' }>상품명 or 설명</option>
 						<option value="W" ${pageDTO.cri.type eq 'W' ? 'selected' : '' } >판매자</option>
-						<option value="TC" ${pageDTO.cri.type eq 'TC' ? 'selected' : '' }>상품명 or 내용</option>
 					</select> 
 					<input class="form-control mr-sm-2" type="search" name="keyword" value="${pageDTO.cri.keyword }"
 						placeholder="Search" aria-label="Search" required>
@@ -322,10 +342,10 @@ $(document).ready(function(){
 						<input type="hidden"  name="amount" value="${pageDTO.cri.amount }"/>
 					<button class="btn" id="btn_add_search" type="submit">Search</button>
 				</form>
-			</div>
+		</div>
 			
 			<!-- 등록 -->
-			<div class="col-4 align-right">
+			<div class="mr-1">
 				<c:if test="${not empty authUser.user_id}">
  						<div>
 							<button onclick = "location.href = '${root}/product/register'" class="btn_add">상품 등록</button>
@@ -333,7 +353,6 @@ $(document).ready(function(){
 				</c:if>
 			</div>
 			
-		</div>
 		</div> 
 		
 		<!-- 페이징용row -->
@@ -362,6 +381,9 @@ $(document).ready(function(){
 										<c:param name="type" value="${pageDTO.cri.type }" />
 										<c:param name="keyword" value="${pageDTO.cri.keyword }" />
 										<c:param name="array" value="${pageDTO.cri.array }" /> 
+										<c:param name="categoryNum" value="${pageDTO.cri.categoryNum }" />
+										<c:param name="categoryMain" value="${pageDTO.cri.categoryMain }"/>
+										<c:param name="categorySub" value="${pageDTO.cri.categorySub }"/>    
 									</c:url>
 										<a class="${pageDTO.cri.pageNum eq num ? 'on' : '' }" href="${pageLink }">${num }</a> <%-- <a class="page-link" href="${num }">${num }</a> --%>
 								</c:forEach>

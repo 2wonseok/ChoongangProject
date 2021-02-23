@@ -18,7 +18,51 @@
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 <script>
+var appRoot = '${root }';
+var productSeq = '${product.product_seq}';
+var userSeq = '${authUser.user_seq}';
+</script>
+<script src="${root }/resources/product_js/category.js"></script>
+<script>
 	$(document).ready(function(){
+		
+		function readSubCategory(){
+			var categoryMain = $("#categoryMainSelectBox").find("option:selected").val();
+			categoryService.getCategorySubList(categoryMain, function(list) {
+				var subBox = $("#categorySubSelectBox");
+				var categorySub = $("#categorySub").val();
+				var selected ='';
+				subBox.empty();
+				subBox.append(
+					'<option>===소분류===</option>'
+				);
+				for (var i = 0; i < list.length; i++) {
+					if (list[i] === categorySub){
+						selected='selected';
+					} else {
+						selected='';
+					}
+					subBox.append(
+						'<option value="'+list[i]+'" '+selected+'>'+list[i]+'</option>'
+					);
+				}
+			})
+		};
+		readSubCategory();
+		/* 카테고리 대분류를 선택하면 소분류를 ajax로 넘겨줘서가져옴-js파일사용 */
+		$("#categoryMainSelectBox").on( 'change', function(){
+			readSubCategory();
+		});
+		/* 카테고리 소분류를 선택하면 대분류+소분류에 맞는 seq를 가져와야함 */
+		$("#categorySubSelectBox").on( 'change', function(){
+			var categoryMain = $("#categoryMainSelectBox").find("option:selected").val();
+			var categorySub = $(this).find("option:selected").val();
+			var data = {category_main : categoryMain, category_sub : categorySub};
+			categoryService.getCategorySeq(data, function(categorySeq) {
+				$("#categorySeq").val(categorySeq);
+			})
+		});
+		
 		
 		/*모달창함수설정(+redirect시 넘어온 메세지도 출력)  */
 		var message = '${message}';
@@ -39,12 +83,6 @@
 				if ($("#product_name").val() == ""){
 					message = "상품이름 항목이 비어있음";
 				} else
-				/* if ($("#product_price").val() == ""){
-					message = "상품가격 항목이 비어있음";
-				} else
-				if ($("#product_quantity").val() == ""){
-					message = "상품수량 항목이 비어있음";
-				} else */
 				if ($("#product_info").val() == ""){
 					message = "상품정보 항목이 비어있음";
 				} else {
@@ -64,16 +102,24 @@
 
 <style>
 
+#container {
+    clear: both;
+    position: relative;
+    margin: 30px auto 0px;
+    padding: 0 0 50px 0;
+    width: 1000px;
+    z-index: 1;
+}
 	.btn_add {
     color: #fff;
     font-size: 15px;
     border: none;
     background: #1e263c;
-    padding: 0px 50px;
+    padding: 0px 20px;
     margin: 0 0px;
     line-height: 45px;
     float: right;
-}
+	}
 
 table.type05 {
   border-collapse: separate;
@@ -81,10 +127,9 @@ table.type05 {
   text-align: left;
   line-height: 1.5;
   border-top: 1px solid #ccc;
-  margin: 20px 10px;
 }
 table.type05 th {
-  width: 150px;
+  width: 200px;
   padding: 10px;
   font-weight: bold;
   vertical-align: top;
@@ -98,14 +143,9 @@ table.type05 td {
   border-bottom: 1px solid #ccc;
 }
 
-
-#container {
-    clear: both;
-    position: relative;
-    margin: 50px auto 0px;
-    padding: 0 0 50px 0;
-    width: 1200px;
-    z-index: 1;
+ /* 카테고리옵션 */
+#categorySubSelectBox, #categoryMainSelectBox {
+ width: 405px;
 }
 
 </style>
@@ -117,61 +157,76 @@ table.type05 td {
 <u:mainNav/>
 <div class="container">
   <section id="container">
+  
+  		<h3>상품 정보 수정</h3>
+			<form id="form_id" action="/product/modify" method="post" enctype="multipart/form-data">
+				<input name="product_seq" type="number" value="${product.product_seq }" hidden="hidden">
+				<table class="type05">
+					<tbody>
+						<tr>
+							<th scope="row">상품 이름 *</th>
+							<td><input class="inputTop form-control" id="product_name" name="product_name" type="text" value="${product.product_name }"></td>
+						</tr>
+						<tr>
+							<th scope="row">상품 판매자</th>
+							<td><input class="inputTop form-control" id="user_nickname" name="user_nickname" type="text" value="${authUser.user_nickname }" style="background-color:silver;"readonly>
+								<input id="product_seller" name="product_seller" type="text" value="${authUser.user_seq }" hidden="hidden">
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">카테고리 선택 *</th>
+							<td> 
+								<div class="d-flex">
+									<select class="custom-select" id="categoryMainSelectBox">
+										<option>===대분류===</option>
+										<c:forEach items="${ categoryMainList}" var="categoryMain" >
+											<option value="${categoryMain }" ${category.category_main eq categoryMain ? 'selected' : '' }>${categoryMain }</option>
+										</c:forEach>
+									</select>
+										<input id="categorySub" type="text" value="${category.category_sub }" hidden="hidden">
+									<select class="custom-select" id="categorySubSelectBox">
+										<option>===소분류===</option>
+									</select>
+									<input id="categorySeq" name="category_seq" type="text" value="0" hidden="hidden">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">상품 설명 *</th>
+							<td><textarea class="inputTop form-control" style="resize: none;" id="product_info" name="product_info" rows="15" cols="50">${product.product_info }</textarea></td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<h5 class="my-3">상품 옵션 (첫번째 입력항목이 메인에 띄워집니다.)</h5>
 
-	<div class="container">
-		<div class="row d-flex justify-content-center">
-			<hr>
-		
-			<div class="col-md-6, col-md-offset-3">
-				<div class="row">
-					
-					<form id="form_id" action="/product/modify" method="post" enctype="multipart/form-data">
-						<input name="product_seq" type="number" value="${product.product_seq }" hidden="hidden">
-						<table class="type05">
-							<tbody>
-								<tr>
-									<td>상품 정보 수정</td>
-								</tr>
-								<tr>
-									<th scope="row">상품 이름</th>
-									<td><input id="product_name" name="product_name" type="text" value="${product.product_name }" ></td>
-								</tr>
-								<%-- <tr>
-									<th scope="row">상품 단위 가격</th>
-									<td>--%><input id="product_price" name="product_price" type="number" value="${product.product_price }" style="background-color:silver;" readonly hidden><%--</td>
-								</tr>
-								<tr>
-									<th scope="row">상품 수량</th>
-									<td>--%><input id="product_quantity" name="product_quantity" type="number" value="${product.product_quantity }" style="background-color:silver;" readonly hidden><%--</td>
-								</tr> --%>
-								<tr>
-									<th scope="row">상품 판매자(Nickname)</th><!--value=authUser로 넣을 예정  -->
-									<td><input id="user_nickname" name="user_nickname" type="text" value="${authUser.user_nickname }" style="background-color:silver;"readonly>
-										<input id="product_seller" name="product_seller" type="text" value="${authUser.user_seq }" hidden="hidden">
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">상품 카테고리 번호(카테고리테이블에서 가져와서 넣어질 예정)</th>
-									<td> <input name="category_seq" type="number" value=${product.category_seq } readonly></td>
-								</tr>
-								<tr>
-									<th scope="row">상품 설명</th>
-									<td><textarea id="product_info" name="product_info" rows="10" cols="23">${product.product_info }</textarea></td>
-								</tr>
-							</tbody>
-						</table>
-						
-						<h5>옵션수정아직미구현</h5>
-						<select>
-							<c:forEach items="${ poList}" var="poLi" >
-								<option class="optionClicked"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
-							</c:forEach>
-						</select>
-						<br/>
-						
+				<div id="optionBox">
+					<c:forEach items="${ poList}" var="poLi" >
+						<div class="input-group">
+							<div class="d-flex col-5">
+							  <input name="po_name" type="text" class="form-control" placeholder="상품옵션이름" value="${poLi.po_name}" readonly>
+							</div>
+							<div class="d-flex col-2">
+							  <input min="1" name="po_quantity" type="text" class="form-control" placeholder="수량" value="${poLi.po_quantity}" readonly>
+							</div>
+							<div class="d-flex col-2">
+							  <input min="1" name="po_price" type="text" class="form-control" placeholder="개당가격" value="${poLi.po_price}"readonly>
+							</div>
+							<div class="d-flex col-3 justify-content-end">
+							  <div class="input-group-append" id="button-addon4">
+<!-- 							    <button id="addOption_btn"  class="btn btn-outline-secondary" type="button">옵션추가</button>
+							    <button id="removeOption_btn" class="btn btn-outline-secondary" type="button">옵션제거</button>
+ -->							  </div>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+				
+				<h5 class="my-3">상품이미지 첨부* (반드시 한 개 이상의 이미지를 올려야합니다.)</h5>
+
 						<!--이미지첨부시작  -->
 							<input type="text" value="${preFileNames }" name ="preFileNames" hidden="hidden">							
-							<div class = "input_wrap">
+							<div class = "input-group-text">
 								 <input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*"/>
 							</div>
 							<div class="imgs_wrap">
@@ -224,15 +279,6 @@ table.type05 td {
 						
 						<button id ="btn_submit" class="btn_add">상품 수정하기</button>
 					</form>
-				</div>
-				
-			</div>
-			
-			<hr>
-		</div>
-	</div>
-
-
 
    </section>
 </div>

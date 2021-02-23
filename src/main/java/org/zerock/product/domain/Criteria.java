@@ -16,8 +16,9 @@ public class Criteria {
 	private String keyword;
 	private String array;
 	private String categoryNum;
+	private String categoryMain;
+	private String categorySub;
 	
-
 	public Criteria() {
 		this(1, 8);
 	}
