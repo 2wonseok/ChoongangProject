@@ -197,8 +197,50 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public boolean modify(ProductVO product) {
-		return mapper.update(product) ==1;
+	@Transactional
+	public boolean modify(ProductVO product, String[] deletePo_seqArray, String[] productOption_seq, String[] po_name,
+			String[] po_quantity, String[] po_price) {
+		
+	  /* 넘어온 배열들을 기존업데이트,기존제거,신규생성으로 분류작업 */
+		/* 일단 지울번호로 넘어온것을 지움*/
+		
+		int cnt = 0;
+		boolean check = false;
+		if(deletePo_seqArray != null) {
+			for(String po_seq : deletePo_seqArray) {
+				cnt += mapper.deleteProductOption(Integer.parseInt(po_seq));
+			}
+			if(deletePo_seqArray.length != cnt) {
+				check = true;
+				System.out.println("po업데이트시 제거쪽 문제발생");
+			}
+		}
+		/* 기존업데이트와 신규생성을 분리 0으로 넘어온것은 신규*/
+		for (int i = 0; i<productOption_seq.length ;i++ ) {
+			if (productOption_seq[i].equals("0")) {
+				ProductOptionVO newPoVO = new ProductOptionVO();
+				newPoVO.setPo_name(po_name[i]);
+				newPoVO.setPo_price(Integer.parseInt(po_price[i]));
+				newPoVO.setPo_quantity(Integer.parseInt(po_quantity[i]));
+				newPoVO.setProduct_seq(product.getProduct_seq());
+				newPoVO.setProductOption_seq(Integer.parseInt(productOption_seq[i]));
+				mapper.insertProductOption(newPoVO);
+			} else {
+				ProductOptionVO updatePoVO = new ProductOptionVO();
+				updatePoVO.setPo_name(po_name[i]);
+				updatePoVO.setPo_price(Integer.parseInt(po_price[i]));
+				updatePoVO.setPo_quantity(Integer.parseInt(po_quantity[i]));
+				updatePoVO.setProduct_seq(product.getProduct_seq());
+				updatePoVO.setProductOption_seq(Integer.parseInt(productOption_seq[i]));
+				mapper.updateProductOption(updatePoVO);
+			}
+		}
+		int corr = mapper.update(product);	
+		if(corr != 1) {
+			check = true;
+		}
+		
+		return check;
 	}
 	
 	@Override

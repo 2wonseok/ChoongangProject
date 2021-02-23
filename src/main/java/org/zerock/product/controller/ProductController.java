@@ -91,6 +91,14 @@ public class ProductController {
 		return "/product/register";
 	}
 
+	
+	
+	/* 배열로 받았을때 함수 */
+	public void productAndOption(String[] po_name, String[] po_quantity, String[] po_price, ProductVO product) {
+		
+	}
+	
+	
 	@PostMapping("/register")
 	public String register(String[] po_name, String[] po_quantity, String[] po_price, ProductVO product, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request) {
 
@@ -102,9 +110,6 @@ public class ProductController {
 		}
 		
 		/*상품옵션이 비었을때 돌려보냄*/
-			/*for(String po_p : po_price) {
-				System.out.println(po_p);				
-			}*/
 			String emp = "";
 			int cnt = 0;
 			/* 숫자배열2개 내 최소값이 0보다 커야함을표시 */
@@ -137,7 +142,6 @@ public class ProductController {
 			total += Integer.parseInt(po_q);
 		}
 		product.setProduct_quantity(total);
-		
 		
 		//파일 올리는 방법 복사
 				//파일이 업로드 될 경로 설정 
@@ -324,12 +328,56 @@ public class ProductController {
 	}
 
 	@PostMapping("/modify")
-	public String modify(ProductVO product, Criteria cri, RedirectAttributes rttr, MultipartFile[] upload, HttpServletRequest request, Model model) {
+	public String modify(ProductVO product, Criteria cri, RedirectAttributes rttr,
+			MultipartFile[] upload, HttpServletRequest request, Model model,
+			String[] deletePo_seqArray, String[] productOption_seq, String[] po_name, String[] po_quantity, String[] po_price) {
 		
+		/* 아래에 cri로 대체해서 잘되면 지울거
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
+		*/
+		rttr.addFlashAttribute("cri", cri);
+		
+		/* 카테고리가 비어 있을 때 돌려보냄-대분류소분류지정안했으면0임 */ 
+		if (product.getCategory_seq() == 0) {
+			rttr.addAttribute("product_seq", product.getProduct_seq());
+			rttr.addFlashAttribute("message", "카테고리 선택이 올바르지 않습니다");
+			return "redirect:/product/modify";
+		}	
+		/*상품옵션이 비었을때 돌려보냄*/
+		String emp = "";
+		int cnt = 0;
+		/* 숫자배열2개 내 최소값이 0보다 커야함을표시 */
+			for(int i = 0; i < po_quantity.length; i++) {
+				if(!po_quantity[i].equals(emp) && Integer.parseInt(po_quantity[i]) <= 0 ) {
+					cnt++;
+				}
+			}
+			for(int i = 0; i < po_price.length; i++) {
+				if(!po_price[i].equals(emp) && Integer.parseInt(po_price[i]) <= 0 ) {
+					cnt++;
+				}
+			}
+		if(/* 옵션하나도안넣으면안됨 */
+			Arrays.asList(po_name).size() == 0 || Arrays.asList(po_quantity).size() == 0 || Arrays.asList(po_price).size() == 0 ||
+			/* 빈값이 있으면 안됨 */
+			Arrays.asList(po_name).contains(emp) || Arrays.asList(po_quantity).contains(emp) || Arrays.asList(po_price).contains(emp) ||
+			/* 숫자들은 무조건 0보다 커야함 */
+			cnt !=0
+			) {
+			rttr.addAttribute("product_seq", product.getProduct_seq());
+			rttr.addFlashAttribute("message", "상품옵션항목이 올바르지 않습니다");
+			return "redirect:/product/modify";
+		}
+		//옵션입력확인했으니 맨 처음 옵션의 가격과 옵션 총 수량을 넣어줌
+		product.setProduct_price(Integer.parseInt(po_price[0]));
+		int total = 0;
+		for(String po_q : po_quantity) {
+			total += Integer.parseInt(po_q);
+		}
+		product.setProduct_quantity(total);
 		
 		//파일 올리는 방법 복사
 				//파일이 업로드 될 경로 설정 
@@ -409,12 +457,16 @@ public class ProductController {
 			
 		}
 		
+		/* 옵션 수정하는 것 추가  */
 		int product_seq = product.getProduct_seq();
-		if (service.modify(product)) {
+		rttr.addAttribute("product_seq", product_seq);
+		if (service.modify(product, deletePo_seqArray, productOption_seq, po_name, po_quantity, po_price)) {
+			rttr.addFlashAttribute("message", "수정하지 못했습니다");
+		} else {
 			rttr.addFlashAttribute("message", "해당 상품정보가 수정되었습니다.");
-			rttr.addAttribute("product_seq", product_seq);
 		}
-		 
+		
+		
 		return "redirect:/product/get";
 	}
 

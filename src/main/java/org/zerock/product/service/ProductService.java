@@ -25,9 +25,7 @@ public interface ProductService {
 	public boolean remove(int product_seq);
 
 	public boolean finish(int product_seq);
-	
-	public boolean modify(ProductVO product);
-	 
+		 
 	public int getTotal(Criteria cri);
 
 	public List<ProductOptionVO> getProductOption(int product_seq);
@@ -53,5 +51,9 @@ public interface ProductService {
 	public CategoryVO getCategoryMainAndSub(int category_seq);
 
 	public int updateUserPoint(int user_seq, String usePoint);
+
+	public boolean modify(ProductVO product, String[] deletePo_seqArray,
+		String[] productOption_seq, String[] po_name,
+		String[] po_quantity, String[] po_price);
 
 }

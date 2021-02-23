@@ -5,6 +5,20 @@
 
 <mapper namespace="org.zerock.product.mapper.ProductMapper">
 
+	<delete id="deleteProductOption">
+		delete from tbl_productoption where productOption_seq = #{productOption_seq}
+	</delete>
+	
+	<update id="updateProductOption">
+		UPDATE tbl_productoption
+			SET
+			po_name = #{po_name},
+			po_quantity = #{po_quantity},
+			po_price = #{po_price}
+			WHERE
+			productOption_seq = #{productOption_seq}
+	</update>
+
 	<update id="userPointUpdate">
 		UPDATE tbl_user
 			SET
@@ -118,7 +132,7 @@
 	
 	<select id="getProductOptionList" resultType="org.zerock.product.domain.ProductOptionVO">
 		SELECT productoption_seq, product_seq, po_name, po_quantity, po_price FROM tbl_productoption 
-		WHERE product_seq = #{product_seq}
+		WHERE product_seq = #{product_seq} ORDER BY productoption_seq
 	</select>
 	
 	<insert id="insertReturnSeq" keyProperty="product_seq">
