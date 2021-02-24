@@ -5,6 +5,14 @@
 
 <mapper namespace="org.zerock.product.mapper.ProductMapper">
 
+	<update id="finishSelling">
+		UPDATE tbl_product
+			SET
+			product_status = 1
+			WHERE
+			product_seq = #{product_seq}
+	</update>
+
 	<update id="updatePOquantityByOrder">
 		UPDATE tbl_productoption
 			SET
