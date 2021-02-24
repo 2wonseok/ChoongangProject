@@ -27,16 +27,6 @@ public class ProductServiceImpl implements ProductService {
 	private UserMapper userMapper;
 	
 	@Override
-	public int updateUserPoint(int user_seq, String usePoint) {
-		int presentPoint = userMapper.getUserSeq(user_seq).getUser_point();
-		int changedPoint =presentPoint - Integer.parseInt(usePoint); 
-		if (changedPoint >=0) {
-			return mapper.userPointUpdate(user_seq, changedPoint);
-		}
-		return 0;
-	}
-	
-	@Override
 	public CategoryVO getCategoryMainAndSub(int category_seq) {
 		return mapper.getCategoryMainAndSubs(category_seq);
 	}
@@ -86,21 +76,36 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public int makeOrder(List<OrderVO> orderVOList) {
+	@Transactional
+	public int makeOrder(List<OrderVO> orderVOList, int user_seq, String usePoint) {
 		int count = 0;
 		for(OrderVO vo : orderVOList) {
 			count += mapper.updateOrder(vo.getOrder_seq());
+			int order_poseq = vo.getOrder_poseq();
+			int order_quantity = vo.getOrder_quantity();
+			mapper.updatePOquantityByOrder(order_poseq,order_quantity);
 		}
+		int presentPoint = userMapper.getUserSeq(user_seq).getUser_point();
+		int changedPoint =presentPoint - Integer.parseInt(usePoint); 
+		mapper.userPointUpdate(user_seq, changedPoint);
 		return count;
 	}
 	
 	@Override
 	@Transactional
-	public int directOrder(List<OrderVO> orderVOList) {
+	public int directOrder(List<OrderVO> orderVOList, int user_seq, String usePoint) {
 		int count = 0;
 		for(OrderVO vo : orderVOList) {
 			count += mapper.directOrder(vo);
+			int order_poseq = vo.getOrder_poseq();
+			int order_quantity = vo.getOrder_quantity();
+			System.out.println("요기"+order_poseq);
+			System.out.println("요기"+order_quantity);
+			mapper.updatePOquantityByOrder(order_poseq,order_quantity);
 		}
+		int presentPoint = userMapper.getUserSeq(user_seq).getUser_point();
+		int changedPoint =presentPoint - Integer.parseInt(usePoint); 
+		mapper.userPointUpdate(user_seq, changedPoint);
 		return count;
 	}
 	

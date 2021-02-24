@@ -63,7 +63,13 @@ $(document).ready(function(){
 		/* 선택된 옵션 val을 가져옴=productOption_seq */
 		var poSeq = $(this).val();
 		var po_name = $(this).find("option:selected").data("name");
+		var po_quantity = $(this).find("option:selected").data("quantity");
 		var po_price = $(this).find("option:selected").data("price");
+		
+		/* 옵션재고가 0이면 추가안하게끔 */
+		if (po_quantity == 0){
+			return;
+		}
 		
 		/* 이전 optionContainerNumber가 있는가 선택 */
 		var exist = $('input[name="order_poseq"][value='+poSeq+']').length;
@@ -73,11 +79,12 @@ $(document).ready(function(){
 					'<input style="width:130px;" class="border-0" type="text" name="order_poname" value="'+po_name+'" readonly/>' +
 					'<input style="width:70px; text-align:right;" class="border-0 po_price" type="number" name="order_poprice" value="'+po_price+'" readonly/>'+"원"+
 					'<input type="number" name="order_poseq" value="'+poSeq+'"hidden/>' +
+					'<input type="number" name="maxPoQuantity" value="'+po_quantity+'"hidden/>' +
 					'<span class="mx-3"></span>' +
-					'<button class="minus_btn" type="button" id="optionBtn"><i class="fas fa-minus"></i></button>'+
-					'<input style="width:50px;" class="amount" type="number" min="1" value="1" name="order_quantity" />'+
-					'<button class="plus_btn" type="button" id="optionBtn"><i class="fas fa-plus"></i></button>'+
-					'<button class="removeOption_btn" type="button" id="optionBtn">제거</button>'+
+					'<button class="minus_btn optionBtn" type="button"><i class="fas fa-minus"></i></button>'+
+					'<input style="width:50px;" class="amount" type="number" max="'+po_quantity+'" min="1" value="1" name="order_quantity"/>'+
+					'<button class="plus_btn optionBtn" type="button"><i class="fas fa-plus"></i></button>'+
+					'<button class="removeOption_btn optionBtn" type="button">제거</button>'+
 					'<input style="width:80px; text-align:right;" class="border-0 po_groupprice" type="number" name="" value="'+po_price+'" readonly/>'+"원" +
 				'</div>'
 			);
@@ -85,6 +92,23 @@ $(document).ready(function(){
 			totalp();
 		}
 	});
+	/* 수동으로 개수를 넣으면 가격업데이트 */
+	$(document).on('change',"input[name=order_quantity]", function(){
+		
+		var amou = $(this).val();
+		var maxLimit = $(this).siblings("input[name=maxPoQuantity]").val();
+		Number(amou);
+		Number(maxLimit);
+		if (amou > maxLimit){
+			amou = maxLimit;
+			$(this).val(amou);
+		}
+		var poPrice = $(this).siblings(".po_price").val();
+		var pri = amou * poPrice;
+		$(this).siblings(".po_groupprice").val(pri);
+		totalp();
+	});
+	 
 			
 	/* 클릭시 옵션제거=동적태그를 가져오려면 아래처럼생성해야함 */
 	$(document).on('click',".removeOption_btn", function(){
@@ -95,7 +119,11 @@ $(document).ready(function(){
 	/* 클릭시 수량증감(+가격도변경) */
 	$(document).on('click',".plus_btn", function(){
 		var amou = $(this).siblings(".amount").val();
-		var amouc = parseInt(amou)+1;
+		var maxLimit = $(this).siblings("input[name=maxPoQuantity]").val();
+		var amouc = parseInt(amou);
+		if (amouc < maxLimit){
+			amouc += 1;
+		}
 		$(this).siblings(".amount").val(amouc);
 		/* 가격도 수정 */
 		var poPrice = $(this).siblings(".po_price").val();
@@ -272,7 +300,7 @@ $(document).ready(function(){
 		background-position: right
 	}
 }
-#optionBtn {
+.optionBtn {
 	border-radius: 3px;
 	border: none;
 	background:#fff;
@@ -409,7 +437,7 @@ $(document).ready(function(){
 								<c:when test="${product.product_status == 0}">
 									<option>===옵션을 선택하세요===</option>
 										<c:forEach items="${ poList}" var="poLi" >
-											<option value="${poLi.productOption_seq }" data-name="${poLi.po_name}" data-price="${poLi.po_price}"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
+											<option value="${poLi.productOption_seq }" data-name="${poLi.po_name}" data-price="${poLi.po_price}" data-quantity="${poLi.po_quantity}"> ${poLi.po_name} (${poLi.po_price} 원)  / (재고 : ${poLi.po_quantity}) </option>
 										</c:forEach>
 								</c:when>
 								<c:otherwise>

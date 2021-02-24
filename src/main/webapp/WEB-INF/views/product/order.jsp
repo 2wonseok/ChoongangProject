@@ -13,6 +13,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+
 <script>
 $(document).ready(function(){
 	
@@ -33,6 +34,24 @@ $(document).ready(function(){
  		var totalP = $('#requireTotalPrice').val();
  		$('#usePoint').val(totalP);
 	});
+	 /* 남은포인트 */
+	 function reaminP() {
+		var useP = $("#usePoint").val();
+		var authP = $("#authPoint").val();
+		Number(useP);
+		Number(authP);
+		$('#remainPoint').val(authP - useP);
+		$('.remainPoint').html(authP - useP);
+	 }
+	 
+	$("#usePoint").on('change',function(){
+		reaminP();
+	});
+	$("#useMaxPointBtn").on('click',function(){
+		reaminP();
+	});
+	/* 남은포인트가 */
+	
 
 	/* 체크된것들로 가격총합을 바꿔서 넣어주는 함수 */
 	function updateTotalPrice() {
@@ -89,7 +108,21 @@ $(document).ready(function(){
 			});
 			num++;
 		});
-
+		
+		/* 보내기전에 총금액과 사용금액이 다르면 안됨*/
+		var authP = $('#requireTotalPrice').val();
+		var useP = $('#usePoint').val();
+		if(authP != useP){
+			alert("구매 총 금액과 사용금액이 다릅니다");
+			return
+		}
+		/*보내기전에 포인트보유가 마이너스면 안됨*/
+		var remainP = $('#remainPoint').val();
+		Number(remainP);
+		if(remainP<0){
+			alert("보유금액이부족합니다");
+			return
+		}
  		$('#form_order').submit();
 	});
 	
@@ -99,14 +132,45 @@ $(document).ready(function(){
 <title>결제페이지</title>
 </head>
 <style>
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.btn_add {
+   color: #fff;
+   font-size: 15px;
+   border: none;
+   background: #1e263c;
+   padding: 0px 20px;
+   margin-left: 10px;
+   line-height: 45px;
+   float: right;
+}
+
+.send_btn {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #4a4a4a;
+    padding: 0px 25px;
+    margin: 0 20px;
+    line-height: 45px;
+    border-radius: 3px;
+    float: right;
+}
+
 #container {
     clear: both;
     position: relative;
     margin: 50px auto 0px;
     padding: 0 0 50px 0;
-    width: 1200px;
+    width: 950px;
     z-index: 1;
 }
+
 .table img {
 	width: 100px;
 	height: 100px;
@@ -117,7 +181,21 @@ $(document).ready(function(){
 p {
 	vertical-align: middle;
 	padding-top: 30px;
-} 
+}
+.table1 p{
+	margin-left: 10px;
+	font-size: 20px;
+}
+
+.table1 th{
+	width: 200px;
+	font-size: 20px;
+}
+#usePoint {
+	height: 45px;
+	font-size: 20px;
+	border: none;
+}
 
 
 </style>
@@ -129,101 +207,140 @@ p {
 		<div class="container">
 			<section id ="container">
 			
-			<form id="form_order" action="${root }/product/order" method="post">
-			
-			<h3>결제 페이지</h3><br>
-			
-			<h5>주문상품 정보</h5><br>
-				
-			<div class="d-flex">
-				<!-- 상품 뿌려주는 테이블 -->
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th><input type="checkbox" id="allCheck"/>&nbsp; 전체선택</th>
-							<th>상품명</th>
-							<th>상품금액</th>
-							<th>상품개수</th>
-						</tr>
-					</thead>
-					<tbody>
+					<form id="form_order" action="${root }/product/order" method="post">
 					
-					<c:forEach items="${orderList }" var="order" varStatus="status" >
-						<tr>
-							<td><p><input type="checkbox" id="inputCheckBox${status.index}" name="checkbox" data-index="${status.index}" value="inputCheckBox${status.index}" /></p></td>
-							<td>
-								<img alt="상품사진" src="${root }/resources/upload/${order.order_filename}">
-								<a href="${root}/product/get?product_seq=${order.order_productseq}" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
-									<c:out value="${order.order_poname }"></c:out>
-								</a>
-							</td>
-							<td><p>${order.order_quantity } 개</p></td>
-							<td><p><fmt:formatNumber value='${order.order_poprice }' type="number"></fmt:formatNumber>원</p></td>
-						</tr>
-						<!--판매에서 넘어왔을 시에 처리할것  -->
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_seq" value="${order.order_seq }" hidden="hidden"/>
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_status" value="1" hidden="hidden"/>
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_productseq" value="${order.order_productseq }" hidden="hidden"/>
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_filename" value="${order.order_filename }" hidden="hidden"/>
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_poseq" value="${order.order_poseq }" hidden="hidden"/>
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_poname" value="${order.order_poname }" hidden="hidden"/>
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_poprice" value="${order.order_poprice }" hidden="hidden"/>
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_quantity" value="${order.order_quantity }" hidden="hidden"/>
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_userseq" value="${order.order_userseq }" hidden="hidden"/>
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_username" value="${order.order_username }" hidden="hidden"/>
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_useraddress" value="${order.order_useraddress }" hidden="hidden"/>
-						<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_userphone" value="${order.order_userphone }" hidden="hidden"/>
-					</c:forEach>
-					</tbody>
-				</table>
-				<table class="table col-2">
-						<tr>
-							<th>택배비</th>
-							<th>총 금액</th>
-						</tr>
-					<tbody>
-						<tr>
-							<td><p> <span id="deliveryPrice">5000</span> 원</p></td>
-							<td><p class="requireTotalPrice"></p>원
-								<input id="requireTotalPrice" name="requireTotalPrice" value="" hidden="hidden"/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>	
+					<h3>결제 페이지</h3><br>
+					
+					<h5>주문상품 정보</h5><br>
+					<div class="d-flex">
+							<!-- 상품 뿌려주는 테이블 -->
+								<table class="table table-hover col-8">
+									<thead>
+										<tr>
+											<th><input type="checkbox" id="allCheck"/>&nbsp; 전체선택</th>
+											<th>상품명</th>
+											<th>상품금액</th>
+											<th>상품개수</th>
+											<th>항목가격</th>
+							
+										</tr>
+									</thead>
+									<tbody>
+									
+									<c:forEach items="${orderList }" var="order" varStatus="status" >
+										<tr>
+											<td><p><input type="checkbox" id="inputCheckBox${status.index}" name="checkbox" data-index="${status.index}" value="inputCheckBox${status.index}" /></p></td>
+											<td>
+												<img alt="상품사진" src="${root }/resources/upload/${order.order_filename}">
+												<a href="${root}/product/get?product_seq=${order.order_productseq}" style="color: #000; font-weight: 600; font-size: 18px; line-height: 20px;">
+													<c:out value="${order.order_poname }"></c:out>
+												</a>
+											</td>
+											<td><p>${order.order_quantity } 개</p></td>
+											<td><p><fmt:formatNumber value='${order.order_poprice * order.order_quantity }' type="number"></fmt:formatNumber>원</p></td>
+											<td><p><fmt:formatNumber value='${order.order_poprice }' type="number"></fmt:formatNumber>원</p></td>
+										</tr>
+										<!--판매에서 넘어왔을 시에 처리할것  -->
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_seq" value="${order.order_seq }" hidden="hidden"/>
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_status" value="1" hidden="hidden"/>
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_productseq" value="${order.order_productseq }" hidden="hidden"/>
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_filename" value="${order.order_filename }" hidden="hidden"/>
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_poseq" value="${order.order_poseq }" hidden="hidden"/>
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_poname" value="${order.order_poname }" hidden="hidden"/>
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_poprice" value="${order.order_poprice }" hidden="hidden"/>
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_quantity" value="${order.order_quantity }" hidden="hidden"/>
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_userseq" value="${order.order_userseq }" hidden="hidden"/>
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_username" value="${authUser.user_name }" hidden="hidden"/>
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_useraddress" value="${authUser.user_address }" hidden="hidden"/>
+										<input class="inputCheckBox${status.index}" name="orderVOList[${status.index}].order_userphone" value="${authUser.user_phone }" hidden="hidden"/>
+									</c:forEach>
+									</tbody>
+								</table>
+								<table class="table col-4">
+										<tr>
+											<th>택배비${ orderLength}</th>
+											<th>총 금액</th>
+										</tr>
+									<tbody>
+										<tr>
+											<td><p> <span id="deliveryPrice">5000</span> 원</p></td>
+											<td class="d-flex"><p class="requireTotalPrice"></p><p>원</p>
+												<input id="requireTotalPrice" name="requireTotalPrice" value="" hidden="hidden"/>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+					</div>	
+					
+						<!-- 배송지 수정 테이블 -->
+					
+					<br>	
+					<h5>배송지 정보</h5>
+						<table class="table1">
+						<tbody>
+							<tr>
+								<th><p>이름</p></th>
+								<td>
+									<p>${authUser.user_name }</p>
+								</td>
+							</tr>
+							<tr>
+								<th><p>전화번호</p></th>
+								<td>
+									<p>${authUser.user_phone }</p>
+								</td>
+							</tr>
+							<tr>
+								<th><p>주소</th>
+								<td>
+									<p>${authUser.user_address }</p>
+								</td>
+							</tr>
+						</tbody>
+						</table>
+					<br>
+					<br>	
+					<h5>결제 정보</h5><br>
+					
+						<table class="table1">
+							<tbody>
+								<tr>
+									<th><p>총 금액</p></th>
+									<td><p class="text-right"><span class="requireTotalPrice"></span></p></td>
+									<td><p>원</p></td>
+								</tr>
+								<tr>
+									<th><p>보유 포인트</p></th>
+									<td>
+										<p class="text-right"><fmt:formatNumber value="${authUser.user_point}" pattern="#,###" /> </p>
+										<input id="authPoint" value="${authUser.user_point}" hidden="hidden">
+									</td>
+									<td><p>포인트</p></td>
+								</tr>
+								<tr>
+									<th><p>사용 포인트</th>
+									<td>
+										<input class="text-right" id="usePoint" max="${authUser.user_point}" name="usePoint" type="number"/>
+									</td>
+									<td><button id="useMaxPointBtn" class="btn_add" type="button">포인트 모두 사용</button></td>
+								</tr>
+								<tr>
+									<th><p>결제 후 포인트</th>
+									<td>
+										<p class="text-right"><span class="remainPoint"></span></p>
+										<input hidden="hidden" class="text-right" id="remainPoint" name="remainPoint" type="number"/>
+									</td>
+									<td><p>포인트</p></td>
+								</tr>
+							</tbody>
+						</table>
+						
+							<button id="submit_btn" class="send_btn">구매하기</button>
+							
+							<div class="my-5">
+							</div>
+					</form>
 				
-				<!-- 배송지 수정 테이블 -->
-			<h5>배송지 정보(일단authUser에서 가져오는데 이걸로 결정되면 order를 1로 바꾸는곳에 주소를 이거로 모두 통일해줘야함)</h5><br>
-				<table>
-				<tbody>
-					<tr>
-						<th>이름</th>
-						<td>${authUser.user_name }</td>
-					</tr>
-					<tr>
-						<th>전화번호</th>
-						<td>${authUser.user_phone }</td>
-					</tr>
-					<tr>
-						<th>주소</th>
-						<td>${authUser.user_address }</td>
-					</tr>
-				</tbody>
-				</table>
-			<br>
-			<br>	
-			<h5>결제 정보</h5><br>
-			<div class="d-flex">
-				<p>총 가격</p>
-				<p class="requireTotalPrice"></p>
-			</div>
-			<p>보유 포인트 : ${authUser.user_point}</p>
-			<div>사용 포인트 : <input id="usePoint" name="usePoint" type="number"/>
-				<button id="useMaxPointBtn" type="button">포인트 모두 사용</button>
-			</div>
-				<button id="submit_btn">구매하기</button>
-			</form>
-
 			</section>
 		</div>
 	</c:when>

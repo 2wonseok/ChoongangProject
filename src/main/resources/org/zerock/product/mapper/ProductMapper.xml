@@ -5,6 +5,14 @@
 
 <mapper namespace="org.zerock.product.mapper.ProductMapper">
 
+	<update id="updatePOquantityByOrder">
+		UPDATE tbl_productoption
+			SET
+			po_quantity = po_quantity - #{order_quantity}
+			WHERE
+			productOption_seq = #{order_poseq}
+	</update>
+
 	<delete id="deleteProductOption">
 		delete from tbl_productoption where productOption_seq = #{productOption_seq}
 	</delete>
