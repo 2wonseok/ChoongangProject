@@ -107,6 +107,11 @@
 						<small class="form-text text-danger">
 							제목이 비어있습니다. (기존 제목을 불러옵니다)
 						</small>
+					</c:if>
+					<c:if test="${errors.noSpace_title }">
+						<small class="form-text text-danger">
+							제목이 공백 상태입니다. (기존 제목을 불러옵니다)
+						</small>
 					</c:if><br>		
 			<!-- 기존 내용을 불러옴 -->  	
 		    <label for="textarea1">내용</label>
@@ -114,6 +119,11 @@
 		   		    <c:if test="${errors.noContent }">
 						<small class="form-text text-danger">
 						내용이 비어있습니다. (기존 내용을 불러옵니다)
+						</small>
+					</c:if>
+					<c:if test="${errors.noSpace_content }">
+						<small class="form-text text-danger">
+							내용이 공백 상태입니다. (기존 제목을 불러옵니다)
 						</small>
 					</c:if><br>		  	
 		  	<!-- 이미지 첨부 -->

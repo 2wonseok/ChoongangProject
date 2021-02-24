@@ -280,6 +280,14 @@ public class QaController {
 		if (board.getQa_content().isEmpty() || board.getQa_content() == null) {
 			errors.put("noContent", Boolean.TRUE);
 		}
+		// 제목의 값이 스페이스만 있을때
+		if (board.getQa_title().trim().isEmpty()) {
+			errors.put("noSpace_title", Boolean.TRUE);
+		}
+		// 내용의 값이 스페이스만 있을때
+		if (board.getQa_content().trim().isEmpty()) {
+			errors.put("noSpace_content", Boolean.TRUE);
+		}
 		
 		// 파일이 업로드 될 경로 설정
 		String saveDir = request.getSession().getServletContext().getRealPath("/resources/qaboard/upload");
