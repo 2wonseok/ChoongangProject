@@ -412,7 +412,14 @@ var user_id = "${authUser.user_id}";
 				<p>${freeVO.free_content }</p>
 			</div>
 	</div>
-	<c:url value="/freeboard/modify" var="modifyLink">
+	<c:url value="${root }/freeboard/modify" var="modifyLink">
+		<c:param name="free_seq" value="${freeVO.free_seq }"></c:param>
+		<c:param name="pageNum" value="${cri.pageNum }"></c:param>
+		<c:param name="amount" value="${cri.amount }"></c:param>
+		<c:param name="type" value="${cri.type }"></c:param>
+		<c:param name="keyword" value="${cri.keyword }"></c:param>
+	</c:url>
+	<c:url value="${root }/freeboard/list" var="listLink">
 		<c:param name="free_seq" value="${freeVO.free_seq }"></c:param>
 		<c:param name="pageNum" value="${cri.pageNum }"></c:param>
 		<c:param name="amount" value="${cri.amount }"></c:param>
@@ -432,9 +439,9 @@ var user_id = "${authUser.user_id}";
 		<c:if test="${authUser != null && authUser.user_id == freeVO.free_writer}">
 			<button class="btn_add" id="remove-btn">삭제</button>
 			<input hidden="hidden" name="free_seq" value="${freeVO.free_seq}">
-			<a href="${root}/freeboard/modify?free_seq=${freeVO.free_seq}" class="btn_add"> 수정 </a>
+			<a href="${ modifyLink}?free_seq=${freeVO.free_seq}" class="btn_add"> 수정 </a>
 		</c:if>
-			<a href="${root }/freeboard/list" class="btn_add">목록으로 </a>		
+			<a href="${listLink}" class="btn_add">목록으로 </a>		
 		</form>
 	<!--  댓글 목록 -->
 	<div class="recommView" id="reply_list"></div>
