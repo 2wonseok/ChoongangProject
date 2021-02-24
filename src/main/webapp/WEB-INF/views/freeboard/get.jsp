@@ -52,7 +52,7 @@
     border-bottom: 3px solid #4a4a4a;
     margin: 50px 0 20px 0;
     width:1000px;
-    height: 100%;
+    height: 580px;
 	}
 	.webzineTypeView .headWrap {
     background: #f5f5f5;
