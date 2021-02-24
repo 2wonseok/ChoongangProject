@@ -132,7 +132,7 @@ public class RevBoardController {
 		service.register(revVo);
 		
 		rttr.addFlashAttribute("result", "success");
-		rttr.addFlashAttribute("message", revVo.getRev_writer() + " 님" + revVo.getRev_seq() + " 번 글이 등록되었습니다.");
+		rttr.addFlashAttribute("message", revVo.getRev_writer() + "님 " + revVo.getRev_seq() + "번 글이 등록되었습니다.");
 		
 		int cnt = service.boardSelect(revVo.getRev_writer());
 		session.setAttribute("authUser", vo);
@@ -183,9 +183,10 @@ public class RevBoardController {
 		ModelAndView view = new ModelAndView();
 
 		Cookie[] cookies = req.getCookies();
-
+		
 		// 비교하기 위해 새로운 쿠키
 		Cookie viewCookie = null;
+		
 
 		// 쿠키가 있을 경우
 		if (cookies != null && cookies.length > 0) {
@@ -195,11 +196,13 @@ public class RevBoardController {
 					if (cookies[i].getName().equals("cookie" + user.getUser_id())) {
 						System.out.println("처음 쿠키가 생성한 뒤 들어옴.");
 						viewCookie = cookies[i];
+						viewCookie.setMaxAge(5*1*1);
 					}
 				} else {
 					if (cookies[i].getName().equals("cookie" + rev_seq)) {
 						System.out.println("처음 쿠키가 생성한 뒤 들어옴.");
 						viewCookie = cookies[i];
+						viewCookie.setMaxAge(5*1*1);
 					}
 				}
 			}
@@ -216,9 +219,11 @@ public class RevBoardController {
 				// 쿠키 생성(이름, 값)
 				if (user != null) {
 					Cookie newCookie = new Cookie("cookie" + user.getUser_id(), "|" + user.getUser_id() + "|");
+					newCookie.setMaxAge(5*1*1);
 					res.addCookie(newCookie);
 				} else {
 					Cookie newCookie = new Cookie("cookie" + rev_seq, "|" + rev_seq + "|");
+					newCookie.setMaxAge(5*1*1);
 					res.addCookie(newCookie);
 				}
 
@@ -226,7 +231,9 @@ public class RevBoardController {
 
 				// 쿠키를 추가 시키고 조회수 증가시킴
 				int result = service.addReadCnt(rev_seq);
-
+				
+				
+				
 				if (result > 0) {
 					System.out.println("조회수 증가");
 				} else {
@@ -237,9 +244,9 @@ public class RevBoardController {
 				System.out.println("cookie 있음");
 
 				// 쿠키 값 받아옴
-
+				viewCookie.setMaxAge(5*1*1);
 				String value = viewCookie.getValue();
-
+				
 				System.out.println("cookie 값 : " + value);
 			}
 			model.addAttribute("RevBoard", rev);
@@ -260,7 +267,7 @@ public class RevBoardController {
 		 * 
 		 * ;
 		 */
-
+		
 	}
 
 	@GetMapping("/modify")
