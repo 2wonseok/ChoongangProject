@@ -28,26 +28,6 @@ $(document).ready(function() {
 		return d.toISOString().split("T")[0];
 	}
 
-	$("#qaboard").click(function() {
-		location.href="${root }/qa/list";
-	});
-	
-	$("#review").click(function() {
-		location.href="${root }/rev/list";
-	});
-	
-	$("#ShippingCheckBtn").click(function() {
-		var order_seq = $("#order_seq").val();
-		var product_seq = $("#product_seq").val();
-		alert(product_seq);
-		//location.href="${root}/user/shippingCheck?order_seq="+order_seq+"&product_seq="+product_seq;
-	});
-	
-	$(".jBDGcA").click(function() {
-		var product_seq = $("#product_seq").val();
-		location.href="${root}/product/get?product_seq="+product_seq;
-	});
-
 });
 </script>
 <title>주문목록</title>
@@ -382,9 +362,10 @@ $(document).ready(function() {
 															<div class="DesktopProductImageLayout__RightArea-sc-9cwg9-5 gnMgPh">
 																<div class="DesktopProductImageLayout__ProductArea-sc-9cwg9-6 gJsjSt">
 																	<div class="DesktopOrderBoxStyle__DesktopOrderBoxProductTextWrapper-gnmni8-9 cbBmbp"></div>
-																	<div class="DesktopOrderBoxStyle__DesktopOrderBoxProductTextWrapper-gnmni8-9 DesktopOrderBoxGoodsBodyText__Paragraph-sc-8q24ha-0 cbBmbp jBDGcA">
+																	<div onclick="location.href='${root}/product/get?product_seq=${orders.order_productseq }'" 
+																		class="DesktopOrderBoxStyle__DesktopOrderBoxProductTextWrapper-gnmni8-9 DesktopOrderBoxGoodsBodyText__Paragraph-sc-8q24ha-0 cbBmbp jBDGcA">
 																		<span color="#111111" class="BodyText__BodyTextM-sc-755zt3-1 DesktopOrderBoxGoodsBodyText__ProductText-sc-8q24ha-1 jgZoAn wEFvN">
-																		  ${orders.order_poname } 
+																		  ${orders.order_poname }
 																		</span>
 																	</div>
 																	<div class="DesktopOrderBoxStyle__DesktopOrderBoxProductTextWrapper-gnmni8-9 DesktopOrderBoxGoodsBodyText__PriceAndCartWrapper-sc-8q24ha-4 cbBmbp bEFRXv">
@@ -397,11 +378,11 @@ $(document).ready(function() {
 																				<span class="BodyText__BodyTextL-sc-755zt3-0 bqCRgI"><fmt:formatNumber value='${orders.order_quantity }' type="number"></fmt:formatNumber>개</span>
 																			</div>
 																		</div>
-																		<div class="DesktopOrderBoxGoodsBodyText__AddCartButtonWrapper-sc-8q24ha-3 dhufUh">
-																			<button id="cartBtn" class="RectButton__Wrapper-sc-1k9quwu-0 jluEnQ DesktopAddToCartButton__CartButton-xuyxga-0 kBhIpv">
-																				장바구니 담기</button>
+																		<!-- <div class="DesktopOrderBoxGoodsBodyText__AddCartButtonWrapper-sc-8q24ha-3 dhufUh">
+																			<a id="cartBtn" class="RectButton__Wrapper-sc-1k9quwu-0 jluEnQ DesktopAddToCartButton__CartButton-xuyxga-0 kBhIpv">
+																				장바구니 담기</a>
 																			<div class="DesktopAddToCartButton__InfoWrapper-xuyxga-1 TTZuV"></div>
-																		</div>
+																		</div> -->
 																	</div>
 																</div>
 															</div>
@@ -412,20 +393,21 @@ $(document).ready(function() {
 										</td>
 										<td class="DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceWrapper-gnmni8-5 kstGdW">
 											<div class="DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceInnerWrapper-gnmni8-6 ebLxeX">
-												<a onclick="location.href='${root}/user/shippingCheck?order_seq=${orders.order_seq }&product_seq=${orders.order_productseq }'" 
+												<button onclick="location.href='${root}/user/shippingCheck?order_seq=${orders.order_seq }&product_seq=${orders.order_productseq }'" 
 													class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
 													배송조회
-												</a>
+												</button> 
 												<button class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
 													교환신청
 												</button>
 												<button class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
 													반품신청
 												</button>
-												<button id="review" class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
+												<button onclick="location.href='${root}/rev/list'" 
+												 class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
 													구매후기 쓰기
 												</button>
-												<button id="qaboard" class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
+												<button onclick="location.href='${root }/qa/list'" class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
 													판매자 문의하기
 												</button>
 											</div>
@@ -451,7 +433,7 @@ $(document).ready(function() {
 									<c:param name="pageNum" value="${pageMaker.startPage - 1 }"></c:param>
 									<c:param name="amount" value="${pageMaker.cri.amount}"></c:param>
 								</c:url>
-									<a href="${preLink}">Previous</a>
+									<a href="${preLink}" style="width:80px;">Previous</a>
 							</c:if>
 							
 							<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
@@ -475,7 +457,7 @@ $(document).ready(function() {
 									<c:param name="pageNum" value="${pageMaker.endPage + 1 }"></c:param>
 									<c:param name="amount" value="${pageMaker.cri.amount}"></c:param>
 								</c:url>
-								<a href="${nextLink }">Next</a>
+								<a href="${nextLink }" style="width:80px;">Next</a>
 							</c:if>
 					</div>
 			</div> 

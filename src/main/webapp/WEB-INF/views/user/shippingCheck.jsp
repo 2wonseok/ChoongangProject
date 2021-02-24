@@ -18,6 +18,9 @@ var order_date = '${getOrder.order_date}';
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script>
+var rand = Math.floor(100000000000 + Math.random() * 900000000000);
+	console.log(rand);
+
 $(document).ready(function() {
 	var orderDate = $("#orderDate").val();
 
@@ -28,6 +31,9 @@ $(document).ready(function() {
 		//alert(sendDate);
 
 	$(".my-ship-track__head-title").text(sendDate+" 도착 예정");
+	
+	$(".js_deliveryExternalLink strong").text(rand);
+ 
 });
 
 </script>
@@ -285,7 +291,7 @@ tbody {
 	        			<div class="my-col my-width--70">송장번호</div>
 	          		<div class="my-col">
 	            		<a href="#" class="js_deliveryExternalLink" data-deliveryurl="http://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num=509779374554" data-log-type="click" data-log-id="1555" data-log-version="5" data-log-payload="{&quot;eventName&quot;: &quot;delivery_external_status&quot;}" data-has-log-group="shiptrack_meta_info">
-	              		<strong class="my-color--primary my-ship-track__invoice-link">509779374554</strong>
+	              		<strong class="my-color--primary my-ship-track__invoice-link"></strong>
 	            		</a>
 	          		</div>
 	     			 	</div>
