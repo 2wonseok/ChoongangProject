@@ -480,13 +480,13 @@ $(document).ready(function() {
 						<c:when test="${empty board.qa_updatedate}">
 							<p>
 								<strong>등록일 :</strong>
-								<fmt:formatDate value='${board.qa_regdateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
+								<fmt:formatDate value='${board.qa_regdateKST}' pattern='yyyy년 MM월 dd일 hh시 mm분'/>
 							</p>
 						</c:when>
 						<c:otherwise>
 							<p>
 								<strong>수정일 :</strong>
-								<fmt:formatDate value='${board.qa_updatedateKST}' pattern='yyyy년 MM월 dd일 h시 m분'/>
+								<fmt:formatDate value='${board.qa_updatedateKST}' pattern='yyyy년 MM월 dd일 hh시 mm분'/>
 							</p>
 						</c:otherwise>
 					</c:choose>
