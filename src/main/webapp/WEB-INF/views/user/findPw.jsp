@@ -25,28 +25,25 @@ $(document).ready(function() {
 	$("#phone-success").hide(); 
 	$("#phone-danger").hide();
 	$("#null").hide();
+	$("#okay").hide();
 	
 	$("#btn_search").click(function() {
 		var user_id = $("#user_id").val();
 		var user_phone = $("#user_phone").val();
-		var user_birth = $("#user_birth").val();
 		
 		$.ajax({
 		    type: "GET",
 		    url: "${root}/user/findUserPw",
 		    dataType : "json",
-		    data: {"user_id" : user_id , "user_phone" : user_phone, "user_birth" : user_birth},
+		    data: {"user_id" : user_id , "user_phone" : user_phone},
 		    success: function(res) {
 	    		
 		    	$("#notFind").hide();
-					$("#resultPw").show();
 					
 					location.href='${root}/user/modifyPw?user_id='+res.user_id;
-					resultPw.append(res.user_password);
 					
 		    },
 		    error : function(error) {
-		    	$("#resultPw").hide();
 		    	$("#notFind").show();
 		    }
 		});
@@ -57,21 +54,27 @@ $(document).ready(function() {
 		$("#btn_search").attr("disabled", "disabled"); 
 	}); 	
 	
-	$('#phoneCheck').click(function(){
+	$('#phoneCheck').click(function() {
+		var user_id = $("#user_id").val();
 		var user_phone = $('#user_phone').val();
 		
 		$.ajax({
 		    type: "GET",
-		    url: "${root}/user/sendSMS",
+		    url: "${root}/user/sendCheckSMS",
 		    dataType: "JSON",
 		    data: {
-		        "user_phone" : user_phone
+		        "user_id": user_id, "user_phone" : user_phone
 		    },
 		    success: function(res) {
 		    	console.log(res);
-		    	console.log(res);
+		    	if (res == 0) {
+		    		$("#okay").show();
+		    		$("#null").hide();
+		    	}
+		    	
 		    	if (res == 2) {
 						$("#null").show();
+						$("#okay").hide();
 		    	}
 		    }
 		});
@@ -215,7 +218,10 @@ html, body {
    </div>
    
    <div style="margin-left:51px;">
-     <small class="text-danger" id="null">번호를 입력해주세요.</small>
+     <small class="text-primary" id="okay">인증번호가 전송되었습니다.</small>
+   </div>
+   <div style="margin-left:51px;">
+     <small class="text-danger" id="null">일치하는 정보가 없습니다.</small>
    </div>
    
    <div class="row margin">
@@ -231,19 +237,7 @@ html, body {
      <small class="text-primary" id="phone-success">인증되었습니다.</small> 
 		 <small class="text-danger" id="phone-danger">인증 번호가 일치하지 않습니다.</small>
 	 </div>
-	 
-	 <div class="row margin">
-	   <div class="input-field col s12">
-	     <!-- <i class="mdi-action-lock-outline prefix"></i> -->
-	     <i class="material-icons prefix">perm_contact_calendar</i>
-	     <input id="user_birth" name="user_birth" type="date" required/>
-	     <label for="user_birth">생년월일</label>
-	   </div>
-   </div>
-   <div style="margin-left:51px;">
-   	 <small class="text-primary" id="resultPw">비밀번호 : </small>
-		 <small class="text-danger" id="notFind">일치하는 정보가 없습니다.</small>
-   </div>
+
 	<br />
 	<div class="row margin">
    	<button type="button" id="btn_search" class="btn waves-effect waves-light col s3">search</button>&nbsp;&nbsp;

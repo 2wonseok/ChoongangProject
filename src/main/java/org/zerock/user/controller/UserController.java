@@ -233,7 +233,38 @@ public class UserController {
 		return "redirect:/main/mainPage";
 	}
 	
-	@GetMapping("/sendSMS") // 휴대폰 인증 
+	@GetMapping("/sendCheckSMS") // 비밀번호 찾기 휴대폰 인증
+	public @ResponseBody int sendCheckSMS(@RequestParam String user_id, @RequestParam String user_phone, HttpSession session) { 
+		int cnt = 2;
+		UserVO phoneCheck = service.findUser(user_phone);
+		
+		if (user_phone == null || user_phone.isEmpty() || phoneCheck == null || !user_id.equals(phoneCheck.getUser_id())) {
+			session.setAttribute("null", "일치하는 정보가 없습니다.");
+			return cnt;
+		} 
+		
+		if (phoneCheck != null && user_id.equals(phoneCheck.getUser_id())) {
+			Random rand  = new Random();
+	    String numStr = "";
+	    for(int i=0; i<4; i++) {
+	        String ran = Integer.toString(rand.nextInt(10));
+	        numStr+=ran;
+	    }
+
+	    System.out.println("수신자 번호 : " + user_phone);
+	    System.out.println("인증번호 : " + numStr);
+	    service.smsService(user_phone,numStr);
+//	    rttr.addFlashAttribute("AuthenticationNum", numStr);
+	    session.setAttribute("phoneConfirm", numStr);
+	    
+	    return 0;
+		}
+		
+		
+		return cnt;
+	}
+	
+	@GetMapping("/sendSMS") // 회원 가입 휴대폰 인증 
 	public @ResponseBody int sendSMS(String user_phone, HttpSession session) {
 		UserVO phoneCheck = service.findUser(user_phone);
 		System.out.println(phoneCheck);
@@ -454,8 +485,16 @@ public class UserController {
 					
 		}
 		
-		
 		return list;
 		
+	}
+	
+	@GetMapping("orderDel") // 장바구니 목록 삭제
+	public String orderDel(@RequestParam("order_seq") ArrayList<Integer> order_seq) {
+		for (int no : order_seq) {
+			service.orderDel(no);
+		}
+		
+		return "redirect:/user/cart";
 	}
 }

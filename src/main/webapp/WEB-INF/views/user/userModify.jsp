@@ -215,7 +215,7 @@ $(document).ready(function() {
 <body>
 <u:mainNav/>
 <c:choose>
-	<c:when test="${authUser.user_grade == 0 || authUser.user_id eq read.user_id}">
+	<c:when test="${authUser.user_id eq read.user_id}">
 		<div class="container">
 			<section id="container">
 				<h3>회원 정보 수정</h3>

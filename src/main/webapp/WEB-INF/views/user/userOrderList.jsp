@@ -15,6 +15,14 @@
 <script>
 $(document).ready(function() {
 	
+	var orderDate = $("#orderDate").val();
+ 	var odate = new Date(orderDate); 	// 주문 날짜
+	var send = new Date(odate.setDate(odate.getDate() + 3));	// 3일 뒤
+	var sendDate = send.toISOString().split("T")[0];
+	//alert(sendDate);
+
+	$("#sendDate").text(sendDate+" 도착 예정");
+	
 	function dateString(date) {
 		var d = new Date(date);
 		return d.toISOString().split("T")[0];
@@ -329,6 +337,7 @@ $(document).ready(function() {
 			<section id ="container">
 			<h3><a href="#" id="orderList">주문 목록</a></h3><br>
  			<c:forEach items="${order}" var="orders">
+ 				<input type="hidden" name="orderDate" id="orderDate" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${orders.order_date }"/>">
  				<input type="hidden" name="product_seq" id="product_seq" value="${orders.order_productseq }">
  				<input type="hidden" name="order_seq" id="order_seq" value="${orders.order_seq }">
 				<div class="DesktopOrderList__Wrapper-qxzqk9-0 kWqHSE" id="orderListDiv"> <!--  주문 목록 시작 -->
@@ -350,8 +359,8 @@ $(document).ready(function() {
 									<tr class="DesktopOrderBoxStyle__DesktopOrderBoxBundleRow-gnmni8-3 gOLjDE">
 										<td class="DesktopOrderBoxStyle__DesktopOrderBoxBundleContentsWrapper-gnmni8-4 dGttDc">
 											<div class="DesktopOrderBoxBundleHeaderLayout__Wrapper-ki5ja7-0 ibYFEB">
-												<div class="DesktopOrderBoxBundleHeaderLayout__Wrapper-ki5ja7-0 ibYFEB">
-													배송중 3일 뒤 도착예정
+												<div class="DesktopOrderBoxBundleHeaderLayout__Wrapper-ki5ja7-0 ibYFEB" id="sendDate">
+													
 												
 												</div>
 											</div>

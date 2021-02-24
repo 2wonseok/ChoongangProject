@@ -27,16 +27,6 @@ public class ProductServiceImpl implements ProductService {
 	private UserMapper userMapper;
 	
 	@Override
-	public int updateUserPoint(int user_seq, String usePoint) {
-		int presentPoint = userMapper.getUserSeq(user_seq).getUser_point();
-		int changedPoint =presentPoint - Integer.parseInt(usePoint); 
-		if (changedPoint >=0) {
-			return mapper.userPointUpdate(user_seq, changedPoint);
-		}
-		return 0;
-	}
-	
-	@Override
 	public CategoryVO getCategoryMainAndSub(int category_seq) {
 		return mapper.getCategoryMainAndSubs(category_seq);
 	}
@@ -86,21 +76,36 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public int makeOrder(List<OrderVO> orderVOList) {
+	@Transactional
+	public int makeOrder(List<OrderVO> orderVOList, int user_seq, String usePoint) {
 		int count = 0;
 		for(OrderVO vo : orderVOList) {
 			count += mapper.updateOrder(vo.getOrder_seq());
+			int order_poseq = vo.getOrder_poseq();
+			int order_quantity = vo.getOrder_quantity();
+			mapper.updatePOquantityByOrder(order_poseq,order_quantity);
 		}
+		int presentPoint = userMapper.getUserSeq(user_seq).getUser_point();
+		int changedPoint =presentPoint - Integer.parseInt(usePoint); 
+		mapper.userPointUpdate(user_seq, changedPoint);
 		return count;
 	}
 	
 	@Override
 	@Transactional
-	public int directOrder(List<OrderVO> orderVOList) {
+	public int directOrder(List<OrderVO> orderVOList, int user_seq, String usePoint) {
 		int count = 0;
 		for(OrderVO vo : orderVOList) {
 			count += mapper.directOrder(vo);
+			int order_poseq = vo.getOrder_poseq();
+			int order_quantity = vo.getOrder_quantity();
+			System.out.println("요기"+order_poseq);
+			System.out.println("요기"+order_quantity);
+			mapper.updatePOquantityByOrder(order_poseq,order_quantity);
 		}
+		int presentPoint = userMapper.getUserSeq(user_seq).getUser_point();
+		int changedPoint =presentPoint - Integer.parseInt(usePoint); 
+		mapper.userPointUpdate(user_seq, changedPoint);
 		return count;
 	}
 	
@@ -197,8 +202,50 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public boolean modify(ProductVO product) {
-		return mapper.update(product) ==1;
+	@Transactional
+	public boolean modify(ProductVO product, String[] deletePo_seqArray, String[] productOption_seq, String[] po_name,
+			String[] po_quantity, String[] po_price) {
+		
+	  /* 넘어온 배열들을 기존업데이트,기존제거,신규생성으로 분류작업 */
+		/* 일단 지울번호로 넘어온것을 지움*/
+		
+		int cnt = 0;
+		boolean check = false;
+		if(deletePo_seqArray != null) {
+			for(String po_seq : deletePo_seqArray) {
+				cnt += mapper.deleteProductOption(Integer.parseInt(po_seq));
+			}
+			if(deletePo_seqArray.length != cnt) {
+				check = true;
+				System.out.println("po업데이트시 제거쪽 문제발생");
+			}
+		}
+		/* 기존업데이트와 신규생성을 분리 0으로 넘어온것은 신규*/
+		for (int i = 0; i<productOption_seq.length ;i++ ) {
+			if (productOption_seq[i].equals("0")) {
+				ProductOptionVO newPoVO = new ProductOptionVO();
+				newPoVO.setPo_name(po_name[i]);
+				newPoVO.setPo_price(Integer.parseInt(po_price[i]));
+				newPoVO.setPo_quantity(Integer.parseInt(po_quantity[i]));
+				newPoVO.setProduct_seq(product.getProduct_seq());
+				newPoVO.setProductOption_seq(Integer.parseInt(productOption_seq[i]));
+				mapper.insertProductOption(newPoVO);
+			} else {
+				ProductOptionVO updatePoVO = new ProductOptionVO();
+				updatePoVO.setPo_name(po_name[i]);
+				updatePoVO.setPo_price(Integer.parseInt(po_price[i]));
+				updatePoVO.setPo_quantity(Integer.parseInt(po_quantity[i]));
+				updatePoVO.setProduct_seq(product.getProduct_seq());
+				updatePoVO.setProductOption_seq(Integer.parseInt(productOption_seq[i]));
+				mapper.updateProductOption(updatePoVO);
+			}
+		}
+		int corr = mapper.update(product);	
+		if(corr != 1) {
+			check = true;
+		}
+		
+		return check;
 	}
 	
 	@Override

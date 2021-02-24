@@ -70,6 +70,12 @@ public interface ProductMapper {
 
 	/* userVO */
 		public int userPointUpdate(@Param("user_seq") int user_seq, @Param("changedPoint") int changedPoint);
+
+		public int deleteProductOption(int productOption_seq);
+
+		public int updateProductOption(ProductOptionVO updatePoVO);
+
+		public void updatePOquantityByOrder(@Param("order_poseq")int order_poseq, @Param("order_quantity")int order_quantity);
 	
 	
 }

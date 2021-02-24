@@ -71,7 +71,7 @@
 	</select>
 	
 	<select id="findUser" resultType="org.zerock.user.domain.UserVO">
-		SELECT user_id, user_password, user_name, user_phone from tbl_user WHERE user_phone = #{user_phone}
+		SELECT user_id, user_password, user_name, user_phone, user_regdate from tbl_user WHERE user_phone = #{user_phone}
 	</select>
 	
 	<select id="idCheck" resultType="int">
@@ -245,5 +245,9 @@
 	
 	<delete id="userRemove">
 		DELETE FROM tbl_user WHERE user_id = #{user_id}
+	</delete>
+	
+	<delete id="orderDel">
+		DELETE FROM tbl_order WHERE order_seq = #{order_seq}
 	</delete>
 </mapper>

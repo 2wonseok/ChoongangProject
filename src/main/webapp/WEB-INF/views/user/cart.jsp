@@ -33,7 +33,24 @@ $(document).ready(function(){
 		} 
 		
 		$("#buyForm").submit();
-	})
+	});
+	
+	$("#orderDel").click(function(e) {
+		e.preventDefault();
+		var checkVal = $("input:checkbox[name='order_seq']:checked").val();
+		
+		if (!checkVal) {
+			alert('체크 박스를 선택해주세요');
+			return false;
+		} 
+		
+		if(!confirm('삭제하시겠습니까?'))	{
+			return false;
+		}
+		
+		$("#buyForm").attr("action", "${root}/user/orderDel");
+		$("#buyForm").submit();
+	});
 	
 
 	
@@ -72,6 +89,22 @@ p {
     line-height: 40px;
     float: left;
     width: 125px;
+    height: 40px;
+    border-radius: 3px;
+    text-align: center;
+}
+#orderDel {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #4a4a4a;
+    padding: 0px 30px;
+    margin-top: -20px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    line-height: 40px;
+    float: left;
+    width: 100px;
     height: 40px;
     border-radius: 3px;
     text-align: center;
@@ -115,6 +148,7 @@ p {
 			<h3>장바구니</h3><br>
 			<form action="${root }/product/orderFromCart" id="buyForm">
 			<button type="submit" id="buy">구매하기</button>
+			<button type="submit" id="orderDel">삭제</button>
 				<table class="table table-hover">
 					<thead>
 						<tr>
