@@ -27,6 +27,10 @@ $(document).ready(function() {
 		var d = new Date(date);
 		return d.toISOString().split("T")[0];
 	}
+
+	$("#qaboard").click(function() {
+		location.href="${root }/qa/list";
+	});
 	
 	$("#review").click(function() {
 		location.href="${root }/rev/list";
@@ -421,7 +425,7 @@ $(document).ready(function() {
 												<button id="review" class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
 													구매후기 쓰기
 												</button>
-												<button class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
+												<button id="qaboard" class="RectButton__Wrapper-sc-1k9quwu-0 iBLteB DesktopOrderBoxStyle__DesktopOrderBoxBundleSelfServiceButton-gnmni8-7 kSkBV">
 													판매자 문의하기
 												</button>
 											</div>

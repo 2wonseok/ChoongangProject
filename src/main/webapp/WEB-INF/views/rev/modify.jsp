@@ -94,6 +94,24 @@
 			 });
 	
 </script>
+<script>
+$(document).ready(function (){
+	$('#btn_add').click(function(){
+			var revArr = ["rev_title","rev_content"];
+			//입력 값 널 체크
+			for(var i=0;i<revArr.length;i++){
+				//alert(arr[i]);
+				if($.trim($('#'+revArr[i]).val()) == ''){
+					alert('제목 또는 내용 을 모두 입력해 주세요.');
+					$('#'+revArr[i]).focus();
+					return false;
+				}
+			}
+			//전송
+			$("#modify-form").submit();
+	});
+});
+</script>
 <title>구매후기글 수정</title>
 </head>
 <body>
@@ -138,7 +156,7 @@
         <label for="wr_subject" class="sound_only">제목<strong>필수</strong></label>
         
         <div id="autosave_wrapper write_div">
-            <input type="text" name="rev_title" value="<c:out value="${RevBoard.rev_title }" />" maxlength="50" id="wr_subject" required="" class="frm_input full_input required" size="50" maxlength="255" placeholder="제목">
+            <input type="text" name="rev_title" id="rev_title" value="<c:out value="${RevBoard.rev_title }" />" maxlength="50" id="wr_subject" required="" class="frm_input full_input required" size="50" maxlength="255" placeholder="제목">
                     </div>
         
     </div>
@@ -147,7 +165,7 @@
         <label for="wr_content" class="sound_only">내용<strong>필수</strong></label>
         <div class="wr_content ">
                         <span class="sound_only">웹에디터 시작</span>
-<textarea id="wr_content" name="rev_content" class="rm_input full_input required" required maxlength="65536" style="width:100%;height:300px" placeholder="내용을 입력해 주세요."><c:out value="${RevBoard.rev_content }" /></textarea>
+<textarea name="rev_content" id="rev_content" class="rm_input full_input required" required maxlength="65536" style="width:100%;height:300px" placeholder="내용을 입력해 주세요."><c:out value="${RevBoard.rev_content }" /></textarea>
 <span class="sound_only">웹 에디터 끝</span>                    </div>
         <input type="text" name="rev_writer" class="form-group" value="${authUser.user_id }" hidden/>
     </div>

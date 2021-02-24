@@ -92,7 +92,12 @@
 					<!-- 제목이 비어있을 경우 -->
 					<c:if test="${errors.noTitle }">
 						<small class="form-text text-danger">
-						제목을 입력 해주세요.
+							제목을 입력 해주세요.
+						</small>
+					</c:if>	
+					<c:if test="${errors.noSpace_title }">
+						<small class="form-text text-danger">
+							제목이 공백 상태입니다.
 						</small>
 					</c:if>	
 				<br>
@@ -104,6 +109,11 @@
 							내용을 입력 해주세요.
 						</small>
 					</c:if>	 
+					<c:if test="${errors.noSpace_content }">
+						<small class="form-text text-danger">
+							내용이 공백 상태 입니다.
+						</small>
+					</c:if>	
 					<br>
 				<!-- 작성자 값 히든처리 -->
 				<input type="hidden" type="text" name="qa_writer" value="${authUser.user_nickname }"/>	

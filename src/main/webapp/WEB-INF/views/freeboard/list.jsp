@@ -142,7 +142,8 @@ thead {
 <script>
 	//글쓰기 버튼 로그인 체크 
 	$(document).ready(function() {
-		$("#btn_add").click(function() {
+		$("#btn_add").click(function(e) {
+			e.preventDefault();
 			if (userId == "") {
 				alert("로그인후 이용하세요");
 				location.href = "${root}/user/login";
