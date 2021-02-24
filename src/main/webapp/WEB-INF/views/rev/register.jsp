@@ -128,7 +128,7 @@ $(document).ready(function (){
         	<label for="wr_content" class="sound_only">내용<strong>필수</strong></label>
         	<div class="wr_content " style="margin-bottom:8px;">
                  <span class="sound_only">웹에디터 시작</span>
-			<textarea id="rev_content" name="rev_content" class="frm_input full_input required" value="" maxlength="65536" style="width:100%;height:300px" placeholder="내용을 입력해 주세요." required></textarea>
+			<textarea id="rev_content" name="rev_content" class="frm_input full_input required" value="" maxlength="1000" style="width:100%;height:300px" placeholder="내용을 입력해 주세요. 1000자 이하 " required></textarea>
 			<span class="sound_only">웹 에디터 끝</span>                    </div>
         	<input type="text" name="rev_writer" class="form-group" value="${authUser.user_id }" hidden/>
     	</div>

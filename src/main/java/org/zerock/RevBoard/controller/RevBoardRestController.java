@@ -36,10 +36,11 @@ public class RevBoardRestController {
 				produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> create(@RequestBody ReplyVO vo, HttpSession session) {
 		UserVO user = (UserVO) session.getAttribute("authUser");
-		
+		int insertCount = 0;
 		vo.setReply_writer(user.getUser_nickname());
-		
-		int insertCount = service.register(vo);
+		if (!vo.getReply_content().trim().isEmpty()) {
+			insertCount = service.register(vo);
+		}
 		
 		if (insertCount == 1) {
 			return new ResponseEntity<String> ("success!", HttpStatus.OK );
