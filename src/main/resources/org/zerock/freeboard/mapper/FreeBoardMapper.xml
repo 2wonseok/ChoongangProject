@@ -69,8 +69,8 @@
       SELECT free_seq.nextval FROM dual
       </selectKey>
    
-      INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer,free_nickname,free_notice,free_regdate,free_updatedate)
-      VALUES (#{free_seq }, #{free_title}, #{free_content}, #{free_writer}, #{free_nickname},#{free_notice},sysdate,sysdate)
+      INSERT INTO tbl_freeboard (free_seq, free_title, free_content, free_writer,free_nickname,free_notice,free_regdate)
+      VALUES (#{free_seq }, #{free_title}, #{free_content}, #{free_writer}, #{free_nickname},#{free_notice},SYSDATE)
    </insert>
  
    <select id="read" resultType="org.zerock.freeboard.domain.FreeBoardVO">
@@ -86,7 +86,7 @@
    SET		free_title = #{free_title},
      		free_content = #{free_content},
      		free_nickname = #{free_nickname},
-     		free_updatedate = sysdate
+     		free_updatedate = SYSDATE
    WHERE 	free_seq = #{free_seq}
    </update>
    
