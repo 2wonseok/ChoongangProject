@@ -23,8 +23,9 @@
 <script>
 function checkSpacebar() {
 	var kcode = event.keyCode;
-	
-	if (kcode == 32) {
+	var replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi;
+		
+	if (kcode == 32 || replaceChar) {
 		event.returnValue = false;
 	}
 	
@@ -407,7 +408,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-social-person-outline prefix"></i> -->
 	          <i class="material-icons prefix">portrait</i>
-	          <input id="user_id" name="user_id" type="text" onKeyPress="checkSpacebar(this);" required/>
+	          <input id="user_id" name="user_id" type="text" onKeyPress="checkSpacebar(this);" onpaste="return false;" required/>
 	          <button type="button" id="idConfirm" class="btn waves-effect waves-light col s3">중복확인</button>
 	          <label for="user_id">아이디</label>
 	          <small class="text-danger" id="idLengthFail">영문 숫자 최소 4글자 이상 입력해주세요.</small>
@@ -421,7 +422,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-social-person-outline prefix"></i> -->
 	          <i class="material-icons prefix">account_circle</i>
-	          <input id="user_name" name="user_name" type="text" onKeyPress="checkSpacebar(this);" required/>
+	          <input id="user_name" name="user_name" type="text" onKeyPress="checkSpacebar(this);" onpaste="return false;" required/>
 	          <label for="user_name">이름</label>
 	        </div>
 	      </div>
@@ -430,7 +431,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-social-person-outline prefix"></i> -->
 	          <i class="material-icons prefix">person_outline</i>
-	          <input id="user_nickname" name="user_nickname" type="text" style="cursor: auto;" onKeyPress="checkSpacebar(this);" required />
+	          <input id="user_nickname" name="user_nickname" type="text" style="cursor: auto;" onKeyPress="checkSpacebar(this);" onpaste="return false;" required />
 	          <button type="button" id="nickCheck" class="btn waves-effect col s3">중복확인</button>
 	          <label for="user_nickname">닉네임</label>
 	          <small class="text-danger" id="nicknameLengthFail">최소 2글자 이상 입력해주세요.</small>
@@ -445,7 +446,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
 	          <i class="material-icons prefix">vpn_key</i>
-	          <input id="user_password" id="user_password" name="user_password" type="password" onKeyPress="checkSpacebar(this);" required />
+	          <input id="user_password" id="user_password" name="user_password" type="password" onKeyPress="checkSpacebar(this);" onpaste="return false;" required />
 	          <label for="user_password">패스워드</label>
 	          <small class="text-danger" id="passwordLengthFail">최소 4글자 이상 입력해주세요.</small>
 	        </div>
@@ -455,7 +456,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
 	          <i class="material-icons prefix">vpn_key</i>
-	          <input id="confirmPassword" name="confirmPassword" type="password" required/>
+	          <input id="confirmPassword" name="confirmPassword" type="password" onpaste="return false;" required/>
 	          <label for="confirmPassword">패스워드 확인</label>
 	          <small class="text-primary" id="alert-success">비밀번호가 일치합니다.</small> 
 			 			<small class="text-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</small>
@@ -475,7 +476,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
 	          <i class="material-icons prefix">phone_android</i>
-	          <input id="user_phone" name="user_phone" type="text" onKeyPress="checkSpacebar(this);" required/>
+	          <input id="user_phone" name="user_phone" type="text" onKeyPress="checkSpacebar(this);" onpaste="return false;" required/>
 	          <button type="button" id="zip_code_btn" class="btn waves-effect waves-light col s3">인증하기</button>
 	          <label for="user_phone">'-' 제외하고 입력</label>
 	          <small class="text-primary" id="noUse">인증번호가 전송되었습니다.</small>
@@ -488,7 +489,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
 	          <i class="material-icons prefix">vpn_key</i>
-	          <input id="phoneConfirm" name="phoneConfirm" type="text" onKeyPress="checkSpacebar(this);" required/>
+	          <input id="phoneConfirm" name="phoneConfirm" type="text" onKeyPress="checkSpacebar(this);" onpaste="return false;" required/>
 	          <button type="button" id="phoneConfirmBtn" class="btn waves-effect waves-light col s2">확인</button>
 	          <label for="phoneConfirm">인증번호 입력</label>
 	          <small class="text-success" id="phone-success">인증되었습니다.</small> 
