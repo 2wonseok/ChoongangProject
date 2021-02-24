@@ -226,7 +226,7 @@
 <script>
 	var appRoot = '${root}'; // 자바스크립트 코드에서 contextPath를 쓰기위해 선언.
 	var rev_seq = ${RevBoard.rev_seq}; 
-	var authUser = '${authUser.user_id}';
+	var authUser = '${authUser.user_nickname}';
 	var user_seq = '${authUser.user_seq}';
 	var img = '${RevfileNameList }';
 </script>
@@ -697,7 +697,7 @@ showList();
 						<label for="reply_writer-input2" class="col-form-label" id="reply-writer">
 							작성자
 						</label>
-						<input type="text" class="form-control" id="reply_writer-input2" value="${authUser.user_id}" readonly>
+						<input type="text" class="form-control" id="reply_writer-input2" value="${authUser.user_nickname}" readonly>
 					</div>
 				</div>
 				
