@@ -238,6 +238,7 @@ var appRoot = '${root}';
 var free_seq = ${freeVO.free_seq};
 var page = ${cri.pageNum};
 var user_id = "${authUser.user_id}";
+var user_grade = "${authUser.user_grade}";
 </script>
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -350,12 +351,12 @@ var user_id = "${authUser.user_id}";
 				$("#reply_content-input2").val(data.reply_content);
 				$("#reply_writer-input2").val(data.reply_nickname);
 				// 수정/삭제 hidden 처리
-				if (user_id != data.reply_writer) {
-					$("#reply-modify-button").hide();
-					$("#reply-delete-button").hide();
-				} else {
+				if (user_id == data.reply_writer || user_grade==0) {
 					$("#reply-modify-button").show();
 					$("#reply-delete-button").show();
+				} else {
+					$("#reply-modify-button").hide();
+					$("#reply-delete-button").hide();
 				}
 				$("#modify-reply-modal").modal('show');
 			});
@@ -442,7 +443,7 @@ var user_id = "${authUser.user_id}";
 					<a href="${root }/user/login" id="logoffReply">댓글 작성</a>
 				</c:otherwise>
 			</c:choose>
-		<c:if test="${authUser != null && authUser.user_id == freeVO.free_writer}">
+		<c:if test="${authUser.user_grade==0 || authUser.user_id == freeVO.free_writer}">
 			<button class="btn_add" id="remove-btn">삭제</button>
 			<input hidden="hidden" name="free_seq" value="${freeVO.free_seq}">
 			<a href="${ modifyLink}" class="btn_add"> 수정 </a>
@@ -504,7 +505,7 @@ var user_id = "${authUser.user_id}";
 					<div class="form-group">
 						<label for="reply_content-input2" class="col-form-label"> 댓글 </label>
 							<c:choose>
-								<c:when test="${authUser != null && authUser.user_id == freeVO.free_writer}">
+								<c:when test="${authUser.user_id == freeVO.free_writer || authUser.user_grade == 0}" >
 						 <input type="text" class="form-control" id="reply_content-input2">
 								</c:when>
 								<c:otherwise>
