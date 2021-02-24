@@ -501,7 +501,14 @@ $(document).ready(function() {
 				<p>${board.qa_content }</p>
 			</div>
 		</div>
-		<a id="btn_add" href="${root }/qa/list">목록으로</a> 
+		<c:url value="${root }/qa/list" var="listLink">
+			<c:param name="qa_seq" value="${board.qa_seq }" />
+			<c:param name="pageNum" value="${criteria.pageNum }" />
+			<c:param name="amount" value="${criteria.amount }" />
+			<c:param name="type" value="${criteria.type }"/>
+			<c:param name="keyword" value="${criteria.keyword }"/>
+		</c:url>
+		<a id="btn_add" href="${listLink }">목록으로</a> 
 		<!-- 보드 작성자 이름과 로그인 아이디가 같고, 등급이 1인 경우(일반)에만 활성화  -->
 		<c:if test="${board.qa_writer == authUser.user_nickname && authUser.user_grade == 1 }">
 			<a id="btn_add" style="margin-right: 3px;" href="${root }/qa/modify?qa_seq=${board.qa_seq }" >수정</a> 
