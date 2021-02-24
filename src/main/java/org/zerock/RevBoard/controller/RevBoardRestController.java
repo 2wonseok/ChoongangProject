@@ -81,10 +81,13 @@ public class RevBoardRestController {
 		
 		
 		vo.setReply_seq(reply_seq);
+		int cnt = 0;
 		
 		log.info("reply_seq : " + reply_seq);
 		
-		int cnt = service.modify(vo);
+		if (!vo.getReply_content().trim().isEmpty()) {
+		cnt = service.modify(vo);
+		}
 		
 		if(cnt == 1) {
 			return new ResponseEntity<String> ("success", HttpStatus.OK);
