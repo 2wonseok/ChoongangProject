@@ -21,14 +21,44 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!--Import materialize.css-->
 <script>
-function checkSpacebar() {
-	var kcode = event.keyCode;
-	var replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi;
-		
-	if (kcode == 32 || replaceChar) {
-		event.returnValue = false;
-	}
+var replaceChar = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+
+function checkSpacebar(obj) {
+	$(obj).val( $(obj).val().replace(replaceChar, '' ) );
 	
+}
+
+function fnChkByte(obj, maxByte) {
+    var str = obj.value;
+    var str_len = str.length;
+
+    var rbyte = 0;
+    var rlen = 0;
+    var one_char = "";
+    var str2 = "";
+
+
+    for(var i = 0; i < str_len; i++) {
+        one_char = str.charAt(i);
+        
+        if(escape(one_char).length > 4) {
+        	rbyte += 3; //한글2Byte
+        } else {
+        	rbyte++; //영문 등 나머지 1Byte
+        }
+
+        if(rbyte <= maxByte) {
+        	rlen = i+1;   //return할 문자열 갯수
+        }
+     }
+		
+     if(rbyte > maxByte) {
+	   	 // alert("한글 "+(maxByte/2)+"자 / 영문 "+maxByte+"자를 초과 입력할 수 없습니다.");
+	     alert("최대 " + maxByte + "byte를 초과할 수 없습니다.")
+	   	 str2 = str.substr(0,rlen);                                  //문자열 자르기
+	  	 obj.value = str2;
+	   	 fnChkByte(obj, maxByte);
+     }
 }
 
 // 주소 API 관련 스크립트
@@ -50,43 +80,43 @@ var goPopup = function(){
 	}
 
 $(document).ready(function() {
+	
+	// 각 엘리먼트 오류 창 숨김
+	$("#alert-success").hide(); 
+	$("#alert-danger").hide(); 
+	$("#phone-success").hide(); 
+	$("#phone-danger").hide();
+	$("#idCheckSuccess").hide(); 
+	$("#idCheckFail").hide();
+	$("#idYes").hide();
+	$("#nickCheckSuccess").hide(); 
+	$("#nickCheckFail").hide();
+	$("#nickYes").hide();
+	$("#idLengthFail").hide();
+	$("#nicknameLengthFail").hide();
+	$("#passwordLengthFail").hide();
+	$("#inUse").hide();
+	$("#null").hide();
+	$("#noUse").hide();
+	
+	
+	// 비밀번호 일치 확인
+	$("input").keyup(function() {  
+		var pwd1=$("#user_password").val(); 
+		var pwd2=$("#confirmPassword").val(); 
 		
-		// 각 엘리먼트 오류 창 숨김
-		$("#alert-success").hide(); 
-		$("#alert-danger").hide(); 
-		$("#phone-success").hide(); 
-		$("#phone-danger").hide();
-		$("#idCheckSuccess").hide(); 
-		$("#idCheckFail").hide();
-		$("#idYes").hide();
-		$("#nickCheckSuccess").hide(); 
-		$("#nickCheckFail").hide();
-		$("#nickYes").hide();
-		$("#idLengthFail").hide();
-		$("#nicknameLengthFail").hide();
-		$("#passwordLengthFail").hide();
-		$("#inUse").hide();
-		$("#null").hide();
-		$("#noUse").hide();
-		
-		
-		// 비밀번호 일치 확인
-		$("input").keyup(function() {  
-			var pwd1=$("#user_password").val(); 
-			var pwd2=$("#confirmPassword").val(); 
-			
-			if(pwd1 != "" || pwd2 != "") { 
-				if(pwd1 == pwd2) { 
-					$("#alert-success").show(); 
-					$("#alert-danger").hide(); 
-					$("#btn_add").removeAttr("disabled"); 
-				} else { 
-					$("#alert-success").hide(); 
-					$("#alert-danger").show(); 
-					$("#btn_add").attr("disabled", "disabled"); 
-				} 
-			}   
-		}); 
+		if(pwd1 != "" || pwd2 != "") { 
+			if(pwd1 == pwd2) { 
+				$("#alert-success").show(); 
+				$("#alert-danger").hide(); 
+				$("#btn_add").removeAttr("disabled"); 
+			} else { 
+				$("#alert-success").hide(); 
+				$("#alert-danger").show(); 
+				$("#btn_add").attr("disabled", "disabled"); 
+			} 
+		}   
+	}); 
 		
 		// 휴대폰 인증 관련 AJAX 
 	$("#user_phone").keyup(function() { 
@@ -154,6 +184,13 @@ $(document).ready(function() {
 	$("#idConfirm").click(function() {
 		$("#btn_add").attr("disabled", "disabled");
 		var user_id = $("#user_id").val();
+		var kcode = event.keyCode;
+		
+		if(user_id.search(replaceChar) != -1 || user_id.search(kcode) == 32) {
+			alert('아이디에 특수문자는 입력할 수 없습니다.');
+			$("#user_id").focus();
+			return false;
+		}
 		
 		$.ajax({
 		    type: "GET",
@@ -190,6 +227,13 @@ $(document).ready(function() {
 	$("#nickCheck").click(function() {
 		$("#btn_add").attr("disabled", "disabled");
 		var user_nickname = $("#user_nickname").val();
+		var kcode = event.keyCode;
+		
+		if(user_nickname.search(replaceChar) != -1 || user_nickname.search(kcode) == 32) {
+			alert('닉네임에 특수문자는 입력할 수 없습니다.');
+			$("#user_nickname").focus();
+			return false;
+		}
 		
 		$.ajax({
 		    type: "GET",
@@ -245,6 +289,7 @@ $(document).ready(function() {
 	});	
 	
 	$('#user_nickname').on("blur keyup", function() {
+		fnChkByte(this, "24");
 		if ($(this).val().length < 2 ) {
 			$("#nicknameLengthFail").show();
 			$("#nickCheck").attr("disabled", "disabled");
@@ -254,51 +299,16 @@ $(document).ready(function() {
 		}
 		
   });	
-	// 글자 수 제한 닉네임
-  $('#user_nickname').blur(function() {
-	  $("#btn_add").attr("disabled", "disabled");
+	// 글자 수 제한 이름
+	$("#user_name").keyup(function() { 
+		$("#btn_add").attr("disabled", "disabled"); 
 		
-    var thisObject = $(this);
-    
-    var limit = thisObject.attr("limitbyte"); //제한byte를 가져온다.
-    var str = thisObject.val();
-    var strLength = 0;
-    var strTitle = "";
-    var strPiece = "";
-    var check = false;
-            
-    for (i = 0; i < str.length; i++){
-        var code = str.charCodeAt(i);
-        var ch = str.substr(i,1).toUpperCase();
-        //체크 하는 문자를 저장
-        strPiece = str.substr(i,1)
-        
-        code = parseInt(code);
-        
-        if ((ch < "0" || ch > "9") && (ch < "A" || ch > "Z") && ((code > 255) || (code < 0))) {
-            strLength = strLength + 3; //UTF-8 3byte 로 계산
-        } else {
-            strLength = strLength + 1;
-        }
-        
-        if(strLength>limit){ //제한 길이 확인
-            check = true;
-            break;
-        }else{
-            strTitle = strTitle+strPiece; //제한길이 보다 작으면 자른 문자를 붙여준다.
-        }
-        
-    }
-    
-    if(check){
-    	alert('영문, 숫자 최대 24글자 한글 최대 8글자까지 입력 가능합니다.');
-    }
-    
-    thisObject.val(strTitle);
-    
-});
+		fnChkByte(this, "30");
+		
+	}); 	
 	
 });
+
 </script>
 <title>Insert title here</title>
 </head>
@@ -390,6 +400,10 @@ $(document).ready(function() {
 .text-primary {
 	margin-left: 42px;
 }
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 </style>
 <body>
 <u:mainNav/>
@@ -408,7 +422,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-social-person-outline prefix"></i> -->
 	          <i class="material-icons prefix">portrait</i>
-	          <input id="user_id" name="user_id" type="text" onKeyPress="checkSpacebar(this);" onpaste="return false;" required/>
+	          <input id="user_id" name="user_id" type="text" maxlength="20"  onKeyUp="checkSpacebar(this);" onpaste="return false;" required/>
 	          <button type="button" id="idConfirm" class="btn waves-effect waves-light col s3">중복확인</button>
 	          <label for="user_id">아이디</label>
 	          <small class="text-danger" id="idLengthFail">영문 숫자 최소 4글자 이상 입력해주세요.</small>
@@ -422,7 +436,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-social-person-outline prefix"></i> -->
 	          <i class="material-icons prefix">account_circle</i>
-	          <input id="user_name" name="user_name" type="text" onKeyPress="checkSpacebar(this);" onpaste="return false;" required/>
+	          <input id="user_name" name="user_name" type="text" onKeyUp="checkSpacebar(this);" onpaste="return false;" required/>
 	          <label for="user_name">이름</label>
 	        </div>
 	      </div>
@@ -431,7 +445,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-social-person-outline prefix"></i> -->
 	          <i class="material-icons prefix">person_outline</i>
-	          <input id="user_nickname" name="user_nickname" type="text" style="cursor: auto;" onKeyPress="checkSpacebar(this);" onpaste="return false;" required />
+	          <input id="user_nickname" name="user_nickname" type="text" style="cursor: auto;" onKeyUp="checkSpacebar(this);" onpaste="return false;" required />
 	          <button type="button" id="nickCheck" class="btn waves-effect col s3">중복확인</button>
 	          <label for="user_nickname">닉네임</label>
 	          <small class="text-danger" id="nicknameLengthFail">최소 2글자 이상 입력해주세요.</small>
@@ -446,7 +460,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
 	          <i class="material-icons prefix">vpn_key</i>
-	          <input id="user_password" id="user_password" name="user_password" type="password" onKeyPress="checkSpacebar(this);" onpaste="return false;" required />
+	          <input id="user_password" id="user_password" name="user_password" type="password" onpaste="return false;" required />
 	          <label for="user_password">패스워드</label>
 	          <small class="text-danger" id="passwordLengthFail">최소 4글자 이상 입력해주세요.</small>
 	        </div>
@@ -476,7 +490,7 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
 	          <i class="material-icons prefix">phone_android</i>
-	          <input id="user_phone" name="user_phone" type="text" onKeyPress="checkSpacebar(this);" onpaste="return false;" required/>
+	          <input id="user_phone" name="user_phone" type="number" onKeyUp="checkSpacebar(this);" onpaste="return false;" required/>
 	          <button type="button" id="zip_code_btn" class="btn waves-effect waves-light col s3">인증하기</button>
 	          <label for="user_phone">'-' 제외하고 입력</label>
 	          <small class="text-primary" id="noUse">인증번호가 전송되었습니다.</small>
@@ -489,11 +503,11 @@ $(document).ready(function() {
 	        <div class="input-field col s12">
 	          <!-- <i class="mdi-action-lock-outline prefix"></i> -->
 	          <i class="material-icons prefix">vpn_key</i>
-	          <input id="phoneConfirm" name="phoneConfirm" type="text" onKeyPress="checkSpacebar(this);" onpaste="return false;" required/>
+	          <input id="phoneConfirm" name="phoneConfirm" type="number" onKeyUp="checkSpacebar(this);" onpaste="return false;" required/>
 	          <button type="button" id="phoneConfirmBtn" class="btn waves-effect waves-light col s2">확인</button>
 	          <label for="phoneConfirm">인증번호 입력</label>
-	          <small class="text-success" id="phone-success">인증되었습니다.</small> 
-			 			<small class="text-danger" id="phone-danger">인증 번호가 일치하지 않습니다.</small>
+	          <small class="text-success" style="margin-left: 43px;" id="phone-success">인증되었습니다.</small> 
+			 			<small class="text-danger" style="margin-left: 43px;" id="phone-danger">인증 번호가 일치하지 않습니다.</small>
 	        </div>
 	      </div>
 	      

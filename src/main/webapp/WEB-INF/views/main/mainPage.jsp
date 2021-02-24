@@ -276,10 +276,10 @@ $(document).ready(function() {
 		}
 	}
 	// 채팅이 많아져 스크롤바가 넘어가더라도 자동적으로 스크롤바가 내려가게함
-	window.setInterval(function() {
+/* 	window.setInterval(function() {
 		var elem = document.getElementById('messageWindow');
 		elem.scrollTop = elem.scrollHeight;
-	}, 0);
+	}, 0); */
 </script>
 </body>
 </html>
