@@ -112,6 +112,15 @@ public class QaController {
 		if (board.getQa_content().isEmpty() || board.getQa_content() == null) {
 			errors.put("noContent", Boolean.TRUE);
 		}
+		// 제목의 값이 스페이스만 있을때
+		if (board.getQa_title().trim().isEmpty()) {
+			errors.put("noSpace_title", Boolean.TRUE);
+		}
+		// 내용의 값이 스페이스만 있을때
+		if (board.getQa_content().trim().isEmpty()) {
+			errors.put("noSpace_content", Boolean.TRUE);
+		}
+		
 		
 		if(!errors.isEmpty()) {
 			rttr.addFlashAttribute("errors", errors);
@@ -178,10 +187,6 @@ public class QaController {
 	public String get(@RequestParam("qa_seq") int qa_seq, UserVO user,
 			@ModelAttribute("criteria") Criteria cri, Model model,
 			HttpSession session, RedirectAttributes rttr) {
-		// 게시물 가져오기
-		// 쿼리문으로 붙어서 감
-		//UserVO user_vo = user_service.getUser(user.getUser_id());
-		//System.out.println(user_vo.getUser_address());
 		
 		QaVO vo = service.get(qa_seq);
 		// 게시물의 qa_secret값이 공개 일경우
