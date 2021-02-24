@@ -12,9 +12,9 @@
     font-size: 15px;
     border: none;
     background: #4a4a4a;
-    padding: 0px 30px;
-    margin: 0 0px;
-    line-height: 36px;
+    padding: 0px 38px;
+    margin: 3px 0px;
+    line-height: 38px;
     float: right;
     border-radius: 3px;
     margin-left:414px;
@@ -140,23 +140,9 @@ thead {
 			});
 </script>
 <script>
-	//글쓰기 버튼 로그인 체크 
-	$(document).ready(function() {
-		$("#btn_add").click(function(e) {
-			e.preventDefault();
-			if (userId == "") {
-				alert("로그인후 이용하세요");
-				location.href = "${root}/user/login";
-			} else {
-				location.href = "${root}/freeboard/register";
-			}
-		});
-	});
-</script>
-<script>
 	//검색 버튼 유효성체크
 	$(document).ready(function() {
-		$("#searchButton").click(function() {
+		$("#searchButton").click(function(e) {
 			var blank_pattern = /[\s]/g;
 				if( blank_pattern.test($("#searchBox").val()) == true){
 					alert('검색어를 입력해 주세요.');
@@ -238,7 +224,11 @@ thead {
 		      <input type="hidden" name="pageNum" value="1" />
 		      <input type="hidden" name="amount" value="${pageMaker.cri.amount }" />
 		      <button id="searchButton" class="btn my-2 my-sm-0 ml-3" type="submit" >검색</button>
+		    	</form>
+		    	<form action="${root }/freeboard/register">
+		      <c:if test="${authUser!=null }">
 				<button id="btn_add">글쓰기</button>
+		      </c:if>
 		    	</form>
 		   </div>
 	
