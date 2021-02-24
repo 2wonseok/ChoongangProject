@@ -70,10 +70,10 @@ var userSeq = '${authUser.user_seq}';
 			e.preventDefault(); // 전송버튼 막기
 			
 				/*비어있으면 메세지넣고모달창호출  */
-				if ($("#product_name").val() == ""){
+				if ($("#product_name").val().trim() == ""){
 					message = "상품이름 항목이 비어있음";
 				} else
-				if ($("#product_info").val() == ""){
+				if ($("#product_info").val().trim() == ""){
 					message = "상품정보 항목이 비어있음";
 				} else {
 					message = null; //다 차있으면 message가 null임
@@ -83,14 +83,14 @@ var userSeq = '${authUser.user_seq}';
 					var element = $(this).val();
 					var element2 = Math.floor(element);
 					
-					console.log(element);
-					console.log(element2);
-					
 					if(element != element2){
 						message = "수량 또는 가격에 소수점이 포함되어있음";
 					}
 					if(element <= 0){
 						message = "수량 또는 가격이 0 이하임";
+					}
+					if(element.toString().length > 19){
+						message = "수량 또는 가격의 자릿수가 너무 큽니다.";
 					}
 				});
 				console.log(message);

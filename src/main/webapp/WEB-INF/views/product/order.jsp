@@ -201,7 +201,6 @@ p {
 </style>
 <body>
 <u:mainNav/>
-
 <c:choose> 
 	<c:when test="${authUser != null }">
 		<div class="container">
