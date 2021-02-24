@@ -82,7 +82,7 @@
 		});
 	}); 
 	
-	 $(document).ready(function() {
+	 /* $(document).ready(function() {
 			$("#btn_add").click(function(e) {
 				e.preventDefault();
 				
@@ -91,11 +91,12 @@
 					$("#modify-form").submit();
 				}
 			})
-			 });
+		}); */
 	
 </script>
+
 <script>
-$(document).ready(function (){
+$(document).ready(function(){
 	$('#btn_add').click(function(){
 			var revArr = ["rev_title","rev_content"];
 			//입력 값 널 체크
@@ -105,7 +106,7 @@ $(document).ready(function (){
 					alert('제목 또는 내용 을 모두 입력해 주세요.');
 					$('#'+revArr[i]).focus();
 					return false;
-				}
+				} 
 			}
 			//전송
 			$("#modify-form").submit();
@@ -130,9 +131,9 @@ $(document).ready(function (){
 			
 	<form id="modify-form" action="${modifyLink}" method="post" enctype="multipart/form-data">
     <c:if test="${errors.noCategory }">
-	<small class="form-text text-muted">
+	<!-- <small class="form-text text-muted">
 			카테고리를 입력하세요
-	</small>
+	</small> -->
 	</c:if>
 	<%-- <input type="text" name="rev_category" class="form-group" value="${category }"/> --%> 
 	
@@ -140,7 +141,7 @@ $(document).ready(function (){
         <label for="wr_subject" class="sound_only">카테고리<strong>필수</strong></label>
         
         <div id="autosave_wrapper write_div" style="margin-bottom:8px;">
-            <select name="rev_category" class="form-control" style="width:160px;" required>
+            <select name="rev_category" class="form-control required" style="width:160px;" >
 				<option value="${RevBoard.rev_category }">카테고리 선택</option>
 				<option value="1">모자</option>
 				<option value="2">신발</option>
@@ -165,7 +166,7 @@ $(document).ready(function (){
         <label for="wr_content" class="sound_only">내용<strong>필수</strong></label>
         <div class="wr_content ">
                         <span class="sound_only">웹에디터 시작</span>
-<textarea name="rev_content" id="rev_content" class="rm_input full_input required" required maxlength="65536" style="width:100%;height:300px" placeholder="내용을 입력해 주세요."><c:out value="${RevBoard.rev_content }" /></textarea>
+<textarea name="rev_content" id="rev_content" class="rm_input full_input required" required maxlength="1000" style="width:100%;height:300px" placeholder="내용을 입력해 주세요."><c:out value="${RevBoard.rev_content }" /></textarea>
 <span class="sound_only">웹 에디터 끝</span>                    </div>
         <input type="text" name="rev_writer" class="form-group" value="${authUser.user_id }" hidden/>
     </div>

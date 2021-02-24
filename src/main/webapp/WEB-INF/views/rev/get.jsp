@@ -344,13 +344,18 @@ $("#reply-submit-button").click(function() {
 		   	// 댓글 목록 가져오기 실행
 				 showList(); 
 				// location.reload(); 새로고침하는 자바스크립트 코드
+				
 				alert("댓글 등록에 성공하였습니다.");
-				location.reload();
+				
+				
+				
+				
 				
 	},
 			function() {
-		if (reply_content == null || reply_content == "") {
+		if (reply_content == null || $.trim(reply_content) == "") {
 			alert("내용을 꼭 적어주세요!");
+			location.reload();
 		}
 			
 	});
@@ -409,6 +414,12 @@ $("#reply_list").on("click", "li",  function() { // on메소드를 이용해서 
 					alert("댓글을 수정하였습니다.");
 					$("#modify-reply-modal").modal("hide");		
 					showList();
+				},
+				function() {
+					if (reply_content == null || $.trim(reply_content) == "") {
+						alert("내용을 꼭 적어주세요!");
+						location.reload();
+					}
 				}); 
 			});
 			
