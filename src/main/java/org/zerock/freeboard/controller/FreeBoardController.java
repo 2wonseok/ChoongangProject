@@ -99,7 +99,7 @@ public class FreeBoardController {
 		// 댓글에 대한 조회
 		service.addCnt(free_seq);
 		model.addAttribute("freeVO", freeVO);
-		System.out.println(freeVO.getFree_readCnt());
+		System.out.println(freeVO);
 	}
 
 	@PostMapping("/modify")
@@ -107,6 +107,9 @@ public class FreeBoardController {
 		if (service.modify(freeVO)) {
 			rttr.addFlashAttribute("result", "success");
 			rttr.addFlashAttribute("message", freeVO.getFree_seq() + "번 글이 수정되었습니다.");
+		} else {
+			rttr.addFlashAttribute("result", "success");
+			rttr.addFlashAttribute("message", "수정실패");
 		}
 		return "redirect:/freeboard/list";
 	}

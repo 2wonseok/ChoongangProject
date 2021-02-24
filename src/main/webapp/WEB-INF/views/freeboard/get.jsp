@@ -401,10 +401,16 @@ var user_id = "${authUser.user_id}";
 				<p><strong>NO : </strong>${freeVO.free_seq }</p>
 				<p><strong>조회수 : </strong>${freeVO.free_readCnt }</p>
 				<p><strong>작성자(닉네임) : </strong>${freeVO.free_nickname}</p>
+			<c:choose>
+				<c:when test="${empty freeVO.free_updatedate}">
 				<p><strong>작성일</strong>
 				<fmt:formatDate pattern="yyyy-MM-dd" value="${freeVO.free_regdate}" /></p>
+				</c:when>
+			<c:otherwise>
 				<p><strong>수정일</strong>
 				<fmt:formatDate pattern="yyyy-MM-dd" value="${freeVO.free_updatedate}" /></p>
+			</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 			<!-- 본문 -->
@@ -439,7 +445,7 @@ var user_id = "${authUser.user_id}";
 		<c:if test="${authUser != null && authUser.user_id == freeVO.free_writer}">
 			<button class="btn_add" id="remove-btn">삭제</button>
 			<input hidden="hidden" name="free_seq" value="${freeVO.free_seq}">
-			<a href="${ modifyLink}?free_seq=${freeVO.free_seq}" class="btn_add"> 수정 </a>
+			<a href="${ modifyLink}" class="btn_add"> 수정 </a>
 		</c:if>
 			<a href="${listLink}" class="btn_add">목록으로 </a>		
 		</form>

@@ -20,6 +20,7 @@
 	<script>
 	 $(document).ready(function() {
 			$("#modify-btn").click(function(e) {
+				e.preventDefault();
 				var freeArr = ["free_title","free_content"];
 
 				//입력 값 널 체크
@@ -31,7 +32,6 @@
 						return false;
 					}
 				}
-				e.preventDefault();
 				
 				var modify = confirm('정말 수정하시겠습니까?');
 				if (modify) {
@@ -89,6 +89,7 @@
 				<h1>게시물 수정</h1>
 				<form id="modify-form" method="post" action="${root }/freeboard/modify">
 					<div class="form-group">
+						<input name="free_seq" hidden="hidden" value="${freeVO.free_seq }">
 						<label for="input1">제목</label> <input
 							value='<c:out value="${freeVO.free_title }" />' name="free_title"
 							type="text" class="form-control" maxlength="50" style =width:1000px; id="free_title" placeholder="제목을 입력 하세요." >
@@ -109,7 +110,7 @@
 						<input type="hidden" value="${criteria.amount }" name="amount">
 						<input type="hidden" value="${criteria.type }" name="type">
 						<input type="hidden" value="${criteria.keyword }" name="keyword">
-						<button id ="modify-btn"type="submit" class="btn btn-primary">수정</button>
+						<button id ="modify-btn"type="button" class="btn btn-primary">수정</button>
 						<a href="${root}/freeboard/list"  id="goList">목록</a>
 				</form>
 		</section>

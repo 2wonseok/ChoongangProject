@@ -93,10 +93,31 @@ var userSeq = '${authUser.user_seq}';
 						message = "수량 또는 가격의 자릿수가 너무 큽니다.";
 					}
 				});
-				console.log(message);
+				
+				/* 바이트리턴하는 함수 object.byteLength()로 사용*/
+				String.prototype.byteLength = function() {
+				    var l= 0;
+				     
+				    for(var idx=0; idx < this.length; idx++) {
+				        var c = escape(this.charAt(idx));
+				         
+				        if( c.length==1 ) l ++;
+				        else if( c.indexOf("%u")!=-1 ) l += 2;
+				        else if( c.indexOf("%")!=-1 ) l += c.length/3;
+				    }
+				    return l;
+				};
+				/* 제목 내용 상품옵션이름 바이트제한*/
+				$("input[name=po_name], input[name=product_name], textarea[name=product_info]").each(function(){
+					var element = $(this).val();
+					console.log(element.byteLength());
+					if(element.byteLength() > 255){
+						message = "글자 길이가 너무 깁니다";
+					}
+				});
 				
 				checkModal(message);
- 	 		if(message == null){
+	  	 		if(message == null){
 				$("#form_id").submit();
 			}
 			
@@ -311,135 +332,7 @@ table.type05 td {
 	
   </section>
 </div>
-<%-- <div class="container">
-	<section id="container">
-	
-		<h3>상품 등록</h3>
-	<div class="container col-8 d-flex justify-content-center">
-		<div class="row">
-			
-			<div class="col-md-6, col-md-offset-3">
-				
-					<form id="form_id" action="/product/register" method="post" enctype="multipart/form-data">
-						<table class="type05">
-							<tbody>
-								<tr>
-									<td>
-										<h3>상품등록</h3>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">상품 이름 *</th>
-									<td><input class="inputTop" id="product_name" name="product_name" type="text" value="${product.product_name }"></td>
-								</tr>
-								<tr>
-									<th scope="row">상품 판매자(Nickname)</th><!--value=authUser로 넣을 예정  -->
-									<td><input class="inputTop" id="user_nickname" name="user_nickname" type="text" value="${authUser.user_nickname }" style="background-color:silver;"readonly>
-										<input id="product_seller" name="product_seller" type="text" value="${authUser.user_seq }" hidden="hidden">
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">상품 카테고리 선택 *</th>
-									<td> 
-										<div class="d-flex">
-											<select id="categoryMainSelectBox">
-												<option>===대분류===</option>
-												<c:forEach items="${ categoryMainList}" var="categoryMain" >
-													<option value="${categoryMain }" >${categoryMain }</option>
-												</c:forEach>
-											</select>
-											<select id="categorySubSelectBox">
-												<option>===소분류===</option>
-											</select>
-											<input id="categorySeq" name="category_seq" type="text" value="0" hidden="hidden">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">상품 설명 *</th>
-									<td><textarea class="inputTop" style="resize: none;" id="product_info" name="product_info" rows="15" cols="50">${product.product_info }</textarea></td>
-								</tr>
-							</tbody>
-						</table>
-						
-						
-						<h3 class="ml-2">상품 옵션 (첫번째 입력항목이 메인에 띄워집니다.)</h3>
-						
-						<table class="type06">
-							<tbody id="tbody">
-								<tr>
-									<th>종류</th>
-									<td><input class="input1" type="text" name="po_name"/></td>
-									<th>수량</th>
-									<td><input class="input2" type="number" min="1" name="po_quantity"/></td>
-									<th>개당 가격</th>
-									<td><input class="input3" type="number" min="1" name="po_price"/></td>
-									<th></th>
-									<td><button id="addOption_btn" type="button">옵션 추가</button></td>
-									<td><button id="removeOption_btn" type="button">옵션 제거</button></td>
-								</tr>
-							</tbody>
-						</table>
-						
-						<!--이미지첨부시작  -->
-							<div class = "input_wrap">
-								 <input type="file" name="upload" id="input_imgs" multiple="multiple" accept="image/*"/>
-							</div>	
-							<div class="imgs_wrap">
-								<img id="img"/>
-							</div>
-						
-							<script>
-							  
-							  $("#input_imgs").on("change", handleImgFileSelect);
 
-							  //이미지셀렉트
-							  function handleImgFileSelect(e){
-									//이미지 정보를 초기화
-									$(".imgs_wrap").empty();
-									
-									var files = e.target.files;
-									var filesArr = Array.prototype.slice.call(files);
-								
-									filesArr.forEach(function(f){
-										if(!f.type.match("image.*")){
-											
-											// 이전에 쓰던 모달창 복붙한거로나오게
-											var message = "그림파일형석만 허용됩니다";
-											function checkModal(message){
-												if (message && history.state == null) {
-													$("#myModal .modal-body p").html(message)
-													$("#myModal").modal("show");
-												}
-											}
-											checkModal(message);
-											
-											return;
-										}
-										
-										var reader = new FileReader();
-										reader.onload = function(e){
-											
-											 var html = "<div><img width=\"500\" src=\""+e.target.result+"\"></div>";
-											$(".imgs_wrap").append(html);
-										
-										}
-										reader.readAsDataURL(f);
-									});
-							 }
-						 	</script>
-						<!--이미지첨부끝 -->
-						
-						<button id="btn_submit" class="btn_add">상품 등록하기</button>
-					</form>
-				</div>
-							
-			<hr>
-		</div>
-	</div>
-	
-  </section>
-</div> --%>
 	<!--모달창시작-->
 	<div id="myModal" class="modal" tabindex="-1">
 	  <div class="modal-dialog">

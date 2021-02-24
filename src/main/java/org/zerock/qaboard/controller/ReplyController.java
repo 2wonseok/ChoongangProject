@@ -76,6 +76,7 @@ public class ReplyController {
 	public ResponseEntity<String> create_admin(@RequestBody QaReplyVO vo) {
 
 		int insertCount = reply_service.register_admin(vo);
+		
 
 		if (insertCount == 1) {
 			return new ResponseEntity<String>("success /new", HttpStatus.OK);

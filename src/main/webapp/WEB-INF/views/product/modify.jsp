@@ -70,7 +70,7 @@ var userSeq = '${authUser.user_seq}';
 		/*모달창함수설정(+redirect시 넘어온 메세지도 출력)  */
 		var message = '${message}';
 		checkModal(message);
-		history.replaceState({}, null, null);
+		/* history.replaceState({}, null, null); */
 		function checkModal(message){
 			if (message && history.state == null) {
 				$("#myModal .modal-body p").html(message)
@@ -119,14 +119,53 @@ var userSeq = '${authUser.user_seq}';
 			e.preventDefault(); // 전송버튼 막기
 			
 				/*비어있으면 메세지넣고모달창호출  */
-				if ($("#product_name").val() == ""){
+				if ($("#product_name").val().trim() == ""){
 					message = "상품이름 항목이 비어있음";
 				} else
-				if ($("#product_info").val() == ""){
+				if ($("#product_info").val().trim() == ""){
 					message = "상품정보 항목이 비어있음";
 				} else {
 					message = null; //다 차있으면 message가 null임
 				}
+				
+				/*수량가격에 문제있을 시 안넘어감*/
+				$("input[name=po_quantity], input[name=po_price]").each(function(){
+					var element = $(this).val();
+					var element2 = Math.floor(element);
+					
+					if(element != element2){
+						message = "수량 또는 가격에 소수점이 포함되어있음";
+					}
+					if(element <= 0){
+						message = "수량 또는 가격이 0 이하임";
+					}
+					if(element.toString().length > 19){
+						message = "수량 또는 가격의 자릿수가 너무 큽니다.";
+					}
+				});
+				
+				/* 바이트리턴하는 함수 object.byteLength()로 사용*/
+				String.prototype.byteLength = function() {
+				    var l= 0;
+				     
+				    for(var idx=0; idx < this.length; idx++) {
+				        var c = escape(this.charAt(idx));
+				         
+				        if( c.length==1 ) l ++;
+				        else if( c.indexOf("%u")!=-1 ) l += 2;
+				        else if( c.indexOf("%")!=-1 ) l += c.length/3;
+				    }
+				    return l;
+				};
+				/* 제목 내용 상품옵션이름 바이트제한*/
+				$("input[name=po_name], input[name=product_name], textarea[name=product_info]").each(function(){
+					var element = $(this).val();
+					console.log(element.byteLength());
+					if(element.byteLength() > 255){
+						message = "글자 길이가 너무 깁니다";
+					}
+				});
+				
 				checkModal(message);
 				
 				/* 송부전에 기존지운po_seq넘겨주기 */
@@ -140,7 +179,7 @@ var userSeq = '${authUser.user_seq}';
 			
 		})
 		
-	});
+});
 </script>
 
 <style>
@@ -306,7 +345,7 @@ table.type05 td {
 										if(!f.type.match("image.*")){
 											
 											// 이전에 쓰던 모달창 복붙한거로나오게
-											var message = "그림파일형석만 허용됩니다";
+											var message = "그림파일형식만 허용됩니다";
 											function checkModal(message){
 												if (message && history.state == null) {
 													$("#myModal .modal-body p").html(message)
@@ -357,7 +396,6 @@ table.type05 td {
 	  </div>
 	</div>
 	<!--모달창끝-->
-
 <u:footer/>
 </body>
 </html>

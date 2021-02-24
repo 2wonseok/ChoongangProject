@@ -84,7 +84,19 @@ public class ProductServiceImpl implements ProductService {
 			int order_poseq = vo.getOrder_poseq();
 			int order_quantity = vo.getOrder_quantity();
 			mapper.updatePOquantityByOrder(order_poseq,order_quantity);
+			
+			/* ProductOptionVO의 po_quantity가 모두 0이면 그 product의 status를 1로변경(판매종료) */
+			int product_seq = vo.getOrder_productseq();
+			List<ProductOptionVO> list = mapper.getProductOptionList(product_seq);
+			int cnt = 0;
+			for(ProductOptionVO poVO: list) {
+				cnt += poVO.getPo_quantity();
+			}
+			if (cnt == 0) {
+				mapper.finishSelling(product_seq);
+			}
 		}
+		
 		int presentPoint = userMapper.getUserSeq(user_seq).getUser_point();
 		int changedPoint =presentPoint - Integer.parseInt(usePoint); 
 		mapper.userPointUpdate(user_seq, changedPoint);
@@ -99,10 +111,20 @@ public class ProductServiceImpl implements ProductService {
 			count += mapper.directOrder(vo);
 			int order_poseq = vo.getOrder_poseq();
 			int order_quantity = vo.getOrder_quantity();
-			System.out.println("요기"+order_poseq);
-			System.out.println("요기"+order_quantity);
 			mapper.updatePOquantityByOrder(order_poseq,order_quantity);
+			
+			/* ProductOptionVO의 po_quantity가 모두 0이면 그 product의 status를 1로변경(판매종료) */
+			int product_seq = vo.getOrder_productseq();
+			List<ProductOptionVO> list = mapper.getProductOptionList(product_seq);
+			int cnt = 0;
+			for(ProductOptionVO poVO: list) {
+				cnt += poVO.getPo_quantity();
+			}
+			if (cnt == 0) {
+				mapper.finishSelling(product_seq);
+			}
 		}
+		
 		int presentPoint = userMapper.getUserSeq(user_seq).getUser_point();
 		int changedPoint =presentPoint - Integer.parseInt(usePoint); 
 		mapper.userPointUpdate(user_seq, changedPoint);
