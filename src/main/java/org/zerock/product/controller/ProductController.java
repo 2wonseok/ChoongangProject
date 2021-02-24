@@ -563,7 +563,6 @@ public class ProductController {
 
 	@GetMapping("/order")
 	public void order(@ModelAttribute("orderList") List<OrderVO> orderList, Model model) {
-
 		model.addAttribute("orderList", orderList);
 	}
 

@@ -235,7 +235,7 @@ $(document).ready(function(){
 	   			<input hidden="hidden" id="categorySub" name="categorySub" value="${pageDTO.cri.categorySub }"/>            	
 	        </form>
 	  			<button id="latest_btn" class="btn" type="button">최신순</button>
-	  			<button id="like_btn" class="btn" type="button">찜많은순</button>
+	  			<button id="like_btn" class="btn" type="button">좋아요순</button>
 	  			<button id="priceLow_btn" class="btn" type="button">가격낮은순</button>
 	  			<button id="priceHign_btn" class="btn" type="button">가격높은순</button>
 	  			<button id="readcnt_btn" class="btn" type="button">조회순</button>
