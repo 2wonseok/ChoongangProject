@@ -46,6 +46,25 @@
 				
 			});
 </script>
+
+<script>
+$(document).ready(function (){
+	$('#btn_submit').click(function(){
+			var revArr = ["rev_title","rev_content"];
+			//입력 값 널 체크
+			for(var i=0;i<revArr.length;i++){
+				//alert(arr[i]);
+				if($.trim($('#'+revArr[i]).val()) == ''){
+					alert('제목 또는 내용 을 모두 입력해 주세요.');
+					$('#'+revArr[i]).focus();
+					return false;
+				}
+			}
+			//전송
+			$("#RevRegister").submit();
+	});
+});
+</script>
 <title>구매후기 글등록</title>
 <style type="text/css">
 #footdiv {
@@ -74,7 +93,7 @@
 		<div class="container">
 			<section id="container1">
 				<h3>게시글 쓰기</h3><br>
-				<form action="${root }/rev/register" method="POST" enctype="multipart/form-data"style="width:100%">
+				<form action="${root }/rev/register" id="RevRegister" method="POST" enctype="multipart/form-data"style="width:100%">
     
 			    <c:if test="${errors.noCategory }">
 					<small class="form-text text-muted">
@@ -101,7 +120,7 @@
     	<div class="bo_w_tit write_div">
         	<label for="wr_subject" class="sound_only">제목<strong>필수</strong></label>
         	<div id="autosave_wrapper write_div" style="margin-bottom:8px;">
-            	<input type="text" name="rev_title" value="${title }" maxlength="50" id="wr_subject" required="" class="frm_input full_input required" size="50"  placeholder="제목">
+            	<input type="text" id="rev_title"name="rev_title" value="${title }" maxlength="50" id="wr_subject" required="" class="frm_input full_input required" size="50"  placeholder="제목">
             </div>
     	</div>
 
@@ -109,7 +128,7 @@
         	<label for="wr_content" class="sound_only">내용<strong>필수</strong></label>
         	<div class="wr_content " style="margin-bottom:8px;">
                  <span class="sound_only">웹에디터 시작</span>
-			<textarea id="wr_content" name="rev_content" class="frm_input full_input required" value="" maxlength="65536" style="width:100%;height:300px" placeholder="내용을 입력해 주세요." required></textarea>
+			<textarea id="rev_content" name="rev_content" class="frm_input full_input required" value="" maxlength="65536" style="width:100%;height:300px" placeholder="내용을 입력해 주세요." required></textarea>
 			<span class="sound_only">웹 에디터 끝</span>                    </div>
         	<input type="text" name="rev_writer" class="form-group" value="${authUser.user_id }" hidden/>
     	</div>
@@ -192,7 +211,7 @@
  	<script>
 			alert('로그인 한 사람만 접근 가능합니다.');
 			location.href='${root}/rev/list';
-		</script>
+		</script> 
  </c:otherwise>
  </c:choose>
 </body>
