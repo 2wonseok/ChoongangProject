@@ -103,18 +103,25 @@ $(document).ready(function() {
 		position:fixed; 
 		width:130px; 
 		display:inline-block; 
-		top: 42%; /* 창에서 위에서 부터의 높이 */ 
+		top: 34%; /* 창에서 위에서 부터의 높이 */ 
 		background-color: transparent; margin:0; 
 }
 #_chatbox { 
-		overflow: scroll;
+		/* overflow: scroll; */
 		position:fixed; 
-		width:230px; 
+		width: 262px;
 		display:inline-block;
 		left: 5px; 
-		top: 56%; /* 창에서 위에서 부터의 높이 */ 
+		top: 45%; /* 창에서 위에서 부터의 높이 */ 
 		background-color: transparent; margin:0; 
 } 
+#messageWindow {
+		overflow: scroll;
+		height:250px; 
+		margin-left: 20px; 
+		position: fixed; 
+		top:45%;
+}
 </style>
 <body>
 <u:mainNav/>
@@ -209,13 +216,11 @@ $(document).ready(function() {
 </div>
 <c:if test="${authUser != null}">
 	<div id="_chatbox" style="display: none">
-		<fieldset>
-			<div id="messageWindow" style="height:250px; margin-left: 20px;"></div><br />
-			<div style="position: fixed; top:88%;">
-				<input id="inputMessage" type="text" onkeyup="enterkey()" />
-				<input type="submit" value="send" onclick="send()" />
-			</div> 
-		</fieldset>
+		<!-- <fieldset> -->
+			<div id="messageWindow"></div>
+				<input id="inputMessage" style="width: 180px; margin-top:258px;" type="text" onkeyup="enterkey()" />
+				<input type="submit" style="float:right; margin-top: 258px; margin-right: 29px;" value="send" onclick="send()" />
+		<!-- </fieldset> -->
 	</div>
 	<img class="chat" src="${root}/resources/chat.png" />
 </c:if>
@@ -236,7 +241,7 @@ $(document).ready(function() {
 <script type="text/javascript">
 	var textarea = document.getElementById("messageWindow");
 	//서버 ip주소 입력
-	var webSocket = new WebSocket('ws://140.238.30.15:8080/${root}/broadcasting');
+	var webSocket = new WebSocket('ws://localhost:8080/${root}/broadcasting');
 	var inputMessage = document.getElementById('inputMessage');
 	webSocket.onerror = function(event) {
 		onError(event)

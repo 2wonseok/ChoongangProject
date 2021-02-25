@@ -241,7 +241,7 @@ table.type05 td {
   <section id="container">
   
   		<h3>상품 정보 수정</h3>
-			<form id="form_id" action="/product/modify" method="post" enctype="multipart/form-data">
+			<form id="form_id" action="${root }/product/modify" method="post" enctype="multipart/form-data">
 				<input name="product_seq" type="number" value="${product.product_seq }" hidden="hidden">
 				<table class="type05">
 					<tbody>
