@@ -498,7 +498,7 @@ showList();
 		   
 		  $.ajax({
 			  method: "get",
-		      url: "/rev/like", 
+		      url: "${root}/rev/like", 
 		      dataType: "json",
 		      data: {rev_seq: rev_seq, user_seq: user_seq},
 		 	  success: function(res) {
@@ -541,7 +541,7 @@ showList();
 				   
 				  $.ajax({
 					  method: "get",
-				      url: "/rev/hate",
+				      url: "${root}/rev/hate",
 				      dataType: "json",
 				      data: {rev_seq: rev_seq, user_seq: user_seq}, 
 				      success: function(res){	

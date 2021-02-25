@@ -146,6 +146,19 @@ $(document).ready(function() {
     float: right;
     border-radius: 3px;
 	}
+#nickYes {
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    background: #747474;
+    padding: 0px 13px;
+    margin: 0 0px;
+    line-height: 34px;
+    float: right;
+    border-radius: 3px;
+    margin-right: 515px;
+    margin-top: -4px;
+}
 	#btn_add {
     color: #fff;
     font-size: 15px;
@@ -164,7 +177,7 @@ $(document).ready(function() {
     background: #1e263c;
     padding: 0px 25px;
     margin: 0 0px;
-    margin-top: -41px;
+    margin-top: -54px;
     line-height: 45px;
     float: right;
     border-radius: 3px;
@@ -263,10 +276,10 @@ $(document).ready(function() {
 						<tr>
 							<th>닉네임</th>
 							<td>
-								<input type="text" class="form-control" style="width:87%;" id="user_nickname" name="user_nickname" value="${read.user_nickname }"/>
-								<button type="button" class="btn_check" id="nickCheck">중복확인</button><br>
-						    <small class="text-dark" id="nickCheckSuccess">사용 가능합니다.</small>
-						    <button type="button" id="nickYes">확인</button>
+								<input type="text" class="form-control" style="width:83%; margin-bottom:12px;" id="user_nickname" name="user_nickname" value="${read.user_nickname }"/>
+								<button type="button" class="btn_check" id="nickCheck">중복확인</button>
+						    <small class="text-primary" id="nickCheckSuccess">사용 가능합니다.</small>
+						    <button type="button"  id="nickYes" >확인</button>
 						    <small class="text-danger" id="nickCheckFail">이미 사용중인 닉네임입니다.</small>
 							</td>
 						</tr>
@@ -277,7 +290,7 @@ $(document).ready(function() {
 						<tr>
 							<th>주소</th>
 							<td>
-								<input type="text" class="form-control" style="width:90%" name="user_address" id="addr" value="${read.user_address }"/>
+								<input type="text" class="form-control" style="width:87%" name="user_address" id="addr" value="${read.user_address }"/>
 								<button type="button" id="zip_code_btn" class="zip_code_btn" onclick="javascript:goPopup();">검색</button>
 							</td>
 						</tr>

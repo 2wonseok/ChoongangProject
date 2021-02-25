@@ -235,7 +235,7 @@ $(document).ready(function() {
 <script type="text/javascript">
 	var textarea = document.getElementById("messageWindow");
 	//서버 ip주소 입력
-	var webSocket = new WebSocket('ws://140.238.30.15:8080/broadcasting');
+	var webSocket = new WebSocket('ws://140.238.30.15:8080/${root}/broadcasting');
 	var inputMessage = document.getElementById('inputMessage');
 	webSocket.onerror = function(event) {
 		onError(event)
