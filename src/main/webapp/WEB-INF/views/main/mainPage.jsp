@@ -12,6 +12,7 @@
 <script>
 	var userId = "${authUser.user_id}";
 	var nickname = "${authUser.user_nickname}";
+	var appRoot = "${root}";
 </script>
 <script
   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -216,17 +217,17 @@ $(document).ready(function() {
 			</div> 
 		</fieldset>
 	</div>
-	<img class="chat" src="/resources/chat.png" />
+	<img class="chat" src="${root}/resources/chat.png" />
 </c:if>
 <script>
 	$(".chat").on({
 		"click" : function() {
 			if ($(this).attr("src") == "${root}/resources/chat.png") {
 				//채팅끌때 클릭할 이미지 
-				$(".chat").attr("src", "/resources/chathide.png");
+				$(".chat").attr("src", "${root}/resources/chathide.png");
 				$("#_chatbox").css("display", "block");
-			} else if ($(this).attr("src") == "/resources/chathide.png") {
-				$(".chat").attr("src", "/resources/chat.png");
+			} else if ($(this).attr("src") == "${root}/resources/chathide.png") {
+				$(".chat").attr("src", "${root}/resources/chat.png");
 				$("#_chatbox").css("display", "none");
 			}
 		}
