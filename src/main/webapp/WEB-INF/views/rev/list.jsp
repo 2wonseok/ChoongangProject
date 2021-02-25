@@ -192,7 +192,7 @@ thead {
 			<c:if test="${ sessionScope.authUser.user_id != null }">
 				<a id="btn_add" class="btn" href="${root }/rev/register">후기 작성</a>
 			</c:if>
-			<c:url value="${root }/rev/list" var="searchLink">
+			<c:url value="/rev/list" var="searchLink">
 				<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
 				<c:param name="pageNum" value="${cri.pageNum }" />
 				<c:param name="amount" value="${cri.amount }" />

@@ -646,14 +646,14 @@ showList();
 				<p>${RevBoard.rev_content }</p>
 			</div>
 		</div>
-		<c:url value="${root }/rev/modify" var="modifyLink">
+		<c:url value="/rev/modify" var="modifyLink">
 			<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
 			<c:param name="pageNum" value="${cri.pageNum }" />
 			<c:param name="amount" value="${cri.amount }" />
 			<c:param name="type" value="${cri.type }"/>
 			<c:param name="keyword" value="${cri.keyword }"/>
 		</c:url>
-		<c:url value="${root }/rev/list" var="listLink">
+		<c:url value="/rev/list" var="listLink">
 			<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
 			<c:param name="pageNum" value="${cri.pageNum }" />
 			<c:param name="amount" value="${cri.amount }" />

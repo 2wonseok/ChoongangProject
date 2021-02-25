@@ -121,7 +121,7 @@ $(document).ready(function(){
 	<c:when test="${authUser.user_grade == 0 || authUser.user_nickname eq RevBoard.rev_writer}">
 	<div class="container mt-5" style="width: 1000px">
 	<h3>게시글 수정</h3><br>
-	<c:url value="${root }/rev/modify" var="modifyLink">
+	<c:url value="/rev/modify" var="modifyLink">
 					<c:param name="rev_seq" value="${RevBoard.rev_seq }" />
 					<c:param name="pageNum" value="${cri.pageNum }" />
 					<c:param name="amount" value="${cri.amount }" />

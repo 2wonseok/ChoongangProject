@@ -501,7 +501,7 @@ $(document).ready(function() {
 				<p>${board.qa_content }</p>
 			</div>
 		</div>
-		<c:url value="${root }/qa/list" var="listLink">
+		<c:url value="/qa/list" var="listLink">
 			<c:param name="qa_seq" value="${board.qa_seq }" />
 			<c:param name="pageNum" value="${criteria.pageNum }" />
 			<c:param name="amount" value="${criteria.amount }" />

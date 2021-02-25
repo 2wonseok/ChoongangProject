@@ -102,7 +102,7 @@ html, body {
           <div class="input-field col s12 center">
             <!-- <img src="images/login-logo.png" alt="" class="circle responsive-img valign profile-image-login"/> -->
             <p class="center login-form-text">
-            	<img alt="noImg" src="/resources/logo/BCDLogo3.png" style="width:40%; height:40%;">
+            	<img alt="noImg" src="${root }/resources/logo/BCDLogo3.png" style="width:40%; height:40%;">
             </p>
           </div>
         </div>

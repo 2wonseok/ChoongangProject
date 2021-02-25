@@ -315,7 +315,7 @@ $(document).ready(function(){
 		<div class="row col-10 ml-4">
 		 	
 			<!-- 서치  -->
-				<c:url value="${root }/product/list" var="searchLink">
+				<c:url value="/product/list" var="searchLink">
 						<c:param name="product_seq" value="${product.product_seq }" />
 						<c:param name="pageNum" value="${cri.pageNum }" />
 						<c:param name="amount" value="${cri.amount }" />
