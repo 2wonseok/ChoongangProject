@@ -96,6 +96,8 @@
 			FROM tbl_order
 			WHERE
 				order_userseq = #{order_userseq}
+			AND 
+				order_status = 1		
 			)	
  			WHERE
 				rn BETWEEN (#{cri.pageNum} - 1) * #{cri.amount} + 1 AND #{cri.pageNum} * #{cri.amount}
