@@ -129,7 +129,7 @@ public class UserController {
 		return "redirect:/main/mainPage";
 	}
 	
-	@PostMapping("/userDelete") // 회원 삭제
+	@PostMapping("/userDelete") // 회원 삭제 (안 씀)
 	public String remove(@RequestParam int user_seq, Criteria cri, RedirectAttributes rttr) {
 		if (service.delete(user_seq)) {
 			rttr.addFlashAttribute("result", "deleteSuccess");
@@ -147,9 +147,15 @@ public class UserController {
 	@PostMapping("/userCheckDel") // 회원 선택 삭제
 	public String checkDel(@RequestParam("seq") ArrayList<Integer> seq, RedirectAttributes rttr) {
 		for (int no : seq) {
+			service.deleteGoodCheck(no);
+			service.deleteHateCheck(no);
+			
 			if (service.delete(no)) {
 				rttr.addFlashAttribute("result", "deleteSuccess");
 				rttr.addFlashAttribute("message", seq+"번 회원이 삭제되었습니다.");
+			} else {
+				rttr.addFlashAttribute("result", "deleteFail");
+				rttr.addFlashAttribute("message", "삭제 실패했습니다.");
 			}
 		}
 		return "redirect:/user/userList";

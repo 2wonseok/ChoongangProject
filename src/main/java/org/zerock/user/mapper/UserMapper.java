@@ -62,4 +62,9 @@ public interface UserMapper {
 	public ProductVO getProductInfo(int product_seq);
 	
 	public void orderDel(int order_seq);
+	
+	public void deleteGoodCheck(int user_seq);
+	
+	public void deleteHateCheck(int user_seq);
+	
 }

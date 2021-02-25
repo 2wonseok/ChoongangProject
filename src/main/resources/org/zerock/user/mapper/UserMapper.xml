@@ -250,4 +250,12 @@
 	<delete id="orderDel">
 		DELETE FROM tbl_order WHERE order_seq = #{order_seq}
 	</delete>
+	
+	<delete id="deleteGoodCheck">
+		DELETE FROM tbl_goodcheck WHERE user_seq = #{user_seq}
+	</delete>
+	
+	<delete id="deleteHateCheck">
+		DELETE FROM tbl_hatecheck WHERE user_seq = #{user_seq}
+	</delete>
 </mapper>

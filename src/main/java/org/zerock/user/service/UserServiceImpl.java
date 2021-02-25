@@ -202,4 +202,14 @@ public class UserServiceImpl implements UserService {
 		mapper.orderDel(order_seq);
 	}
 
+	@Override
+	public void deleteGoodCheck(int user_seq) {
+		mapper.deleteGoodCheck(user_seq);
+	}
+
+	@Override
+	public void deleteHateCheck(int user_seq) {
+		mapper.deleteHateCheck(user_seq);
+	}
+
 }
