@@ -221,7 +221,7 @@ $(document).ready(function() {
 <script>
 	$(".chat").on({
 		"click" : function() {
-			if ($(this).attr("src") == "/resources/chat.png") {
+			if ($(this).attr("src") == "${root}/resources/chat.png") {
 				//채팅끌때 클릭할 이미지 
 				$(".chat").attr("src", "/resources/chathide.png");
 				$("#_chatbox").css("display", "block");

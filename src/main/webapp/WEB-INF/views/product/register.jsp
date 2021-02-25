@@ -213,7 +213,7 @@ table.type05 td {
 	<section id="container">
 	
 		<h3>상품 등록</h3>
-			<form id="form_id" action="/product/register" method="post" enctype="multipart/form-data">
+			<form id="form_id" action="${root }/product/register" method="post" enctype="multipart/form-data">
 				<table class="type05">
 					<tbody>
 						<tr>

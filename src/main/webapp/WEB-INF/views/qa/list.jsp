@@ -300,7 +300,7 @@ thead {
 		<div class="col-5 align-right my-lg-2">
 			<!-- 글쓰기 처리 세션의 user_id 값이 있을때만 글쓰기 버튼 활성화 -->
 			<c:if test="${!empty authUser.user_id}">
-	   			<a href="/qa/register/" id="btn_add">글쓰기</a>
+	   			<a href="${root }/qa/register/" id="btn_add">글쓰기</a>
 	   		</c:if>
 		</div> 	
 	</div>
