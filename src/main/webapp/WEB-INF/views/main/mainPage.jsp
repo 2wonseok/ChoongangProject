@@ -117,6 +117,7 @@ $(document).ready(function() {
 } 
 #messageWindow {
 		overflow: scroll;
+		width: 214px;
 		height:250px; 
 		margin-left: 20px; 
 		position: fixed; 
