@@ -307,7 +307,7 @@ a {
 							<a href="${root }/freeboard/list" class="">자유게시판</a>
 						</li>
 						<li>
-							<a href="${root }/qa/list" class="" >Q/A</a>
+							<a href="${root }/qa/list" class="" >Q&A</a>
 						</li>
 						<li>
 							<a href="${root }/rev/list" class="">구매후기</a>

@@ -13,6 +13,45 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 <script type="text/javascript">
+var pageNum = '${pageNum}'; 
+
+function fnProductPaging(pageMaker) {
+	var startPage = pageMaker.startPage;
+	var endPage = pageMaker.endPage;
+	var pageNum = pageMaker.startPage - 1;
+	var amount = pageMaker.cri.amount;
+	var productPaging = $(".pagerWrap").empty();
+	
+	if (pageMaker.prev) {
+		var preLink = '${root}/user/productList?pageNum='+pageNum+'&amount='+amount;
+		var pre = '<a href="'+preLink+'">Previous</a>';
+		
+		productPaging.append(pre);
+	}
+	
+	for (var i = startPage; i <= endPage; i ++) {
+		var pageLink = '${root}/user/productList?pageNum='+i+'&amount='+amount;
+		var pageCheck = pageMaker.cri.pageNum == i;
+		var pageClass = '';
+		
+		if (pageCheck) {
+			pageClass = 'on';
+		}
+		
+		var now = '<a class="'+pageClass+'" id="nowPage" href="'+pageLink+'">'+i+'</a>';
+		
+		productPaging.append(now);
+	}
+	
+	if (pageMaker.next) {
+		var nextLink = '${root}/user/productList?pageNum='+endPage+1+'&amount='+amount; 
+		var next = '<a href="'+nextLink+'">Next</a>'
+		
+		productPaging.append(nextLink);
+	} 
+	
+}
+
 $(document).ready(function() {
 	
 	$("#payComplateTable").hide();
@@ -41,18 +80,25 @@ $(document).ready(function() {
 	}
 	
 	function showList() {
-		
+		//alert(pageNum);
+		var amount = 10;
 		var productList = $("#productList").empty();
 		
 		$.ajax({
 			type: "GET",
 			url: "${root}/user/productList2",
 			dataType: "JSON",
+			data: {"pageNum":pageNum, "amount":amount},
 			success : function(res) {
 				console.log(res);
 				
-				for (var i = 0; i < res.length; i++) {
-					var product_seq = res[i].product_seq;
+				
+				fnProductPaging(res.pageMaker);
+				
+				
+				
+				for (var i = 0; i < res.list.length; i++) {
+					var product_seq = res.list[i].product_seq;
 
 					/* 철수 수정 이걸가지고 해당하는 orderVO개수가져오기*/
 					var orderedNum;
@@ -69,10 +115,10 @@ $(document).ready(function() {
 					});
 					/* 철수 수정끝 */
 					
-					var product_name = res[i].product_name;
-					var product_price = res[i].product_price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-					var product_regdate = res[i].product_regdate;
-					var product_filename = res[i].product_filename;
+					var product_name = res.list[i].product_name;
+					var product_price = res.list[i].product_price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+					var product_regdate = res.list[i].product_regdate;
+					var product_filename = res.list[i].product_filename;
 					
 					/* 철수 추가 파일이름 여러개일시 한개로 */
 					product_filename = product_filename.split(",");
@@ -362,7 +408,15 @@ p {
 				
 				</tbody>
 			</table>
-			<!-- 판매 목록 페이징 -->
+			<!--ajax 페이징 -->
+			<div class="container d-flex justify-content-center">
+				<div class="pagerWrap">
+			
+			
+					
+				</div>
+			</div>
+			<%-- <!-- 판매 목록 페이징 -->
 			<div class="container d-flex justify-content-center">
 				<div class="pagerWrap" id="productPage">
 						<c:if test="${pageMaker.prev}">
@@ -401,7 +455,7 @@ p {
 							<a href="${nextLink }">Next</a>
 						</c:if>
 				</div>
-		</div>
+		</div> --%>
 			
 		</section>
 	</div>

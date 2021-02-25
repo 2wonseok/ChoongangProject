@@ -1,18 +1,15 @@
 package org.zerock.user.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONObject;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.RevBoard.service.RevBoardService;
 import org.zerock.product.domain.OrderVO;
 import org.zerock.product.domain.ProductVO;
 import org.zerock.product.service.ProductService;
@@ -32,11 +28,8 @@ import org.zerock.user.domain.PageDTO;
 import org.zerock.user.domain.UserVO;
 import org.zerock.user.service.UserService;
 
-
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import net.nurigo.java_sdk.api.Message;
-import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @Controller
 @AllArgsConstructor
@@ -435,16 +428,14 @@ public class UserController {
 	}
 	
 	@GetMapping("/productList") // 판매 목록 
-	public void proList(HttpSession session, Criteria cri, Model model) {
-		UserVO vo = (UserVO) session.getAttribute("authUser");
-		
-		if (vo != null) {
-			model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalProductList(vo.getUser_nickname(), cri)));
-		}
+	public void proList(Criteria cri, Model model) {
+		model.addAttribute("pageNum", cri.getPageNum());
 	}
 	
 	@GetMapping(value = "/productList2", produces = MediaType.APPLICATION_JSON_UTF8_VALUE) // 판매 목록 AJAX
-	public @ResponseBody List<ProductVO> pdList(HttpSession session, Criteria cri, Model model) {
+	public @ResponseBody Map<String, Object> pdList(HttpSession session, Criteria cri) {
+		Map<String, Object> res = new HashMap<>();
+		
 		List<ProductVO> list = new ArrayList<ProductVO>();
 		UserVO vo = (UserVO) session.getAttribute("authUser");
 		
@@ -452,9 +443,10 @@ public class UserController {
 			list = service.productList(vo.getUser_nickname(), cri);
 		}
 		
-		model.addAttribute("pageMaker", new PageDTO(cri, service.getTotalProductList(vo.getUser_nickname(), cri)));
+		res.put("list", list);
+		res.put("pageMaker", new PageDTO(cri, service.getTotalProductList(vo.getUser_nickname(), cri)));
 		
-		return list;
+		return res;
 	}
 	
 	@GetMapping("/orderList") // 결제완료 목록
