@@ -15,6 +15,11 @@
 <script type="text/javascript">
 var pageNum = '${pageNum}'; 
 
+function dateStrings(date) {
+	var d = new Date(date);
+	return d.toISOString().split("T")[0];
+}
+
 function fnProductPaging(pageMaker) {
 	var startPage = pageMaker.startPage;
 	var endPage = pageMaker.endPage;
@@ -23,32 +28,132 @@ function fnProductPaging(pageMaker) {
 	var productPaging = $(".pagerWrap").empty();
 	
 	if (pageMaker.prev) {
-		var preLink = '${root}/user/productList?pageNum='+pageNum+'&amount='+amount;
-		var pre = '<a href="'+preLink+'">Previous</a>';
+		
+		var pre = '<button onclick="productList('+pageNum+');">Previous</button>';
 		
 		productPaging.append(pre);
 	}
 	
 	for (var i = startPage; i <= endPage; i ++) {
-		var pageLink = '${root}/user/productList?pageNum='+i+'&amount='+amount;
+		
 		var pageCheck = pageMaker.cri.pageNum == i;
 		var pageClass = '';
 		
 		if (pageCheck) {
 			pageClass = 'on';
+		} else {
+			pageClass = '';
 		}
 		
-		var now = '<a class="'+pageClass+'" id="nowPage" href="'+pageLink+'">'+i+'</a>';
+		var now = '<button class="'+(pageMaker.cri.pageNum == i ? "on" : "")+'" id="nowPage" onclick="productList('+i+');">'+i+'</button>';
 		
 		productPaging.append(now);
 	}
 	
 	if (pageMaker.next) {
-		var nextLink = '${root}/user/productList?pageNum='+endPage+1+'&amount='+amount; 
-		var next = '<a href="'+nextLink+'">Next</a>'
 		
+		var next = '<button onclick="productList('+endPage+1+');">Previous</button>';
 		productPaging.append(nextLink);
 	} 
+	
+}
+
+function productList(pnum) {
+	var amount = 10;
+	var productList = $("#productList").empty();
+	
+	/* if ($("#productTable").hide()) {
+		var sendList = $("#sendList").empty();
+				
+			$.ajax({
+				type: "GET",
+				url: "${root}/user/sendList",
+				data:{"pageNum":pnum, "amount":amount},
+				dataType: "JSON",
+				success: function(res) {
+					console.log(res);
+					fnProductPaging(res.pageMaker);
+					
+					for (var i = 0; i < res.list.length; i++) {
+						
+						var order_seq = res.list[i].order_seq;
+						var order_poname = res.list[i].order_poname;
+						var order_username = res.list[i].order_username;
+						var order_productseq = res.list[i].order_productseq;
+						var order_date = res.list[i].order_date;
+						var successDate = new Date(order_date);
+						var arrivalDate = successDate.setDate(successDate.getDate() + 3);
+						//alert(successDate);
+						
+						var sendListTbody = '<tr>'
+															 +'<td>'+order_seq+'</td>'
+															 +'<td><a style= "color: #000;" href="${root}/product/get?product_seq='+order_productseq+'">&nbsp;'+order_poname+'</a></td>'
+															 +'<td>'+order_username+'</td>'
+															 +'<td>'+dateStrings(order_date)+'</td>'
+															 +'<td>'+dateStrings(arrivalDate)+'</td>'
+															 +'<td>'+'배송중'+'</td>'
+															 +'<tr>';
+							 
+						sendList.append(sendListTbody);
+						
+						
+					} 
+				}
+				
+			});
+	} */
+	
+	
+	
+	$.ajax({
+		type: "GET",
+		url: "${root}/user/productList2",
+		data: {"pageNum":pnum, "amount":amount},
+		dataType: "JSON",
+		success: function(res) {
+			console.log(res);
+			fnProductPaging(res.pageMaker);
+			
+			for (var i = 0; i < res.list.length; i++) {
+				
+				var orderedNum;
+				var checkVal = product_seq;
+				$.ajax({
+					type: "GET",
+					url: "${root}/user/orderList",
+					dataType: "JSON",
+					data: {"order_productseq": checkVal},
+						async: false,
+					success: function(res2) {
+						orderedNum = res2.length;
+					}
+				});
+				
+				var product_seq = res.list[i].product_seq;
+				var product_name = res.list[i].product_name;
+				var product_price = res.list[i].product_price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+				var product_regdate = res.list[i].product_regdate;
+				var product_filename = res.list[i].product_filename;
+				
+				/* 철수 추가 파일이름 여러개일시 한개로 */
+				product_filename = product_filename.split(",");
+				product_filename = product_filename[0];
+				/* 철수 수정 끝*/
+				
+				var productTbody = '<tr>'
+												  +'<td><input type="checkbox" id="product_seq" name="product_seq" value="'+product_seq+'" /></td>'
+												  +'<td><img alt="상품사진" src="${root }/resources/upload/'+product_filename+'">'
+												  +'<a style= "color: #000;" href="${root}/product/get?product_seq='+product_seq+'">&nbsp;'+product_name+'</a>'+" ["+orderedNum+"]개 주문이 들어왔습니다"+ '</td>'
+												  +'<td><p>'+product_price+'원</p></td>'
+												  +'<td><p>'+dateStrings(product_regdate)+'</p></td>';
+				
+				productList.append(productTbody);
+			
+			}
+		}
+		
+	});
+	
 	
 }
 
@@ -81,14 +186,14 @@ $(document).ready(function() {
 	
 	function showList() {
 		//alert(pageNum);
-		var amount = 10;
+		//var amount = 10;
 		var productList = $("#productList").empty();
 		
 		$.ajax({
 			type: "GET",
 			url: "${root}/user/productList2",
 			dataType: "JSON",
-			data: {"pageNum":pageNum, "amount":amount},
+			//data: {"pageNum":pageNum, "amount":amount},
 			success : function(res) {
 				console.log(res);
 				
@@ -237,6 +342,7 @@ $(document).ready(function() {
 		$("input:checkbox[id='allCheckOrderInfo']").prop("checked", false);
 		$("input:checkbox[id='product_seq']").prop("checked", false);
 		$("input:checkbox[id='order_seq']").prop("checked", false);
+		showList();
 	});
 	
 	$("#sendListTab").click(function() {
@@ -259,14 +365,15 @@ $(document).ready(function() {
 			dataType: "JSON",
 			success: function(res) {
 				console.log(res);
+				fnProductPaging(res.pageMaker);
 				
-				for (var i = 0; i < res.length; i++) {
+				for (var i = 0; i < res.list.length; i++) {
 					
-					var order_seq = res[i].order_seq;
-					var order_poname = res[i].order_poname;
-					var order_username = res[i].order_username;
-					var order_productseq = res[i].order_productseq;
-					var order_date = res[i].order_date;
+					var order_seq = res.list[i].order_seq;
+					var order_poname = res.list[i].order_poname;
+					var order_username = res.list[i].order_username;
+					var order_productseq = res.list[i].order_productseq;
+					var order_date = res.list[i].order_date;
 					var successDate = new Date(order_date);
 					var arrivalDate = successDate.setDate(successDate.getDate() + 3);
 					//alert(successDate);
@@ -333,7 +440,7 @@ p {
     text-align: center;
     margin: 0px 0;
 }
-.pagerWrap a {
+.pagerWrap button {
     width: 34px;
     height: 34px;
     color: #333;
@@ -343,16 +450,16 @@ p {
     background: #fff;
     display: inline-block;
 }
-.pagerWrap a.on {
+.pagerWrap button.on {
     border-color: #222222;
     background: #4a4a4a;
     color: #fff;
 }
-.pagerWrap a:hover {
+.pagerWrap button:hover {
     border-color: #4a4a4a;
     color: #4a4a4a;
 }
-.pagerWrap a.on:hover {
+.pagerWrap button.on:hover {
     border-color: #4a4a4a;
     color: #fff;
 }

@@ -428,8 +428,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/productList") // 판매 목록 
-	public void proList(Criteria cri, Model model) {
-		model.addAttribute("pageNum", cri.getPageNum());
+	public void proList() {
 	}
 	
 	@GetMapping(value = "/productList2", produces = MediaType.APPLICATION_JSON_UTF8_VALUE) // 판매 목록 AJAX
@@ -467,7 +466,8 @@ public class UserController {
 	}
 	
 	@GetMapping("/sendList") // 배송중인 상품 목록
-	public @ResponseBody List<OrderVO> sendList(HttpSession session, Criteria cri) {
+	public @ResponseBody Map<String, Object> sendList(HttpSession session, Criteria cri) {
+		Map<String, Object> res = new HashMap<>();
 		List<OrderVO> list = new ArrayList<OrderVO>();
 		UserVO vo = (UserVO) session.getAttribute("authUser");
 		
@@ -477,13 +477,16 @@ public class UserController {
 				System.out.println("product seq 번호: " +pvoList.getProduct_seq());
 				List<OrderVO> sendList = service.sendList(pvoList.getProduct_seq());
 				list.addAll(sendList);
-				
+
 			}
-			return list;
+			
+			res.put("pageMaker", new PageDTO(cri, list.size()));
+			res.put("list", list);
+			return res;
 					
 		}
 		
-		return list;
+		return res;
 		
 	}
 	
