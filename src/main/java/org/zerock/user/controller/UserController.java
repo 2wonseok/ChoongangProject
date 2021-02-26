@@ -450,7 +450,7 @@ public class UserController {
 	
 	@GetMapping("/orderList") // 결제완료 목록
 	public @ResponseBody List<OrderVO> odInfo(OrderVO order, Criteria cri, Model model) {
-		List<OrderVO> vo = service.orderInfo(order.getOrder_productseq());
+		List<OrderVO> vo = service.orderInfo(order.getOrder_productseq(), cri);
 		model.addAttribute("orderPageMaker", new PageDTO(cri, service.getTotalOrderInfoList(order.getOrder_productseq(), cri)));
 		return vo;
 		
@@ -475,7 +475,7 @@ public class UserController {
 			List<ProductVO> pvo = service.productList(vo.getUser_nickname(), cri);
 			for (ProductVO pvoList : pvo) {
 				System.out.println("product seq 번호: " +pvoList.getProduct_seq());
-				List<OrderVO> sendList = service.sendList(pvoList.getProduct_seq());
+				List<OrderVO> sendList = service.sendList(pvoList.getProduct_seq(), cri);
 				list.addAll(sendList);
 
 			}

@@ -153,8 +153,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<OrderVO> orderInfo(int order_productseq) {
-		return mapper.orderInfo(order_productseq);
+	public List<OrderVO> orderInfo(int order_productseq, Criteria cri) {
+		return mapper.orderInfo(order_productseq, cri);
 	}
 
 	@Override
@@ -183,8 +183,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<OrderVO> sendList(int order_productseq) {
-		return mapper.sendList(order_productseq);
+	public List<OrderVO> sendList(int order_productseq, Criteria cri) {
+		return mapper.sendList(order_productseq, cri);
 	}
 
 	@Override

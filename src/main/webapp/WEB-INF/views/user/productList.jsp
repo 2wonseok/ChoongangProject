@@ -61,50 +61,7 @@ function fnProductPaging(pageMaker) {
 function productList(pnum) {
 	var amount = 10;
 	var productList = $("#productList").empty();
-	
-	/* if ($("#productTable").hide()) {
-		var sendList = $("#sendList").empty();
-				
-			$.ajax({
-				type: "GET",
-				url: "${root}/user/sendList",
-				data:{"pageNum":pnum, "amount":amount},
-				dataType: "JSON",
-				success: function(res) {
-					console.log(res);
-					fnProductPaging(res.pageMaker);
-					
-					for (var i = 0; i < res.list.length; i++) {
-						
-						var order_seq = res.list[i].order_seq;
-						var order_poname = res.list[i].order_poname;
-						var order_username = res.list[i].order_username;
-						var order_productseq = res.list[i].order_productseq;
-						var order_date = res.list[i].order_date;
-						var successDate = new Date(order_date);
-						var arrivalDate = successDate.setDate(successDate.getDate() + 3);
-						//alert(successDate);
-						
-						var sendListTbody = '<tr>'
-															 +'<td>'+order_seq+'</td>'
-															 +'<td><a style= "color: #000;" href="${root}/product/get?product_seq='+order_productseq+'">&nbsp;'+order_poname+'</a></td>'
-															 +'<td>'+order_username+'</td>'
-															 +'<td>'+dateStrings(order_date)+'</td>'
-															 +'<td>'+dateStrings(arrivalDate)+'</td>'
-															 +'<td>'+'배송중'+'</td>'
-															 +'<tr>';
-							 
-						sendList.append(sendListTbody);
-						
-						
-					} 
-				}
-				
-			});
-	} */
-	
-	
-	
+
 	$.ajax({
 		type: "GET",
 		url: "${root}/user/productList2",
@@ -256,7 +213,8 @@ $(document).ready(function() {
 				alert('체크 박스를 선택해주세요');
 				return false;
 			} 
-		 	
+		
+		$(".pagerWrap").hide();
 		$("#sendListTable").hide();
 		$("#productTable").hide();
 		$("#productPage").hide();
@@ -332,6 +290,7 @@ $(document).ready(function() {
 	});
 	
 	$("#defaultList").click(function() {
+		$(".pagerWrap").show();
 		$("#productTable").show();
 		$("#payComplateTable").hide();
 		$("#sendListTable").hide();
@@ -346,6 +305,7 @@ $(document).ready(function() {
 	});
 	
 	$("#sendListTab").click(function() {
+		$(".pagerWrap").hide();
 		$("#productTable").hide();
 		$("#payComplateTable").hide();
 		$("#send_btn").hide();
@@ -517,53 +477,9 @@ p {
 			</table>
 			<!--ajax 페이징 -->
 			<div class="container d-flex justify-content-center">
-				<div class="pagerWrap">
-			
-			
-					
-				</div>
+				<div class="pagerWrap"></div>
 			</div>
-			<%-- <!-- 판매 목록 페이징 -->
-			<div class="container d-flex justify-content-center">
-				<div class="pagerWrap" id="productPage">
-						<c:if test="${pageMaker.prev}">
-							<c:url value="/user/productList" var="preLink">
-								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
-									<c:param name="type" value="${pageMaker.cri.type }"></c:param>
-									<c:param name="keyword" value="${pageMaker.cri.keyword }"></c:param>
-								</c:if>
-								<c:param name="pageNum" value="${pageMaker.startPage - 1 }"></c:param>
-								<c:param name="amount" value="${pageMaker.cri.amount}"></c:param>
-							</c:url>
-								<a href="${preLink}">Previous</a>
-						</c:if>
-						
-						<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
-							<c:url value="/user/productList" var="pageLink">
-								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
-									<c:param name="type" value="${param.type }"></c:param>
-									<c:param name="keyword" value="${param.keyword }"></c:param>
-								</c:if>	
-								<c:param name="pageNum" value="${num }"></c:param>
-								<c:param name="amount" value="${pageMaker.cri.amount }"></c:param>
-							</c:url>
-								<a class="${pageMaker.cri.pageNum == num ? 'on' : ''}" href="${pageLink}">${num }</a>
-						</c:forEach>
-						
-						<c:if test="${pageMaker.next }">
-							<c:url value="/user/productList" var="nextLink">
-								<c:if test="${pageMaker.cri.type != null && pageMaker.cri.keyword != null }">
-									<c:param name="type" value="${pageMaker.cri.type }"></c:param>
-									<c:param name="keyword" value="${pageMaker.cri.keyword }"></c:param>
-								</c:if>
-								<c:param name="pageNum" value="${pageMaker.endPage + 1 }"></c:param>
-								<c:param name="amount" value="${pageMaker.cri.amount}"></c:param>
-							</c:url>
-							<a href="${nextLink }">Next</a>
-						</c:if>
-				</div>
-		</div> --%>
-			
+
 		</section>
 	</div>
 	</c:when>

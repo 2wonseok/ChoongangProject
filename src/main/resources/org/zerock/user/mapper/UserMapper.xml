@@ -199,9 +199,11 @@
 		 		order_quantity, order_status, order_userseq, order_username, order_useraddress, order_userphone
 		 		, order_filename 
 			FROM tbl_order
+			WHERE 
+				order_productseq = #{order_productseq} AND order_status = 2
 			)	
 			WHERE 
-				order_productseq = #{order_productseq} AND order_status = 2 
+				rn BETWEEN (#{cri.pageNum} - 1) * #{cri.amount} + 1 AND #{cri.pageNum} * #{cri.amount}	 
 			ORDER BY order_date DESC
 	</select>
 	

@@ -47,9 +47,9 @@ public interface UserService {
 	
 	public List<ProductVO> productList(@Param("user_nickname") String user_nickname, @Param("cri") Criteria cri);
 	
-	public List<OrderVO> orderInfo(int order_productseq);
+	public List<OrderVO> orderInfo(@Param("order_productseq") int order_productseq, @Param("cri") Criteria cri);
 	
-	public List<OrderVO> sendList(int order_productseq);
+	public List<OrderVO> sendList(@Param("order_productseq") int order_productseq, @Param("cri") Criteria cri);
 	
 	public int getTotalOrderList(@Param("order_userseq") int order_userseq, @Param("cri") Criteria cri);
 	
@@ -59,7 +59,7 @@ public interface UserService {
 	
 	public int getTotalOrderInfoList(@Param("order_productseq") int order_productseq, @Param("cri") Criteria cri);
 
-	public void productSend(@Param("order_seq") int order_seq, @Param("cir") Criteria cri);
+	public void productSend(@Param("order_seq") int order_seq, @Param("cri") Criteria cri);
 	
 	public OrderVO getOrderInfo(int order_seq);
 	

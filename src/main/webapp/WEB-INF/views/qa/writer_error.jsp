@@ -21,7 +21,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script>
 	alert("로그인을 해야 글 작성이 됩니다.");
-	window.location = '/qa/list';
+	window.location = '${root}/qa/list';
 </script>
 <title>비밀글</title>
 </head>
