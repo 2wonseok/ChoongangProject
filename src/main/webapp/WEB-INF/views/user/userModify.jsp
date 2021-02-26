@@ -116,7 +116,7 @@ $(document).ready(function() {
 	});
 });
 </script>
-<title>수정페이지</title>
+<title>회원 정보 수정</title>
 </head>
 <style>
 	.container-fluid h2 {

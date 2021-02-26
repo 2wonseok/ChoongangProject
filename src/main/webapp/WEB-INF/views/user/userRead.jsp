@@ -47,7 +47,7 @@
 	});	
 
 </script>
-<title>read Page</title>
+<title>회원 정보 보기</title>
 </head>
 <style>
 #container {

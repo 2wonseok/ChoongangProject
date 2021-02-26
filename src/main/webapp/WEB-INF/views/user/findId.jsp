@@ -49,7 +49,7 @@ $(document).ready(function() {
 	
 });
 </script>
-<title>Insert title here</title>
+<title>아이디 찾기</title>
 </head>
 <style>
 

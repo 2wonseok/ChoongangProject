@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 });	
 </script>
-<title>Insert title here</title>
+<title>로그인</title>
 </head>
 <style>
 #container {

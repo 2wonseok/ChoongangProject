@@ -310,7 +310,7 @@ $(document).ready(function() {
 });
 
 </script>
-<title>Insert title here</title>
+<title>회원가입</title>
 </head>
 <style>
 #container {

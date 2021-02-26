@@ -360,7 +360,7 @@ $(document).ready(function() {
 	showList();
 });
 </script>
-<title>Insert title here</title>
+<title>판매 목록</title>
 </head>
 <style>
 #container {

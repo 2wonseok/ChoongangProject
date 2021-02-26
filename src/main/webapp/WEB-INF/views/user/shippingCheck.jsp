@@ -37,7 +37,7 @@ $(document).ready(function() {
 });
 
 </script>
-<title>Insert title here</title>
+<title>배송조회</title>
 </head>
 <style>
 #container {

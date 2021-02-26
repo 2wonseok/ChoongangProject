@@ -110,7 +110,7 @@ $(document).ready(function() {
 	
 });
 </script>
-<title>Insert title here</title>
+<title>비밀번호 찾기</title>
 </head>
 <style>
 

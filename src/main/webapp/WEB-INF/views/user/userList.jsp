@@ -107,7 +107,7 @@ function reload() {
 	window.location = window.location.pathname;
 }
 </script>
-<title>Insert title here</title>
+<title>회원 관리</title>
 </head>
 <style>
 #container {

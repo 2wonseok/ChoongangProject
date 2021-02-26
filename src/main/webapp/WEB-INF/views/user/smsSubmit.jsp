@@ -45,7 +45,7 @@ $(document).ready(function() {
 });
 
 </script>
-<title>Insert title here</title>
+<title>회원 문자 전송</title>
 </head>
 <style>
 #container {
