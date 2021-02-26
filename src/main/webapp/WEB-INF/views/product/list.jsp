@@ -20,7 +20,7 @@
 <!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
 <script src="${root }/resources/product_js/category.js"></script>
 
-<title>Insert title here</title>
+<title>상품 페이지</title>
 
 <script>
 var appRoot = '${root }';
@@ -241,13 +241,13 @@ $(document).ready(function(){
 	  			<button id="readcnt_btn" class="btn" type="button">조회순</button>
   			
   			<div class="d-flex" style="margin-left: 184px;"> 
-					<select class="custom-select my-1 mr-sm-2" id="categoryMainSelectBox">
+					<select class="custom-select my-1 mr-sm-2" style="width:157px;" id="categoryMainSelectBox">
 						<option>===대분류===</option>
 						<c:forEach items="${ categoryMainList}" var="categoryMain" >
 							<option value="${categoryMain }" ${pageDTO.cri.categoryMain eq categoryMain ? 'selected' : '' }>${categoryMain }</option>
 						</c:forEach>
 					</select>
-					<select class="custom-select my-1 mr-sm-2" id="categorySubSelectBox">
+					<select class="custom-select my-1 mr-sm-2" style="width:157px;" id="categorySubSelectBox">
 						<option>===소분류===</option>
 					</select>
 				</div>

@@ -230,7 +230,7 @@ table.type05 td {
 
 </style>
 
-<title>Insert title here</title>
+<title>상품 수정 페이지</title>
 </head>
 <body>
 

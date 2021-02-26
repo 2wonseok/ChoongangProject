@@ -311,7 +311,7 @@ $(document).ready(function(){
 </style>
 
 
-<title>Insert title here</title>
+<title>상품페이지</title>
 </head>
 <body>
 	
