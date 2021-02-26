@@ -17,7 +17,7 @@
     line-height: 38px;
     float: right;
     border-radius: 3px;
-    margin-left:414px;
+    margin-left:412px;
 }
 #searchButton{
 	color: #fff;
