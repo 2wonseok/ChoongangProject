@@ -21,7 +21,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script>
 	alert("작성자와 관리자만 열람 가능합니다.");
-	window.location = '{root}/qa/list';
+	window.location = '${root}/qa/list';
 </script>
 <title>비밀글</title>
 </head>
