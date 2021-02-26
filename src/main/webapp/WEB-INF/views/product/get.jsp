@@ -425,7 +425,7 @@ $(document).ready(function(){
 							</c:forEach>
 							<hr>
 							<p>부가정보란</p>
-						<fmt:setTimeZone value = "GMT+9" />
+						<fmt:setTimeZone value = "GMT+9"  />
 								<p>상품 등록일 : <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" value="${product.product_regdate }"/> </p>
 								<p>상품 정보 수정일 : <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" value="${product.product_updatedate }"/> </p>
 						</td>
