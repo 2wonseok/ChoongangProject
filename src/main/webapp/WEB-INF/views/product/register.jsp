@@ -68,15 +68,13 @@ var userSeq = '${authUser.user_seq}';
 			+ 수량가격에 소수점있으면 안넘어가게끔 */
 		$("#btn_submit").click(function(e){
 			e.preventDefault(); // 전송버튼 막기
-			
+				message = null;
 				/*비어있으면 메세지넣고모달창호출  */
 				if ($("#product_name").val().trim() == ""){
 					message = "상품이름 항목이 비어있음";
-				} else
+				}
 				if ($("#product_info").val().trim() == ""){
 					message = "상품정보 항목이 비어있음";
-				} else {
-					message = null; //다 차있으면 message가 null임
 				}
 				
 				$("input[name=po_quantity], input[name=po_price]").each(function(){
