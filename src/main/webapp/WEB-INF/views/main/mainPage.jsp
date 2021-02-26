@@ -162,7 +162,7 @@ $(document).ready(function() {
 				</a>
 				<div>
 					<span><i class="fas fa-eye"></i> ${product.product_readcnt }</span>	
-					<span><i class="fas fa-heart"></i> ${product.product_readcnt }</span>										
+					<span><i class="fas fa-heart"></i> ${product.product_like }</span>										
 				</div>
 	            <fmt:formatNumber value="${product.product_quantity }" type="number" var="quantity"></fmt:formatNumber>
 				<div class="cardLine1">총 ${quantity }개 남음</div>
